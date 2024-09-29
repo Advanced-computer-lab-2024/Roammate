@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Adjust the path according to the actual location and name of the product controller
-const { addProduct, viewproducts } = require('./routes/productsController');
+const { addProduct, viewproducts , searchproductbyname } = require('./routes/productsController');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -31,3 +31,4 @@ app.get("/home", (req, res) => {
 // Route to add a product
 app.post("/addproduct", addProduct);
 app.get("/viewproducts",viewproducts);
+app.get("/searchproduct/:name",searchproductbyname);

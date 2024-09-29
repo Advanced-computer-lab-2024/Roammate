@@ -31,4 +31,30 @@ const viewproducts =async(req,res)=>{
 
 }
 
-module.exports = { addProduct, viewproducts };
+
+const searchproductbyname = async (req, res) => {
+  const productName = req.params.name.trim(); // Trim whitespace just in case
+
+  try {
+      console.log("Searching for products starting with:", productName);
+      const regex = new RegExp("^" + productName, "i"); // Using RegExp constructor for clarity
+      console.log("Regex used:", regex);
+
+      const products = await Product.find({ name: { $regex: regex } });
+      console.log("Products found:", products);
+      
+      if (products.length > 0) {
+          res.status(200).json(products);
+      } else {
+          res.status(404).json({ message: "No products found starting with: " + productName });
+      }
+  } catch (error) {
+      console.error("Search error:", error);
+      res.status(500).json({ message: "Error searching for products", error: error });
+  }
+};
+
+
+
+
+module.exports = { addProduct, viewproducts , searchproductbyname };
