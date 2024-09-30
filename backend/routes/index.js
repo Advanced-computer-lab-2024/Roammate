@@ -7,11 +7,11 @@ const {
 } = require("./productsController");
 
 const {
-  createTag,
-  viewTags,
-  updateTag,
-  deleteTag,
-} = require("./tagsController");
+  createPreferenceTag,
+  viewPreferenceTags,
+  updatePreferenceTag,
+  deletePreferenceTag,
+} = require("./preferenceTagsController");
 
 const router = express.Router();
 
@@ -21,10 +21,10 @@ router.get("/viewproducts", viewproducts);
 router.get("/searchproduct/:name", searchproductbyname);
 
 // Routes for preference tags
-router.post("/tags", createTag);
-router.get("/tags", viewTags);
-router.put("/tags/:id", updateTag);
-router.delete("/tags/:id", deleteTag);
+router.post("/tags", createPreferenceTag);
+router.get("/tags", viewPreferenceTags);
+router.put("/tags/:id", updatePreferenceTag);
+router.delete("/tags/:id", deletePreferenceTag);
 
 // Search route
 // router.get('/search/:query', search);

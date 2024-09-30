@@ -1,14 +1,14 @@
 // controllers/tagController.js
-const Tag = require("../models/tagModel");
+const PreferenceTag = require("../models/preferenceTagModel");
 
 // Create a preference tag
-const createTag = async (req, res) => {
+const createPreferenceTag = async (req, res) => {
   const { name } = req.body;
   if (!name) return res.status(400).json({ message: "Tag name is required" });
 
-  const newTag = new Tag({ name: name });
+  const newTag = new PreferenceTag({ name: name });
   try {
-    const existingTag = await Tag.findOne({ name: name });
+    const existingTag = await PreferenceTag.findOne({ name: name });
     if (existingTag) {
       res.status(400).json({ message: "Tag with this name already exists" });
       return;
@@ -23,9 +23,9 @@ const createTag = async (req, res) => {
 };
 
 // View all tags
-const viewTags = async (req, res) => {
+const viewPreferenceTags = async (req, res) => {
   try {
-    const tags = await Tag.find();
+    const tags = await PreferenceTag.find();
     res.status(200).json(tags);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving tags" });
@@ -33,11 +33,15 @@ const viewTags = async (req, res) => {
 };
 
 // Update a tag by ID
-const updateTag = async (req, res) => {
+const updatePreferenceTag = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
   try {
-    const updatedTag = await Tag.findByIdAndUpdate(id, { name }, { new: true });
+    const updatedTag = await PreferenceTag.findByIdAndUpdate(
+      id,
+      { name },
+      { new: true }
+    );
     if (!updatedTag) return res.status(404).json({ message: "Tag not found" });
     res.status(200).json(updatedTag);
   } catch (error) {
@@ -46,11 +50,11 @@ const updateTag = async (req, res) => {
 };
 
 // Delete a tag by ID
-const deleteTag = async (req, res) => {
+const deletePreferenceTag = async (req, res) => {
   const { id } = req.params;
   console.log(id);
   try {
-    const deletedTag = await Tag.findByIdAndDelete(id);
+    const deletedTag = await PreferenceTag.findByIdAndDelete(id);
     if (!deletedTag) return res.status(404).json({ message: "Tag not found" });
     res.status(200).json({ message: "Tag deleted successfully" });
   } catch (error) {
@@ -58,4 +62,9 @@ const deleteTag = async (req, res) => {
   }
 };
 
-module.exports = { createTag, viewTags, updateTag, deleteTag };
+module.exports = {
+  createPreferenceTag,
+  viewPreferenceTags,
+  updatePreferenceTag,
+  deletePreferenceTag,
+};

@@ -1,8 +1,8 @@
-// models/tagModel.js
+// models/preferenceTagModel.js
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const tagSchema = new Schema(
+const preferenceTagSchema = new Schema(
   {
     name: {
       type: String,
@@ -13,5 +13,5 @@ const tagSchema = new Schema(
   { timestamps: true }
 );
 
-const Tag = mongoose.model("Tag", tagSchema);
-module.exports = Tag;
+const PreferenceTag = mongoose.model("PreferenceTag", preferenceTagSchema);
+module.exports = PreferenceTag;
