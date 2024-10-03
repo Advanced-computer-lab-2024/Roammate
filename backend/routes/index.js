@@ -4,6 +4,9 @@ const {
   addProduct,
   viewproducts,
   searchproductbyname,
+  filterbyprice,
+  sortbyrating,
+  editproduct,
 } = require("./productsController");
 
 const {
@@ -19,6 +22,9 @@ const router = express.Router();
 router.post("/addproduct", addProduct);
 router.get("/viewproducts", viewproducts);
 router.get("/searchproduct/:name", searchproductbyname);
+router.get("/filterbyprice",filterbyprice);
+router.get("/sortbyrating",sortbyrating);
+router.put('/editproduct/:id',editproduct)
 
 // Routes for preference tags
 router.post("/tags", createPreferenceTag);
