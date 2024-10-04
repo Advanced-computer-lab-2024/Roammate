@@ -59,5 +59,14 @@ router.get("/test", viewTest);
 
 // View all upcoming content
 // router.get('/upcoming', viewAllUpcoming);
+const itineraryController = require('./itineraryController');
+
+router.post('/create', itineraryController.createItinerary);
+router.get('/', itineraryController.getAllItineraries);
+router.get('/:id', itineraryController.getItineraryById);
+router.put('/:id', itineraryController.updateItinerary);
+router.delete('/:id', itineraryController.deleteItinerary);
+router.get('/filter', itineraryController.filterItineraries);
+
 
 module.exports = router;
