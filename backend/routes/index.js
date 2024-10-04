@@ -21,7 +21,8 @@ const {
   getActivityById,
   updateActivity,
   deleteActivity,
-  filterActivities
+  filterActivities,
+  sortActivities
 } = require("./activitiesController");
 
 const { createTest, viewTest } = require("./testController");
@@ -49,6 +50,7 @@ router.get('/filteractivities',filterActivities);
 router.get("/activity/:id",getActivityById);
 router.put("/activity/:id",updateActivity);
 router.delete("/activity/:id",deleteActivity);
+router.get("/sortActivites",sortActivities);
 
 router.post("/test", createTest);
 router.get("/test", viewTest);

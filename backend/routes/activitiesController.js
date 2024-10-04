@@ -123,7 +123,30 @@ const createActivity = async (req, res) =>{
       res.status(500).json({ error: error.message });
     }
   };
-  
+  const sortActivities = async (req, res) => {
+    const { sortBy } = req.query; // Get sorting criteria from query params
+    const sortCriteria = {};
+
+    // Determine sorting order based on query parameter
+    if (sortBy === 'price') {
+        sortCriteria.price = 1; // Ascending order
+    } else if (sortBy === '-price') {
+        sortCriteria.price = -1; // Descending order
+    } else if (sortBy === 'rating') {
+        sortCriteria.rating = 1; // Ascending order
+    } else if (sortBy === '-rating') {
+        sortCriteria.rating = -1; // Descending order
+    }
+
+    try {
+        const activities = await Activity.find().sort(sortCriteria); // Retrieve and sort activities
+        res.status(200).json(activities); // Send sorted activities as response
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 
 
@@ -165,7 +188,7 @@ const createActivity = async (req, res) =>{
 
 
     module.exports = {
-        createActivity,getAllActivities,getActivityById,updateActivity,deleteActivity,filterActivities
+        createActivity,getAllActivities,getActivityById,updateActivity,deleteActivity,filterActivities,sortActivities
       };
     
     
