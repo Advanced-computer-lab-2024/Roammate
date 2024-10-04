@@ -16,6 +16,8 @@ const {
   deletePreferenceTag,
 } = require("./preferenceTagsController");
 
+const { createTest, viewTest } = require("./testController");
+
 const router = express.Router();
 
 //Products Routes
@@ -32,6 +34,8 @@ router.get("/preferenceTags", viewPreferenceTags);
 router.put("/preferenceTags/:id", updatePreferenceTag);
 router.delete("/preferenceTags/:id", deletePreferenceTag);
 
+router.post("/test", createTest);
+router.get("/test", viewTest);
 // Search route
 // router.get('/search/:query', search);
 
