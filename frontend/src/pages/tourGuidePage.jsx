@@ -1,5 +1,11 @@
+import CreateItineraryComponent from "../components/tourGuideComponents/createItinerary";
+
 const TourGuidePage = () => {
-  return <div>Tour Guide Page PlaceHolder</div>;
+  return (
+    <div>
+      <CreateItineraryComponent />
+    </div>
+  );
 };
 
 export default TourGuidePage;

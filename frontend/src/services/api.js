@@ -12,3 +12,8 @@ export const createPreferenceTag = async (data) => {
   const response = await axios.post(`${API_URL}preferenceTags`, data);
   return response;
 };
+
+export const createItinerary = async (data) => {
+  const response = await axios.post(`${API_URL}itinerary`, data);
+  return response;
+};

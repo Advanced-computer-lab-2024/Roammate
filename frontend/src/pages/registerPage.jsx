@@ -5,12 +5,11 @@ const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    role: "guest", // Default role
+    role: "guest",
   });
 
-  const navigate = useNavigate(); // Initialize the navigate hook
+  const navigate = useNavigate();
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -19,11 +18,8 @@ const Register = () => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Normally, you'd send the formData to the backend here
-    console.log("User Data:", formData);
     navigate(`/${formData.role}`);
   };
 
