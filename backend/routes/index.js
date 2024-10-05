@@ -22,7 +22,7 @@ const {
   updateActivity,
   deleteActivity,
   filterActivities,
-  sortActivities
+  sortActivities,
 } = require("./activitiesController");
 
 const { createTest, viewTest } = require("./testController");
@@ -44,13 +44,13 @@ router.put("/preferenceTags/:id", updatePreferenceTag);
 router.delete("/preferenceTags/:id", deletePreferenceTag);
 //Routes for activities
 //Routes for Activities
-router.post("/activity",createActivity);
-router.get("/activity",getAllActivities);
-router.get('/filteractivities',filterActivities);
-router.get("/activity/:id",getActivityById);
-router.put("/activity/:id",updateActivity);
-router.delete("/activity/:id",deleteActivity);
-router.get("/sortActivites",sortActivities);
+router.post("/activity", createActivity);
+router.get("/activity", getAllActivities);
+router.get("/filteractivities", filterActivities);
+router.get("/activity/:id", getActivityById);
+router.put("/activity/:id", updateActivity);
+router.delete("/activity/:id", deleteActivity);
+router.get("/sortActivites", sortActivities);
 
 router.post("/test", createTest);
 router.get("/test", viewTest);
@@ -59,14 +59,13 @@ router.get("/test", viewTest);
 
 // View all upcoming content
 // router.get('/upcoming', viewAllUpcoming);
-const itineraryController = require('./itineraryController');
+const itineraryController = require("./itineraryController");
 
-router.post('/create', itineraryController.createItinerary);
-router.get('/', itineraryController.getAllItineraries);
-router.get('/:id', itineraryController.getItineraryById);
-router.put('/:id', itineraryController.updateItinerary);
-router.delete('/:id', itineraryController.deleteItinerary);
-router.get('/filter', itineraryController.filterItineraries);
-
+router.post("/itinerary", itineraryController.createItinerary);
+router.get("/itinerary", itineraryController.getAllItineraries);
+router.get("/itinerary/:id", itineraryController.getItineraryById);
+router.put("/itinerary/:id", itineraryController.updateItinerary);
+router.delete("/itinerary/:id", itineraryController.deleteItinerary);
+router.get("/itineraryFilter", itineraryController.filterItineraries);
 
 module.exports = router;

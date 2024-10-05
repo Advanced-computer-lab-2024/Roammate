@@ -6,6 +6,10 @@ dotenv.config();
 const routes = require("./routes/index");
 
 const app = express();
+
+const cors = require("cors");
+app.use(cors());
+
 const port = process.env.PORT || 8000;
 const MongoURI = process.env.MONGO_URI;
 

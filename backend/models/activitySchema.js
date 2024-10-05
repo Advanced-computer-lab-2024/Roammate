@@ -1,71 +1,77 @@
-
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const activitySchema = new Schema({
-  name: {
-    type: String,
-    
-    trim: true
-  },
-  location: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  category: {
-    type: String,
-    required: true,
-    enum: ['Adventure', 'Cultural', 'Relaxation', 'Outdoor', 'Entertainment', 'Other'] //to be modified lateron
-  },
-  tags: {
-    type: [String], // Array of strings to store multiple tags
-    default: []
-  },
-  discount: {
-    type: Number,
-    default: 0, // Default no discount
-    min: 0,
-    max: 100 // Discount in percentage
-  },
-  availability: {
-    startDate: {
-      type: Date,
-      required: true
-    },
-    endDate: {
-      type: Date,
-      required: true
-    },
-    daysOfWeek: {
-      type: [String], // Array of days for availability, e.g. ['Monday', 'Wednesday']
-      required: true,
-      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    }
-  },
-  rating: {
+const discountSchema = new Schema({
+  percentage: {
     type: Number,
     min: 0,
-    max: 5,
-    default: 0
+    max: 100,
+    required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  description: {
+    type: String,
+    trim: true,
+    default: "",
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
 });
 
-// Middleware to auto-update the 'updatedAt' field before saving the document
+const activitySchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ActivityCategory",
+      },
+    ],
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "PreferenceTag",
+      },
+    ],
+    discounts: {
+      type: [discountSchema], // Array of discount objects
+      default: [], // No discounts by default
+    },
+    availability: {
+      startDate: {
+        type: Date,
+        required: true,
+      },
+      endDate: {
+        type: Date,
+        required: true,
+      },
+    },
+    isBookingAvailable: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
 
-
-const Activity = mongoose.model('Activity', activitySchema);
+const Activity = mongoose.model("Activity", activitySchema);
 
 module.exports = Activity;
