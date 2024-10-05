@@ -7,3 +7,8 @@ export const fetchActivities = async () => {
   //   alert(JSON.stringify(activies.data, null, 2));
   return activies;
 };
+
+export const createPreferenceTag = async (data) => {
+  const response = await axios.post(`${API_URL}preferenceTags`, data);
+  return response;
+};

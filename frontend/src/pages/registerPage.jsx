@@ -5,7 +5,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    role: "user", // Default role
+    role: "guest", // Default role
   });
 
   const navigate = useNavigate(); // Initialize the navigate hook
@@ -24,15 +24,7 @@ const Register = () => {
     e.preventDefault();
     // Normally, you'd send the formData to the backend here
     console.log("User Data:", formData);
-
-    // Navigate based on the role
-    if (formData.role === "user") {
-      navigate("/user"); // Navigate to user page
-    } else if (formData.role === "admin") {
-      navigate("/admin"); // Navigate to admin page
-    } else if (formData.role === "moderator") {
-      navigate("/moderator"); // Navigate to moderator page
-    }
+    navigate(`/${formData.role}`);
   };
 
   return (
@@ -71,9 +63,13 @@ const Register = () => {
             value={formData.role}
             onChange={handleChange}
           >
-            <option value="user">User</option>
+            <option value="guest">Guest</option>
             <option value="admin">Admin</option>
-            <option value="moderator">Moderator</option>
+            <option value="tourist">Tourist</option>
+            <option value="tour-guide">Tour Guide</option>
+            <option value="tourist-governer">Tourist Governer</option>
+            <option value="seller">Seller</option>
+            <option value="advertiser">Advertiser</option>
           </select>
         </div>
 
