@@ -25,7 +25,6 @@ const createActivity = async (req, res) => {
 };
 // READ all activities
 const getAllActivities = (req, res) => {
-  console.log("here");
   Activity.find()
     .populate("tags", "name")
     .then((activities) => {
