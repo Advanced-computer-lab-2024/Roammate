@@ -1,21 +1,17 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import ActivityComponent from "./components/testComponent";
+import Register from "./pages/registerPage";
 
 function App() {
   return (
-    <>
+    <Router>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Routes>
+          <Route path="/" element={<div>Home Page Placeholder</div>} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </div>
-      <ActivityComponent />
-    </>
+    </Router>
   );
 }
 
