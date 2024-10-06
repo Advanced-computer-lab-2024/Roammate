@@ -3,7 +3,7 @@ import { createItinerary } from "../../services/api"; // Make sure to define thi
 
 const CreateItineraryComponent = () => {
   const [formData, setFormData] = useState({
-    title: "",
+    name: "", // Updated from title to name
     activities: [], // This will hold activity IDs
     location: "",
     price: 0,
@@ -61,12 +61,12 @@ const CreateItineraryComponent = () => {
       <h2>Create Itinerary</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="title">Title:</label>
+          <label htmlFor="name">Name:</label> {/* Updated from Title to Name */}
           <input
             type="text"
-            id="title"
-            name="title"
-            value={formData.title}
+            id="name"
+            name="name"
+            value={formData.name} // Updated from formData.title to formData.name
             onChange={handleChange}
             required
           />
