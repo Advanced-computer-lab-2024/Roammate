@@ -25,6 +25,16 @@ const {
   sortActivities,
 } = require("./activitiesController");
 
+const {
+  createMuseum,
+  GetAllMuseums,
+  GetAllMuseumsByID,
+  updateMuseum,
+  deleteMuseum,
+  filterByTag,
+  getAllCreatedItems,
+} = require("./musuemController");
+
 const { createTest, viewTest } = require("./testController");
 
 const router = express.Router();
@@ -60,6 +70,13 @@ router.get("/test", viewTest);
 // View all upcoming content
 // router.get('/upcoming', viewAllUpcoming);
 const itineraryController = require("./itineraryController");
+const { searchByTagAndCategory } = require("./searchController");
+const {
+  createCategory,
+  getAllCategories,
+  updateCategory,
+  deleteCategory,
+} = require("./activityCategoryController");
 
 router.post("/itinerary", itineraryController.createItinerary);
 router.get("/itinerary", itineraryController.getAllItineraries);
@@ -67,5 +84,19 @@ router.get("/itinerary/:id", itineraryController.getItineraryById);
 router.put("/itinerary/:id", itineraryController.updateItinerary);
 router.delete("/itinerary/:id", itineraryController.deleteItinerary);
 router.get("/itineraryFilter", itineraryController.filterItineraries);
+
+router.post("/museums", createMuseum); // Create a new museum
+router.get("/museums", GetAllMuseums); // Get all museums
+router.get("/museums/:id", GetAllMuseumsByID); // Get a specific museum by ID
+router.put("/museums/:id", updateMuseum); // Update a museum by ID
+router.delete("/museums/:id", deleteMuseum); // Delete a museum by ID
+router.get("/filtermuseums", filterByTag); // Filter museums by tag
+
+router.get("/searchAll", searchByTagAndCategory);
+
+router.post("/categories", createCategory);
+router.get("/categories", getAllCategories);
+router.put("/categories/:id", updateCategory);
+router.delete("/categories/:id", deleteCategory);
 
 module.exports = router;

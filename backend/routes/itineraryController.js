@@ -2,19 +2,29 @@ const Itinerary = require("../models/itineraryModel");
 
 // Create an itinerary
 exports.createItinerary = async (req, res) => {
-  const { title, activities, location, price, language, availableDates, pickUpDropOffLocation, accessibility, duration } = req.body;
+  const {
+    name,
+    activities,
+    location,
+    price,
+    language,
+    availableDates,
+    pickUpDropOffLocation,
+    accessibility,
+    duration,
+  } = req.body;
 
   try {
     const newItinerary = new Itinerary({
-      title,
-      activities,  // Array of Activity IDs
+      name,
+      activities, // Array of Activity IDs
       location,
       price,
       language,
       availableDates,
       pickUpDropOffLocation,
       accessibility,
-      duration
+      duration,
     });
 
     await newItinerary.save();
@@ -27,7 +37,7 @@ exports.createItinerary = async (req, res) => {
 // Get all itineraries
 exports.getAllItineraries = async (req, res) => {
   try {
-    const itineraries = await Itinerary.find().populate('activities');  // Populate activity details
+    const itineraries = await Itinerary.find().populate("activities");
     res.status(200).json(itineraries);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -39,9 +49,9 @@ exports.getItineraryById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const itinerary = await Itinerary.findById(id).populate('activities');
+    const itinerary = await Itinerary.findById(id).populate("activities");
     if (!itinerary) {
-      return res.status(404).json({ error: 'Itinerary not found' });
+      return res.status(404).json({ error: "Itinerary not found" });
     }
     res.status(200).json(itinerary);
   } catch (error) {
@@ -55,9 +65,13 @@ exports.updateItinerary = async (req, res) => {
   const updatedData = req.body;
 
   try {
-    const updatedItinerary = await Itinerary.findByIdAndUpdate(id, updatedData, { new: true, runValidators: true }).populate('activities');
+    const updatedItinerary = await Itinerary.findByIdAndUpdate(
+      id,
+      updatedData,
+      { new: true, runValidators: true }
+    ).populate("activities");
     if (!updatedItinerary) {
-      return res.status(404).json({ error: 'Itinerary not found' });
+      return res.status(404).json({ error: "Itinerary not found" });
     }
     res.status(200).json(updatedItinerary);
   } catch (error) {
@@ -72,7 +86,7 @@ exports.deleteItinerary = async (req, res) => {
   try {
     const result = await Itinerary.findByIdAndDelete(id);
     if (!result) {
-      return res.status(404).json({ error: 'Itinerary not found' });
+      return res.status(404).json({ error: "Itinerary not found" });
     }
     res.status(204).send();
   } catch (error) {
@@ -87,14 +101,14 @@ exports.filterItineraries = async (req, res) => {
 
   // Filter by budget (price range)
   if (budget) {
-    const [minPrice, maxPrice] = budget.split(',');
+    const [minPrice, maxPrice] = budget.split(",");
     filter.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
   }
 
   // Filter by date (check if the itinerary is available on or after a given date)
   if (date) {
-    filter['availableDates.startDate'] = { $lte: new Date(date) };
-    filter['availableDates.endDate'] = { $gte: new Date(date) };
+    filter["availableDates.startDate"] = { $lte: new Date(date) };
+    filter["availableDates.endDate"] = { $gte: new Date(date) };
   }
 
   // Filter by location
@@ -108,7 +122,7 @@ exports.filterItineraries = async (req, res) => {
   }
 
   try {
-    const itineraries = await Itinerary.find(filter).populate('activities');
+    const itineraries = await Itinerary.find(filter).populate("activities");
     res.status(200).json(itineraries);
   } catch (error) {
     res.status(500).json({ error: error.message });
