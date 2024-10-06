@@ -1,11 +1,11 @@
 const Activity = require("../models/activitySchema");
 
 const createActivity = async (req, res) => {
-  const { title, location, price, category, tags, discounts, availability } =
+  const { name, location, price, category, tags, discounts, availability } =
     req.body;
 
   const activity = new Activity({
-    title,
+    name,
     location,
     price,
     category,
@@ -27,6 +27,7 @@ const createActivity = async (req, res) => {
 const getAllActivities = (req, res) => {
   Activity.find()
     .populate("tags", "name")
+    .populate("category", "name")
     .then((activities) => {
       res.status(200).json(activities);
     })

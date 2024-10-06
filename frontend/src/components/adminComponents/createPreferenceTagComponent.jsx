@@ -20,7 +20,7 @@ const CreatePreferenceTagComponent = () => {
 
   return (
     <div>
-      <div>Creating Preference Tag</div>
+      <h2>Creating Preference Tag</h2>
       <div>
         <form onSubmit={handleSubmit}>
           <label htmlFor="name">Name:</label>
