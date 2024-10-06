@@ -1,5 +1,11 @@
+import ProductList from "../components/ProductList";
+
 const TouristPage = () => {
-  return <div>Tourist Page PlaceHolder</div>;
+  return (
+    <div>
+      <ProductList/>
+    </div>
+  );
 };
 
 export default TouristPage;

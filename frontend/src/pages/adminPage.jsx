@@ -2,7 +2,8 @@ import CreatePreferenceTagComponent from "../components/adminComponents/createPr
 import DeletePreferenceTag from "../components/adminComponents/deletePreferenceTag";
 import EditPreferenceTag from "../components/adminComponents/editPreferenceTag";
 import ReadPreferenceTags from "../components/adminComponents/readPreferenceTag";
-
+import ProductList from "../components/ProductList";
+import AddProduct from "../components/AddProduct";
 const AdminPage = () => {
   const tableContainerStyle = {
     display: "grid",
@@ -37,6 +38,8 @@ const AdminPage = () => {
       <div style={tableItemStyle}>
         <EditPreferenceTag />
       </div>
+      <AddProduct/>
+      <ProductList/>
     </div>
   );
 };
