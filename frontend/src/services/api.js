@@ -17,3 +17,32 @@ export const createItinerary = async (data) => {
   const response = await axios.post(`${API_URL}itinerary`, data);
   return response;
 };
+
+export const getAllItineraries = async () => {
+  const response = await axios.get(`${API_URL}itinerary`);
+  return response;
+};
+
+// Get an itinerary by ID
+export const getItineraryById = async (id) => {
+  const response = await axios.get(`${API_URL}itinerary/${id}`);
+  return response;
+};
+
+// Update an itinerary by ID
+export const updateItinerary = async (id, data) => {
+  const response = await axios.put(`${API_URL}itinerary/${id}`, data);
+  return response;
+};
+
+// Delete an itinerary by ID
+export const deleteItinerary = async (id) => {
+  const response = await axios.delete(`${API_URL}itinerary/${id}`);
+  return response;
+};
+
+// Filter itineraries based on certain criteria
+export const filterItineraries = async (filters) => {
+  const response = await axios.get(`${API_URL}itineraryFilter`, { params: filters });
+  return response;
+};
