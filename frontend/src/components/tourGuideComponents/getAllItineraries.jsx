@@ -1,163 +1,67 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { getAllItineraries } from "../../services/api"; // Make sure to define this API call
+import React, { useEffect, useState } from 'react';
+import { getAllItineraries } from "../../services/api"; // Import the service function
+
+
 
 const GetAllItineraries = () => {
   const [itineraries, setItineraries] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState({
-    budget: '',
-    date: '',
-    location: '',
-    language: '',
-  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Fetch all itineraries function
+  // Function to handle the button click and fetch itineraries
   const fetchItineraries = async () => {
     setLoading(true);
+    setError(null); // Reset error before fetching
     try {
-      const response = await axios.get('http://localhost:8000/api/itineraries'); // Adjust endpoint if needed
+      const response = await getAllItineraries(); // Call the service function
       setItineraries(response.data);
-    } catch {
-      setError('Failed to fetch itineraries');
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
-
-  // Fetch itineraries on component mount
-  useEffect(() => {
-    fetchItineraries();
-  }, []);
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const trimmedSearchTerm = searchTerm.trim();
-
-    if (trimmedSearchTerm === '') {
-      return; // Do nothing if search term is empty
-    }
-
-    fetchSearchedItineraries(trimmedSearchTerm);
-  };
-
-  const fetchSearchedItineraries = async (name) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`http://localhost:8000/api/searchitinerary/${name}`);
-      setItineraries(response.data);
-    } catch {
-      setError('Failed to search itineraries');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFilterSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await axios.get('http://localhost:8000/api/filteritineraries', {
-        params: filter,
-      });
-      setItineraries(response.data);
-    } catch {
-      setError('Failed to filter itineraries');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <div>
-      <h2>Available Itineraries</h2>
+      <h2>All Itineraries</h2>
+      <button onClick={fetchItineraries}>Load Itineraries</button>
 
-      {/* Search Form */}
-      <form onSubmit={handleSearchSubmit} style={{ marginBottom: '20px' }}>
-        <label>
-          Search by Name:
-          <input 
-            type="text" 
-            value={searchTerm} 
-            onChange={(e) => setSearchTerm(e.target.value)} 
-            placeholder="Itinerary Name" 
-          />
-        </label>
-        <button type="submit" style={{ marginLeft: '10px' }}>Search</button>
-      </form>
+      {loading && <p>Loading itineraries...</p>}
+      {error && <p>Error: {error}</p>}
 
-      {/* Filter by Budget, Date, Location, Language */}
-      <form onSubmit={handleFilterSubmit} style={{ marginBottom: '20px' }}>
-        <label>
-          Budget:
-          <input 
-            type="text" 
-            value={filter.budget} 
-            onChange={(e) => setFilter({ ...filter, budget: e.target.value })} 
-            placeholder="Min,Max" 
-          />
-        </label>
-        <label style={{ marginLeft: '10px' }}>
-          Date:
-          <input 
-            type="date" 
-            value={filter.date} 
-            onChange={(e) => setFilter({ ...filter, date: e.target.value })} 
-          />
-        </label>
-        <label style={{ marginLeft: '10px' }}>
-          Location:
-          <input 
-            type="text" 
-            value={filter.location} 
-            onChange={(e) => setFilter({ ...filter, location: e.target.value })} 
-            placeholder="Location" 
-          />
-        </label>
-        <label style={{ marginLeft: '10px' }}>
-          Language:
-          <input 
-            type="text" 
-            value={filter.language} 
-            onChange={(e) => setFilter({ ...filter, language: e.target.value })} 
-            placeholder="Language" 
-          />
-        </label>
-        <button type="submit" style={{ marginLeft: '10px' }}>Filter</button>
-      </form>
-
-      <ul style={{ listStyleType: 'none', padding: 0 }}>
-        {itineraries.map((itinerary) => (
-          <li key={itinerary._id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px', borderRadius: '5px' }}>
-            <h3>{itinerary.name}</h3>
-            <p><strong>Location:</strong> {itinerary.location}</p>
-            <p><strong>Price:</strong> ${itinerary.price}</p>
-            <p><strong>Duration:</strong> {itinerary.duration} hours</p>
-            <p><strong>Language:</strong> {itinerary.language}</p>
-            <p><strong>Pick-Up/Drop-Off:</strong> {itinerary.pickUpDropOffLocation}</p>
-            <p><strong>Available Dates:</strong></p>
-            <ul>
-              {itinerary.availableDates.map((date, index) => (
-                <li key={index}>
-                  {new Date(date.startDate).toLocaleDateString()} - {new Date(date.endDate).toLocaleDateString()}
-                </li>
-              ))}
-            </ul>
-            <p><strong>Accessibility:</strong> {itinerary.accessibility ? 'Yes' : 'No'}</p>
-            <p><strong>Activities:</strong></p>
-            <ul>
-              {itinerary.activities.map((activity) => (
-                <li key={activity._id}>{activity.name}</li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+      {itineraries.length === 0 && !loading && !error ? (
+        <p>No itineraries loaded yet. Click the button to load itineraries.</p>
+      ) : (
+        <ul>
+          {itineraries.map((itinerary) => (
+            <li key={itinerary._id}>
+              <h3>{itinerary.name}</h3>
+              <p>Location: {itinerary.location}</p>
+              <p>Price: ${itinerary.price}</p>
+              <p>Duration: {itinerary.duration} hours</p>
+              <p>Language: {itinerary.language}</p>
+              <p>Accessibility: {itinerary.accessibility ? 'Yes' : 'No'}</p>
+              <p>Pickup/Dropoff Location: {itinerary.pickUpDropOffLocation}</p>
+              <p>
+                Available Dates:{' '}
+                {itinerary.availableDates.map((date, index) => (
+                  <span key={index}>
+                    {new Date(date.startDate).toLocaleDateString()} -{' '}
+                    {new Date(date.endDate).toLocaleDateString()}
+                  </span>
+                ))}
+              </p>
+              <h4>Activities:</h4>
+              <ul>
+                {itinerary.activities.map((activity) => (
+                  <li key={activity._id}>{activity.name}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
