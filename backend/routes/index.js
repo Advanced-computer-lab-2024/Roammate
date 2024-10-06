@@ -64,6 +64,22 @@ router.get("/sortActivites", sortActivities);
 
 router.post("/test", createTest);
 router.get("/test", viewTest);
+router.post("/preferenceTags", createPreferenceTag);
+router.get("/preferenceTags", viewPreferenceTags);
+router.put("/preferenceTags/:id", updatePreferenceTag);
+router.delete("/preferenceTags/:id", deletePreferenceTag);
+//Routes for activities
+//Routes for Activities
+router.post("/activity", createActivity);
+router.get("/activity", getAllActivities);
+router.get("/filteractivities", filterActivities);
+router.get("/activity/:id", getActivityById);
+router.put("/activity/:id", updateActivity);
+router.delete("/activity/:id", deleteActivity);
+router.get("/sortActivites", sortActivities);
+
+router.post("/test", createTest);
+router.get("/test", viewTest);
 // Search route
 // router.get('/search/:query', search);
 
