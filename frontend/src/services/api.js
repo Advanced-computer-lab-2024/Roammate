@@ -13,6 +13,21 @@ export const createPreferenceTag = async (data) => {
   return response;
 };
 
+export const fetchPreferenceTags = async () => {
+  const response = await axios.get(`${API_URL}preferenceTags`);
+  return response;
+};
+
+export const deletePreferenceTag = async (id) => {
+  const response = await axios.delete(`${API_URL}preferenceTags/${id}`);
+  return response;
+};
+
+export const updatePreferenceTag = async (id, data) => {
+  const response = await axios.put(`${API_URL}preferenceTags/${id}`, data);
+  return response;
+};
+
 export const createItinerary = async (data) => {
   const response = await axios.post(`${API_URL}itinerary`, data);
   return response;

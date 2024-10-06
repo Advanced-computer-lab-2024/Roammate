@@ -17,7 +17,7 @@ const discountSchema = new Schema({
 
 const activitySchema = new Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
       trim: true,
