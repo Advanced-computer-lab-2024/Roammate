@@ -22,7 +22,7 @@ const Advertiser = () => {
       <div className="main-container">
         <div className="content">
           {activeContent === "editProfile" && (
-            <AdvertiserEditProfile id={"67012028b35bd91925cf1e44"} />
+            <AdvertiserEditProfile id={"67042721c54b60b6fcac1b65"} />
           )}
           {activeContent === "createActivity" && <CreateActivityComponent />}
           {activeContent === "deleteActivity" && <DeleteActivityComponent />}

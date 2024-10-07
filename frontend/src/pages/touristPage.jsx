@@ -24,7 +24,7 @@ const Tourist = () => {
       <div className="main-container">
         <div className="content">
           {activeContent === "editProfile" && (
-            <TouristEditProfile id={"67011f78b35bd91925cf1e40"} />)}
+            <TouristEditProfile id={"670424bec54b60b6fcac1b45"} />)}
             {activeContent === "productList" && <ProductList />}
             {activeContent === "filterActivities" && <FilterActivities />}
             {activeContent === "getItineraries" && <GetAllItineraries />}

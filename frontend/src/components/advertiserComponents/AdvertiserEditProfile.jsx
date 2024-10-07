@@ -20,7 +20,7 @@ const AdvertiserEditProfile = ({ id }) => {
   //fetch data from backend and display it in the form
   useEffect(() => {
     const fetchAdvertiser = async () => {
-      const response = await fetch(`/api/Advertiser/${id}`);
+      const response = await fetch(`http://localhost:8000/api/Advertiser/${id}`);
       const json = await response.json();
       const companyProfile = json.companyProfile;
       setUsername(json.username);
@@ -52,7 +52,7 @@ const AdvertiserEditProfile = ({ id }) => {
         services,
       },
     };
-    const response = await fetch(`/api/Advertiser/${id}`, {
+    const response = await fetch(`http://localhost:8000/api/Advertiser/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

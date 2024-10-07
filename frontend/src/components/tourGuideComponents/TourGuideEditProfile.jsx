@@ -17,7 +17,7 @@ const TourGuideEditProfile = ({ id }) => {
   //fetch data from backend and display it in the form
   useEffect(() => {
     const fetchTourGuide = async () => {
-      const response = await fetch(`/api/tourGuide/${id}`);
+      const response = await fetch(`http://localhost:8000/api/tourGuide/${id}`);
       const json = await response.json();
       setUsername(json.username);
       setEmail(json.email);
@@ -40,7 +40,7 @@ const TourGuideEditProfile = ({ id }) => {
       previousWork,
       description,
     };
-    const response = await fetch(`/api/tourGuide/${id}`, {
+    const response = await fetch(`http://localhost:8000/api/tourGuide/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

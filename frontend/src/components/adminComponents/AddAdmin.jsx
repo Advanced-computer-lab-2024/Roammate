@@ -15,7 +15,7 @@ const AddAdmin = () => {
             username,
             password,
         };
-        const response = await fetch("/api/admin/admin/", {
+        const response = await fetch("http://localhost:8000/api/admin/admin/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

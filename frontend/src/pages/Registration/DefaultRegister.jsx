@@ -36,7 +36,7 @@ const DefaultRegister = ({ role }) => {
       password,
     };
 
-    const response = await fetch(`/api/${role}/`, {
+    const response = await fetch(`http://localhost:8000/api/${role}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

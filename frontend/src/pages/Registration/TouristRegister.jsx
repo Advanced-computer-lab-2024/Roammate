@@ -34,7 +34,7 @@ const TouristRegister = () => {
       DOB,
       job,
     };
-    const response = await fetch("/api/tourist/", {
+    const response = await fetch("http://localhost:8000/api/tourist/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

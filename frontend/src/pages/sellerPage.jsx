@@ -22,7 +22,7 @@ const Seller = () => {
         <div className="content">
           {/* {activeContent === "content" && <AddContent />} */}
           {activeContent === "editProfile" && (
-            <SellerEditProfile id={"6701204fb35bd91925cf1e46"} />
+            <SellerEditProfile id={"670426c7c54b60b6fcac1b5e"} />
           )}
           {activeContent === "addProduct" && <AddProduct />}
           {activeContent === "productList" && <ProductList />}

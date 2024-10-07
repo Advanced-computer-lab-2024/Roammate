@@ -16,7 +16,7 @@ const TouristEditProfile = ({ id }) => {
   //fetch data from backend and display it in the form
   useEffect(() => {
     const fetchTourist = async () => {
-      const response = await fetch(`/api/tourist/${id}`);
+      const response = await fetch(`http://localhost:8000/api/tourist/${id}`);
       const json = await response.json();
       setUsername(json.username);
       setEmail(json.email);
@@ -45,7 +45,7 @@ const TouristEditProfile = ({ id }) => {
       nationality,
       job,
     };
-    const response = await fetch(`/api/tourist/${id}`, {
+    const response = await fetch(`http://localhost:8000/api/tourist/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

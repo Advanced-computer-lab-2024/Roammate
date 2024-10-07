@@ -15,7 +15,7 @@ const AddGoverner = () => {
             username,
             password,
         };
-        const response = await fetch("/api/admin/tourismGoverner/", {
+        const response = await fetch("http://localhost:8000/api/admin/tourismGoverner/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

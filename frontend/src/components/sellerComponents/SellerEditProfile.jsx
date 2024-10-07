@@ -14,7 +14,7 @@ const SellerEditProfile = ({ id }) => {
   //fetch data from backend and display it in the form
   useEffect(() => {
     const fetchSeller = async () => {
-      const response = await fetch(`/api/seller/${id}`);
+      const response = await fetch(`http://localhost:8000/api/seller/${id}`);
       const json = await response.json();
       setUsername(json.username);
       setName(json.name);
@@ -31,7 +31,7 @@ const SellerEditProfile = ({ id }) => {
       name,
       description,
     };
-    const response = await fetch(`/api/seller/${id}`, {
+    const response = await fetch(`http://localhost:8000/api/seller/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
