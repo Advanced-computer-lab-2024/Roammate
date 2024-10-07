@@ -10,6 +10,9 @@ import EditPreferenceTag from "../components/adminComponents/editPreferenceTag";
 import ReadPreferenceTags from "../components/adminComponents/readPreferenceTag";
 import ProductList from "../components/ProductList";
 import AddProduct from "../components/AddProduct";
+import ActivityCategories from "../components/adminComponents/readCreateActivityCategories";
+import FilterActivities from "../components/shared/filterActivitiesComponent";
+import FilterItineraries from "../components/touristComponent/filterItinerary";
 
 const Admin = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

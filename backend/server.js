@@ -17,6 +17,15 @@ const app = express();
 const cors = require("cors");
 app.use(cors());
 
+const {
+  adminRouter,
+  advertiserRouter,
+  sellerRouter,
+  tourGuideRouter,
+  touristRouter,
+  //   tourismGovernerRouter,
+} = require("./routers/index");
+
 const port = process.env.PORT || 8000;
 const MongoURI = process.env.MONGO_URI;
 
@@ -40,4 +49,11 @@ app.get("/home", (req, res) => {
 });
 
 // Routes
-app.use("/api", combinedRoutes);
+app.use("/api", routes);
+
+// New routes
+app.use("/api/admin", adminRouter);
+app.use("/api/advertiser", advertiserRouter);
+app.use("/api/seller", sellerRouter);
+app.use("/api/tourGuide", tourGuideRouter);
+app.use("/api/tourist", touristRouter);

@@ -3,11 +3,11 @@ import {
   createActivity,
   fetchCategories,
   fetchPreferenceTags,
-} from "../../services/api"; // Make sure to have these API calls in your services
+} from "../../services/api"; //
 
 const CreateActivityComponent = () => {
   const [name, setName] = useState("");
-  const [locationType, setLocationType] = useState("Point");
+  const [locationType] = useState("Point");
   const [coordinates, setCoordinates] = useState([0, 0]);
   const [price, setPrice] = useState(0);
   const [category, setCategory] = useState("");
