@@ -93,6 +93,12 @@ const {
   updateCategory,
   deleteCategory,
 } = require("./activityCategoryController");
+const {
+  createMuseumTag,
+  viewMuseumTags,
+  updateMuseumTag,
+  deleteMuseumTag,
+} = require("./museumTagsController");
 
 router.post("/itinerary", itineraryController.createItinerary);
 router.get("/itinerary", itineraryController.getAllItineraries);
@@ -114,5 +120,10 @@ router.post("/categories", createCategory);
 router.get("/categories", getAllCategories);
 router.put("/categories/:id", updateCategory);
 router.delete("/categories/:id", deleteCategory);
+
+router.post("/museumTags", createMuseumTag);
+router.get("/museumTags", viewMuseumTags);
+router.put("/museumTags/:id", updateMuseumTag);
+router.delete("/museumTags/:id", deleteMuseumTag);
 
 module.exports = router;

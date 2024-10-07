@@ -8,6 +8,9 @@ const GuestSidebar = ({ setContent }) => {
       <button className="btn" onClick={() => setContent("filterItineraries")}>
         Filter Itineraries
       </button>
+      <button className="btn" onClick={() => setContent("filterMuseums")}>
+        Filter Museums
+      </button>
     </div>
   );
 };

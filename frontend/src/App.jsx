@@ -26,19 +26,18 @@ function App() {
         <Route path="/advertiser" element={<AdvertiserPage />} />
         <Route path="/seller" element={<SellerPage />} />
         <Route path="/tourist/register" element={<TouristRegister />} />
-          <Route
-            path="/tourGuide/register"
-            element={<DefaultRegister role="tourguide" />}
-          />
-          <Route
-            path="/seller/register"
-            element={<DefaultRegister role="seller" />}
-          />
-          <Route
-            path="/advertiser/register"
-            element={<DefaultRegister role="advertiser" />}
-          />
-
+        <Route
+          path="/tourGuide/register"
+          element={<DefaultRegister role="tourguide" />}
+        />
+        <Route
+          path="/seller/register"
+          element={<DefaultRegister role="seller" />}
+        />
+        <Route
+          path="/advertiser/register"
+          element={<DefaultRegister role="advertiser" />}
+        />
       </Routes>
     </Router>
   );

@@ -48,7 +48,7 @@ const deleteMuseum = async (req, res) => {
 const filterByTag = async (req, res) => {
   const tag = req.query.tag;
   try {
-    const museums = await Museum.find({ tags: tag });
+    const museums = await Museum.find({ specificTags: tag });
     res.send(museums);
   } catch (error) {
     res.status(500).send(error);

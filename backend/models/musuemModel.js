@@ -54,6 +54,12 @@ const museumSchema = new Schema(
         ref: "PreferenceTag",
       },
     ],
+    specificTags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MuseumTag",
+      },
+    ],
   },
   { timestamps: true }
 );

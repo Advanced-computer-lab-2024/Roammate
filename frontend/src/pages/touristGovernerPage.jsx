@@ -2,8 +2,12 @@ import { useState } from "react";
 
 import Navbar from "../components/Navbars/Navbar";
 import GovernorSideBar from "../components/Sidebars/GovernorSidebar";
+import CreateMuseumComponent from "../components/touristGovernerComponents/createMusuemComponent";
+import GetMuseumsWithEdit from "../components/touristGovernerComponents/editMusuemComponent";
+import DeleteMuseumComponent from "../components/touristGovernerComponents/deleteMusuemComponent";
+import MuseumTags from "../components/touristGovernerComponents/museumTagsComponent";
 
-const touristGovernerPage = () => {
+const TouristGovernerPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeContent, setActiveContent] = useState(null);
 
@@ -17,7 +21,11 @@ const touristGovernerPage = () => {
       />
       <div className="main-container">
         <div className="content">
-        
+          {activeContent === "createMusuem" && <CreateMuseumComponent />}
+          {activeContent === "editMuseum" && <GetMuseumsWithEdit />}
+          {activeContent === "deleteMuseum" && <DeleteMuseumComponent />}
+          {activeContent === "museumTags" && <MuseumTags />}
+
           {/* {activeContent === "createActivity" && <CreateActivityComponent />}
           {activeContent === "deleteActivity" && <DeleteActivityComponent />}
           {activeContent === "getActivities" && <GetActivitiesWithEdit />} */}
@@ -28,4 +36,4 @@ const touristGovernerPage = () => {
   );
 };
 
-export default touristGovernerPage;
+export default TouristGovernerPage;

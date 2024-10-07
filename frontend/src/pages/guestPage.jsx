@@ -4,6 +4,7 @@ import GuestNavbar from "../components/Navbars/GuestNavbar";
 import GuestSideBar from "../components/Sidebars/GuestSidebar";
 import FilterActivities from "../components/shared/filterActivitiesComponent";
 import FilterItineraries from "../components/touristComponent/filterItinerary";
+import FilterMuseums from "../components/shared/filterMuseumsComponent";
 
 const Guest = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,6 +20,7 @@ const Guest = () => {
         <div className="content">
           {activeContent === "filterActivities" && <FilterActivities />}
           {activeContent === "filterItineraries" && <FilterItineraries />}
+          {activeContent === "filterMuseums" && <FilterMuseums />}
         </div>
         {isSidebarOpen && <GuestSideBar setContent={setActiveContent} />}
       </div>

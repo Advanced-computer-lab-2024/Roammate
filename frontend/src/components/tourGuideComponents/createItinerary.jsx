@@ -1,25 +1,41 @@
-import { useState } from "react";
-import { createItinerary } from "../../services/api"; // Make sure to define this API call
+import { useState, useEffect } from "react";
+import { createItinerary, fetchActivities } from "../../services/api"; // Ensure to define fetchActivities in your API service
 
 const CreateItineraryComponent = () => {
   const [formData, setFormData] = useState({
-    name: "", // Updated from title to name
-    activities: [], // This will hold activity IDs
+    name: "",
+    activities: [],
     location: "",
     price: 0,
-    language: "English", // Default value
-    availableDates: [{ startDate: "", endDate: "" }], // Array of dates
+    language: "English",
+    availableDates: [{ startDate: "", endDate: "" }],
     pickUpDropOffLocation: "",
     accessibility: false,
     duration: 0,
   });
+
+  const [allActivities, setAllActivities] = useState([]); // State to hold activities fetched from the backend
+
+  // Fetch activities when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedActivities = (await fetchActivities()).data;
+        setAllActivities(fetchedActivities); // Assuming fetchActivities returns an array of activities
+      } catch (error) {
+        console.error("Error fetching activities:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : value, // Handle checkbox for accessibility
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -44,6 +60,18 @@ const CreateItineraryComponent = () => {
     }));
   };
 
+  // Handle activity selection
+  const handleActivityChange = (e) => {
+    const selectedActivities = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setFormData((prevData) => ({
+      ...prevData,
+      activities: selectedActivities,
+    }));
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,12 +89,12 @@ const CreateItineraryComponent = () => {
       <h2>Create Itinerary</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Name:</label> {/* Updated from Title to Name */}
+          <label htmlFor="name">Name:</label>
           <input
             type="text"
             id="name"
             name="name"
-            value={formData.name} // Updated from formData.title to formData.name
+            value={formData.name}
             onChange={handleChange}
             required
           />
@@ -138,6 +166,24 @@ const CreateItineraryComponent = () => {
           <button type="button" onClick={addDateRange}>
             Add Date Range
           </button>
+        </div>
+
+        {/* Activity Dropdown */}
+        <div>
+          <label htmlFor="activities">Select Activities:</label>
+          <select
+            id="activities"
+            multiple
+            value={formData.activities}
+            onChange={handleActivityChange}
+            required
+          >
+            {allActivities.map((activity) => (
+              <option key={activity._id} value={activity._id}>
+                {activity.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>

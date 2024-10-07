@@ -14,6 +14,12 @@ export const fetchFilteredActivities = async (filters = {}) => {
   return response;
 };
 
+export const fetchFilteredMuseums = async (filters = {}) => {
+  const query = new URLSearchParams(filters).toString();
+  const response = await axios.get(`${API_URL}filtermuseums?${query}`); // Pass the query string to the backend
+  return response;
+};
+
 export const createPreferenceTag = async (data) => {
   const response = await axios.post(`${API_URL}preferenceTags`, data);
   return response;
@@ -124,4 +130,41 @@ export const updateActivityCategory = async (categoryId, categoryData) => {
 
 export const deleteActivityCategory = async (categoryId) => {
   return await axios.delete(`${API_URL}/categories/${categoryId}`);
+};
+
+export const createMuseum = async (data) => {
+  return await axios.post(`${API_URL}museums`, data);
+};
+
+export const fetchMuseumTags = async () => {
+  return await axios.get(`${API_URL}museumTags`);
+};
+
+export const updateMuseum = async (museumId, updatedData) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}museums/${museumId}`,
+      updatedData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating museum:", error);
+    throw error;
+  }
+};
+
+export const deleteMuseum = async (museumID) => {
+  return await axios.delete(`${API_URL}/museums/${museumID}`);
+};
+
+export const createMuseumTag = async (tagData) => {
+  return await axios.post(`${API_URL}/museumtags`, tagData);
+};
+
+export const updateMuseumTag = async (tagId, tagData) => {
+  return await axios.put(`${API_URL}/museumtags/${tagId}`, tagData);
+};
+
+export const deleteMuseumTag = async (tagId) => {
+  return await axios.delete(`${API_URL}/museumtags/${tagId}`);
 };
