@@ -58,6 +58,15 @@ export const deleteItinerary = async (id) => {
 
 // Filter itineraries based on certain criteria
 export const filterItineraries = async (filters) => {
-  const response = await axios.get(`${API_URL}itineraryFilter`, { params: filters });
+  alert(filters.location);
+  const response = await axios.get(`${API_URL}itineraryFilter`, {
+    params: filters,
+  });
   return response;
+};
+
+export const fetchMuseums = async () => {
+  var museums = await axios.get(`${API_URL}museums`);
+  //   alert(JSON.stringify(activies.data, null, 2));
+  return museums;
 };

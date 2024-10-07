@@ -17,7 +17,7 @@ exports.createItinerary = async (req, res) => {
   try {
     const newItinerary = new Itinerary({
       name,
-      activities, // Array of Activity IDs
+      activities,
       location,
       price,
       language,

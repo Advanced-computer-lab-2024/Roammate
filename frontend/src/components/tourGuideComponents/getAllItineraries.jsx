@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { getAllItineraries } from "../../services/api"; // Import the service function
-
-
 
 const GetAllItineraries = () => {
   const [itineraries, setItineraries] = useState([]);
@@ -41,13 +39,13 @@ const GetAllItineraries = () => {
               <p>Price: ${itinerary.price}</p>
               <p>Duration: {itinerary.duration} hours</p>
               <p>Language: {itinerary.language}</p>
-              <p>Accessibility: {itinerary.accessibility ? 'Yes' : 'No'}</p>
+              <p>Accessibility: {itinerary.accessibility ? "Yes" : "No"}</p>
               <p>Pickup/Dropoff Location: {itinerary.pickUpDropOffLocation}</p>
               <p>
-                Available Dates:{' '}
+                Available Dates:{" "}
                 {itinerary.availableDates.map((date, index) => (
                   <span key={index}>
-                    {new Date(date.startDate).toLocaleDateString()} -{' '}
+                    {new Date(date.startDate).toLocaleDateString()} -{" "}
                     {new Date(date.endDate).toLocaleDateString()}
                   </span>
                 ))}

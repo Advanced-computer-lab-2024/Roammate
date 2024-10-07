@@ -15,7 +15,7 @@ const ReadPreferenceTags = () => {
     const getTags = async () => {
       try {
         const response = await fetchPreferenceTags();
-        setTags(response.data); // Assuming response.data contains the array of tags
+        setTags(response.data);
       } catch (error) {
         setError("Failed to fetch preference tags");
         console.error("Error fetching tags:", error);
