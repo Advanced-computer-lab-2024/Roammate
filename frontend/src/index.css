@@ -1,68 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+/* base styles */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #f5f5f5;
+  --text-color: #333;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+* {
   margin: 0;
+  font-family: "Quicksand";
+  color: #333;
+}
+
+
+
+.main-container {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: auto;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.navbar {
+  padding: 20px;
+  display: flex;
+  /* vertical centering */
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-bottom: 1px solid #f2f2f2;
+}
+.navbar h1 {
+  color: var(--primary-color);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.navbar .title h1 {
+  color: var(--primary-color);;
+}
+
+.navbar .links {
+  margin-left: auto;
+}
+.navbar a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+}
+.navbar a svg {
+  margin-right: 8px;
+}
+.navbar a:hover {
+  color: var(--primary-color);;
+}
+/* the humburger brn */
+.navbar .btn {
+  background-color: inherit;
+  border: none;
+}
+
+.sidebar {
+  background-color: var(--background-color); /* Light grey background */
+  padding: 20px; /* Padding around the content */
+  width: 300px; /* Width of the sidebar */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
+}
+.sidebar h2 {
+  color: #333; /* Dark text color */
+  margin-bottom: 20px;
+  text-align: center;
+}
+.sidebar h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #555; /* Slightly lighter color for form titles */
+}
+.sidebar input[type="text"], .sidebar input[type="password"] {
+  width: 100%; /* Full width inputs */
+  padding: 10px; /* Spacing inside the input */
+  margin-bottom: 15px; /* Space between fields */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Rounded corners */
+  box-sizing: border-box; /* Ensure padding doesn’t affect width */
+  font-size: 16px; /* Readable font size */
+}
+.sidebar .btn {
+  background-color: var(--primary-color); /* Button color */
+  color: white; /* White text */
+  padding: 10px 15px; /* Spacing inside button */
+  border: none; /* Remove default border */
+  border-radius: 4px; /* Rounded button corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px;
+  width: 100%; /* Full width button */
+  margin-bottom: 15px; /* Space between buttons */
+  box-sizing: border-box;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+.sidebar .btn:hover {
+  background-color: var(--primary-color);; /* Darker button color on hover */
+}
+
+.content {
+  flex: 1; /* Allow the content to take up remaining space */
+  margin-right: 20px; /* Add space between the content and sidebar */
+}
+
+/* Adjust input fields and buttons to be mobile-friendly */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%; /* Make the sidebar full width on small screens */
+  }
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items:left;
+  justify-content: spae-between;
+  width: fit-content;
+  border: 2px solid var(--primary-color);;
+  margin:10px 10px 20px 10px;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  margin-top: 25px;
+}
+
+.form-group {
+ margin-bottom: 10px;
+}
+
+input {
+  font-size: large;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  transition: all 0.25s ease;
+  resize: none; 
+  height: 20px;
+width: 300px;
+overflow: hidden;
+ 
+}
+
+
+input:invalid{
+  border: red 1px solid;
+}
+
+input.error{
+  border: red 1px solid;
+}
+
+input:disabled{
+  background-color: #f2f2f2;
+  border: none;
+  color: #606060;
+  font-weight: bold;
+  white-space: wrap;
+  padding: 5px 5px 5px 5px;
+}
+
+
+.err-msg{
+  color: red;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
+  white-space: wrap;
+  width: 100%;
+}
+
+.success-msg{
+  color: green;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
+  white-space: wrap;
+  width: 100%;
+}
+
+.btn{
+  width:75px;
+  margin: 10px 0;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--primary-color);;
+  color: white;
+  border: 1px solid #000000;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+  transition: all 0.25s ease;
+  font-size: 14px;
+  font-weight: 600;
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+}
+.btn:hover{
+  background-color: var(--primary-color);
+  box-shadow: #606060 2px 2px 3px 2px;
+}
+.btn:active{
+  transform: translateY(2px);
+  transform: translateX(2px);
+  box-shadow: none;
+}
+label {
+  margin-right: 10px;
 }

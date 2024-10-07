@@ -5,6 +5,13 @@ dotenv.config();
 
 const routes = require("./routes/index");
 
+//
+const routes2 = require("./routers/index");
+const combinedRoutes = express.Router();
+combinedRoutes.use(routes);
+combinedRoutes.use(routes2);
+//
+
 const app = express();
 
 const cors = require("cors");
@@ -33,4 +40,4 @@ app.get("/home", (req, res) => {
 });
 
 // Routes
-app.use("/api", routes);
+app.use("/api", combinedRoutes);

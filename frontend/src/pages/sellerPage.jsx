@@ -1,15 +1,36 @@
+import { useState } from "react";
+
+import Navbar from "../components/Navbars/Navbar";
+import SellerSidebar from "../components/Sidebars/SellerSidebar";
+import SellerEditProfile from "../components/sellerComponents/SellerEditProfile";
 import ProductList from "../components/ProductList";
 import AddProduct from "../components/AddProduct";
 
+const Seller = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeContent, setActiveContent] = useState(null);
 
-const SellerPage = () => {
   return (
-    <div>
-      <AddProduct/>
-      <ProductList/>
+    <div className="seller">
+      <Navbar
+        role="seller"
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        setActiveContent={setActiveContent}
+      />
+      <div className="main-container">
+        <div className="content">
+          {/* {activeContent === "content" && <AddContent />} */}
+          {activeContent === "editProfile" && (
+            <SellerEditProfile id={"6701204fb35bd91925cf1e46"} />
+          )}
+          {activeContent === "addProduct" && <AddProduct />}
+          {activeContent === "productList" && <ProductList />}
+        </div>
+        {isSidebarOpen && <SellerSidebar setContent={setActiveContent} />}
+      </div>
     </div>
   );
 };
 
-
-export default SellerPage;
+export default Seller;
