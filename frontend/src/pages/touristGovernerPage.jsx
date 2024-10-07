@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Navbar from "../components/Navbars/Navbar";
-import GovernorSideBar from "../components/Sidebars/GovernorSideBar";
+import GovernorSideBar from "../components/Sidebars/GovernorSidebar";
 
 const touristGovernerPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
