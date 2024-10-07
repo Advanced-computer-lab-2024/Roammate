@@ -35,6 +35,9 @@ const AdminSidebar = ({ setContent }) => {
       <button className="btn" onClick={() => setContent("filterItineraries")}>
         Filter Itineraries
       </button>
+      <button className="btn" onClick={() => setContent("editProducts")}>
+        Edit Products
+      </button>
     </div>
   );
 };

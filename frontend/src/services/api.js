@@ -8,6 +8,12 @@ export const fetchActivities = async () => {
   return activies;
 };
 
+export const fetchProducts = async () => {
+  var prodcuts = await axios.get(`${API_URL}viewproducts`);
+  //   alert(JSON.stringify(activies.data, null, 2));
+  return prodcuts;
+};
+
 export const fetchFilteredActivities = async (filters = {}) => {
   const query = new URLSearchParams(filters).toString();
   const response = await axios.get(`${API_URL}filteractivities?${query}`); // Pass the query string to the backend
@@ -107,6 +113,19 @@ export const updateActivity = async (activityId, updatedData) => {
   try {
     const response = await axios.put(
       `${API_URL}activity/${activityId}`,
+      updatedData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating activity:", error);
+    throw error;
+  }
+};
+
+export const updateProduct = async (productId, updatedData) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}editproduct/${productId}`,
       updatedData
     );
     return response.data;

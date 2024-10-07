@@ -13,6 +13,7 @@ import AddProduct from "../components/AddProduct";
 import ActivityCategories from "../components/adminComponents/readCreateActivityCategories";
 import FilterActivities from "../components/shared/filterActivitiesComponent";
 import FilterItineraries from "../components/touristComponent/filterItinerary";
+import GetProductsWithEdit from "../components/shared/getEditProductsComponent";
 
 const Admin = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -40,6 +41,7 @@ const Admin = () => {
           {activeContent === "activityCategories" && <ActivityCategories />}
           {activeContent === "filterActivities" && <FilterActivities />}
           {activeContent === "filterItineraries" && <FilterItineraries />}
+          {activeContent === "editProducts" && <GetProductsWithEdit />}
         </div>
         {isSidebarOpen && <AdminSidebar setContent={setActiveContent} />}
       </div>

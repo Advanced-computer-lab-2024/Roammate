@@ -5,6 +5,7 @@ import SellerSidebar from "../components/Sidebars/SellerSidebar";
 import SellerEditProfile from "../components/sellerComponents/SellerEditProfile";
 import ProductList from "../components/ProductList";
 import AddProduct from "../components/AddProduct";
+import GetProductsWithEdit from "../components/shared/getEditProductsComponent";
 
 const Seller = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,6 +27,7 @@ const Seller = () => {
           )}
           {activeContent === "addProduct" && <AddProduct />}
           {activeContent === "productList" && <ProductList />}
+          {activeContent === "editProducts" && <GetProductsWithEdit />}
         </div>
         {isSidebarOpen && <SellerSidebar setContent={setActiveContent} />}
       </div>
