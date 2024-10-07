@@ -109,3 +109,19 @@ export const updateActivity = async (activityId, updatedData) => {
     throw error;
   }
 };
+
+export const fetchActivityCategories = async () => {
+  return await axios.get(`${API_URL}/categories`);
+};
+
+export const createActivityCategory = async (categoryData) => {
+  return await axios.post(`${API_URL}/categories`, categoryData);
+};
+
+export const updateActivityCategory = async (categoryId, categoryData) => {
+  return await axios.put(`${API_URL}/categories/${categoryId}`, categoryData);
+};
+
+export const deleteActivityCategory = async (categoryId) => {
+  return await axios.delete(`${API_URL}/categories/${categoryId}`);
+};
