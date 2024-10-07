@@ -7,12 +7,15 @@ import {
 } from "../../components/input form components";
 
 import GuestNavbar from "../../components/Navbars/GuestNavbar";
+import GuestSidebar from "../../components/Sidebars/GuestSidebar";
 
 const DefaultRegister = ({ role }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeContent, setActiveContent] = useState(null);
 
   const roleTitle = (role) => {
     switch (role.toLowerCase()) {
@@ -60,7 +63,7 @@ const DefaultRegister = ({ role }) => {
 
   return (
     <div className="register">
-      <GuestNavbar />
+      <GuestNavbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <div className="main-container">
         <div className="content">
           <h2 style={{ margin: "15px" }}>Register as a {roleTitle(role)}</h2>
@@ -95,6 +98,7 @@ const DefaultRegister = ({ role }) => {
             <AlreadyHaveAnAccount link={`/${role}login`} />
           </form>
         </div>
+        {isSidebarOpen && <GuestSidebar setContent={setActiveContent} />}
       </div>
     </div>
   );

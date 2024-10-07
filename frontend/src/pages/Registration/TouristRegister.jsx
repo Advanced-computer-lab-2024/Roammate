@@ -2,12 +2,14 @@ import { useState } from "react";
 
 import GuestNavbar from "../../components/Navbars/GuestNavbar";
 
+
 import {
   Input,
   Btn,
   AlreadyHaveAnAccount,
   DisplayMessage,
 } from "../../components/input form components";
+import GuestSidebar from "../../components/Sidebars/GuestSidebar";
 
 const TouristRegister = () => {
   const [username, setUsername] = useState("");
@@ -18,6 +20,9 @@ const TouristRegister = () => {
   const [DOB, setDOB] = useState("");
   const [job, setJob] = useState("");
   const [error, setError] = useState("");
+  
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeContent, setActiveContent] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -57,7 +62,7 @@ const TouristRegister = () => {
   };
   return (
     <div className="register">
-      <GuestNavbar />
+           <GuestNavbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <div className="main-container">
         <div className="content">
           <h2>Register as Tourist</h2>
@@ -126,6 +131,7 @@ const TouristRegister = () => {
             <AlreadyHaveAnAccount link={"/touristlogin"} />
           </form>
         </div>
+        {isSidebarOpen && <GuestSidebar setContent={setActiveContent} />}
       </div>
     </div>
   );

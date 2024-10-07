@@ -4,10 +4,10 @@ import Navbar from "../components/Navbars/Navbar";
 import TourGuideSidebar from "../components/Sidebars/TourGuideSideBar";
 import TourGuideEditProfile from "../components/tourGuideComponents/TourGuideEditProfile";
 import CreateItineraryComponent from "../components/tourGuideComponents/createItinerary";
-import GetAllItineraries from "../components/tourGuideComponents/getAllItineraries";
 import UpdateItineraryComponent from "../components/tourGuideComponents/updateItinerary";
 import DeleteItineraryComponent from "../components/tourGuideComponents/deleteItinerary";
-import ViewItineraryComponent from "../components/tourGuideComponents/getAllItinerariesbyid";
+import GetAllItineraries from "../components/tourGuideComponents/getAllItineraries";
+import GetAllItinerariesById from "../components/tourGuideComponents/getAllItinerariesbyid";
 
 const TourGuidePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,10 +27,13 @@ const TourGuidePage = () => {
             <TourGuideEditProfile id={"67042b58c54b60b6fcac1c49"} />
           )}
           {activeContent === "createItinerary" && <CreateItineraryComponent />}
-          {activeContent === "viewIntinerary" && <ViewItineraryComponent />}
+          {activeContent === "viewIntinerary" && <GetAllItineraries />}
           {activeContent === "updateIntinerary" && <UpdateItineraryComponent />}
           {activeContent === "deleteIntinerary" && <DeleteItineraryComponent />}
           {activeContent === "getAllItineraries" && <GetAllItineraries />}
+          {activeContent === "getAllItinerariesById" && (
+            <GetAllItinerariesById />
+          )}
         </div>
         {isSidebarOpen && <TourGuideSidebar setContent={setActiveContent} />}
       </div>
