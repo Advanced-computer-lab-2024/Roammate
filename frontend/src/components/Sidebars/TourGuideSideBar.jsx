@@ -4,19 +4,23 @@ const TourGuideSidebar = ({ setContent }) => {
       <h2>Tour Guide Management</h2>
       {/* <button className="btn" onClick={() => setContent("content")}>Button Name</button> */}
       <button className="btn" onClick={() => setContent("createItinerary")}>
-        createItinerary
+        Create Itinerary
       </button>
       <button className="btn" onClick={() => setContent("viewIntinerary")}>
-        viewIntinerary
+        View Intinerary
       </button>
       <button className="btn" onClick={() => setContent("updateIntinerary")}>
-        updateIntinerary
+        Update Intinerary
       </button>
       <button className="btn" onClick={() => setContent("deleteIntinerary")}>
-        deleteIntinerary
+        Delete Intinerary
       </button>
       <button className="btn" onClick={() => setContent("getAllItineraries")}>
-        getAllItineraries
+        Get All Itineraries
+      </button>
+
+      <button className="btn" onClick={() => setContent("getAllItinerariesById")}>
+        Get All Itineraries By Id
       </button>
     </div>
   );
