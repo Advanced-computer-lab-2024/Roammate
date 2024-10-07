@@ -29,12 +29,17 @@ const Admin = () => {
         <div className="content">
           {activeContent === "admin" && <AddAdmin />}
           {activeContent === "governor" && <AddGovernor />}
-          {activeContent==="createPreferenceTag" && <CreatePreferenceTagComponent />}
-          {activeContent==="readPreferenceTags" &&   <ReadPreferenceTags />}
-          {activeContent==="deletePreferenceTag" &&  <DeletePreferenceTag />}
-          {activeContent==="editPreferenceTag" && <EditPreferenceTag />}
-          {activeContent==="addProduct" && <AddProduct />}
-          {activeContent==="productList" && <ProductList />}
+          {activeContent === "createPreferenceTag" && (
+            <CreatePreferenceTagComponent />
+          )}
+          {activeContent === "readPreferenceTags" && <ReadPreferenceTags />}
+          {activeContent === "deletePreferenceTag" && <DeletePreferenceTag />}
+          {activeContent === "editPreferenceTag" && <EditPreferenceTag />}
+          {activeContent === "addProduct" && <AddProduct />}
+          {activeContent === "productList" && <ProductList />}
+          {activeContent === "activityCategories" && <ActivityCategories />}
+          {activeContent === "filterActivities" && <FilterActivities />}
+          {activeContent === "filterItineraries" && <FilterItineraries />}
         </div>
         {isSidebarOpen && <AdminSidebar setContent={setActiveContent} />}
       </div>

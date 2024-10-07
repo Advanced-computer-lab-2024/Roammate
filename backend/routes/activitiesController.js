@@ -7,6 +7,7 @@ const createActivity = async (req, res) => {
     price,
     category,
     tags,
+    advertiser,
     discounts,
     availability,
     rating,
@@ -18,6 +19,7 @@ const createActivity = async (req, res) => {
     price,
     category,
     tags,
+    advertiser,
     discounts,
     availability,
     rating,
@@ -37,6 +39,7 @@ const getAllActivities = (req, res) => {
   Activity.find()
     .populate("tags", "name")
     .populate("category", "name")
+    .populate("advertiser")
     .then((activities) => {
       res.status(200).json(activities);
     })

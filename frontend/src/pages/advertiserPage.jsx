@@ -24,7 +24,9 @@ const Advertiser = () => {
           {activeContent === "editProfile" && (
             <AdvertiserEditProfile id={"67042721c54b60b6fcac1b65"} />
           )}
-          {activeContent === "createActivity" && <CreateActivityComponent />}
+          {activeContent === "createActivity" && (
+            <CreateActivityComponent id={"67042721c54b60b6fcac1b65"} />
+          )}
           {activeContent === "deleteActivity" && <DeleteActivityComponent />}
           {activeContent === "getActivities" && <GetActivitiesWithEdit />}
         </div>

@@ -50,6 +50,12 @@ const activitySchema = new Schema(
         ref: "PreferenceTag",
       },
     ],
+    advertiser: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Advertiser",
+      },
+    ],
     discounts: {
       type: [discountSchema], // Array of discount objects
       default: [], // No discounts by default

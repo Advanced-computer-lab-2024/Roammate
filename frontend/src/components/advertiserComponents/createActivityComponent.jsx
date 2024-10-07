@@ -5,7 +5,7 @@ import {
   fetchPreferenceTags,
 } from "../../services/api"; //
 
-const CreateActivityComponent = () => {
+const CreateActivityComponent = ({ id }) => {
   const [name, setName] = useState("");
   const [locationType] = useState("Point");
   const [coordinates, setCoordinates] = useState([0, 0]);
@@ -46,6 +46,7 @@ const CreateActivityComponent = () => {
       price,
       category,
       tags,
+      advertiser: [id],
       availability: {
         startDate,
         endDate,

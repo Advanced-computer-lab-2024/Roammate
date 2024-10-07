@@ -3,6 +3,11 @@ import { useState } from "react";
 import Navbar from "../components/Navbars/Navbar";
 import TourGuideSidebar from "../components/Sidebars/TourGuideSideBar";
 import TourGuideEditProfile from "../components/tourGuideComponents/TourGuideEditProfile";
+import CreateItineraryComponent from "../components/tourGuideComponents/createItinerary";
+import GetAllItineraries from "../components/tourGuideComponents/getAllItineraries";
+import UpdateItineraryComponent from "../components/tourGuideComponents/updateItinerary";
+import DeleteItineraryComponent from "../components/tourGuideComponents/deleteItinerary";
+import ViewItineraryComponent from "../components/tourGuideComponents/getAllItinerariesbyid";
 
 const TourGuidePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
