@@ -8,6 +8,12 @@ export const fetchActivities = async () => {
   return activies;
 };
 
+export const fetchFilteredActivities = async (filters = {}) => {
+  const query = new URLSearchParams(filters).toString();
+  const response = await axios.get(`${API_URL}filteractivities?${query}`); // Pass the query string to the backend
+  return response;
+};
+
 export const createPreferenceTag = async (data) => {
   const response = await axios.post(`${API_URL}preferenceTags`, data);
   return response;
@@ -69,4 +75,37 @@ export const fetchMuseums = async () => {
   var museums = await axios.get(`${API_URL}museums`);
   //   alert(JSON.stringify(activies.data, null, 2));
   return museums;
+};
+
+export const fetchCategories = async () => {
+  const response = await axios.get(`${API_URL}categories`);
+  return response.data;
+};
+
+export const createActivity = async (data) => {
+  const response = await axios.post(`${API_URL}activity`, data);
+  return response.data;
+};
+
+export const deleteActivity = async (activityId) => {
+  try {
+    const response = await axios.delete(`${API_URL}activity/${activityId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting activity:", error);
+    throw error;
+  }
+};
+
+export const updateActivity = async (activityId, updatedData) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}activity/${activityId}`,
+      updatedData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating activity:", error);
+    throw error;
+  }
 };

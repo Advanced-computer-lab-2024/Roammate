@@ -68,6 +68,12 @@ const activitySchema = new Schema(
       type: Boolean,
       default: true,
     },
+    rating: {
+      type: Number,
+      default: 5, // Default value is 5 stars
+      min: 1,
+      max: 5, // Ensures the rating is between 1 and 5
+    },
   },
   { timestamps: true }
 );

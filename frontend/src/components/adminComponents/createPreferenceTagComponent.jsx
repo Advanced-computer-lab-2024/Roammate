@@ -4,7 +4,6 @@ import { createPreferenceTag } from "../../services/api";
 const CreatePreferenceTagComponent = () => {
   const [name, setName] = useState("");
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -28,7 +27,7 @@ const CreatePreferenceTagComponent = () => {
             type="text"
             id="name"
             value={name}
-            onChange={(e) => setName(e.target.value)} // Update the state on change
+            onChange={(e) => setName(e.target.value)}
             required
           />
           <button type="submit">Submit</button>

@@ -1,5 +1,5 @@
 import ProductList from "../components/ProductList";
-import GetActivity from "../components/shared/getActivityComponent";
+import FilterActivities from "../components/shared/filterActivitiesComponent";
 import GetMuseums from "../components/shared/getMuseumsComponent";
 import GetAllItineraries from "../components/tourGuideComponents/getAllItineraries";
 
@@ -7,7 +7,7 @@ const TouristPage = () => {
   return (
     <div>
       <ProductList />
-      <GetActivity />
+      <FilterActivities />
       <GetAllItineraries />
       <GetMuseums />
     </div>

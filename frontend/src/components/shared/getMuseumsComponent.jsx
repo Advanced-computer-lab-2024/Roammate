@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchMuseums } from "../../services/api"; // Assume you have an API service for fetching museums
+import { fetchMuseums } from "../../services/api";
 
 const GetMuseums = () => {
   const [museums, setMuseums] = useState([]);

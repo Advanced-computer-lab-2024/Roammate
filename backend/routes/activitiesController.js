@@ -1,8 +1,16 @@
 const Activity = require("../models/activitySchema");
 
 const createActivity = async (req, res) => {
-  const { name, location, price, category, tags, discounts, availability } =
-    req.body;
+  const {
+    name,
+    location,
+    price,
+    category,
+    tags,
+    discounts,
+    availability,
+    rating,
+  } = req.body;
 
   const activity = new Activity({
     name,
@@ -12,6 +20,7 @@ const createActivity = async (req, res) => {
     tags,
     discounts,
     availability,
+    rating,
   });
 
   activity
@@ -114,9 +123,8 @@ const filterActivities = async (req, res) => {
 
     // Filter by ratings
     if (rating) {
-      filter.rating = { $gte: rating };
+      filter.rating = rating;
     }
-
     // Query the database with the filter object
     const activities = await Activity.find(filter);
 
