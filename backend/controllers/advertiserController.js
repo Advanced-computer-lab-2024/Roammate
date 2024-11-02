@@ -1,8 +1,10 @@
-const Advertiser = require("../models/Advertiser");
+const { Advertiser } = require("../models");
 const mongoose = require("mongoose");
+// username, password, role, email, website, hotline, companyProfile
 
 const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, website, hotline, companyProfile } =
+    req.body;
   const role = "advertiser";
   try {
     const advertiser = new Advertiser({
@@ -10,6 +12,9 @@ const register = async (req, res) => {
       email,
       password,
       role,
+      website,
+      hotline,
+      companyProfile,
     });
     await advertiser.save();
     res.status(201).send(advertiser);
@@ -44,7 +49,7 @@ const updateAdvertiserById = async (req, res) => {
     const advertiser = await Advertiser.findByIdAndUpdate(
       id,
       { password, email, website, hotline, companyProfile },
-      { new: true }
+      { new: true, runValidators: true }
     );
     if (!advertiser) {
       return res.status(404).json({ message: "Advertiser not found" });
@@ -55,7 +60,7 @@ const updateAdvertiserById = async (req, res) => {
   }
 };
 
-const getAdvertisers = async (req, res) => {
+const getAllAdvertisers = async (req, res) => {
   try {
     const advertisers = await Advertiser.find({});
     res.status(200).send(advertisers);
@@ -66,7 +71,7 @@ const getAdvertisers = async (req, res) => {
 
 module.exports = {
   register,
-  getAdvertisers,
+  getAllAdvertisers,
   getAdvertiserById,
   updateAdvertiserById,
 };

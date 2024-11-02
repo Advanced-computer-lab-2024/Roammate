@@ -1,0 +1,30 @@
+const User = require("./User");
+const Advertiser = require("./Advertiser");
+const TourGuide = require("./TourGuide");
+const Tourist = require("./Tourist");
+const Seller = require("./Seller");
+const Activity = require("./Activity");
+const Product = require("./Product");
+const Itinerary = require("./Itinerary");
+const Monument = require("./Monument");
+const PreferenceTag = require("./PreferenceTag");
+const MonumentTag = require("./MonumentTag");
+const ActivityCategory = require("./ActivityCategory");
+const Review = require("./Review");
+
+// Export all models
+module.exports = {
+  User,
+  Advertiser,
+  TourGuide,
+  Tourist,
+  Seller,
+  Activity,
+  Product,
+  Itinerary,
+  Monument,
+  PreferenceTag,
+  MonumentTag,
+  ActivityCategory,
+  Review,
+};

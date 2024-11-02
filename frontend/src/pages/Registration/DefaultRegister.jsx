@@ -3,8 +3,7 @@ import {
   Input,
   DisplayMessage,
   AlreadyHaveAnAccount,
-  Btn,
-} from "../../components/input form components";
+} from "../../components/inputComponents";
 
 import GuestNavbar from "../../components/Navbars/GuestNavbar";
 import GuestSidebar from "../../components/Sidebars/GuestSidebar";
@@ -94,7 +93,7 @@ const DefaultRegister = ({ role }) => {
             <br />
             <hr />
 
-            <Btn text={"Register"} type={"submit"} />
+            <button type="submit">Register</button>
             <AlreadyHaveAnAccount link={`/${role}login`} />
           </form>
         </div>

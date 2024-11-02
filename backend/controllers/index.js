@@ -3,7 +3,14 @@ const advertiserController = require("./advertiserController");
 const sellerController = require("./sellerController");
 const tourGuideController = require("./tourGuideController");
 const touristController = require("./touristController");
-const tourismGovernerController = require("./tourismGovernerController");
+const tourismGovernorController = require("./tourismGovernorController");
+const activityController = require("./activityController");
+const activityCategoryController = require("./activityCategoryController");
+const itineraryController = require("./itineraryController");
+const monumentTagsController = require("./monumentTagsController");
+const monumentController = require("./monumentController");
+const preferenceTagsController = require("./preferenceTagsController");
+const productController = require("./productController");
 
 module.exports = {
   adminController,
@@ -11,5 +18,12 @@ module.exports = {
   sellerController,
   tourGuideController,
   touristController,
-  tourismGovernerController,
+  tourismGovernorController,
+  activityController,
+  activityCategoryController,
+  itineraryController,
+  monumentTagsController,
+  monumentController,
+  preferenceTagsController,
+  productController,
 };

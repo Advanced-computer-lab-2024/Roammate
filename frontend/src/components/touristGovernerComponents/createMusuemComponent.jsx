@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import {
-  createMuseum,
+  createMonument,
   fetchPreferenceTags,
-  fetchMuseumTags,
+  fetchMonumentTags,
 } from "../../services/api";
 
-const CreateMuseumComponent = ({ id }) => {
+const CreateMonumentComponent = ({ id }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [pictures, setPictures] = useState([""]);
@@ -17,16 +17,16 @@ const CreateMuseumComponent = ({ id }) => {
   const [ticketPrice, setTicketPrice] = useState(0);
   const [tags, setTags] = useState([]);
   const [allTags, setAllTags] = useState([]);
-  const [allMuseumTags, setAllMuseumTags] = useState([]);
+  const [allMonumentTags, setAllMonumentTags] = useState([]);
 
   // Fetch tags when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fetchedTags = (await fetchPreferenceTags()).data;
-        const fetchedMuseumTags = (await fetchMuseumTags()).data;
+        const fetchedMonumentTags = (await fetchMonumentTags()).data;
         setAllTags(fetchedTags);
-        setAllMuseumTags(fetchedMuseumTags);
+        setAllMonumentTags(fetchedMonumentTags);
       } catch (error) {
         console.error("Error fetching tags:", error);
       }
@@ -52,7 +52,7 @@ const CreateMuseumComponent = ({ id }) => {
     };
 
     try {
-      const response = await createMuseum(data);
+      const response = await createMonument(data);
       console.log("Response from server:", response);
     } catch (error) {
       console.error("Error submitting the form:", error);
@@ -77,7 +77,7 @@ const CreateMuseumComponent = ({ id }) => {
 
   return (
     <div>
-      <h2>Creating Museum</h2>
+      <h2>Creating Monument</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
         <input
@@ -87,7 +87,6 @@ const CreateMuseumComponent = ({ id }) => {
           onChange={(e) => setName(e.target.value)}
           required
         />
-
         <label htmlFor="description">Description:</label>
         <textarea
           id="description"
@@ -198,23 +197,23 @@ const CreateMuseumComponent = ({ id }) => {
           )}
         </select>
 
-        {/* Museum Tags Dropdown */}
-        <label htmlFor="museumTags">Museum Tags:</label>
+        {/* Monument Tags Dropdown */}
+        <label htmlFor="monumentTags">Monument Tags:</label>
         <select
-          id="museumTags"
+          id="monumentTags"
           value={tags}
           onChange={(e) => setTags([...tags, e.target.value])}
           multiple
           required
         >
-          {Array.isArray(allMuseumTags) && allMuseumTags.length > 0 ? (
-            allMuseumTags.map((museumTag) => (
-              <option key={museumTag._id} value={museumTag._id}>
-                {museumTag.type} : {museumTag.value}
+          {Array.isArray(allMonumentTags) && allMonumentTags.length > 0 ? (
+            allMonumentTags.map((monumentTag) => (
+              <option key={monumentTag._id} value={monumentTag._id}>
+                {monumentTag.type} : {monumentTag.value}
               </option>
             ))
           ) : (
-            <option disabled>No Museum Tags Available</option>
+            <option disabled>No Monument Tags Available</option>
           )}
         </select>
 
@@ -224,4 +223,4 @@ const CreateMuseumComponent = ({ id }) => {
   );
 };
 
-export default CreateMuseumComponent;
+export default CreateMonumentComponent;

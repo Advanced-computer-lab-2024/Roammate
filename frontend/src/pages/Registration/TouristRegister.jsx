@@ -5,10 +5,9 @@ import GuestNavbar from "../../components/Navbars/GuestNavbar";
 
 import {
   Input,
-  Btn,
   AlreadyHaveAnAccount,
   DisplayMessage,
-} from "../../components/input form components";
+} from "../../components/inputComponents";
 import GuestSidebar from "../../components/Sidebars/GuestSidebar";
 
 const TouristRegister = () => {
@@ -20,7 +19,7 @@ const TouristRegister = () => {
   const [DOB, setDOB] = useState("");
   const [job, setJob] = useState("");
   const [error, setError] = useState("");
-  
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeContent, setActiveContent] = useState(null);
 
@@ -62,7 +61,7 @@ const TouristRegister = () => {
   };
   return (
     <div className="register">
-           <GuestNavbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <GuestNavbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <div className="main-container">
         <div className="content">
           <h2>Register as Tourist</h2>
@@ -127,7 +126,7 @@ const TouristRegister = () => {
             {error && <DisplayMessage msg={error} className={"err-msg"} />}
             <br />
             <hr />
-            <Btn text={"Register"} type={"submit"} />
+            <button text={"Register"} type={"submit"}>submit</button>
             <AlreadyHaveAnAccount link={"/touristlogin"} />
           </form>
         </div>

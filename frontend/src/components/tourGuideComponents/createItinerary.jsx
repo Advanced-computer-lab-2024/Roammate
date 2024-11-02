@@ -1,233 +1,341 @@
-import { useState, useEffect } from "react";
-import { createItinerary, fetchActivities } from "../../services/api"; // Ensure to define fetchActivities in your API service
+import { useEffect, useState } from 'react';
+import { createItinerary, fetchAllPreferenceTags } from '../../services/api';
 
-const CreateItineraryComponent = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    activities: [],
-    location: "",
-    price: 0,
-    language: "English",
-    availableDates: [{ startDate: "", endDate: "" }],
-    pickUpDropOffLocation: "",
-    accessibility: false,
-    duration: 0,
-  });
+const CreateItinerary = ({ id }) => {
+  const [title, setTitle] = useState('');
+  const [duration, setDuration] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [timeline, setTimeline] = useState([{
+    day: 1,
+    plan: [
+      {
+        startTime: '',
+        activity: '',
+        location: '',
+        description: '',
+        accessibility: false,
+      },
+    ],
+  }]);
+  const [price, setPrice] = useState('');
+  const [lang, setLang] = useState('');
+  const [pickUpLocation, setPickUpLocation] = useState('');
+  const [dropOffLocation, setDropOffLocation] = useState('');
+  const [isBookingAvailable, setIsBookingAvailable] = useState('');
+  const [tags, setTags] = useState([]);
+  const [availableTags, setAvailableTags] = useState([]);
+  const [msg, setMsg] = useState('');
+  const [msgClassName, setMsgClassName] = useState('');
 
-  const [allActivities, setAllActivities] = useState([]); // State to hold activities fetched from the backend
-
-  // Fetch activities when the component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const fetchedActivities = (await fetchActivities()).data;
-        setAllActivities(fetchedActivities); // Assuming fetchActivities returns an array of activities
-      } catch (error) {
-        console.error("Error fetching activities:", error);
-      }
+    const fetchPreferenceTags = async () => {
+      const fetchedTags = await fetchAllPreferenceTags();
+      setAvailableTags(fetchedTags);
     };
-
-    fetchData();
+    fetchPreferenceTags();
   }, []);
 
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+  // Handle multi-select for tags
+  const handleTagChange = (e) => {
+    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
+    setTags(selectedTags);
   };
 
-  // Handle date input change for available dates
-  const handleDateChange = (index, field, value) => {
-    const updatedDates = [...formData.availableDates];
-    updatedDates[index][field] = value;
-    setFormData((prevData) => ({
-      ...prevData,
-      availableDates: updatedDates,
-    }));
+  // Handle change for timeline
+  const handleTimelineChange = (dayIndex, planIndex, field, value) => {
+    const updatedTimeline = [...timeline];
+    updatedTimeline[dayIndex].plan[planIndex][field] = value;
+    setTimeline(updatedTimeline);
   };
 
-  // Add new date range
-  const addDateRange = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      availableDates: [
-        ...prevData.availableDates,
-        { startDate: "", endDate: "" },
+  // Add a new day to the timeline
+  const handleAddDay = () => {
+    const newDay = {
+      day: timeline.length + 1, // Increment the day number
+      plan: [
+        {
+          startTime: '',
+          activity: '',
+          location: '',
+          description: '',
+          accessibility: false,
+        },
       ],
-    }));
+    };
+    setTimeline([...timeline, newDay]);
   };
 
-  // Handle activity selection
-  const handleActivityChange = (e) => {
-    const selectedActivities = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setFormData((prevData) => ({
-      ...prevData,
-      activities: selectedActivities,
-    }));
-  };
-
+  // Delete a day from the timeline
+  const handleDeleteDay = () => {
+    if (timeline.length >= 1) {
+      const updatedTimeline = [...timeline];
+      updatedTimeline.pop();
+      setTimeline(updatedTimeline);
+    }
+  }
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const Itinerary = {
+      title,
+      duration,
+      startDate,
+      endDate,
+      timeline,
+      price,
+      lang,
+      pickUpLocation,
+      dropOffLocation,
+      isBookingAvailable,
+      tags,
+      tourGuide: id,
+    };
     try {
-      const response = await createItinerary(formData);
-      console.log("Itinerary created:", response.data);
+      await createItinerary(Itinerary);
+      setMsg('Itinerary created successfully');
+      setMsgClassName('success-msg');
+      setIsEdit(false);
     } catch (error) {
-      console.error("Error creating itinerary:", error);
+      setMsg('Failed to create itinerary');
+      setMsgClassName('error-msg');
     }
   };
 
   return (
-    <div>
+    <div className="itinerary-container">
+
       <h2>Create Itinerary</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+
+      <div className="itinerary-header">
+        {msg && <p className={msgClassName}>{msg}</p>}
+      </div>
+
+      <form className="itinerary-body" onSubmit={handleSubmit}>
+
+        <div className="title-section">
+          <label>
+            Title:
+            <br />
+            <input
+              type="text"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            Duration:
+            <br />
+            <input
+              type="text"
+              name="duration"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              required
+            />
+          </label>
         </div>
 
-        <div>
-          <label htmlFor="location">Location:</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            required
-          />
+
+        <div className='tags-section'>
+          <label>
+            Tags:
+            <br />
+            <select multiple value={tags} onChange={handleTagChange}>
+              {availableTags.map((tag) => (
+                <option key={tag._id} value={tag._id}>
+                  {tag.name}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
-        <div>
-          <label htmlFor="price">Price:</label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            min="0"
-            required
-          />
-        </div>
 
-        <div>
-          <label htmlFor="language">Language:</label>
-          <input
-            type="text"
-            id="language"
-            name="language"
-            value={formData.language}
-            onChange={handleChange}
-          />
-        </div>
+        <div className='timeline-section'>
+          <h3>Timeline:</h3>
+          {timeline.map((item, dayIndex) => (
+            <div key={dayIndex}>
+              <p>Day {item.day}</p>
+              {item.plan.map((plan, planIndex) => (
+                <div key={planIndex}>
+                  <label>
+                    Start Time:
+                    <br />
+                    <input
+                      type="text"
+                      value={plan.startTime}
+                      onChange={(e) =>
+                        handleTimelineChange(dayIndex, planIndex, 'startTime', e.target.value)
+                      }
+                    />
+                  </label>
+                  <label>
+                    Activity:
+                    <br />
+                    <input
+                      type="text"
+                      value={plan.activity}
+                      onChange={(e) =>
+                        handleTimelineChange(dayIndex, planIndex, 'activity', e.target.value)
+                      }
+                    />
+                  </label>
+                  <label>
+                    Location:
+                    <br />
+                    <input
+                      type="text"
+                      value={plan.location}
+                      onChange={(e) =>
+                        handleTimelineChange(dayIndex, planIndex, 'location', e.target.value)
+                      }
+                    />
+                  </label>
+                  <label>
+                    Description:
+                    <br />
+                    <input
+                      type="text"
+                      value={plan.description}
+                      onChange={(e) =>
+                        handleTimelineChange(dayIndex, planIndex, 'description', e.target.value)
+                      }
+                    />
+                  </label>
+                  <label>
 
-        <div>
-          <label>Available Dates:</label>
-          {formData.availableDates.map((dateRange, index) => (
-            <div key={index}>
-              <label htmlFor={`startDate-${index}`}>Start Date:</label>
-              <input
-                type="date"
-                id={`startDate-${index}`}
-                value={dateRange.startDate}
-                onChange={(e) =>
-                  handleDateChange(index, "startDate", e.target.value)
-                }
-                required
-              />
-
-              <label htmlFor={`endDate-${index}`}>End Date:</label>
-              <input
-                type="date"
-                id={`endDate-${index}`}
-                value={dateRange.endDate}
-                onChange={(e) =>
-                  handleDateChange(index, "endDate", e.target.value)
-                }
-                required
-              />
+                    Accessibility:
+                    <input
+                      type="checkbox"
+                      checked={plan.accessibility}
+                      onChange={(e) =>
+                        handleTimelineChange(dayIndex, planIndex, 'accessibility', e.target.checked)
+                      }
+                    />
+                  </label>
+                </div>
+              ))}
             </div>
           ))}
-          <button type="button" onClick={addDateRange}>
-            Add Date Range
+
+          {/* Button to add a new day */}
+          <button className="btn" type="button" onClick={handleAddDay}>
+            Add Day
+          </button>
+          <button className="btn" type="button" onClick={handleDeleteDay}>
+            Delete Day
           </button>
         </div>
 
-        {/* Activity Dropdown */}
-        <div>
-          <label htmlFor="activities">Select Activities:</label>
-          <select
-            id="activities"
-            multiple
-            value={formData.activities}
-            onChange={handleActivityChange}
-            required
-          >
-            {allActivities.map((activity) => (
-              <option key={activity._id} value={activity._id}>
-                {activity.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="pickUpDropOffLocation">
-            Pick Up/Drop Off Location:
+        <div className='price-section'>
+          <label>
+            Price:
+            <br />
+            <input
+              type="number"
+              name="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            />
           </label>
-          <input
-            type="text"
-            id="pickUpDropOffLocation"
-            name="pickUpDropOffLocation"
-            value={formData.pickUpDropOffLocation}
-            onChange={handleChange}
-            required
-          />
         </div>
 
-        <div>
-          <label htmlFor="accessibility">Accessibility:</label>
-          <input
-            type="checkbox"
-            id="accessibility"
-            name="accessibility"
-            checked={formData.accessibility}
-            onChange={handleChange}
-          />
+        <div className='lang-section'>
+          <label>
+            Language:
+            <br />
+            <input
+              type="text"
+              name="lang"
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+              required
+            />
+          </label>
         </div>
 
-        <div>
-          <label htmlFor="duration">Duration (hours):</label>
-          <input
-            type="number"
-            id="duration"
-            name="duration"
-            value={formData.duration}
-            onChange={handleChange}
-            min="0"
-            required
-          />
+        <div className='location-section'>
+          <label>
+            Pick Up Location:
+            <br />
+            <input
+              type="text"
+              name="pickUpLocation"
+              value={pickUpLocation}
+              onChange={(e) => setPickUpLocation(e.target.value)}
+              required
+            />
+          </label>
+
+          {/* Drop Off Location */}
+          <label>
+            Drop Off Location:
+            <br />
+            <input
+              type="text"
+              name="dropOffLocation"
+              value={dropOffLocation}
+              onChange={(e) => setDropOffLocation(e.target.value)}
+              required
+            />
+          </label>
+
         </div>
 
-        <button type="submit">Create Itinerary</button>
+        <div className='availability-section'>
+          <label>
+            Start Date:
+            <br />
+            <input
+              type="date"
+              name="startDate"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              required
+            />
+          </label>
+
+          {/* End Date */}
+          <label>
+            End Date:
+            <br />
+            <input
+              type="date"
+              name="endDate"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </label>
+
+          <label>
+            <br />
+            Is booking available?
+            <input
+              style={{ marginLeft: '0px' }}
+              type="checkbox"
+              checked={isBookingAvailable}
+              onChange={(e) => setIsBookingAvailable(e.target.checked)}
+            />
+          </label>
+
+        </div>
+
+        {/* Submit Button */}
+        <button className='submit-btn' type="submit">Save Itinerary</button>
+
+        {/* Cancel Button */}
+        <button className="cancel-btn" type="button" onClick={() => setIsEdit(false)}>
+          Cancel
+        </button>
       </form>
     </div>
   );
 };
 
-export default CreateItineraryComponent;
+export default CreateItinerary;

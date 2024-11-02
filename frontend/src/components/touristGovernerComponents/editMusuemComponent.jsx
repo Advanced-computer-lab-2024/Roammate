@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchMuseums, updateMuseum } from "../../services/api";
+import { fetchMonuments, updateMonument } from "../../services/api";
 
-const GetMuseumsWithEdit = () => {
-  const [museums, setMuseums] = useState([]);
+const GetMonumentsWithEdit = () => {
+  const [monuments, setMonuments] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [showMuseums, setShowMuseums] = useState(false);
-  const [editingMuseum, setEditingMuseum] = useState(null);
+  const [showMonuments, setShowMonuments] = useState(false);
+  const [editingMonument, setEditingMonument] = useState(null);
   const [updatedDetails, setUpdatedDetails] = useState({
     name: "",
     location: { coordinates: ["", ""] },
@@ -18,37 +18,37 @@ const GetMuseumsWithEdit = () => {
     rating: "", // Add ratings field
   });
 
-  const loadMuseums = async () => {
+  const loadMonuments = async () => {
     setLoading(true);
     try {
-      const response = await fetchMuseums();
-      setMuseums(response.data);
+      const response = await fetchMonuments();
+      setMonuments(response.data);
     } catch (err) {
-      setError("Failed to load museums.");
+      setError("Failed to load monuments.");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleToggleMuseums = () => {
-    setShowMuseums((prev) => !prev);
-    if (!showMuseums) {
-      loadMuseums();
+  const handleToggleMonuments = () => {
+    setShowMonuments((prev) => !prev);
+    if (!showMonuments) {
+      loadMonuments();
     }
   };
 
-  const handleEditClick = (museum) => {
-    setEditingMuseum(museum);
+  const handleEditClick = (monument) => {
+    setEditingMonument(monument);
     setUpdatedDetails({
-      name: museum.name,
-      location: { coordinates: museum.location.coordinates },
-      openingHours: museum.openingHours,
-      ticketPrice: museum.ticketPrice,
-      isAccessible: museum.isAccessible,
-      category: museum.category.map((cat) => cat._id), // Store IDs of the categories
-      tags: museum.tags.map((tag) => tag._id), // Store IDs of the tags
-      rating: museum.rating,
+      name: monument.name,
+      location: { coordinates: monument.location.coordinates },
+      openingHours: monument.openingHours,
+      ticketPrice: monument.ticketPrice,
+      isAccessible: monument.isAccessible,
+      category: monument.category.map((cat) => cat._id), // Store IDs of the categories
+      tags: monument.tags.map((tag) => tag._id), // Store IDs of the tags
+      rating: monument.rating,
     });
   };
 
@@ -71,17 +71,17 @@ const GetMuseumsWithEdit = () => {
 
   const handleConfirmEdit = async () => {
     try {
-      await updateMuseum(editingMuseum._id, updatedDetails);
-      setEditingMuseum(null); // Close the edit form
-      loadMuseums(); // Refresh museums
+      await updateMonument(editingMonument._id, updatedDetails);
+      setEditingMonument(null); // Close the edit form
+      loadMonuments(); // Refresh monuments
     } catch (err) {
-      console.error("Error updating museum:", err);
-      setError("Failed to update museum."); // Set error state to inform user
+      console.error("Error updating monument:", err);
+      setError("Failed to update monument."); // Set error state to inform user
     }
   };
 
   useEffect(() => {
-    loadMuseums();
+    loadMonuments();
   }, []);
 
   if (loading) return <div>Loading...</div>;
@@ -89,14 +89,14 @@ const GetMuseumsWithEdit = () => {
 
   return (
     <div>
-      <button onClick={handleToggleMuseums}>
-        {showMuseums ? "Hide Museums" : "Show Museums"}
+      <button onClick={handleToggleMonuments}>
+        {showMonuments ? "Hide Monuments" : "Show Monuments"}
       </button>
-      {showMuseums && (
+      {showMonuments && (
         <ul style={{ listStyleType: "none", padding: 0 }}>
-          {museums.map((museum) => (
+          {monuments.map((monument) => (
             <li
-              key={museum._id}
+              key={monument._id}
               style={{
                 border: "1px solid #ccc",
                 padding: "10px",
@@ -104,71 +104,71 @@ const GetMuseumsWithEdit = () => {
                 borderRadius: "5px",
               }}
             >
-              <h3 style={{ margin: "0" }}>{museum.name}</h3>
+              <h3 style={{ margin: "0" }}>{monument.name}</h3>
 
-              {museum.location && museum.location.coordinates && (
+              {monument.location && monument.location.coordinates && (
                 <p>
                   <strong>Location:</strong>{" "}
-                  {museum.location.coordinates.join(", ")}
+                  {monument.location.coordinates.join(", ")}
                 </p>
               )}
 
               <p>
-                {museum.openingHours.map((hours) => (
+                {monument.openingHours.map((hours) => (
                   <p
                     key={hours._id}
                   >{`${hours.day}: ${hours.open} - ${hours.close}`}</p>
                 ))}
               </p>
               <p>
-                <strong>Ticket Price:</strong> ${museum.ticketPrice}
+                <strong>Ticket Price:</strong> ${monument.ticketPrice}
               </p>
               <p>
                 <strong>Accessible:</strong>{" "}
-                {museum.isAccessible ? "Yes" : "No"}
+                {monument.isAccessible ? "Yes" : "No"}
               </p>
 
-              {museum.category && museum.category.length > 0 && (
+              {monument.category && monument.category.length > 0 && (
                 <p>
                   <strong>Categories:</strong>{" "}
-                  {museum.category.map((cat, index) => (
+                  {monument.category.map((cat, index) => (
                     <span key={index}>
                       {cat.name}
-                      {index < museum.category.length - 1 ? ", " : ""}
+                      {index < monument.category.length - 1 ? ", " : ""}
                     </span>
                   ))}
                 </p>
               )}
 
-              {museum.tags && museum.tags.length > 0 && (
+              {monument.tags && monument.tags.length > 0 && (
                 <p>
                   <strong>Tags:</strong>{" "}
-                  {museum.tags.map((tag, index) => (
+                  {monument.tags.map((tag, index) => (
                     <span key={index}>
                       {tag.name}
-                      {index < museum.tags.length - 1 ? ", " : ""}
+                      {index < monument.tags.length - 1 ? ", " : ""}
                     </span>
                   ))}
                 </p>
               )}
 
-              {museum.specificTags && museum.specificTags.length > 0 && (
+              {monument.monumentTags && monument.monumentTags.length > 0 && (
                 <p>
                   <strong>Specific Tags:</strong>{" "}
-                  {museum.specificTags.map((tag, index) => (
+                  {monument.monumentTags.map((tag, index) => (
                     <span key={index}>
                       {tag.name}
-                      {index < museum.tags.length - 1 ? ", " : ""}
+                      {index < monument.tags.length - 1 ? ", " : ""}
                     </span>
                   ))}
                 </p>
               )}
 
-              <button onClick={() => handleEditClick(museum)}>Edit</button>
+              <button onClick={() => handleEditClick(monument)}>Edit</button>
 
-              {editingMuseum && editingMuseum._id === museum._id && (
+              {editingMonument && editingMonument._id === monument._id && (
                 <div>
-                  <h4>Edit Museum</h4>
+                  <h4>Edit Monument</h4>
                   <label>
                     Name:
                     <input
@@ -249,7 +249,7 @@ const GetMuseumsWithEdit = () => {
                     />
                   </label>
                   <button onClick={handleConfirmEdit}>Confirm Edit</button>
-                  <button onClick={() => setEditingMuseum(null)}>Cancel</button>
+                  <button onClick={() => setEditingMonument(null)}>Cancel</button>
                 </div>
               )}
             </li>
@@ -260,4 +260,4 @@ const GetMuseumsWithEdit = () => {
   );
 };
 
-export default GetMuseumsWithEdit;
+export default GetMonumentsWithEdit;

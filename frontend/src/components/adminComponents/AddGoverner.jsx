@@ -1,58 +1,50 @@
 import { useState } from "react";
-import { DisplayMessage } from "../input form components";
-import { Input } from "../input form components";
+import { tourismGovernorPost } from "../../services/api";
 
-const AddGoverner = () => {
-    // State to handle form inputs
+const AddGovernor = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [errClassName, setErrClassName] = useState("");
-    const [error, setError] = useState("");
+    const [msgClassName, setMsgClassName] = useState("");
+    const [msg, setMsg] = useState("");
 
-    const handleAddGoverner = async (event) => {
+    const handleAddGovernor = async (event) => {
         event.preventDefault();
-        const governer = {
+        const governor = {
             username,
             password,
         };
-        const response = await fetch("http://localhost:8000/api/admin/tourismGoverner/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(governer),
-        });
-        const json = await response.json();
-        console.log("new governer added:\n", json);
-        if (!response.ok) {
-            setError(json.message);
-            setErrClassName("err-msg");
-        } else {
-            setError("Governer added successfully!");
-            setErrClassName("success-msg");
+        try {
+            await tourismGovernorPost(governor);
+            setMsg("Governor added successfully!");
+            setMsgClassName("success-msg");
+        } catch (err) {
+            setMsg("Failed to add governor! Error: " + err.message);
+            setMsgClassName("err-msg");
             // Reset form fields
             setUsername("");
             setPassword("");
         }
     };
     return (
-        <form onSubmit={handleAddGoverner}>
-            <h3>Add Governer</h3>
-            <Input
-              label={"Username"}
-              type={"text"}
-              value={username}
-              setValue={setUsername}
-              required={true}
+        <form onSubmit={handleAddGovernor}>
+            <h3>Add Governor</h3>
+            <label htmlFor="name">Username:</label>
+            <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
             />
-            <Input
-              label={"Password"}
-              type={"password"}
-              value={password}
-              setValue={setPassword}
-              required={true}
+            <label htmlFor="password">Password:</label>
+            <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
             />
-            {error && <DisplayMessage msg={error} className={errClassName} />}
+            {msg && <div className={msgClassName}>{msg}</div>}
             <button className="btn" type="submit">
                 Add
             </button>
@@ -60,4 +52,4 @@ const AddGoverner = () => {
     );
 };
 
-export default AddGoverner;
+export default AddGovernor;

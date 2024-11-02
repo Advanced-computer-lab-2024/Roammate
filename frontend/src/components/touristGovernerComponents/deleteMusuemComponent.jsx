@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { fetchMuseums, deleteMuseum } from "../../services/api"; // Ensure you have a deleteMuseum function in your API services
+import { fetchMonuments, deleteMonument } from "../../services/api"; // Ensure you have a deleteMonument function in your API services
 
-const DeleteMuseumComponent = () => {
-  const [museums, setMuseums] = useState([]);
+const DeleteMonumentComponent = () => {
+  const [monuments, setMonuments] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [showMuseums, setShowMuseums] = useState(false);
+  const [showMonuments, setShowMonuments] = useState(false);
 
-  const loadMuseums = async () => {
+  const loadMonuments = async () => {
     setLoading(true);
     try {
-      const response = await fetchMuseums();
-      setMuseums(response.data);
+      const response = await fetchMonuments();
+      setMonuments(response.data);
     } catch (err) {
-      setError("Failed to load museums.");
+      setError("Failed to load monuments.");
       console.log(err);
     } finally {
       setLoading(false);
@@ -21,27 +21,27 @@ const DeleteMuseumComponent = () => {
   };
 
   useEffect(() => {
-    loadMuseums();
+    loadMonuments();
   }, []);
 
-  const handleDelete = async (museumId) => {
-    if (!window.confirm("Are you sure you want to delete this museum?")) return;
+  const handleDelete = async (monumentId) => {
+    if (!window.confirm("Are you sure you want to delete this monument?")) return;
 
     try {
-      console.log(museumId);
-      await deleteMuseum(museumId);
-      setMuseums(museums.filter((museum) => museum._id !== museumId));
-      alert("Museum deleted successfully.");
+      console.log(monumentId);
+      await deleteMonument(monumentId);
+      setMonuments(monuments.filter((monument) => monument._id !== monumentId));
+      alert("Monument deleted successfully.");
     } catch (error) {
-      console.error("Error deleting museum:", error);
-      alert("Failed to delete museum.");
+      console.error("Error deleting monument:", error);
+      alert("Failed to delete monument.");
     }
   };
 
-  const handleToggleMuseums = () => {
-    setShowMuseums((prev) => !prev);
-    if (!showMuseums) {
-      loadMuseums();
+  const handleToggleMonuments = () => {
+    setShowMonuments((prev) => !prev);
+    if (!showMonuments) {
+      loadMonuments();
     }
   };
 
@@ -50,14 +50,14 @@ const DeleteMuseumComponent = () => {
 
   return (
     <div>
-      <button onClick={handleToggleMuseums}>
-        {showMuseums ? "Hide Museums" : "Show Delete Museums"}
+      <button onClick={handleToggleMonuments}>
+        {showMonuments ? "Hide Monuments" : "Show Delete Monuments"}
       </button>
-      {showMuseums && (
+      {showMonuments && (
         <ul style={{ listStyleType: "none", padding: 0 }}>
-          {museums.map((museum) => (
+          {monuments.map((monument) => (
             <li
-              key={museum._id}
+              key={monument._id}
               style={{
                 border: "1px solid #ccc",
                 padding: "10px",
@@ -65,23 +65,23 @@ const DeleteMuseumComponent = () => {
                 borderRadius: "5px",
               }}
             >
-              <h3 style={{ margin: "0" }}>{museum.name}</h3>
+              <h3 style={{ margin: "0" }}>{monument.name}</h3>
 
-              {museum.location && museum.location.coordinates && (
+              {monument.location && monument.location.coordinates && (
                 <p>
                   <strong>Location:</strong>{" "}
-                  {museum.location.coordinates.join(", ")}
+                  {monument.location.coordinates.join(", ")}
                 </p>
               )}
 
               <p>
-                <strong>Entry Fee:</strong> ${museum.entryFee}
+                <strong>Entry Fee:</strong> ${monument.entryFee}
               </p>
 
-              {museum.openingHours && (
+              {monument.openingHours && (
                 <p>
                   <strong>Opening Hours:</strong>{" "}
-                  {museum.openingHours.map((hours) => (
+                  {monument.openingHours.map((hours) => (
                     <span key={hours._id}>
                       {hours.day}: {hours.open} - {hours.close}
                       <br />
@@ -92,11 +92,11 @@ const DeleteMuseumComponent = () => {
 
               <p>
                 <strong>Booking Available:</strong>{" "}
-                {museum.isBookingAvailable ? "Yes" : "No"}
+                {monument.isBookingAvailable ? "Yes" : "No"}
               </p>
 
               <button
-                onClick={() => handleDelete(museum._id)}
+                onClick={() => handleDelete(monument._id)}
                 style={{
                   backgroundColor: "red",
                   color: "white",
@@ -115,4 +115,4 @@ const DeleteMuseumComponent = () => {
   );
 };
 
-export default DeleteMuseumComponent;
+export default DeleteMonumentComponent;

@@ -1,0 +1,723 @@
+
+
+--------------------------------------------------Roles-----------------------------------------------------
+
+{
+    "username": "tourist", //ID: 671d24b973e0e7cff8d41903
+    "password": "tourist123",
+    "email": "tourist@something.com",
+    "mobile": "0123456789",
+    "nationality":"Egyptian",
+    "DOB":"1999-4-12",
+    "job":"student"
+}
+
+{
+    "username": "tourGuide", //ID: 671d250873e0e7cff8d41907
+    "password": "tourguide123",
+    "email": "tourguide@something.com",
+    "mobile": "0123456789",
+    "yearsOfExperience":5,
+    "languages":["English","Arabic"],
+    "previousWork":"trip planner",
+    "about":"your best guide"
+}
+
+{
+    "username": "advertiser", //ID: 671d255373e0e7cff8d41909
+    "password": "advertiser123",
+    "email": "advertiser@something.com",
+    "website":"www.blabla.com",
+    "hotline":"19991",
+    "companyProfile": {
+        "description": "your go-to activities provider",
+        "foundedYear":"1996",
+        "industry": "tourism",
+        "location": "https://www.google.com/maps",
+        "employees":"580",
+        "services": ["tourism","trips"]
+    }
+}
+
+{
+    "username": "seller", //ID: 6724be8b35b1914550e721f9
+    "password": "seller123",
+    "email": "selelr@something.com",
+    "name":"seller",
+    "about":"your best seller",
+}
+
+{
+    "username": "admin",
+    "password": "admin123"
+}
+
+{
+    "username": "tourismGoverner",
+    "password": "tourismGoverner123"
+}
+
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------PreferenceTags-----------------------------------------------------
+[
+  {
+    "name": "Adventure" //ID: 671d25c973e0e7cff8d4190b
+  },
+  {
+    "name": "Beach" //ID: 671d25d873e0e7cff8d4190d
+  },
+  {
+    "name": "Nightlife" //ID: 671d25e373e0e7cff8d4190f
+  },
+  {
+    "name": "Cultural" //ID: 671d25f173e0e7cff8d41911
+  },
+  {
+    "name": "Historical" //ID: 671d25fb73e0e7cff8d41913
+  },
+  {
+    "name": "Relaxation" //ID: 671d297773e0e7cff8d41919
+  },
+  {
+    "name": "Food" //ID: 671d29f373e0e7cff8d4191b
+  }
+]
+
+-----------------------------------------------------------------------------------------------------------
+
+---------------------------------------------Itineraries---------------------------------------------------
+
+[
+//Itinerary 1
+  {
+    "title": "Cairo Historical Tour",
+    "duration": "2 days",
+    "startDate": "2024-11-01T08:00:00Z",
+    "endDate": "2024-11-02T17:00:00Z",
+    "timeline": [
+      {
+        "day": 1,
+        "plan": [
+          {
+            "startTime": "09:00 AM",
+            "activity": "Visit the Egyptian Museum",
+            "location": "Cairo",
+            "description": "A guided tour of the Egyptian Museum.",
+            "accessibility": true
+          },
+          {
+            "startTime": "02:00 PM",
+            "activity": "Lunch at Al-Azhar Park",
+            "location": "Cairo",
+            "description": "Traditional Egyptian cuisine with a view.",
+            "accessibility": false
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "plan": [
+          {
+            "startTime": "10:00 AM",
+            "activity": "Tour of Islamic Cairo",
+            "location": "Cairo",
+            "description": "Explore mosques and ancient streets.",
+            "accessibility": true
+          }
+        ]
+      }
+    ],
+    "price": 150,
+    "lang": "English",
+    "pickUpLocation": "Cairo Downtown",
+    "dropOffLocation": "Cairo Airport",
+    "isBookingAvailable": true,
+    "tags": ["671d25f173e0e7cff8d41911", "671d25fb73e0e7cff8d41913"], // Example tag IDs for "Cultural", "Historical"
+    "tourGuide": "671d250873e0e7cff8d41907"
+  },
+
+
+
+//Itinerary 2
+  {
+    "title": "Giza Pyramids Adventure",
+    "duration": "1 day",
+    "startDate": "2024-10-25T08:00:00Z",
+    "endDate": "2024-10-25T18:00:00Z",
+    "timeline": [
+      {
+        "day": 1,
+        "plan": [
+          {
+            "startTime": "08:30 AM",
+            "activity": "Visit the Great Pyramid of Giza",
+            "location": "Giza",
+            "description": "A close-up experience with the last surviving wonder of the world.",
+            "accessibility": true
+          },
+          {
+            "startTime": "12:00 PM",
+            "activity": "Camel ride around the pyramids",
+            "location": "Giza",
+            "description": "A fun camel ride offering views of the entire plateau.",
+            "accessibility": false
+          }
+        ]
+      }
+    ],
+    "price": 100,
+    "lang": "French",
+    "pickUpLocation": "Giza Entrance",
+    "dropOffLocation": "Giza Entrance",
+    "isBookingAvailable": true,
+    "tags": ["671d25c973e0e7cff8d4190b", "671d25fb73e0e7cff8d41913"], // Example tag IDs for "Adventure", "Historical"
+    "tourGuide": "671d250873e0e7cff8d41907"
+  },
+
+//Itinerary 3
+  {
+    "title": "Luxor and Aswan Nile Cruise",
+    "duration": "5 days",
+    "startDate": "2024-12-10T12:00:00Z",
+    "endDate": "2024-12-15T12:00:00Z",
+    "timeline": [
+      {
+        "day": 1,
+        "plan": [
+          {
+            "startTime": "01:00 PM",
+            "activity": "Board the cruise ship",
+            "location": "Luxor",
+            "description": "Welcome reception and lunch onboard.",
+            "accessibility": true
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "plan": [
+          {
+            "startTime": "09:00 AM",
+            "activity": "Visit Karnak Temple",
+            "location": "Luxor",
+            "description": "A guided tour of the vast Karnak temple complex.",
+            "accessibility": false
+          }
+        ]
+      }
+    ],
+    "price": 800,
+    "lang": "Spanish",
+    "pickUpLocation": "Luxor Port",
+    "dropOffLocation": "Aswan Port",
+    "isBookingAvailable": true,
+     "tags": ["671d25fb73e0e7cff8d41913", "671d297773e0e7cff8d41919" ], // Example tag IDs for "Historical", "Relaxation"
+    "tourGuide": "671d250873e0e7cff8d41907"
+  },
+
+//Itinerary 4
+  {
+    "title": "Desert Safari in Siwa Oasis",
+    "duration": "3 days",
+    "startDate": "2024-11-20T09:00:00Z",
+    "endDate": "2024-11-23T16:00:00Z",
+    "timeline": [
+      {
+        "day": 1,
+        "plan": [
+          {
+            "startTime": "10:00 AM",
+            "activity": "Off-road Jeep safari",
+            "location": "Siwa Oasis",
+            "description": "Explore the Great Sand Sea in a 4x4 Jeep.",
+            "accessibility": false
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "plan": [
+          {
+            "startTime": "08:00 AM",
+            "activity": "Salt lake swimming",
+            "location": "Siwa Oasis",
+            "description": "Swim in the healing salt lakes of Siwa.",
+            "accessibility": true
+          }
+        ]
+      }
+    ],
+    "price": 400,
+    "lang": "Arabic",
+    "pickUpLocation": "Siwa Entrance",
+    "dropOffLocation": "Siwa Entrance",
+    "isBookingAvailable": false,
+    "tags": ["671d25c973e0e7cff8d4190b", "671d297773e0e7cff8d41919"], // Example tag IDs for "Adventure", "Relaxation"
+    "tourGuide": "671d250873e0e7cff8d41907"
+  },
+
+//Itinerary 5
+  {
+    "title": "Alexandria City Highlights",
+    "duration": "1 day",
+    "startDate": "2024-10-22T09:00:00Z",
+    "endDate": "2024-10-22T17:00:00Z",
+    "timeline": [
+      {
+        "day": 1,
+        "plan": [
+          {
+            "startTime": "09:00 AM",
+            "activity": "Visit the Library of Alexandria",
+            "location": "Alexandria",
+            "description": "Tour the famous library and learn its history.",
+            "accessibility": true
+          },
+          {
+            "startTime": "01:00 PM",
+            "activity": "Lunch by the Mediterranean",
+            "location": "Alexandria",
+            "description": "Seafood lunch at a local restaurant.",
+            "accessibility": false
+          }
+        ]
+      }
+    ],
+    "price": 120,
+    "lang": "English",
+    "pickUpLocation": "Alexandria Train Station",
+    "dropOffLocation": "Alexandria Train Station",
+    "isBookingAvailable": true,
+    "tags": ["671d25f173e0e7cff8d41911", "671d29f373e0e7cff8d4191b"], // Example tag IDs for "Cultural", "Food"
+    "tourGuide": "671d250873e0e7cff8d41907"
+  }
+]
+
+
+-----------------------------------------------------------------------------------------------------------
+--------------------------------------------CategoryTags---------------------------------------------------
+[
+  {
+    "name": "Sightseeing" //ID: 671d2eaea2d0ddbe9a997155
+  },
+  {
+    "name": "Hiking" //ID: 671d2ebfa2d0ddbe9a997157
+  },
+  {
+    "name": "Water Sports" //ID: 671d2edea2d0ddbe9a997159
+  },
+  {
+    "name": "Dining" //ID: 671d2ef2a2d0ddbe9a99715b
+  },
+  {
+    "name": "Entertainment" //ID: 671d2f06a2d0ddbe9a99715d
+  },
+  {
+    "name": "Biking" //ID: 671d2f17a2d0ddbe9a99715f
+  }
+]
+
+-----------------------------------------------------------------------------------------------------------
+--------------------------------------------Activities-----------------------------------------------------
+[
+[
+  {
+    "title": "Sunset Kayaking",
+    "description": "Enjoy a serene kayaking experience during sunset along the Nile River.",
+    "location": {
+      "lat": 30.0444,
+      "lng": 31.2357
+    },
+    "price": 50,
+    "category": ["671d2edea2d0ddbe9a997159"],  // Example category ID for "Water Sports"
+    "tags": ["671d25c973e0e7cff8d4190b"],  // Example tag ID for "Adventure"
+    "discount": [
+      {
+        "percentage": 10,
+        "description": "10% off for groups of 5 or more."
+      }
+    ],
+    "startDate": "2024-11-15T16:00:00Z",
+    "endDate": "2024-11-15T18:00:00Z",
+    "time": "4:00 PM",
+    "isBookingAvailable": true,
+    "reviews": [],
+    "averageRating": 4.5,
+    "advertiser": "671d255373e0e7cff8d41909"  // Example advertiser ID
+  },
+
+
+  {
+    "title": "Cultural Walking Tour",
+    "description": "A guided tour through the heart of Cairo's cultural landmarks.",
+    "location": {
+      "lat": 30.0444,
+      "lng": 31.2357
+    },
+    "price": 30,
+    "category": ["671d2eaea2d0ddbe9a997155"],  // Example category ID for "Sightseeing"
+    "tags": ["671d25f173e0e7cff8d41911"],  // Example tag ID for "Cultural"
+    "discount": [],
+    "startDate": "2024-10-25T10:00:00Z",
+    "endDate": "2024-10-25T12:00:00Z",
+    "time": "10:00 AM",
+    "isBookingAvailable": true,
+    "reviews": [],
+    "averageRating": 4.0,
+    "advertiser": "671d255373e0e7cff8d41909"  // Example advertiser ID
+  },
+
+
+  {
+    "title": "Desert Quad Biking",
+    "description": "Experience the thrill of quad biking through the Giza desert.",
+    "location": {
+      "lat": 30.0444,
+      "lng": 31.2357
+    },
+    "price": 70,
+    "category": ["671d2f17a2d0ddbe9a99715f"],  // Example category ID for "Biking"
+    "tags": ["671d25c973e0e7cff8d4190b"],  // Example tag ID for "Adventure"
+    "discount": [
+      {
+        "percentage": 15,
+        "description": "15% discount for early bookings."
+      }
+    ],
+    "startDate": "2024-11-01T08:00:00Z",
+    "endDate": "2024-11-01T11:00:00Z",
+    "time": "8:00 AM",
+    "isBookingAvailable": true,
+    "reviews": [],
+    "averageRating": 4.7,
+    "advertiser": "671d255373e0e7cff8d41909"  // Example advertiser ID
+  },
+
+
+  {
+    "title": "Mediterranean Seafood Dinner",
+    "description": "A fine dining experience featuring fresh Mediterranean seafood.",
+    "location": {
+      "lat": 30.0444,
+      "lng": 31.2357
+    },
+    "price": 100,
+    "category": ["671d2ef2a2d0ddbe9a99715b"],  // Example category ID for "Dining"
+    "tags": ["671d25d873e0e7cff8d4190d"],  // Example tag ID for "Beach"
+    "discount": [],
+    "startDate": "2024-12-05T19:00:00Z",
+    "endDate": "2024-12-05T21:00:00Z",
+    "time": "7:00 PM",
+    "isBookingAvailable": true,
+    "reviews": [],
+    "averageRating": 4.8,
+    "advertiser": "671d255373e0e7cff8d41909"  // Example advertiser ID
+  },
+
+
+  {
+    "title": "Evening at the Cairo Opera House",
+    "description": "Enjoy an evening of classical music at the Cairo Opera House.",
+    "location": {
+      "lat": 30.0444,
+      "lng": 31.2357
+    },
+    "price": 40,
+    "category": ["671d2f06a2d0ddbe9a99715d"],  // Example category ID for "Entertainment"
+    "tags": ["671d25e373e0e7cff8d4190f"],  // Example tag ID for "Nightlife"
+    "discount": [
+      {
+        "percentage": 5,
+        "description": "5% off for students."
+      }
+    ],
+    "startDate": "2024-11-30T19:30:00Z",
+    "endDate": "2024-11-30T21:30:00Z",
+    "time": "7:30 PM",
+    "isBookingAvailable": true,
+    "reviews": [],
+    "averageRating": 4.9,
+    "advertiser": "671d255373e0e7cff8d41909"  // Example advertiser ID
+  }
+]
+-----------------------------------------------------------------------------------------------------------
+------------------------------------------MonumentTags-----------------------------------------------------
+[
+  {
+    "name": "World Heritage"
+  },
+  {
+    "name": "Ancient Egypt"
+  },
+  {
+    "name": "Temple"
+  },
+  {
+    "name": "Pyramid"
+  },
+  {
+    "name": "Sphinx"
+  }
+]
+
+-----------------------------------------------------------------------------------------------------------
+--------------------------------------------Monuments------------------------------------------------------
+  //Monument 1
+  {
+    "name": "Pyramids of Giza",
+    "description": "The iconic Pyramids of Giza, one of the Seven Wonders of the Ancient World.",
+    "pictures": [
+      "https://example.com/pyramids1.jpg",
+      "https://example.com/pyramids2.jpg"
+    ],
+    "location": {
+      "name": "Giza Plateau",
+      "address": "Al Haram, Giza",
+      "latitude": 29.9792,
+      "longitude": 31.1342
+    },
+    "openingHours": [
+      {
+        "day": "Monday",
+        "open": "08:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Tuesday",
+        "open": "08:00",
+        "close": "16:00"
+      }
+    ],
+    "ticketPrices": [
+      {
+        "for": "Adults",
+        "price": 200
+      },
+      {
+        "for": "Students",
+        "price": 100
+      }
+    ],
+    "tags": ["6537f7b59f0340d088f738a9"],  // Example tag ID for "Historical"
+    "monumentTags": ["6537f7b59f0340d088f738a1"],  // Example monument tag ID for "World Heritage"
+    "tourismGovernor": "6537f7b59f0340d088f738b2"  // Example tourism governor ID
+  },
+//Monument 2
+  {
+    "name": "Sphinx of Giza",
+    "description": "A limestone statue of a reclining sphinx, a mythical creature with the body of a lion and the head of a human.",
+    "pictures": [
+      "https://example.com/sphinx1.jpg",
+      "https://example.com/sphinx2.jpg"
+    ],
+    "location": {
+      "name": "Giza Plateau",
+      "address": "Al Haram, Giza",
+      "latitude": 29.9753,
+      "longitude": 31.1376
+    },
+    "openingHours": [
+      {
+        "day": "Wednesday",
+        "open": "08:00",
+        "close": "16:00"
+      },
+      {
+        "day": "Thursday",
+        "open": "08:00",
+        "close": "16:00"
+      }
+    ],
+    "ticketPrices": [
+      {
+        "for": "Adults",
+        "price": 150
+      },
+      {
+        "for": "Children",
+        "price": 75
+      }
+    ],
+    "tags": ["6537f7b59f0340d088f738aa"],  // Example tag ID for "Cultural"
+    "monumentTags": ["6537f7b59f0340d088f738a2"],  // Example monument tag ID for "Ancient Egypt"
+    "tourismGovernor": "6537f7b59f0340d088f738b3"
+  },
+//Monument 3
+  {
+    "name": "Luxor Temple",
+    "description": "A large Ancient Egyptian temple complex located on the east bank of the Nile River in the city today known as Luxor.",
+    "pictures": [
+      "https://example.com/luxor1.jpg",
+      "https://example.com/luxor2.jpg"
+    ],
+    "location": {
+      "name": "Luxor",
+      "address": "Luxor Governorate, Egypt",
+      "latitude": 25.6998,
+      "longitude": 32.6396
+    },
+    "openingHours": [
+      {
+        "day": "Friday",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Saturday",
+        "open": "09:00",
+        "close": "17:00"
+      }
+    ],
+    "ticketPrices": [
+      {
+        "for": "Adults",
+        "price": 160
+      },
+      {
+        "for": "Students",
+        "price": 80
+      }
+    ],
+    "tags": ["6537f7b59f0340d088f738ab"],  // Example tag ID for "Adventure"
+    "monumentTags": ["6537f7b59f0340d088f738a3"],  // Example monument tag ID for "Temple"
+    "tourismGovernor": "6537f7b59f0340d088f738b4"
+  },
+//Monument 4
+  {
+    "name": "Karnak Temple",
+    "description": "A vast mix of decayed temples, chapels, pylons, and other buildings in Egypt, built over the course of 2,000 years.",
+    "pictures": [
+      "https://example.com/karnak1.jpg",
+      "https://example.com/karnak2.jpg"
+    ],
+    "location": {
+      "name": "Karnak",
+      "address": "Luxor Governorate, Egypt",
+      "latitude": 25.7188,
+      "longitude": 32.6573
+    },
+    "openingHours": [
+      {
+        "day": "Sunday",
+        "open": "07:00",
+        "close": "15:00"
+      },
+      {
+        "day": "Monday",
+        "open": "07:00",
+        "close": "15:00"
+      }
+    ],
+    "ticketPrices": [
+      {
+        "for": "Adults",
+        "price": 180
+      },
+      {
+        "for": "Children",
+        "price": 90
+      }
+    ],
+    "tags": ["6537f7b59f0340d088f738ac"],  // Example tag ID for "Historical"
+    "monumentTags": ["6537f7b59f0340d088f738a4"],  // Example monument tag ID for "Temple"
+    "tourismGovernor": "6537f7b59f0340d088f738b5"
+  },
+//Monument 5
+  {
+    "name": "Abu Simbel Temples",
+    "description": "Massive rock temples built by Pharaoh Ramesses II, located near the southern border of Egypt.",
+    "pictures": [
+      "https://example.com/abusimbel1.jpg",
+      "https://example.com/abusimbel2.jpg"
+    ],
+    "location": {
+      "name": "Abu Simbel",
+      "address": "Aswan Governorate, Egypt",
+      "latitude": 22.3363,
+      "longitude": 31.6257
+    },
+    "openingHours": [
+      {
+        "day": "Tuesday",
+        "open": "06:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Wednesday",
+        "open": "06:00",
+        "close": "18:00"
+      }
+    ],
+    "ticketPrices": [
+      {
+        "for": "Adults",
+        "price": 220
+      },
+      {
+        "for": "Students",
+        "price": 110
+      }
+    ],
+    "tags": ["6537f7b59f0340d088f738ad"],  // Example tag ID for "Cultural"
+    "monumentTags": ["6537f7b59f0340d088f738a5"],  // Example monument tag ID for "Ancient Egypt"
+    "tourismGovernor": "6537f7b59f0340d088f738b6"
+  }
+
+-----------------------------------------------------------------------------------------------------------
+---------------------------------------------Product-------------------------------------------------------
+//Product 1
+  {
+    "name": "Handmade Leather Bag",
+    "image": "https://example.com/leather-bag.jpg",
+    "price": 120.50,
+    "description": "A premium quality handmade leather bag, perfect for daily use.",
+    "seller": "6724be8b35b1914550e721f9",  // Example seller ID
+    "reviews": [],  // Example review IDs
+    "quantity": 10,
+    "averageRating": 4.5
+  },
+//Product 2
+  {
+    "name": "Wireless Bluetooth Earbuds",
+    "image": "https://example.com/earbuds.jpg",
+    "price": 55.99,
+    "description": "High-quality wireless Bluetooth earbuds with noise-cancelling features.",
+    "seller": "6724be8b35b1914550e721f9",  // Example seller ID
+    "reviews": [],  // Example review IDs
+    "quantity": 25,
+    "averageRating": 4.0
+  },
+//Product 3
+  {
+    "name": "Eco-friendly Water Bottle",
+    "image": "https://example.com/water-bottle.jpg",
+    "price": 15.75,
+    "description": "Reusable eco-friendly water bottle made from BPA-free materials.",
+    "seller": "6724be8b35b1914550e721f9",  // Example seller ID
+    "reviews": [],  // Example review IDs
+    "quantity": 50,
+    "averageRating": 4.8
+  },
+//Product 4
+  {
+    "name": "Smartphone Camera Lens",
+    "image": "https://example.com/camera-lens.jpg",
+    "price": 35.99,
+    "description": "Clip-on lens for smartphones to enhance photo and video quality.",
+    "seller": "6724be8b35b1914550e721f9",  // Example seller ID
+    "reviews": [],  // Example review IDs
+    "quantity": 15,
+    "averageRating": 3.2
+  },
+//Product 5
+  {
+    "name": "Wooden Laptop Stand",
+    "image": "https://example.com/laptop-stand.jpg",
+    "price": 45.00,
+    "description": "Stylish and ergonomic wooden laptop stand for better posture.",
+    "seller": "6724be8b35b1914550e721f9",  // Example seller ID
+    "reviews": [],  // Example review IDs
+    "quantity": 20,
+    "averageRating": 3.7
+  }
+

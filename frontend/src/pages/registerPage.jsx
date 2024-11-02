@@ -63,7 +63,7 @@ const Register = () => {
             <option value="admin">Admin</option>
             <option value="tourist">Tourist</option>
             <option value="tour-guide">Tour Guide</option>
-            <option value="tourist-governer">Tourist Governer</option>
+            <option value="tourist-governor">Tourist Governor</option>
             <option value="seller">Seller</option>
             <option value="advertiser">Advertiser</option>
           </select>

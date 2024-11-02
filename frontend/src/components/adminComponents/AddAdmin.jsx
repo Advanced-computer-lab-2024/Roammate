@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { DisplayMessage } from "../input form components";
-import { Input } from "../input form components";
+import { adminPost } from "../../services/api";
 
 const AddAdmin = () => {
-    // State to handle form inputs
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [errClassName, setErrClassName] = useState("");
-    const [error, setError] = useState("");
+    const [msgClassName, setMsgClassName] = useState("");
+    const [msg, setMsg] = useState("");
 
     const handleAddAdmin = async (event) => {
         event.preventDefault();
@@ -15,45 +13,38 @@ const AddAdmin = () => {
             username,
             password,
         };
-        const response = await fetch("http://localhost:8000/api/admin/admin/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(admin),
-        });
-        const json = await response.json();
-        console.log("new admin added:\n", json);
-        if (!response.ok) {
-            setError(json.message);
-            setErrClassName("err-msg");
-        } else {
-            setError("Admin added successfully!");
-            setErrClassName("success-msg");
+        try {
+            await adminPost(admin);
+            setMsg("Admin added successfully!");
+            setMsgClassName("success-msg");
+        } catch (error) {
+            setMsg("Failed to add admin! Error: " + error.message);
+            setMsgClassName("err-msg");
             // Reset form fields
             setUsername("");
             setPassword("");
         }
-    };
+    }
     return (
         <form onSubmit={handleAddAdmin}>
             <h3>Add Admin</h3>
-
-            <Input
-              label={"Username"}
-              type={"text"}
-              value={username}
-              setValue={setUsername}
-              required={true}
+            <label htmlFor="name">Username:</label>
+            <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
             />
-            <Input
-              label={"Password"}
-              type={"password"}
-              value={password}
-              setValue={setPassword}
-              required={true}
+            <label htmlFor="password">Password:</label>
+            <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
             />
-            {error && <DisplayMessage msg={error} className={errClassName} />}
+            {msg && <div className={msgClassName}>{msg}</div>}
             <button className="btn" type="submit">
                 Add
             </button>

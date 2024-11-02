@@ -1,5 +1,5 @@
-const { default: mongoose } = require("mongoose");
-const Tourist = require("../models/Tourist");
+const mongoose = require("mongoose");
+const { Tourist } = require("../models");
 
 const register = async (req, res) => {
   const { username, email, password, mobile, nationality, DOB, job } = req.body;
@@ -42,14 +42,14 @@ const getTouristById = async (req, res) => {
 
 const updateTouristById = async (req, res) => {
   const { id } = req.params;
-  const { email, mobile, nationality, job } = req.body;
+  const { password, email, mobile, nationality, job } = req.body;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid id" });
   }
   try {
     const tourist = await Tourist.findByIdAndUpdate(
       id,
-      { email, mobile, nationality, job },
+      { password, email, mobile, nationality, job },
       { new: true }
     );
     if (!tourist) {
@@ -61,7 +61,7 @@ const updateTouristById = async (req, res) => {
   }
 };
 
-const getTourists = async (req, res) => {
+const getAllTourists = async (req, res) => {
   try {
     const tourists = await Tourist.find({});
     res.status(200).send(tourists);
@@ -70,4 +70,9 @@ const getTourists = async (req, res) => {
   }
 };
 
-module.exports = { register, getTourists, getTouristById, updateTouristById };
+module.exports = {
+  register,
+  getAllTourists,
+  getTouristById,
+  updateTouristById,
+};

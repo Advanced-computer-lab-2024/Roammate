@@ -14,12 +14,162 @@
   color: #333;
 }
 
+/*-----------------------------------------------------------------------------------*/
+.view-all-activities-container, .view-all-itineraries-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.activity-preview, .itinerary-preview {
+  background-color: #ffffff; /* White background */
+  margin: 25px;
+  border-radius: 10px; 
+  padding: 20px; /* Space inside the box */
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); 
+  border: 1px solid #cbcbcb; 
+  color: #000000; 
+  transition: all 0.3s ease;
+
+}
+
+.activity-preview:hover, .itinerary-preview:hover {
+  background-color: #eae8e8;
+  border: 1px solid #000000;
+  cursor: pointer;
+}
+
+.all-activities h4, .all-itineraries h4{
+  color: #a7a7a7;
+  font-size: 15px;
+  margin: 10px;
+  padding: 0;
+}
+/*-----------------------------------------------------------------------------------*/
+.activity-container, .itinerary-container{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  padding: 20px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  position: relative;
+  border-radius: 10px;
+}
+
+.activity-container div, .itinerary-container div{
+  margin: 15px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-items: center ;
+}
+
+.activity-container .availability-section p, .itinerary-container .availability-section p{
+  margin-bottom: 15px;
+}
+.activity-container .location-section p, .itinerary-container .location-section p{
+  margin-bottom: 15px;
+}
+.activity-container .availability-section label, .itinerary-container .availability-section label{
+  margin-bottom: 15px;
+}
+
+.activity-container .activity-header, .itinerary-container .itinerary-header{
+  font-size: 18px;
+  text-align: center;
+}
+
+.activity-details, .itinerary-details {
+  position: relative; 
+}
+
+.activity-details .edit-btn,
+.itinerary-details .edit-btn{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #f7f7f7;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  border:none;
+  border-radius: 100%;
+  padding: 10px;
+  margin: 15px;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.activity-details .edit-btn:hover,
+.itinerary-details .edit-btn:hover{
+  background-color: #cbcbcb;
+  cursor: pointer;
+}
+
+
+.discount-section .btn, .timeline-section .btn{
+  background-color: #f7f7f7;
+  color: #000000;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.discount-section .btn:hover, .timeline-section .btn:hover{
+  background-color: #cbcbcb;
+}
+
+.submit-btn{
+  display: inline-block;
+  background-color: var(--primary-color);
+  width: 100%;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+.submit-btn:hover{
+  background-color: #333;
+}
+
+.cancel-btn{
+  display: inline-block;
+  background-color: #f7f7f7;
+  margin-top: 20px;
+  width: 100%;
+  color: #000000;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover{
+  background-color: #cbcbcb;
+}
+/*-----------------------------------------------------------------------------------*/
 
 
 .main-container {
   display: flex;
-  max-width: 1200px;
-  margin: auto;
+  flex-direction: column;
+  align-items: center;  
+  justify-content: center;
+  position: relative;
 }
 
 .navbar {
@@ -27,10 +177,11 @@
   display: flex;
   /* vertical centering */
   align-items: center;
-  max-width: 1200px;
   margin: 0 auto;
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid var(--primary-color);
+  margin-bottom: 10px;
 }
+
 .navbar h1 {
   color: var(--primary-color);
 }
@@ -55,17 +206,33 @@
 }
 /* the humburger brn */
 .navbar .btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 25px;
   background-color: inherit;
   border: none;
+  margin-right: 20px;
+  transition: all 0.3s ease;
+}
+
+.navbar .btn:hover{
+  background-color: #dad9d9;
+  cursor: pointer;
 }
 
 .sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
   background-color: var(--background-color); /* Light grey background */
   padding: 20px; /* Padding around the content */
   width: 300px; /* Width of the sidebar */
+  height: fit-content;
   border-radius: 8px; /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
+  z-index: 100;
 }
+
 .sidebar h2 {
   color: #333; /* Dark text color */
   margin-bottom: 20px;
@@ -100,7 +267,7 @@
   transition: background-color 0.3s ease; /* Smooth color transition */
 }
 .sidebar .btn:hover {
-  background-color: var(--primary-color);; /* Darker button color on hover */
+  background-color: #333; /* Darken the button color on hover */
 }
 
 .content {
@@ -115,34 +282,18 @@
   }
 }
 
-form{
-  display: flex;
-  flex-direction: column;
-  align-items:left;
-  justify-content: spae-between;
-  width: fit-content;
-  border: 2px solid var(--primary-color);;
-  margin:10px 10px 20px 10px;
-  padding: 10px;
-  border-radius: 10px;
-  transition: all 0.25s ease;
-  margin-top: 25px;
-}
-
-.form-group {
- margin-bottom: 10px;
-}
 
 input {
-  font-size: large;
+  background-color: #dfdfdf;
+  border: 2px solid #6d6d6d;
+  margin-top: 5px;
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #000000;
   transition: all 0.25s ease;
   resize: none; 
   height: 20px;
-width: 300px;
-overflow: hidden;
+  width: 300px;
+  overflow: hidden;
  
 }
 
@@ -156,7 +307,7 @@ input.error{
 }
 
 input:disabled{
-  background-color: #f2f2f2;
+  background-color: #ffffff;
   border: none;
   color: #606060;
   font-weight: bold;
@@ -185,7 +336,7 @@ input:disabled{
   width: 100%;
 }
 
-.btn{
+/* .btn{
   width:75px;
   margin: 10px 0;
   padding: 5px;
@@ -198,16 +349,52 @@ input:disabled{
   font-size: 14px;
   font-weight: 600;
 
-}
-.btn:hover{
-  background-color: var(--primary-color);
-  box-shadow: #606060 2px 2px 3px 2px;
-}
+} */
+/* .btn:hover{
+  box-shadow: #858585 1px 1px 2px 1px;
+} */
+
 .btn:active{
   transform: translateY(2px);
   transform: translateX(2px);
   box-shadow: none;
 }
+
 label {
-  margin-right: 10px;
+  font-weight: bolder;
 }
+
+input
+select {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #000000;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px;
+    width: fit-content;
+    box-sizing: border-box;
+}
+
+input:focus {
+    background-color: #f7f7f7;
+    outline: none;
+}
+
+select {
+  background-color: #fff; /* Background color */
+  border: 1px solid #ccc; /* Border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding for text */
+  font-size: 16px; /* Font size */
+  color: #333; /* Text color */
+  width: 100%; /* Full width */
+  cursor: pointer; /* Pointer cursor */
+  transition: border 0.3s ease; /* Transition for border */
+}
+
+select:focus {
+  border-color: var(--primary-color); /* Darken border on focus */
+}
+

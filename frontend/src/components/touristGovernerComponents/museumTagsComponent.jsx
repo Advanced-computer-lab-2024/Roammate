@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  fetchMuseumTags,
-  createMuseumTag,
-  updateMuseumTag,
-  deleteMuseumTag,
+  fetchMonumentTags,
+  createMonumentTag,
+  updateMonumentTag,
+  deleteMonumentTag,
 } from "../../services/api"; // Ensure you have the appropriate API functions
 
-const MuseumTags = () => {
+const MonumentTags = () => {
   const [tags, setTags] = useState([]);
   const [newTagType, setNewTagType] = useState("");
   const [newTagValue, setNewTagValue] = useState("");
@@ -19,7 +19,7 @@ const MuseumTags = () => {
   const loadTags = async () => {
     setLoading(true);
     try {
-      const response = await fetchMuseumTags();
+      const response = await fetchMonumentTags();
       setTags(response.data);
     } catch (err) {
       setError("Failed to load tags.");
@@ -34,7 +34,7 @@ const MuseumTags = () => {
     if (!newTagType.trim() || !newTagValue.trim()) return;
 
     try {
-      const response = await createMuseumTag({
+      const response = await createMonumentTag({
         type: newTagType,
         value: newTagValue,
       });
@@ -52,7 +52,7 @@ const MuseumTags = () => {
     if (!editTagType.trim() || !editTagValue.trim()) return;
 
     try {
-      const response = await updateMuseumTag(editTagId, {
+      const response = await updateMonumentTag(editTagId, {
         type: editTagType,
         value: editTagValue,
       });
@@ -70,7 +70,7 @@ const MuseumTags = () => {
 
   const handleDeleteTag = async (tagId) => {
     try {
-      await deleteMuseumTag(tagId);
+      await deleteMonumentTag(tagId);
       setTags((prev) => prev.filter((tag) => tag._id !== tagId));
     } catch (err) {
       setError("Failed to delete tag.");
@@ -87,7 +87,7 @@ const MuseumTags = () => {
 
   return (
     <div>
-      <h2>Museum Tags</h2>
+      <h2>Monument Tags</h2>
       <form onSubmit={handleAddTag}>
         <input
           type="text"
@@ -144,4 +144,4 @@ const MuseumTags = () => {
   );
 };
 
-export default MuseumTags;
+export default MonumentTags;
