@@ -13,6 +13,7 @@ const {
   tourGuideController,
   touristController,
   tourismGovernorController,
+  complaintController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -148,6 +149,18 @@ router.delete(
   "/monumentTags/:id",
   monumentTagsController.deleteMonumentTagById
 );
+//--------------------------------------------------------------
+
+//Routes for Complaints
+router.post("/complaint", complaintController.createComplaint);
+router.get("/complaints", complaintController.getAllComplaints);
+router.get(
+  "/complaints/:issuerId",
+  complaintController.getAllComplaintsByIssuerId
+);
+router.get("/complaint/:id", complaintController.getComplaintById);
+router.delete("/complaint/:id", complaintController.deleteComplaintById);
+router.put("/complaint/:id", complaintController.resolveComplaintById);
 //--------------------------------------------------------------
 
 module.exports = router;

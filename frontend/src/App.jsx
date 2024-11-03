@@ -22,6 +22,8 @@ import ManageActivityPage from "./pages/Advertiser/ManageActivityPage";
 import ManageItineraryPage from "./pages/TourGuide/ManageItineraryPage";
 import AdminLayout from "./components/adminComponents/AdminLayout";
 import TouristViewActivity from "./pages/Tourist/TouristViewActivityPage";
+import TouristComplaintsPage from "./pages/Tourist/TouristComplaintsPage";
+import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
 
 const theme = createTheme({
   // palette: {
@@ -43,45 +45,85 @@ const theme = createTheme({
 });
 
 function App() {
-  const touristId = '671d24b973e0e7cff8d41903';
-  const advertiserId = '671d255373e0e7cff8d41909';
-  const tourguideId = '671d250873e0e7cff8d41907';
-  const sellerId = '6724be8b35b1914550e721f9';
+  // const touristId = '671d24b973e0e7cff8d41903';
+  const touristId = "671d24b973e0e7cff8d41903";
+  const advertiserId = "671d255373e0e7cff8d41909";
+  const tourguideId = "671d250873e0e7cff8d41907";
+  const sellerId = "6724be8b35b1914550e721f9";
 
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-
           <Route path="/tourist" element={<TouristLayout />}>
-            <Route path="/tourist/activities" element={<TouristActivitiesPage />} />
-            <Route path="/tourist/itineraries" element={<TouristItinerariesPage />} />
+            <Route
+              path="/tourist/activities"
+              element={<TouristActivitiesPage />}
+            />
+            <Route
+              path="/tourist/itineraries"
+              element={<TouristItinerariesPage />}
+            />
             <Route path="/tourist/products" element={<TouristProductsPage />} />
-            <Route path="/tourist/monuments" element={<h2 style={{ color: 'grey' }}>🚧 Under Construction 🚧</h2>} />
-            <Route path="/tourist/editProfile" element={<TouristEditProfile id={touristId} />} />
+            <Route
+              path="/tourist/monuments"
+              element={
+                <h2 style={{ color: "grey" }}>🚧 Under Construction 🚧</h2>
+              }
+            />
+            <Route
+              path="/tourist/complaints"
+              element={<TouristComplaintsPage touristId={touristId} />}
+            />
+            <Route
+              path="/tourist/editProfile"
+              element={<TouristEditProfile id={touristId} />}
+            />
           </Route>
 
           <Route path="/advertiser" element={<AdvertiserLayout />}>
-            <Route path="/advertiser/my-activities" element={<AdvertiserActivitiesPage id={advertiserId} />} />
-            <Route path='/advertiser/editprofile' element={<AdvertiserEditProfile id={advertiserId} />} />
+            <Route
+              path="/advertiser/my-activities"
+              element={<AdvertiserActivitiesPage id={advertiserId} />}
+            />
+            <Route
+              path="/advertiser/editprofile"
+              element={<AdvertiserEditProfile id={advertiserId} />}
+            />
           </Route>
 
-          <Route path='/tourguide' element={<TourGuideLayout />} >
-            <Route path='/tourguide/my-itineraries' element={<TourGuideItinerariesPage id={tourguideId} />} />
-            <Route path='/tourguide/editprofile' element={<TourGuideEditProfile id={tourguideId} />} />
+          <Route path="/tourguide" element={<TourGuideLayout />}>
+            <Route
+              path="/tourguide/my-itineraries"
+              element={<TourGuideItinerariesPage id={tourguideId} />}
+            />
+            <Route
+              path="/tourguide/editprofile"
+              element={<TourGuideEditProfile id={tourguideId} />}
+            />
           </Route>
 
-          <Route path='/seller' element={<SellerLayout />} >
-            <Route path='/seller/my-products' element={<SellerProductsPage id={sellerId} />} />
-            <Route path='/seller/editprofile' element={<SellerEditProfilePage id={sellerId} />} />
+          <Route path="/seller" element={<SellerLayout />}>
+            <Route
+              path="/seller/my-products"
+              element={<SellerProductsPage id={sellerId} />}
+            />
+            <Route
+              path="/seller/editprofile"
+              element={<SellerEditProfilePage id={sellerId} />}
+            />
           </Route>
 
+          <Route
+            path="/tourismGovernor"
+            element={
+              <h2 style={{ color: "grey" }}>🚧 Under Construction 🚧</h2>
+            }
+          />
 
-          <Route path='/tourismGovernor' element={<h2 style={{ color: 'grey' }}>🚧 Under Construction 🚧</h2>} />
-
-
-          <Route path="/admin" element={<AdminLayout />} />
-
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
+          </Route>
         </Routes>
       </Router>
     </ThemeProvider>

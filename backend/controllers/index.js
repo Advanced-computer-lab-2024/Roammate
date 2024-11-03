@@ -11,6 +11,7 @@ const monumentTagsController = require("./monumentTagsController");
 const monumentController = require("./monumentController");
 const preferenceTagsController = require("./preferenceTagsController");
 const productController = require("./productController");
+const complaintController = require("./complaintController");
 
 module.exports = {
   adminController,
@@ -26,4 +27,5 @@ module.exports = {
   monumentController,
   preferenceTagsController,
   productController,
+  complaintController,
 };
