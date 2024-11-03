@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Box, Typography, TextField, Button, Divider } from "@mui/material";
+import { Avatar, Box, Typography, TextField, Button, Divider } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 
@@ -10,6 +10,7 @@ import {
     uploadTourGuideIdentification,
     uploadTourGuideCertificate,
     uploadTourGuidePhoto,
+    downloadImage,
 } from "../../services/api";
 
 const TourGuideManageProfile = ({ id }) => {
@@ -29,6 +30,17 @@ const TourGuideManageProfile = ({ id }) => {
     const [identification, setIdentification] = useState(null);
     const [certificate, setCertificate] = useState(null);
     const [documentSubmitted, setDocumentSubmitted] = useState(false);
+    const [photo, setPhoto] = useState(null);
+    const fetchPhoto = async (photo) => {
+        try {
+            const response = await downloadImage(photo); // Fetch the image as a blob
+            const blob = response.data;
+            const imageUrl = URL.createObjectURL(blob); // Create an object URL for the image
+            setPhoto(imageUrl); // Set the photo to be displayed in the Avatar
+        } catch (error) {
+            console.error("Error fetching the image:", error);
+        }
+    };
 
 
     useEffect(() => {
@@ -42,6 +54,9 @@ const TourGuideManageProfile = ({ id }) => {
             setPreviousWork(data.previousWork);
             setLanguages(data.languages);
             setAbout(data.about);
+
+            if (data.documents.photo)
+                fetchPhoto(data.documents.photo);
         }
         try {
             fetchTourGuide();
@@ -104,6 +119,15 @@ const TourGuideManageProfile = ({ id }) => {
         }
     };
 
+    const handlePhotoChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPhoto(URL.createObjectURL(file)); // For previewing the photo locally
+            const formData = new FormData();
+            formData.append("file", file);
+            uploadTourGuidePhoto(id, formData);
+        }
+    };
 
     const VisuallyHiddenInput = styled("input")({
         clip: "rect(0 0 0 0)",
@@ -117,9 +141,36 @@ const TourGuideManageProfile = ({ id }) => {
         width: 1,
     });
 
+    const PhotoInput = styled("input")({
+        display: "none", // Hide the input
+    });
+
 
     return (
         <Box >
+
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 3 }}>
+                <label htmlFor="photo-upload">
+                    <Avatar
+                        sx={{
+                            width: 100,
+                            height: 100,
+                            cursor: "pointer",
+                            backgroundColor: photo ? "transparent" : "primary.main",
+                            fontSize: 40,
+                        }}
+                        src={photo} // Show the photo if available
+                    >
+                        {!photo && username.charAt(0).toUpperCase()} {/* Show the first letter if no photo */}
+                    </Avatar>
+                </label>
+                <PhotoInput
+                    id="photo-upload"
+                    type="file"
+                    onChange={handlePhotoChange}
+                />
+            </Box>
+
             <form onSubmit={handleSubmit} style={
                 {
                     display: "flex",

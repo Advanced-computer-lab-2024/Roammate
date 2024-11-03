@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Box, Typography, TextField, Button, Divider } from "@mui/material";
+import { Avatar, Box, Typography, TextField, Button, Divider } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 
@@ -10,7 +10,7 @@ import {
     uploadAdvertiserIdentification,
     uploadAdvertiserTaxation,
     uploadAdvertiserLogo,
-    // uploadadvertiserLogo,
+    downloadImage,
 } from "../../services/api";
 
 const AdvertiserManageProfile = ({ id }) => {
@@ -33,6 +33,17 @@ const AdvertiserManageProfile = ({ id }) => {
     const [identification, setIdentification] = useState(null);
     const [taxation, setTaxation] = useState(null);
     const [documentSubmitted, setDocumentSubmitted] = useState(false);
+    const [logo, setLogo] = useState(null);
+    const fetchLogo = async (logo) => {
+        try {
+            const response = await downloadImage(logo); // Fetch the image as a blob
+            const blob = response.data;
+            const imageUrl = URL.createObjectURL(blob); // Create an object URL for the image
+            setLogo(imageUrl); // Set the logo to be displayed in the Avatar
+        } catch (error) {
+            console.error("Error fetching the image:", error);
+        }
+    };
 
 
     useEffect(() => {
@@ -49,6 +60,9 @@ const AdvertiserManageProfile = ({ id }) => {
             setLocation(data.companyProfile.location);
             setEmployees(data.companyProfile.employees);
             setServices(data.companyProfile.services);
+
+            if (data.documents.logo)
+                fetchLogo(data.documents.logo);
         }
         try {
             fetchAdvertiser();
@@ -115,6 +129,16 @@ const AdvertiserManageProfile = ({ id }) => {
         }
     };
 
+    const handleLogoChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setLogo(URL.createObjectURL(file)); // For previewing the logo locally
+            const formData = new FormData();
+            formData.append("file", file);
+            uploadAdvertiserLogo(id, formData);
+        }
+    };
+
     const VisuallyHiddenInput = styled("input")({
         clip: "rect(0 0 0 0)",
         clipPath: "inset(50%)",
@@ -127,9 +151,37 @@ const AdvertiserManageProfile = ({ id }) => {
         width: 1,
     });
 
+    const LogoInput = styled("input")({
+        display: "none", // Hide the input
+    });
+
 
     return (
         <Box >
+
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 3 }}>
+                <label htmlFor="logo-upload">
+                    <Avatar
+                        sx={{
+                            width: 100,
+                            height: 100,
+                            cursor: "pointer",
+                            backgroundColor: logo ? "transparent" : "primary.main",
+                            fontSize: 40,
+                        }}
+                        src={logo} // Show the logo if available
+                    >
+                        {!logo && username.charAt(0).toUpperCase()} {/* Show the first letter if no logo */}
+                    </Avatar>
+                </label>
+                <LogoInput
+                    id="logo-upload"
+                    type="file"
+                    onChange={handleLogoChange}
+                />
+            </Box>
+
+
             <form onSubmit={handleSubmit} style={
                 {
                     display: "flex",

@@ -474,3 +474,11 @@ export const updateMonumentTag = async (tagId, tagData) => {
 export const deleteMonumentTag = async (tagId) => {
   return await axios.delete(`${API_URL}/monumenttags/${tagId}`);
 };
+
+export const downloadImage = async (id) => {
+  return await axios.get(`${API_URL}image/${id}`, { responseType: "blob" });
+}
+
+export const downloadPdf = async (id) => {
+  return await axios.get(`${API_URL}pdf/${id}`);
+}

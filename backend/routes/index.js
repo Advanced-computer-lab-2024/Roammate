@@ -14,6 +14,7 @@ const {
   touristController,
   tourismGovernorController,
   complaintController,
+  filesController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -171,5 +172,9 @@ router.get("/complaint/:id", complaintController.getComplaintById);
 router.delete("/complaint/:id", complaintController.deleteComplaintById);
 router.put("/complaint/:id", complaintController.resolveComplaintById);
 //--------------------------------------------------------------
+
+//Routes for Files Download
+router.get("/image/:id", filesController.getImage);
+router.get("/pdf/:id", filesController.getPdf);
 
 module.exports = router;
