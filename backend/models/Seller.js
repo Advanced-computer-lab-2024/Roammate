@@ -15,6 +15,20 @@ const sellerSchema = new Schema(
     about: {
       type: String,
     },
+    documents: {
+      identification: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      }, // References to uploaded ID
+      taxation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      }, // References to uploaded Taxation Registration Card
+      logo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      }, // References to uploaded logo
+    },
   },
   {
     timestamps: true,

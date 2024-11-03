@@ -36,6 +36,21 @@ const tourGuideSchema = new Schema(
       max: 5,
       default: 0,
     },
+    // Nested documents field
+    documents: {
+      identification: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      }, // References to uploaded ID
+      certificate: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      }, // References to uploaded Certificate
+      photo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "uploads.files",
+      }, // References to uploaded Photo
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,8 @@
 const { default: mongoose } = require("mongoose");
 const { TourGuide } = require("../models");
+const multer = require("multer");
+const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
+
 // username, password, role, email, mobile, yearsOfExperience, previousWork, languages, about
 const register = async (req, res) => {
   const {
@@ -94,9 +97,93 @@ const getAllTourGuides = async (req, res) => {
   }
 };
 
+// GridFsStorage Configuration
+const storage = new GridFsStorage({
+  url: process.env.MONGO_URI,
+  file: (req, file) => {
+    return {
+      filename: file.originalname,
+      bucketName: "uploads",
+    };
+  },
+});
+
+// Multer Middleware
+const upload = multer({ storage });
+const uploadMiddleware = upload.single("file");
+
+// upload identification, certificate, photo
+// Uploading Identification
+const uploadId = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+    const tourGuide = await TourGuide.findById(
+      mongoose.Types.ObjectId.createFromHexString(req.query.userId)
+    );
+    if (!tourGuide) {
+      return res.status(404).send("Tour Guide not found.");
+    }
+    tourGuide.documents.identification = req.file.id;
+    await tourGuide.save();
+    console.log(tourGuide);
+    res.send("File uploaded and associated with tour guide successfully.");
+  } catch (error) {
+    console.error("Error during file upload:", error);
+    res.status(500).send("An error occurred during the file upload.");
+  }
+};
+
+// Uploading Certificate
+const uploadCertificate = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+    const tourGuide = await TourGuide.findById(
+      mongoose.Types.ObjectId.createFromHexString(req.query.userId)
+    );
+    if (!tourGuide) {
+      return res.status(404).send("Tour Guide not found.");
+    }
+    tourGuide.documents.certificate = req.file.id;
+    await tourGuide.save();
+    res.send("File uploaded and associated with tour guide successfully.");
+  } catch (error) {
+    console.error("Error during file upload:", error);
+    res.status(500).send("An error occurred during the file upload.");
+  }
+};
+
+// Uploading Photo
+const uploadPhoto = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+    const tourGuide = await TourGuide.findById(
+      mongoose.Types.ObjectId.createFromHexString(req.query.userId)
+    );
+    if (!tourGuide) {
+      return res.status(404).send("Tour Guide not found.");
+    }
+    tourGuide.documents.photo = req.file.id;
+    await tourGuide.save();
+    res.send("File uploaded and associated with tour guide successfully.");
+  } catch (error) {
+    console.error("Error during file upload:", error);
+    res.status(500).send("An error occurred during the file upload.");
+  }
+};
+
 module.exports = {
   register,
   getAllTourGuides,
   getTourGuideById,
   updateTourGuideById,
+  uploadMiddleware,
+  uploadId,
+  uploadCertificate,
+  uploadPhoto,
 };

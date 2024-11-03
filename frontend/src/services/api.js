@@ -26,6 +26,48 @@ export const fetchProductsBySellerId = async (id) => {
   return prodcuts.data;
 };
 
+// This function is used to upload identification document for a Seller
+export const uploadSellerIdentification = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}seller/identification/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
+// This function is used to upload Taxation document for a Seller
+export const uploadSellerTaxation = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}seller/taxation/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
+// This function is used to upload Logo document for a Seller
+export const uploadSellerLogo = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}seller/logo/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
 // ✅ This function is used to fetch all products
 export const fetchProducts = async () => {
   var prodcuts = await axios.get(`${API_URL}products`);
@@ -175,6 +217,48 @@ export const updateAdvertiserProfile = async (id, data) => {
   return response;
 };
 
+// This function is used to upload identification document for an Advertiser
+export const uploadAdvertiserIdentification = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}advertiser/identification/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
+// This function is used to upload Taxation document for an Advertiser
+export const uploadAdvertiserTaxation = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}advertiser/taxation/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
+// This function is used to upload Logo document for an Advertiser
+export const uploadAdvertiserLogo = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}advertiser/logo/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
 // ✅ This function is used to fetch TourGuide's profile
 export const fetchTourGuideProfile = async (id) => {
   const response = await axios.get(`${API_URL}tourGuide/${id}`);
@@ -184,6 +268,48 @@ export const fetchTourGuideProfile = async (id) => {
 // ✅ This function is used to update TourGuide's profile
 export const updateTourGuideProfile = async (id, data) => {
   const response = await axios.patch(`${API_URL}tourGuide/${id}`, data);
+  return response;
+};
+
+// This function is used to upload identification document for a TourGuide
+export const uploadTourGuideIdentification = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}tourGuide/identification/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
+// This function is used to upload certificate document for a TourGuide
+export const uploadTourGuideCertificate = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}tourGuide/certificate/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
+
+// This function is used to upload photo document for a TourGuide
+export const uploadTourGuidePhoto = async (userId, formData) => {
+  const response = await axios.post(
+    `${API_URL}tourGuide/photo/upload?userId=${userId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return response;
 };
 
