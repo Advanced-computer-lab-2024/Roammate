@@ -11,6 +11,10 @@ const PreferenceTag = require("./PreferenceTag");
 const MonumentTag = require("./MonumentTag");
 const ActivityCategory = require("./ActivityCategory");
 const Review = require("./Review");
+const ActivityBooking = require("./ActivityBooking");
+const ItineraryBooking = require("./ItineraryBooking");
+const ProductPurchasing = require("./ProductPurchasing");
+const MonumentsVisiting = require("./MonumentsVisiting");
 
 // Export all models
 module.exports = {
@@ -27,4 +31,8 @@ module.exports = {
   MonumentTag,
   ActivityCategory,
   Review,
+  ActivityBooking,
+  ItineraryBooking,
+  ProductPurchasing,
+  MonumentsVisiting,
 };

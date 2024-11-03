@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import TouristLayout from "./components/touristComponents/touristLayout";
+import TouristLayout from "./components/touristComponents/TouristLayout";
 import TouristActivitiesPage from "./pages/Tourist/TouristActivitiesPage";
 import TouristItinerariesPage from "./pages/Tourist/TouristItinerariesPage";
 import TouristProductsPage from "./pages/Tourist/TouristProductsPage";
@@ -22,6 +22,10 @@ import ManageActivityPage from "./pages/Advertiser/ManageActivityPage";
 import ManageItineraryPage from "./pages/TourGuide/ManageItineraryPage";
 import AdminLayout from "./components/adminComponents/AdminLayout";
 import TouristViewActivity from "./pages/Tourist/TouristViewActivityPage";
+import TouristBookedActivities from "./pages/Tourist/TouristBookedActivitiesPage";
+import TouristBookedItineraries from "./pages/Tourist/TouristBookedItinerariesPage";
+import TouristBookedVisits from "./pages/Tourist/TouristBookedVisitsPage";
+import TouristPurchases from "./pages/Tourist/TouristPurchasesPage";
 
 const theme = createTheme({
   // palette: {
@@ -59,6 +63,11 @@ function App() {
             <Route path="/tourist/products" element={<TouristProductsPage />} />
             <Route path="/tourist/monuments" element={<h2 style={{ color: 'grey' }}>🚧 Under Construction 🚧</h2>} />
             <Route path="/tourist/editProfile" element={<TouristEditProfile id={touristId} />} />
+            <Route path="/tourist/bookings/activities" element={<TouristBookedActivities id={touristId} />} />
+            <Route path="/tourist/bookings/itineraries" element={<TouristBookedItineraries id={touristId} />} />
+            <Route path="/tourist/bookings/visits" element={<TouristBookedVisits id={touristId} />} />
+            <Route path="/tourist/purchases" element={<TouristPurchases id={touristId} />} />
+
           </Route>
 
           <Route path="/advertiser" element={<AdvertiserLayout />}>

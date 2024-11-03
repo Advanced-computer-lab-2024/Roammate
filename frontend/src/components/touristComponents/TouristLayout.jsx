@@ -15,15 +15,25 @@ import Typography from '@mui/material/Typography';
 import PublicIcon from '@mui/icons-material/Public';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import HomeIcon from '@mui/icons-material/Home';
+import SnowboardingIcon from '@mui/icons-material/Snowboarding';
+import MapIcon from '@mui/icons-material/Map';
+import MuseumIcon from '@mui/icons-material/Museum';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
 
-const navItems = ['Home'];
+const navItems = ['Home', 'My Bookings'];
 
 const drawerWidth = 240;
 const TouristLayout = () => {
     const [open, setOpen] = React.useState(false);
+    const [myBookingsOpen, setMyBookingsOpen] = React.useState(open);
     const [buttons, setButtons] = React.useState(['Activities', 'Itineraries', 'Products', 'Monuments']);
     const [activeButton, setActiveButton] = React.useState('');
     const navigate = useNavigate();
@@ -46,37 +56,126 @@ const TouristLayout = () => {
         } else if (activeButton === 'Edit Profile') {
             navigate('/tourist/editProfile');
         }
-    }, [activeButton]);
+    }, [activeButton, navigate]);
 
-    const toggleDrawer = (newOpen) => () => {
-        setOpen(newOpen);
+    const toggleDrawer = () => {
+        setOpen(!open);
+        setMyBookingsOpen(false);
     };
+
+    const handleMyBookingsClick = () => {
+        setMyBookingsOpen(!myBookingsOpen);
+    };
+
     const drawerList = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{ width: 250 }} role="presentation" >
             <Box flexGrow={1} display="flex" justifyContent="right" alignItems="center" sx={{ height: 64 }} >
-                <IconButton size="medium" onClick={toggleDrawer(false)} sx={{ mr: 1 }}>
+                <IconButton size="medium" onClick={toggleDrawer} sx={{ mr: 1 }}>
                     <ArrowBackIosNewIcon />
                 </IconButton>
             </Box>
             <Divider />
-            <List>
-                {navItems.map((text, index) => (
-                    <ListItem disablePadding key={index} sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <ListItemButton onClick={
-                            () => {
-                                if (text === 'Home') {
-                                    setActiveButton('Activities');
-                                }
+            <List
+                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+            // subheader={
+            //     <ListSubheader component="div" id="nested-list-subheader">
+            //         Roammate
+            //     </ListSubheader>
+            // }
+            >
+
+                <ListItemButton
+                    onClick={
+                        () => {
+                            let pathname = location.pathname;
+                            if (!(pathname === '/tourist/activities' || pathname === '/tourist/itineraries' || pathname === '/tourist/products' || pathname === '/tourist/monuments') || queryParams.get('id') !== '') {
+                                setActiveButton('Activities');
                             }
-                        }>
-                            <ListItemText primary={text} sx={{ textAlign: 'center' }} />
+                            toggleDrawer();
+                        }
+                    }>
+                    <ListItemIcon>
+                        <HomeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Home'} />
+                </ListItemButton>
+
+
+                <ListItemButton
+                    onClick={handleMyBookingsClick}>
+                    <ListItemIcon>
+                        <MenuBookIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="My Bookings" />
+                    {myBookingsOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+
+                <Collapse in={myBookingsOpen} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }} onClick={
+                            () => {
+                                toggleDrawer();
+                                navigate('/tourist/bookings/activities');
+                                setActiveButton('');
+                            }}>
+                            <ListItemIcon>
+                                <SnowboardingIcon fontSize='small' />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="My Activities"
+                                primaryTypographyProps={{
+                                    fontSize: '0.9rem',
+                                }}
+                            />
                         </ListItemButton>
-                    </ListItem>
-                ))}
+
+                        <ListItemButton sx={{ pl: 4 }} onClick={
+                            () => {
+                                toggleDrawer();
+                                navigate('/tourist/bookings/itineraries');
+                                setActiveButton('');
+                            }}>
+                            <ListItemIcon>
+                                <MapIcon fontSize='small' />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="My Itineraries"
+                                primaryTypographyProps={{
+                                    fontSize: '0.9rem',
+                                }} />
+                        </ListItemButton>
+
+                        <ListItemButton sx={{ pl: 4 }} onClick={
+                            () => {
+                                toggleDrawer();
+                                navigate('/tourist/bookings/visits');
+                                setActiveButton('');
+                            }}>
+                            <ListItemIcon>
+                                <MuseumIcon fontSize='small' />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="My Visits"
+                                primaryTypographyProps={{
+                                    fontSize: '0.9rem',
+                                }} />
+                        </ListItemButton>
+
+                    </List>
+                </Collapse>
+
+                <ListItemButton onClick={
+                    () => {
+                        toggleDrawer();
+                        navigate('/tourist/purchases');
+                        setActiveButton('');
+                    }}>
+                    <ListItemIcon>
+                        <ShoppingBagIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'My Purchases'} />
+                </ListItemButton>
+
             </List>
 
 
@@ -90,7 +189,7 @@ const TouristLayout = () => {
             transition: 'padding-left 225ms',
         }}>
             <CssBaseline />
-            <Drawer open={open} onClose={toggleDrawer(false)}>
+            <Drawer open={open} onClose={toggleDrawer}>
                 {drawerList}
             </Drawer>
             <AppBar position="fixed" color='primary' sx={{
@@ -109,7 +208,7 @@ const TouristLayout = () => {
                         sx={{
                             mr: 2, display: `${open ? 'none' : 'block'}`,
                         }}
-                        onClick={toggleDrawer(true)}
+                        onClick={toggleDrawer}
 
                     >
                         <MenuIcon />

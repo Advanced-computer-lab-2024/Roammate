@@ -83,6 +83,10 @@ router.get(
   "/activity-advertiser/:id",
   activityController.getActivitiesByAdvertiserId
 );
+router.get(
+  "/activity-tourist/:id",
+  activityController.getBookedActivitiesByTouristId
+);
 //--------------------------------------------------------------
 
 //Routes for Itinerary

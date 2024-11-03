@@ -1,5 +1,10 @@
 const { default: mongoose } = require("mongoose");
-const { Activity, PreferenceTag, ActivityCategory } = require("../models");
+const {
+  Activity,
+  PreferenceTag,
+  ActivityCategory,
+  ActivityBooking,
+} = require("../models");
 /* title, description, location, price, category, tags, 
 discount, startDate, endDate, time, isBookingAvailable, reviews, advertiser, averageRating
 */
@@ -273,6 +278,38 @@ const getActivitiesByAdvertiserId = async (req, res) => {
   }
 };
 
+const getBookedActivitiesByTouristId = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const activities = await ActivityBooking.find({ user: id })
+      .populate("activity")
+      .populate("user")
+      .populate("activity.advertiser", "username")
+      .populate("activity.category", "name")
+      .populate("activity.tags", "name")
+      .populate("activity.reviews")
+      .sort({ date: 1 });
+    res.status(200).json(activities);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const addActivityBooking = async (req, res) => {
+  const { activityId, userId, date } = req.body;
+  try {
+    const booking = new ActivityBooking({
+      activity: activityId,
+      user: userId,
+      date,
+    });
+    await booking.save();
+    res.status(201).json(booking);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createActivity,
   getAllActivities,
@@ -281,4 +318,5 @@ module.exports = {
   deleteActivityById,
   searchActivitiesWithFiltersAndSort,
   getActivitiesByAdvertiserId,
+  getBookedActivitiesByTouristId,
 };
