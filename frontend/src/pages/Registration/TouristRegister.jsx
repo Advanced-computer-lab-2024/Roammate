@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import GuestNavbar from "../../components/Navbars/GuestNavbar";
 
-
 import {
   Input,
   AlreadyHaveAnAccount,
@@ -61,7 +60,10 @@ const TouristRegister = () => {
   };
   return (
     <div className="register">
-      <GuestNavbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <GuestNavbar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
       <div className="main-container">
         <div className="content">
           <h2>Register as Tourist</h2>
@@ -126,7 +128,9 @@ const TouristRegister = () => {
             {error && <DisplayMessage msg={error} className={"err-msg"} />}
             <br />
             <hr />
-            <button text={"Register"} type={"submit"}>submit</button>
+            <button text={"Register"} type={"submit"}>
+              submit
+            </button>
             <AlreadyHaveAnAccount link={"/touristlogin"} />
           </form>
         </div>

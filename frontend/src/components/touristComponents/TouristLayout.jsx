@@ -1,20 +1,20 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import PublicIcon from '@mui/icons-material/Public';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import PublicIcon from "@mui/icons-material/Public";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -24,37 +24,45 @@ import MapIcon from '@mui/icons-material/Map';
 import MuseumIcon from '@mui/icons-material/Museum';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
 
-const navItems = ['Home', 'My Bookings'];
+const navItems = ["Home", 'My Bookings'];
 
 const drawerWidth = 240;
 const TouristLayout = () => {
     const [open, setOpen] = React.useState(false);
     const [myBookingsOpen, setMyBookingsOpen] = React.useState(open);
-    const [buttons, setButtons] = React.useState(['Activities', 'Itineraries', 'Products', 'Monuments']);
-    const [activeButton, setActiveButton] = React.useState('');
+    const [buttons, setButtons] = React.useState([
+        "Activities",
+        "Itineraries",
+        "Products",
+        "Monuments",
+        "Complaints",
+    ]);
+    const [activeButton, setActiveButton] = React.useState("");
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const [id, setId] = React.useState(queryParams.get('id') || '');
+    const [id, setId] = React.useState(queryParams.get("id") || "");
 
     React.useEffect(() => {
-        if (location.pathname === '/tourist') {
-            setActiveButton('Activities')
+        if (location.pathname === "/tourist") {
+            setActiveButton("Activities");
         }
-        if (activeButton === 'Activities') {
-            navigate(`/tourist/activities?id=${id}`)
-        } else if (activeButton === 'Itineraries') {
+        if (activeButton === "Activities") {
+            navigate(`/tourist/activities?id=${id}`);
+        } else if (activeButton === "Itineraries") {
             navigate(`/tourist/itineraries?id=${id}`);
-        } else if (activeButton === 'Products') {
+        } else if (activeButton === "Products") {
             navigate(`/tourist/products?id=${id}`);
-        } else if (activeButton === 'Monuments') {
+        } else if (activeButton === "Monuments") {
             navigate(`/tourist/monuments?id=${id}`);
-        } else if (activeButton === 'Edit Profile') {
-            navigate('/tourist/editProfile');
+        } else if (activeButton === "Complaints") {
+            navigate(`/tourist/complaints?id=${id}`);
+        } else if (activeButton === "Edit Profile") {
+            navigate("/tourist/editProfile");
         }
     }, [activeButton, navigate]);
 

@@ -1,7 +1,16 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Box, Typography, TextField, Button, Divider } from "@mui/material";
-import { fetchSellerProfile, updateSellerProfile } from "../../services/api";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
+import {
+    fetchSellerProfile,
+    updateSellerProfile,
+    uploadSellerIdentification,
+    uploadSellerTaxation,
+    // uploadSellerLogo    
+} from "../../services/api";
+
 const SellerManageProfilePage = ({ id }) => {
     //username,email,website,hotline,companyProfile,description,foundedYear,industry,location,employees,services
     const [username, setUsername] = useState("");
@@ -11,6 +20,12 @@ const SellerManageProfilePage = ({ id }) => {
     const [disabled, setDisabled] = useState(true);
     const [edit, setEdit] = useState(false);
     const [err, setErr] = useState("");
+
+
+    const [identification, setIdentification] = useState(null);
+    const [taxation, setTaxation] = useState(null);
+    const [documentSubmitted, setDocumentSubmitted] = useState(false);
+
 
     useEffect(() => {
         // fetch data from backend
@@ -45,6 +60,51 @@ const SellerManageProfilePage = ({ id }) => {
             console.log(error);
         }
     }
+
+
+    const handleIdentificationChange = (e) => {
+        setIdentification(e.target.files[0]);
+    };
+
+    const handleTaxationChange = (e) => {
+        setTaxation(e.target.files[0]);
+    };
+
+    const handleDocumentsSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (identification) {
+                const formData1 = new FormData();
+                formData1.append("file", identification);
+                await uploadSellerIdentification(id, formData1);
+            }
+
+            if (taxation) {
+                const formData2 = new FormData();
+                formData2.append("file", taxation);
+                await uploadSellerTaxation(id, formData2);
+            }
+
+            setDocumentSubmitted(true);
+            alert("Files uploaded successfully!");
+        } catch (error) {
+            console.error("Error during file upload:", error);
+            alert("An error occurred during the file upload.");
+        }
+    };
+
+    const VisuallyHiddenInput = styled("input")({
+        clip: "rect(0 0 0 0)",
+        clipPath: "inset(50%)",
+        height: 1,
+        overflow: "hidden",
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        whiteSpace: "nowrap",
+        width: 1,
+    });
+
 
     return (
         <Box >
@@ -163,6 +223,60 @@ const SellerManageProfilePage = ({ id }) => {
                 }
 
             </form>
+
+            {/* File Upload Section */}
+            <Box
+                component="form"
+                className="file-upload-form"
+                onSubmit={handleDocumentsSubmit}
+                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+            >
+
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                    {/* Identification Upload */}
+                    <Button
+                        component="label"
+                        variant="contained"
+                        startIcon={<CloudUploadIcon />}
+                        sx={{
+                            backgroundColor: identification ? "green" : "primary.main",
+                            color: "white",
+                        }}
+                    >
+                        Upload Identification
+                        <VisuallyHiddenInput type="file" onChange={handleIdentificationChange} />
+                    </Button>
+
+                    {/* Taxation Upload */}
+                    <Button
+                        component="label"
+                        variant="contained"
+                        startIcon={<CloudUploadIcon />}
+                        sx={{
+                            backgroundColor: taxation ? "green" : "primary.main",
+                            color: "white",
+                        }}
+                    >
+                        Upload Taxation Registry Card
+                        <VisuallyHiddenInput type="file" onChange={handleTaxationChange} />
+                    </Button>
+
+                    {/* Submit Button */}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={!identification || !taxation}
+                        sx={{
+                            backgroundColor: documentSubmitted ? "green" : "primary.main",
+                            color: "white",
+                        }}
+                    >
+                        Upload
+                    </Button>
+
+                </Box>
+
+            </Box>
 
         </Box>
     );
