@@ -148,6 +148,34 @@ export const searchAndFilterActivities = async (query) => {
   return response.data;
 };
 
+// ✅ This function is used to search and filter complaints
+export const searchAndFilterComplaints = async (query, issuerId) => {
+  const response = await axios.get(`${API_URL}complaints/${issuerId}`, {
+    params: query,
+  });
+  return response.data;
+};
+
+// ✅ This function is used to search and filter complaints for the Admin
+export const searchAndFilterComplaintsAdmin = async (query) => {
+  const response = await axios.get(`${API_URL}complaints`, {
+    params: query,
+  });
+  return response.data;
+};
+
+// ✅ This function is used to create a Complaint
+export const createComplaint = async (data) => {
+  const response = await axios.post(`${API_URL}complaint`, data);
+  return response;
+};
+
+// ✅ This function is used to approve complaints
+export const approveComplaint = async (data, complaintId) => {
+  const response = await axios.put(`${API_URL}complaint/${complaintId}`, data);
+  return response.data;
+};
+
 // ✅ This function is used to search and filter products
 export const searchAndFilterProducts = async (query) => {
   const response = await axios.get(`${API_URL}product-search`, {
