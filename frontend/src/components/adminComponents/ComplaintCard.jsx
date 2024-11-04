@@ -65,16 +65,7 @@ const ComplaintCard = ({ complaint }) => {
           >
             {complaint.title}
           </Typography>
-          <IconButton
-            size="small"
-            color="primary"
-            sx={{
-              mt: "-5px",
-              ml: "10px",
-            }}
-          >
-            <ShareIcon />
-          </IconButton>
+
         </Box>
 
         {/* Complaint Body */}

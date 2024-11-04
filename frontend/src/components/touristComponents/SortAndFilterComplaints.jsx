@@ -39,7 +39,7 @@ const SortAndFilterComplaints = ({ setFilterAndSortCriteria, setFetch }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        maxWidth: "250px",
+        width: "300px",
         gap: "10px",
         border: "1px solid #e0e0e0",
         height: "fit-content",
@@ -50,17 +50,47 @@ const SortAndFilterComplaints = ({ setFilterAndSortCriteria, setFetch }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           justifyContent: "start",
           alignItems: "center",
           gap: "5px",
         }}
       >
-        <SortIcon sx={{ ml: "10px", fontSize: "30px" }} />
-        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-          Sort
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "start",
+            alignItems: "center",
+          }}>
+          <SortIcon sx={{ ml: "10px", fontSize: "30px" }} />
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            Sort
+          </Typography>
+        </Box>
+        <FormControl
+          fullWidth
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            mt: 2,
+          }}
+        >
+          <IconButton onClick={handleSortOrderChange}>
+            <SwapVertIcon />
+          </IconButton>
+          <Typography>
+            {sortOrder === "asc" ? "Ascending" : "Descending"}
+          </Typography>
+        </FormControl>
       </Box>
+
+      <Divider sx={{ width: "100%" }} />
+
+      <Typography variant="h5" sx={{
+        fontWeight: "bold",
+      }}>Filter</Typography>
 
       <FormControl fullWidth>
         <InputLabel>Status</InputLabel>
@@ -75,23 +105,7 @@ const SortAndFilterComplaints = ({ setFilterAndSortCriteria, setFetch }) => {
         </Select>
       </FormControl>
 
-      <FormControl
-        fullWidth
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          mt: 2,
-        }}
-      >
-        <Typography>Order:</Typography>
-        <IconButton onClick={handleSortOrderChange}>
-          <SwapVertIcon />
-        </IconButton>
-        <Typography>
-          {sortOrder === "asc" ? "Ascending" : "Descending"}
-        </Typography>
-      </FormControl>
+
 
       <Divider sx={{ mt: "20px", mb: "20px", width: "100%" }} />
 

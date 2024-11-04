@@ -15,6 +15,8 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
 import EditIcon from '@mui/icons-material/Edit';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import { useNavigate } from 'react-router';
 
 
@@ -94,18 +96,11 @@ const ProductCard = ({ product }) => {
                         alignItems: 'center',
                         flexGrow: 1,
                     }}>
-                        {quantity > 0 ? <EventAvailableIcon sx={{
-                            fill: 'green',
-                        }} /> : <BlockIcon sx={{
-                            fill: 'red',
-                        }} />}
-                        <Typography variant="body2" sx={{
-                            ml: '5px',
+                        {quantity > 0 ? <ShoppingCartIcon sx={{ fill: 'green' }} /> : <RemoveShoppingCartIcon sx={{ fill: 'red' }} />}
+                        <Typography fontSize={14} sx={{
+                            marginLeft: '5px',
                             color: `${quantity > 0 ? 'green' : 'red'}`,
-                        }}>
-                            {quantity > 0 ? 'In Stock' : 'Out of Stock'}
-                        </Typography>
-
+                        }}>{quantity > 0 ? 'in stock' : 'out of stock'}</Typography>
                     </IconButton>
 
                     <Typography gutterBottom variant="h4" component="div">
