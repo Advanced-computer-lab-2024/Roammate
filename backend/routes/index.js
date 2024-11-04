@@ -15,9 +15,16 @@ const {
   tourismGovernorController,
   complaintController,
   filesController,
+  userController,
 } = require("../controllers");
 
 const router = express.Router();
+
+//Routes for User
+router.patch("/users/status", userController.updateAllUsersStatus); // Update the status of all users
+router.patch("/users/status/:id", userController.updateUserStatus); // Update the status of a specific user by ID
+router.get("/users/status/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status
+//--------------------------------------------------------------
 
 //Routes for Admin
 router.post("/admin", adminController.addAdmin);

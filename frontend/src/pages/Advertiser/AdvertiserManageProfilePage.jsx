@@ -20,6 +20,7 @@ import {
   uploadAdvertiserTaxation,
   uploadAdvertiserLogo,
   downloadImage,
+  updateUserStatus
 } from "../../services/api";
 
 const AdvertiserManageProfile = ({ id }) => {
@@ -124,7 +125,7 @@ const AdvertiserManageProfile = ({ id }) => {
         formData2.append("file", taxation);
         await uploadAdvertiserTaxation(id, formData2);
       }
-
+      await updateUserStatus(id, "pending");
       setDocumentSubmitted(true);
       alert("Files uploaded successfully!");
     } catch (error) {
