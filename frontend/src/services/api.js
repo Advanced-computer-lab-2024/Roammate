@@ -2,6 +2,23 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/api/";
 
+// ✅ This function is used to change the Password of users
+export const changePassword = async (id, type, oldPassword, newPassword) => {
+  try {
+    const response = await axios.post(`${API_URL}change-password`, {
+      id,
+      type,
+      oldPassword,
+      newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to change password."
+    );
+  }
+};
+
 // ✅ This function is used to fetch all activities
 export const fetchActivities = async () => {
   const response = await axios.get(`${API_URL}activity`);
@@ -218,6 +235,18 @@ export const fetchTouristProfile = async (id) => {
 // ✅ This function is used to update Tourist's profile
 export const updateTouristProfile = async (id, data) => {
   const response = await axios.patch(`${API_URL}tourist/${id}`, data);
+  return response;
+};
+
+// ✅ This function is used to fetch Tourist's profile
+export const fetchAdminProfile = async (id) => {
+  const response = await axios.get(`${API_URL}admin/${id}`);
+  return response.data;
+};
+
+// ✅ This function is used to update Tourist's profile
+export const updateAdminProfile = async (id, data) => {
+  const response = await axios.patch(`${API_URL}admin/${id}`, data);
   return response;
 };
 
@@ -477,8 +506,8 @@ export const deleteMonumentTag = async (tagId) => {
 
 export const downloadImage = async (id) => {
   return await axios.get(`${API_URL}image/${id}`, { responseType: "blob" });
-}
+};
 
 export const downloadPdf = async (id) => {
   return await axios.get(`${API_URL}pdf/${id}`);
-}
+};

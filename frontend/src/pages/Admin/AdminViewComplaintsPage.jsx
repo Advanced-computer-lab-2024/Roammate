@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { approveComplaint } from "../../services/api"; // Assume this API function handles approval
+import { approveComplaint } from "../../services/api";
 
 const AdminViewComplaint = ({ complaint }) => {
   const [reply, setReply] = useState(complaint.reply || "");

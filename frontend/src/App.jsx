@@ -24,6 +24,7 @@ import AdminLayout from "./components/adminComponents/AdminLayout";
 import TouristViewActivity from "./pages/Tourist/TouristViewActivityPage";
 import TouristComplaintsPage from "./pages/Tourist/TouristComplaintsPage";
 import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
+import AdminManageProfile from "./pages/Admin/AdminManageProfile";
 
 const theme = createTheme({
   // palette: {
@@ -46,6 +47,7 @@ const theme = createTheme({
 
 function App() {
   // const touristId = '671d24b973e0e7cff8d41903';
+  const adminId = "67280e50b680764bbd7428a4";
   const touristId = "671d24b973e0e7cff8d41903";
   const advertiserId = "671d255373e0e7cff8d41909";
   const tourguideId = "671d250873e0e7cff8d41907";
@@ -123,6 +125,10 @@ function App() {
 
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
+            <Route
+              path="/admin/editProfile"
+              element={<AdminManageProfile id={adminId} />}
+            />
           </Route>
         </Routes>
       </Router>

@@ -41,6 +41,8 @@ const AdminLayout = () => {
       // navigate('/admin/functionalityB');
     } else if (activeButton === "Complaints") {
       navigate(`/admin/complaints?id=`);
+    } else if (activeButton === "Edit Profile") {
+      navigate("/admin/editProfile");
     }
   }, [activeButton, navigate]);
 
@@ -165,6 +167,16 @@ const AdminLayout = () => {
                     >
                         <AccountCircleIcon />
                     </IconButton> */}
+          <IconButton
+            size="large"
+            edge="end"
+            color="inherit"
+            aria-label="profile"
+            sx={{ ml: 2 }}
+            onClick={() => setActiveButton("Edit Profile")}
+          >
+            <AccountCircleIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Box
