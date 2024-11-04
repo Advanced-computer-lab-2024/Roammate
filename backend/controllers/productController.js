@@ -1,4 +1,4 @@
-const { Product } = require("../models"); // Ensure this path is correct
+const { Product, Review, ProductPurchasing } = require("../models"); // Ensure this path is correct
 /*name, image, price, description, seller, reviews, quantity, averageRating*/
 
 const addProduct = async (req, res) => {
@@ -156,6 +156,129 @@ const searchProductWithFilters = async (req, res) => {
   }
 };
 
+const addReviewToProduct = async (req, res) => {
+  const productId = req.params.id;
+  const { user, rating, comment, date } = req.body;
+  try {
+    const newReview = new Review({
+      user,
+      rating,
+      comment,
+      date,
+    });
+    const reviewId = newReview._id;
+    await newReview.save();
+    const product = await Product.findById(productId).populate("reviews");
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const OldTtotalRating = product.averageRating * product.reviews.length;
+
+    product.reviews.push(reviewId);
+
+    const newTotalRating = OldTtotalRating + rating;
+
+    const newAverageRating = newTotalRating / product.reviews.length;
+
+    product.averageRating = newAverageRating;
+
+    const updatedProduct = await product.save();
+
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getPurchasedProductsByTouristId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const products = await ProductPurchasing.find({ user: id })
+      .populate({
+        path: "product",
+        populate: [
+          { path: "seller" },
+          {
+            path: "reviews",
+            populate: { path: "user" },
+          },
+        ],
+      })
+      .populate("user")
+      .sort({ date: 1 });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving products", error });
+  }
+};
+
+const addProductPurchasing = async (req, res) => {
+  const { productId, userId, date, status } = req.body;
+
+  const newProductPurchasing = new ProductPurchasing({
+    product: productId,
+    user: userId,
+    date,
+    status,
+  });
+  try {
+    await newProductPurchasing.save();
+    res.status(201).json(newProductPurchasing);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const deleteProductPurchasingById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedProductPurchasing = await ProductPurchasing.findByIdAndDelete(
+      id
+    );
+    if (!deletedProductPurchasing) {
+      return res.status(404).json({ message: "Product Purchasing not found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Product Purchasing deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting product purchasing", error });
+  }
+};
+
+const updateProductPurchasedStatusById = async (req, res) => {
+  const { id } = req.params; // Get the product ID from the URL
+  const { status } = req.body; // Get the fields to update from the request body
+
+  try {
+    // Find the product by ID and update it with the new details
+    const updatedProductPurchasing = await ProductPurchasing.findByIdAndUpdate(
+      id,
+      {
+        status,
+      },
+      { new: true, runValidators: true } // Return the updated document and run schema validators
+    );
+
+    if (!updatedProductPurchasing) {
+      return res.status(404).json({ message: "Product Purchasing not found" });
+    }
+
+    res.status(200).json({
+      message: "Product Purchasing updated successfully",
+      productPurchasing: updatedProductPurchasing,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating product purchasing", error });
+  }
+};
+
 module.exports = {
   addProduct,
   getAllProducts,
@@ -164,4 +287,9 @@ module.exports = {
   deleteProductById,
   updateProductById,
   searchProductWithFilters,
+  addReviewToProduct,
+  getPurchasedProductsByTouristId,
+  addProductPurchasing,
+  deleteProductPurchasingById,
+  updateProductPurchasedStatusById,
 };

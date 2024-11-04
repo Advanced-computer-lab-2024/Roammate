@@ -90,7 +90,7 @@
 [
 //Itinerary 1
   {
-    "title": "Cairo Historical Tour",
+    "title": "Cairo Historical Tour", //ID: 671d2b1ea2d0ddbe9a997122
     "duration": "2 days",
     "startDate": "2024-11-01T08:00:00Z",
     "endDate": "2024-11-02T17:00:00Z",
@@ -140,7 +140,7 @@
 
 //Itinerary 2
   {
-    "title": "Giza Pyramids Adventure",
+    "title": "Giza Pyramids Adventure", //ID: 671d2b41a2d0ddbe9a997129
     "duration": "1 day",
     "startDate": "2024-10-25T08:00:00Z",
     "endDate": "2024-10-25T18:00:00Z",
@@ -176,7 +176,7 @@
 
 //Itinerary 3
   {
-    "title": "Luxor and Aswan Nile Cruise",
+    "title": "Luxor and Aswan Nile Cruise", //ID: 671d2b4ea2d0ddbe9a99712e
     "duration": "5 days",
     "startDate": "2024-12-10T12:00:00Z",
     "endDate": "2024-12-15T12:00:00Z",
@@ -217,7 +217,7 @@
 
 //Itinerary 4
   {
-    "title": "Desert Safari in Siwa Oasis",
+    "title": "Desert Safari in Siwa Oasis", //ID: 671d2b60a2d0ddbe9a997134
     "duration": "3 days",
     "startDate": "2024-11-20T09:00:00Z",
     "endDate": "2024-11-23T16:00:00Z",
@@ -258,7 +258,7 @@
 
 //Itinerary 5
   {
-    "title": "Alexandria City Highlights",
+    "title": "Alexandria City Highlights", //ID: 671d2b84a2d0ddbe9a99713a
     "duration": "1 day",
     "startDate": "2024-10-22T09:00:00Z",
     "endDate": "2024-10-22T17:00:00Z",
@@ -322,7 +322,7 @@
 [
 [
   {
-    "title": "Sunset Kayaking",
+    "title": "Sunset Kayaking", //ID: 671d30e5a2d0ddbe9a997164
     "description": "Enjoy a serene kayaking experience during sunset along the Nile River.",
     "location": {
       "lat": 30.0444,
@@ -348,7 +348,7 @@
 
 
   {
-    "title": "Cultural Walking Tour",
+    "title": "Cultural Walking Tour", //ID: 671d3103a2d0ddbe9a997168
     "description": "A guided tour through the heart of Cairo's cultural landmarks.",
     "location": {
       "lat": 30.0444,
@@ -369,7 +369,7 @@
 
 
   {
-    "title": "Desert Quad Biking",
+    "title": "Desert Quad Biking", //ID: 671d3120a2d0ddbe9a99716b
     "description": "Experience the thrill of quad biking through the Giza desert.",
     "location": {
       "lat": 30.0444,
@@ -395,7 +395,7 @@
 
 
   {
-    "title": "Mediterranean Seafood Dinner",
+    "title": "Mediterranean Seafood Dinner", //ID: 671d3130a2d0ddbe9a99716f
     "description": "A fine dining experience featuring fresh Mediterranean seafood.",
     "location": {
       "lat": 30.0444,
@@ -667,7 +667,7 @@
 ---------------------------------------------Product-------------------------------------------------------
 //Product 1
   {
-    "name": "Handmade Leather Bag",
+    "name": "Handmade Leather Bag", //ID: 6724bed435b1914550e721fb
     "image": "https://example.com/leather-bag.jpg",
     "price": 120.50,
     "description": "A premium quality handmade leather bag, perfect for daily use.",
@@ -678,7 +678,7 @@
   },
 //Product 2
   {
-    "name": "Wireless Bluetooth Earbuds",
+    "name": "Wireless Bluetooth Earbuds", //ID: 6724bee235b1914550e721fd
     "image": "https://example.com/earbuds.jpg",
     "price": 55.99,
     "description": "High-quality wireless Bluetooth earbuds with noise-cancelling features.",
@@ -689,7 +689,7 @@
   },
 //Product 3
   {
-    "name": "Eco-friendly Water Bottle",
+    "name": "Eco-friendly Water Bottle", //ID: 6724beed35b1914550e721ff
     "image": "https://example.com/water-bottle.jpg",
     "price": 15.75,
     "description": "Reusable eco-friendly water bottle made from BPA-free materials.",
@@ -699,8 +699,8 @@
     "averageRating": 4.8
   },
 //Product 4
-  {
-    "name": "Smartphone Camera Lens",
+  { 
+    "name": "Smartphone Camera Lens", //ID: 6724befb35b1914550e72201
     "image": "https://example.com/camera-lens.jpg",
     "price": 35.99,
     "description": "Clip-on lens for smartphones to enhance photo and video quality.",

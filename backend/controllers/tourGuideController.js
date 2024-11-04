@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const { TourGuide } = require("../models");
+const { TourGuide, Review } = require("../models");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
 
@@ -127,7 +127,7 @@ const uploadId = async (req, res) => {
     }
     tourGuide.documents.identification = req.file.id;
     await tourGuide.save();
-    console.log(tourGuide);
+    // console.log(tourGuide);
     res.send("File uploaded and associated with tour guide successfully.");
   } catch (error) {
     console.error("Error during file upload:", error);
@@ -177,6 +177,45 @@ const uploadPhoto = async (req, res) => {
   }
 };
 
+const addReviewToTourguide = async (req, res) => {
+  const tourguideId = req.params.id;
+  const { user, rating, comment, date } = req.body;
+  try {
+    const newReview = new Review({
+      user,
+      rating,
+      comment,
+      date,
+    });
+    const reviewId = newReview._id;
+    await newReview.save();
+    const tourguide = await TourGuide.findById(tourguideId).populate("reviews");
+
+    if (!tourguide) {
+      return res.status(404).json({ error: "Tour guide not found" });
+    }
+
+    const OldTtotalRating = tourguide.averageRating * tourguide.reviews.length;
+
+    tourguide.reviews.push(reviewId);
+
+    const newTotalRating = OldTtotalRating + rating;
+
+    const newAverageRating = newTotalRating / tourguide.reviews.length;
+
+    // console.log(`OldTtotalRating: ${OldTtotalRating},
+    //   newTotalRating: ${newTotalRating},
+    //   newAverageRating: ${newAverageRating}`);
+    tourguide.averageRating = newAverageRating;
+
+    const updatedTourguide = await tourguide.save();
+
+    res.status(200).json(updatedTourguide);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   register,
   getAllTourGuides,
@@ -186,4 +225,5 @@ module.exports = {
   uploadId,
   uploadCertificate,
   uploadPhoto,
+  addReviewToTourguide,
 };

@@ -1,5 +1,11 @@
 const { default: mongoose } = require("mongoose");
-const { Activity, PreferenceTag, ActivityCategory } = require("../models");
+const {
+  Activity,
+  PreferenceTag,
+  ActivityCategory,
+  ActivityBooking,
+  Review,
+} = require("../models");
 /* title, description, location, price, category, tags, 
 discount, startDate, endDate, time, isBookingAvailable, reviews, advertiser, averageRating
 */
@@ -97,6 +103,7 @@ const updateActivityById = async (req, res) => {
     reviews,
     averageRating,
   } = req.body;
+  // console.log(req.body);
   try {
     const updatedActivity = await Activity.findByIdAndUpdate(
       activityId,
@@ -273,6 +280,97 @@ const getActivitiesByAdvertiserId = async (req, res) => {
   }
 };
 
+const addReviewToActivity = async (req, res) => {
+  const activityId = req.params.id;
+  const { user, rating, comment, date } = req.body;
+  try {
+    const newReview = new Review({
+      user,
+      rating,
+      comment,
+      date,
+    });
+    const reviewId = newReview._id;
+    await newReview.save();
+    const activity = await Activity.findById(activityId).populate("reviews");
+
+    if (!activity) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
+
+    const OldTtotalRating = activity.averageRating * activity.reviews.length;
+
+    activity.reviews.push(reviewId);
+
+    const newTotalRating = OldTtotalRating + rating;
+
+    const newAverageRating = newTotalRating / activity.reviews.length;
+
+    // console.log(`OldTtotalRating: ${OldTtotalRating},
+    //   newTotalRating: ${newTotalRating},
+    //   newAverageRating: ${newAverageRating}`);
+    activity.averageRating = newAverageRating;
+
+    const updatedActivity = await activity.save();
+
+    res.status(200).json(updatedActivity);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getBookedActivitiesByTouristId = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const activities = await ActivityBooking.find({ user: id })
+      .populate({
+        path: "activity",
+        populate: [
+          { path: "advertiser", select: "username" },
+          { path: "category", select: "name" },
+          { path: "tags", select: "name" },
+          {
+            path: "reviews", // populate reviews within activity
+            populate: { path: "user" }, // populate user within each review
+          },
+        ],
+      })
+      .populate("user")
+      .sort({ date: 1 });
+    res.status(200).json(activities);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const addActivityBooking = async (req, res) => {
+  const { activityId, userId, date } = req.body;
+  try {
+    const booking = new ActivityBooking({
+      activity: activityId,
+      user: userId,
+      date,
+    });
+    await booking.save();
+    res.status(201).json(booking);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const deleteActivityBooking = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const booking = await ActivityBooking.findByIdAndDelete(id);
+    if (!booking) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createActivity,
   getAllActivities,
@@ -281,4 +379,8 @@ module.exports = {
   deleteActivityById,
   searchActivitiesWithFiltersAndSort,
   getActivitiesByAdvertiserId,
+  addReviewToActivity,
+  getBookedActivitiesByTouristId,
+  addActivityBooking,
+  deleteActivityBooking,
 };

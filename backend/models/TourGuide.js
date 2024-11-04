@@ -26,10 +26,12 @@ const tourGuideSchema = new Schema(
     about: {
       type: String,
     },
-    review: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Review",
-    },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
     averageRating: {
       type: Number,
       min: 0,
