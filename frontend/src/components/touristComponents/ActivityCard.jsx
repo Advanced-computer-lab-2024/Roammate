@@ -8,13 +8,15 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { IconButton, Rating } from '@mui/material';
+import { Alert, IconButton, Rating } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import StarIcon from '@mui/icons-material/Star';
 import HeartIcon from '@mui/icons-material/Favorite';
 import BlockIcon from '@mui/icons-material/Block';
+import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
 
 const ActivityCard = ({ activity }) => {
@@ -27,6 +29,29 @@ const ActivityCard = ({ activity }) => {
     const [isBookingAvailable, setIsBookingAvailable] = useState(activity.isBookingAvailable);
     const [rating, setRating] = useState(activity.averageRating);
     const navigate = useNavigate();
+
+
+    const [open, setOpen] = React.useState(false);
+
+
+    const copyLinkToClipboard = async () => {
+        const link = window.location.href + activity._id;
+        await navigator.clipboard.writeText(link);
+        handleClick();
+    };
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+
     return (
         <Card sx={{ maxWidth: 650, mb: 4 }}>
             {/* <h1>Activity Card</h1> */}
@@ -55,7 +80,7 @@ const ActivityCard = ({ activity }) => {
                     <IconButton size="small" color="primary" sx={{
                         mt: '-5px',
                         ml: '10px',
-                    }}>
+                    }} onClick={copyLinkToClipboard}>
                         <ShareIcon />
                     </IconButton>
                 </Box>
@@ -142,6 +167,18 @@ const ActivityCard = ({ activity }) => {
                     Book
                 </Button>
             </CardActions>
+
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    sx={{
+                        width: '100%',
+                        backgroundColor: '#FFBF00',
+                    }}
+                >
+                    Activity Link Copied to Clipboard
+                </Alert>
+            </Snackbar>
         </Card >
     );
 }

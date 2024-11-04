@@ -23,6 +23,7 @@ import SnowboardingIcon from '@mui/icons-material/Snowboarding';
 import MapIcon from '@mui/icons-material/Map';
 import MuseumIcon from '@mui/icons-material/Museum';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import ReportIcon from '@mui/icons-material/Report';
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -37,7 +38,6 @@ const TouristLayout = () => {
         "Itineraries",
         "Products",
         "Monuments",
-        "Complaints",
     ]);
     const [activeButton, setActiveButton] = React.useState("");
     const navigate = useNavigate();
@@ -57,8 +57,6 @@ const TouristLayout = () => {
             navigate(`/tourist/products?id=${id}`);
         } else if (activeButton === "Monuments") {
             navigate(`/tourist/monuments?id=${id}`);
-        } else if (activeButton === "Complaints") {
-            navigate(`/tourist/complaints?id=${id}`);
         } else if (activeButton === "Edit Profile") {
             navigate("/tourist/editProfile");
         }
@@ -180,6 +178,27 @@ const TouristLayout = () => {
                         <ShoppingBagIcon />
                     </ListItemIcon>
                     <ListItemText primary={'My Purchases'} />
+                </ListItemButton>
+
+                <Divider sx={{
+                    mt: '10px',
+                    mb: '10px',
+                }} />
+
+                <ListItemButton onClick={
+                    () => {
+                        toggleDrawer();
+                        navigate('/tourist/complaints');
+                        setActiveButton('');
+                    }}>
+                    <ListItemIcon>
+                        <ReportIcon fontSize='medium' />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="Complaints"
+                        primaryTypographyProps={{
+                            fontSize: '1rem',
+                        }} />
                 </ListItemButton>
 
             </List>

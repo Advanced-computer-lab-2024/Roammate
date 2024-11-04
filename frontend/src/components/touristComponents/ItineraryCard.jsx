@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { IconButton, Rating } from '@mui/material';
+import { Alert, IconButton, Rating, Snackbar } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -27,6 +27,26 @@ const ItineraryCard = ({ itinerary }) => {
     const [isBookingAvailable, setIsBookingAvailable] = useState(itinerary.isBookingAvailable);
     const [rating, setRating] = useState(itinerary.averageRating);
     const navigate = useNavigate();
+
+    const [open, setOpen] = React.useState(false);
+
+
+    const copyLinkToClipboard = async () => {
+        const link = `${window.location.origin}/tourist/itineraries?id=` + itinerary._id;
+        await navigator.clipboard.writeText(link);
+        handleClick();
+    };
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     return (
         <Card sx={{ maxWidth: 650, mb: 4 }}>
@@ -56,7 +76,7 @@ const ItineraryCard = ({ itinerary }) => {
                     <IconButton size="small" color="primary" sx={{
                         mt: '-5px',
                         ml: '10px',
-                    }}>
+                    }} onClick={copyLinkToClipboard}>
                         <ShareIcon />
                     </IconButton>
                 </Box>
@@ -143,6 +163,19 @@ const ItineraryCard = ({ itinerary }) => {
                     Book
                 </Button>
             </CardActions>
+
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    sx={{
+                        width: '100%',
+                        backgroundColor: '#FFBF00',
+                    }}
+                >
+                    Itinerary Link Copied to Clipboard
+                </Alert>
+            </Snackbar>
+
         </Card >
     );
 }

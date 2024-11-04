@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid2 } from "@mui/material";
+import { Box, Divider, Grid2, Typography } from "@mui/material";
 import ComplaintCard from "../../components/touristComponents/ComplaintCard";
 import SortAndFilterComplaints from "../../components/touristComponents/SortAndFilterComplaints";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -38,6 +38,11 @@ const TouristComplaintsPage = ({ touristId }) => {
 
   return !id ? (
     <Box>
+      {/* 
+      <Typography variant="h4" sx={{ mt: 2, mb: 2, ml: 3, color: 'text.secondary' }}>
+        My Complaints
+      </Typography> */}
+
       {/* Search Bar */}
       <SearchBar
         searchQuery={searchQuery}
@@ -47,6 +52,21 @@ const TouristComplaintsPage = ({ touristId }) => {
 
       <Grid2 container spacing={1}>
         <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
+          {/* Post Complaint Form (Compact) */}
+          <Box sx={{
+            width: '100%',
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            mb: 5
+          }}>
+            <PostComplaintForm
+              touristId={touristId}
+              onComplaintPosted={() => setFetch((prev) => prev + 1)}
+            />
+          </Box>
+
           {/* Complaints List */}
           {complaints.length === 0 &&
             (fetch < 1 ? (
@@ -64,20 +84,26 @@ const TouristComplaintsPage = ({ touristId }) => {
           ))}
         </Grid2>
 
-        <Grid2 item xs={3}>
+        <Grid2 item xs={3} sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "start",
+          alignItems: "center",
+          gap: "10px",
+        }}>
           {/* Sort and Filter */}
           <SortAndFilterComplaints
             setFilterAndSortCriteria={setFilterAndSortCriteria}
             setFetch={setFetch}
           />
 
-          {/* Post Complaint Form (Compact) */}
-          <PostComplaintForm
-            touristId={touristId}
-            onComplaintPosted={() => setFetch((prev) => prev + 1)}
-          />
+
         </Grid2>
       </Grid2>
+
+
+
+
     </Box>
   ) : (
     <TouristViewComplaint

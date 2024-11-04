@@ -15,6 +15,8 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import StarIcon from '@mui/icons-material/Star';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router';
 
 const BookedActivityCard = ({ bookedActivity, bookingDate }) => {
@@ -23,6 +25,28 @@ const BookedActivityCard = ({ bookedActivity, bookingDate }) => {
     const [date, setDate] = useState(dayjs(bookingDate).format(DATE_FORMAT));
     const [rating, setRating] = useState(bookedActivity.averageRating);
     const navigate = useNavigate();
+
+    const [open, setOpen] = React.useState(false);
+
+
+    const copyLinkToClipboard = async () => {
+        const link = `${window.location.origin}/tourist/activities?id=` + bookedActivity._id;
+        await navigator.clipboard.writeText(link);
+        handleClick();
+    };
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+
     return (
         <Card sx={{ maxWidth: 650, mb: 4 }}>
             <CardContent sx={{
@@ -50,7 +74,7 @@ const BookedActivityCard = ({ bookedActivity, bookingDate }) => {
                     <IconButton size="small" color="primary" sx={{
                         mt: '-5px',
                         ml: '10px',
-                    }}>
+                    }} onClick={copyLinkToClipboard}>
                         <ShareIcon />
                     </IconButton>
                 </Box>
@@ -151,6 +175,17 @@ const BookedActivityCard = ({ bookedActivity, bookingDate }) => {
 
 
             </CardActions>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    sx={{
+                        width: '100%',
+                        backgroundColor: '#FFBF00',
+                    }}
+                >
+                    Activity Link Copied to Clipboard
+                </Alert>
+            </Snackbar>
         </Card >
     );
 }

@@ -49,7 +49,7 @@ const ComplaintCard = ({ complaint }) => {
           >
             {title}
           </Typography>
-          <IconButton
+          {/* <IconButton
             size="small"
             color="primary"
             sx={{
@@ -58,7 +58,7 @@ const ComplaintCard = ({ complaint }) => {
             }}
           >
             <ShareIcon />
-          </IconButton>
+          </IconButton> */}
         </Box>
 
         <Typography

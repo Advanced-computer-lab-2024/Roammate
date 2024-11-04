@@ -1,6 +1,8 @@
 const { Product, Review, ProductPurchasing } = require("../models"); // Ensure this path is correct
 /*name, image, price, description, seller, reviews, quantity, averageRating*/
 
+const convertCurrency = require("./CurrencyConvertController");
+
 const addProduct = async (req, res) => {
   const { name, image, price, description, seller, quantity } = req.body;
 
@@ -21,28 +23,44 @@ const addProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
+  const { currency = "USD" } = req.query; // Default currency is USD
   try {
     const products = await Product.find()
       .populate("seller", "username")
       .populate("reviews");
-    res.status(200).json(products);
+
+    const convertedProducts = products.map((product) => {
+      const convertedPrice = convertCurrency(product.price, "USD", currency);
+      return {
+        ...product.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedProducts);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving products", error: error });
+    res.status(500).json({ message: "Error retrieving products", error });
   }
 };
 
 const getProductById = async (req, res) => {
   const { id } = req.params;
+  const { currency = "USD" } = req.query;
   try {
     const product = await Product.findById(id)
       .populate("seller", "username")
       .populate("reviews");
+
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-    res.status(200).json(product);
+
+    const convertedPrice = convertCurrency(product.price, "USD", currency);
+    res.status(200).json({
+      ...product.toObject(),
+      price: convertedPrice.toFixed(2),
+      currency,
+    });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving product", error });
   }
@@ -62,12 +80,11 @@ const deleteProductById = async (req, res) => {
 };
 
 const updateProductById = async (req, res) => {
-  const { id } = req.params; // Get the product ID from the URL
+  const { id } = req.params;
   const { name, image, price, description, quantity, reviews, averageRating } =
-    req.body; // Get the fields to update from the request body
+    req.body;
 
   try {
-    // Find the product by ID and update it with the new details
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       {
@@ -79,7 +96,7 @@ const updateProductById = async (req, res) => {
         reviews,
         averageRating,
       },
-      { new: true, runValidators: true } // Return the updated document and run schema validators
+      { new: true, runValidators: true }
     );
 
     if (!updatedProduct) {
@@ -97,11 +114,21 @@ const updateProductById = async (req, res) => {
 
 const getProductsBySellerId = async (req, res) => {
   const { id } = req.params;
+  const { currency = "USD" } = req.query;
   try {
     const products = await Product.find({ seller: id })
       .populate("seller", "username")
       .populate("reviews");
-    res.status(200).json(products);
+
+    const convertedProducts = products.map((product) => {
+      const convertedPrice = convertCurrency(product.price, "USD", currency);
+      return {
+        ...product.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedProducts);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving product", error });
   }
@@ -138,7 +165,7 @@ const getSearchCriteria = (query) => {
 };
 
 const searchProductWithFilters = async (req, res) => {
-  const { query, minPrice, maxPrice, order } = req.query;
+  const { query, minPrice, maxPrice, order, currency = "USD" } = req.query;
   try {
     const searchCriteria = getSearchCriteria(query);
     const filterCriteria = getFilterCriteria(minPrice, maxPrice);
@@ -150,7 +177,16 @@ const searchProductWithFilters = async (req, res) => {
       .populate("seller", "username")
       .populate("reviews")
       .sort(sortCriteria);
-    res.status(200).json(products);
+
+    const convertedProducts = products.map((product) => {
+      const convertedPrice = convertCurrency(product.price, "USD", currency);
+      return {
+        ...product.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedProducts);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

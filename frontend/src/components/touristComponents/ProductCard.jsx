@@ -6,12 +6,15 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { IconButton, Rating } from '@mui/material';
+import { Alert, IconButton, Rating, Snackbar } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import StarIcon from '@mui/icons-material/Star';
 import HeartIcon from '@mui/icons-material/Favorite';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import { useNavigate } from 'react-router';
 
 const ProductCard = ({ product }) => {
@@ -22,6 +25,27 @@ const ProductCard = ({ product }) => {
     const [quantity, setQuantity] = useState(product.quantity);
     const [rating, setRating] = useState(product.averageRating);
     const navigate = useNavigate();
+
+    const [open, setOpen] = React.useState(false);
+
+
+    const copyLinkToClipboard = async () => {
+        const link = `${window.location.origin}/tourist/products?id=` + product._id;
+        await navigator.clipboard.writeText(link);
+        handleClick();
+    };
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
 
     return (
         <Card sx={{ maxWidth: 500, mb: 4 }}>
@@ -51,7 +75,7 @@ const ProductCard = ({ product }) => {
                     <IconButton size="small" color="primary" sx={{
                         mt: '-5px',
                         ml: '10px',
-                    }}>
+                    }} onClick={copyLinkToClipboard}>
                         <ShareIcon />
                     </IconButton>
                 </Box>
@@ -84,10 +108,11 @@ const ProductCard = ({ product }) => {
                         alignItems: 'center',
                         flexGrow: 1,
                     }}>
-                        <EventAvailableIcon sx={{
-                            fill: `${quantity > 0 ? 'green' : 'red'}`,
-                        }} />
-                        <Typography fontSize={14} color="green">{quantity > 0 ? 'in stock' : 'out of stock'}</Typography>
+                        {quantity > 0 ? <ShoppingCartIcon sx={{ fill: 'green' }} /> : <RemoveShoppingCartIcon sx={{ fill: 'red' }} />}
+                        <Typography fontSize={14} sx={{
+                            marginLeft: '5px',
+                            color: `${quantity > 0 ? 'green' : 'red'}`,
+                        }}>{quantity > 0 ? 'in stock' : 'out of stock'}</Typography>
                     </IconButton>
 
                     <Typography gutterBottom variant="h4" component="div">
@@ -122,6 +147,18 @@ const ProductCard = ({ product }) => {
                     Buy
                 </Button>
             </CardActions>
+
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    sx={{
+                        width: '100%',
+                        backgroundColor: '#FFBF00',
+                    }}
+                >
+                    Product Link Copied to Clipboard
+                </Alert>
+            </Snackbar>
         </Card>
     );
 }

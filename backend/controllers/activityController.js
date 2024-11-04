@@ -6,6 +6,7 @@ const {
   ActivityBooking,
   Review,
 } = require("../models");
+const convertCurrency = require("./CurrencyConvertController");
 /* title, description, location, price, category, tags, 
 discount, startDate, endDate, time, isBookingAvailable, reviews, advertiser, averageRating
 */
@@ -49,13 +50,22 @@ const createActivity = async (req, res) => {
 };
 
 const getAllActivities = (req, res) => {
+  const { currency = "USD" } = req.query; // Default currency is USD
   Activity.find()
     .populate("tags", "name")
     .populate("category", "name")
     .populate("advertiser", "username")
     .populate("reviews")
     .then((activities) => {
-      res.status(200).json(activities);
+      const convertedActivities = activities.map((activity) => {
+        const convertedPrice = convertCurrency(activity.price, "USD", currency);
+        return {
+          ...activity.toObject(),
+          price: convertedPrice.toFixed(2),
+          currency,
+        };
+      });
+      res.status(200).json(convertedActivities);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -63,6 +73,7 @@ const getAllActivities = (req, res) => {
 };
 
 const getActivityById = (req, res) => {
+  const { currency = "USD" } = req.query;
   const activityId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(activityId)) {
     return res.status(400).json({ error: "Invalid activity id" });
@@ -76,7 +87,12 @@ const getActivityById = (req, res) => {
       if (!activity) {
         return res.status(404).json({ error: "Activity not found" });
       }
-      res.status(200).json(activity);
+      const convertedPrice = convertCurrency(activity.price, "USD", currency);
+      res.status(200).json({
+        ...activity.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -103,7 +119,6 @@ const updateActivityById = async (req, res) => {
     reviews,
     averageRating,
   } = req.body;
-  // console.log(req.body);
   try {
     const updatedActivity = await Activity.findByIdAndUpdate(
       activityId,
@@ -237,6 +252,7 @@ const searchActivitiesWithFiltersAndSort = async (req, res) => {
     minRating,
     maxRating,
     order,
+    currency = "USD", // Default currency is USD
   } = req.query;
   try {
     const searchCriteria = await getSearchCriteria(query);
@@ -260,13 +276,23 @@ const searchActivitiesWithFiltersAndSort = async (req, res) => {
       .populate("advertiser", "username")
       .populate("reviews")
       .sort(sortCriteria);
-    res.status(200).json(activities);
+
+    const convertedActivities = activities.map((activity) => {
+      const convertedPrice = convertCurrency(activity.price, "USD", currency);
+      return {
+        ...activity.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedActivities);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
 const getActivitiesByAdvertiserId = async (req, res) => {
+  const { currency = "USD" } = req.query;
   const id = req.params.id;
   try {
     const activities = await Activity.find({ advertiser: id })
@@ -274,12 +300,20 @@ const getActivitiesByAdvertiserId = async (req, res) => {
       .populate("tags", "name")
       .populate("advertiser", "username")
       .populate("reviews");
-    res.status(200).json(activities);
+
+    const convertedActivities = activities.map((activity) => {
+      const convertedPrice = convertCurrency(activity.price, "USD", currency);
+      return {
+        ...activity.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedActivities);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
 const addReviewToActivity = async (req, res) => {
   const activityId = req.params.id;
   const { user, rating, comment, date } = req.body;
