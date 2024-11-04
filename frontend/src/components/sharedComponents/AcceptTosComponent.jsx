@@ -22,28 +22,36 @@ const AcceptTosComponent = ({ userId, setStatus }) => {
         (TOS) to start using your account.
         <Box sx={{ mt: 2 }}>
             <form onSubmit={handleTOSSubmit}>
-                <FormControl component="fieldset">
-                    <FormControlLabel
-                        control={
-                            <Radio
-                                checked={tosChecked}
-                                onChange={(e) => setTosChecked(e.target.checked)}
-                                value="accepted"
-                                name="tos"
-                            />
-                        }
-                        label="I accept the Terms of Service"
-                    />
-                </FormControl>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    sx={{ mt: 2 }}
-                    disabled={tosAccepted}
-                >
-                    Submit
-                </Button>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                }}>
+                    <FormControl component="fieldset">
+                        <FormControlLabel
+                            control={
+                                <Radio
+                                    checked={tosChecked}
+                                    onChange={(e) => setTosChecked(e.target.checked)}
+                                    value="accepted"
+                                    name="tos"
+                                />
+                            }
+                            label="I accept the Terms of Service"
+                        />
+                    </FormControl>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        sx={{ mt: 2 }}
+                        disabled={tosAccepted}
+                    >
+                        Submit
+                    </Button>
+                </Box>
             </form>
         </Box>
     </Alert>

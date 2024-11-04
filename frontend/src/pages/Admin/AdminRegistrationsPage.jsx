@@ -38,7 +38,7 @@ const AdminRegistrationsPage = () => {
     return (
         <Box>
             <Grid2 container spacing={1}>
-                <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
+                <Grid2 xs={12} sx={{ flexGrow: 1 }}>
                     {/* Pending Users List */}
                     {pendingUsers.length === 0 &&
                         (loading == true ? (
