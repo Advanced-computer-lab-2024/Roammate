@@ -17,11 +17,6 @@ const monumentsVisitingSchema = new Schema(
       type: Date,
       required: true,
     },
-    status: {
-      type: String,
-      enum: ["Active", "Cancelled"],
-      default: "Active",
-    },
   },
   { timestamps: true }
 );

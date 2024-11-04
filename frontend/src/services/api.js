@@ -387,17 +387,20 @@ export const deleteActivity = async (activityId) => {
 export const updateActivity = async (activityId, updatedData) => {
   try {
     const response = await axios.patch(
-      `${API_URL}activity/${activityId}`,
+      `${API_URL}/activity/${activityId}`, // Ensure proper URL format
       updatedData,
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Add headers if necessary
         },
       }
     );
     return response;
   } catch (error) {
-    console.error("Error updating activity:", error);
+    console.error(
+      "Error updating activity:",
+      error.response ? error.response.data : error.message
+    );
     throw error;
   }
 };
@@ -474,3 +477,145 @@ export const updateMonumentTag = async (tagId, tagData) => {
 export const deleteMonumentTag = async (tagId) => {
   return await axios.delete(`${API_URL}/monumenttags/${tagId}`);
 };
+
+//activity bookings
+// ✅ This function is used to get all activity bookings by tourist id
+export const fetchActivityBookingsByTouristId = async (touristId) => {
+  const response = await axios.get(`${API_URL}/activityBookings/${touristId}`);
+  return response.data;
+};
+
+// ✅ This function is used to add a new activity booking
+export const addActivityBooking = async (bookingData) => {
+  const response = await axios.post(`${API_URL}/activityBookings`, bookingData);
+  return response;
+};
+
+// ✅ This function is used to delete an activity booking by Id
+export const deleteActivityBooking = async (bookingId) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/activityBookings/${bookingId}`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error deleting activity booking:", error);
+    throw error;
+  }
+};
+
+//----------------------------------------------
+
+//activity reviews
+// ✅ This function is used to add a review to an activity
+export const addReviewToActivity = async (activityId, review) => {
+  const response = await axios.post(
+    `${API_URL}activityReviews/${activityId}`,
+    review
+  );
+  return response;
+};
+//----------------------------------------------
+
+//itinerary bookings
+// ✅ This function is used to get all itinerary bookings by tourist id
+export const fetchItineraryBookingsByTouristId = async (touristId) => {
+  const response = await axios.get(`${API_URL}itineraryBookings/${touristId}`);
+  return response.data;
+};
+
+// ✅ This function is used to add a new itinerary booking
+export const addItineraryBooking = async (bookingData) => {
+  const response = await axios.post(`${API_URL}itineraryBookings`, bookingData);
+  return response;
+};
+
+// ✅ This function is used to delete an itinerary booking by Id
+export const deleteItineraryBooking = async (bookingId) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}itineraryBookings/${bookingId}`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error deleting itinerary booking:", error);
+    throw error;
+  }
+};
+
+//----------------------------------------------
+
+//itinerary reviews
+// ✅ This function is used to add a review to an itinerary
+export const addReviewToItinerary = async (itineraryId, review) => {
+  const response = await axios.post(
+    `${API_URL}itineraryReviews/${itineraryId}`,
+    review
+  );
+  return response;
+};
+//----------------------------------------------
+
+// tourguide reviews
+// ✅ This function is used to add a review to a tourguide
+export const addReviewToTourguide = async (tourguideId, review) => {
+  const response = await axios.post(
+    `${API_URL}tourGuide/review/${tourguideId}`,
+    review
+  );
+  return response;
+};
+//----------------------------------------------
+
+// product reviews
+// ✅ This function is used to add a review to a product
+export const addReviewToProduct = async (productId, review) => {
+  const response = await axios.post(
+    `${API_URL}productReviews/${productId}`,
+    review
+  );
+  return response;
+};
+//----------------------------------------------
+
+// product purchasing
+// ✅ This function is used to get all purchased products by tourist id
+export const fetchPurchasedProductsByTouristId = async (touristId) => {
+  const response = await axios.get(`${API_URL}productPurchasings/${touristId}`);
+  return response.data;
+};
+// ✅ This function is used to add a new product purchasing
+export const addProductPurchasing = async (purchasingData) => {
+  const response = await axios.post(
+    `${API_URL}productPurchasings`,
+    purchasingData
+  );
+  return response;
+};
+// ✅ This function is used to delete a product purchasing by Id
+export const deleteProductPurchasing = async (purchasingId) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}productPurchasings/${purchasingId}`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error deleting product purchasing:", error);
+    throw error;
+  }
+};
+
+// ✅ This function is used to update a product purchasing status by Id
+export const updateProductPurchasedStatus = async (purchasingId, status) => {
+  try {
+    const response = await axios.patch(
+      `${API_URL}productPurchasings/${purchasingId}`,
+      { status }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error updating product purchasing status:", error);
+    throw error;
+  }
+};
+//----------------------------------------------

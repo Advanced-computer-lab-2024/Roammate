@@ -28,8 +28,6 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
 
-const navItems = ["Home", 'My Bookings'];
-
 const drawerWidth = 240;
 const TouristLayout = () => {
     const [open, setOpen] = React.useState(false);

@@ -9,29 +9,22 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { IconButton, Rating } from '@mui/material';
+import ShareIcon from '@mui/icons-material/Share';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import StarIcon from '@mui/icons-material/Star';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BlockIcon from '@mui/icons-material/Block';
-import EditIcon from '@mui/icons-material/Edit';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { useNavigate } from 'react-router';
 
-const ActivityCard = ({ activity }) => {
-    const [archived, setArchived] = useState(false);
-    const [title, setTitle] = useState(activity.title);
-    const [description, setDescription] = useState(activity.description);
-    const [price, setPrice] = useState(activity.price);
-    const [startDate, setStartDate] = useState(activity.startDate);
-    const [endDate, setEndDate] = useState(activity.endDate);
-    const [isBookingAvailable, setIsBookingAvailable] = useState(activity.isBookingAvailable);
-    const [rating, setRating] = useState(activity.averageRating);
+const BookedItineraryCard = ({ bookedItinerary, bookingDate }) => {
+    const [title, setTitle] = useState(bookedItinerary.title);
+    const [duration, setDuration] = useState(bookedItinerary.duration);
+    const [date, setDate] = useState(dayjs(bookingDate).format(DATE_FORMAT));
+    const [rating, setRating] = useState(bookedItinerary.averageRating);
     const navigate = useNavigate();
-
     return (
         <Card sx={{ maxWidth: 650, mb: 4 }}>
-            {/* <h1>Activity Card</h1> */}
             <CardContent sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -57,12 +50,8 @@ const ActivityCard = ({ activity }) => {
                     <IconButton size="small" color="primary" sx={{
                         mt: '-5px',
                         ml: '10px',
-                    }}
-                        onClick={() => {
-                            navigate(`/advertiser/my-activities?id=${activity._id}`);
-                        }}
-                    >
-                        <EditIcon />
+                    }}>
+                        <ShareIcon />
                     </IconButton>
                 </Box>
 
@@ -77,7 +66,7 @@ const ActivityCard = ({ activity }) => {
                     mb: '10px',
                     width: '100%',
                 }}>
-                    {description}
+                    {duration} itinerary
                 </Typography>
 
                 <Box sx={{
@@ -92,46 +81,45 @@ const ActivityCard = ({ activity }) => {
                         textAlign: 'left',
                         fontSize: '16px',
                         color: 'text.secondary',
+                        fontWeight: 'bold',
                     }} >
                         {
-                            dayjs(startDate).startOf('day').isBefore(dayjs(endDate).startOf('day'))
-                                ? `${dayjs(startDate).format(DATE_FORMAT)} - ${dayjs(endDate).format(DATE_FORMAT)}`
-                                : `${dayjs(startDate).format(DATE_FORMAT)}`
+                            `on ${dayjs(date).format(DATE_FORMAT)}`
                         }
 
 
                         <IconButton size="small" disabled color="primary" sx={{
                             ml: '10px',
                         }}>
-                            {isBookingAvailable ? <EventAvailableIcon sx={{
-                                fill: 'green'
-                            }} /> : <BlockIcon sx={{
-                                fill: 'red'
-                            }} />}
-                            <Typography fontSize={14} sx={{
-                                color: `${isBookingAvailable ? 'green' : 'red'}`,
-                            }}
-                            >
-                                {isBookingAvailable ? 'Available' : 'Not Available'}
-                            </Typography>
+                            {dayjs(new Date()).startOf('day').isBefore(dayjs(date).startOf('day')) ?
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}>
+                                    <EventAvailableIcon sx={{
+                                        fill: 'orange'
+                                    }} />
+                                    <Typography fontSize={14} sx={{
+                                        color: '#FFC107',
+                                    }}>upcoming</Typography>
+                                </Box>
+                                :
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}>
+                                    <CheckCircleOutlineIcon sx={{
+                                        fill: 'green'
+                                    }} />
+                                    <Typography fontSize={14} sx={{
+                                        color: 'green',
+                                    }}>completed</Typography>
+                                </Box>
+                            }
                         </IconButton>
                     </Typography>
-
-                    <Typography gutterBottom variant="h4" component="div">
-                        ${price}
-                    </Typography>
-
-
                 </Box>
 
-                <Typography gutterBottom variant="h6" component="div" sx={{
-                    ml: '10px',
-                    textAlign: 'left',
-                    width: '100%',
-                    color: 'text.secondary',
-                }}>
-                    _ people enrolled
-                </Typography>
 
             </CardContent>
             <CardActions sx={{
@@ -143,39 +131,28 @@ const ActivityCard = ({ activity }) => {
                 mt: '-20px',
                 width: '100%',
             }}>
-                <Button variant="contained" sx={{
-                    color: 'white',
-                    backgroundColor: 'red',
-                }}>
-                    Delete
-                </Button>
-
-                <Button variant="contained"
-                    onClick={archived ? () => setArchived(false) : () => setArchived(true)}
-                    endIcon={<InventoryIcon fontSize='medium'
-                        sx={{
-                            fill: `${archived ? 'orange' : 'white'}`
+                {dayjs(new Date()).startOf('day').isBefore(dayjs(date).startOf('day')) ?
+                    <Button variant="contained"
+                        onClick={() => navigate(`/tourist/bookings/itineraries?id=${bookedItinerary._id}`)}
+                        endIcon={<CancelIcon sx={{
+                            fill: 'white'
                         }} />}
-                    sx={{
-                        backgroundColor: 'grey'
-                    }}
-                >
-                    Archive
-                </Button>
+                        sx={{
+                            backgroundColor: 'red',
+                        }}
+                    >
+                        Cancel
+                    </Button> :
+                    <Button variant="contained"
+                        onClick={() => navigate(`/tourist/bookings/itineraries?id=${bookedItinerary._id}`)}
+                        endIcon={<ArrowForwardIosIcon />}>
+                        Review
+                    </Button>}
 
-                <Button variant="contained" sx={{
-                    color: 'white',
-                }}
-                    endIcon={<ArrowForwardIosIcon />}
-                    onClick={() => {
-                        navigate(`/advertiser/my-activities?id=${activity._id}`);
-                    }}
-                >
-                    View
-                </Button>
+
             </CardActions>
         </Card >
     );
 }
 
-export default ActivityCard;
+export default BookedItineraryCard;

@@ -101,7 +101,7 @@ const uploadId = async (req, res) => {
     }
     advertiser.documents.identification = req.file.id;
     await advertiser.save();
-    console.log(advertiser);
+    // console.log(advertiser);
     res.send("File uploaded and associated with tour guide successfully.");
   } catch (error) {
     console.error("Error during file upload:", error);

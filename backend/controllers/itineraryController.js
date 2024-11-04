@@ -1,4 +1,4 @@
-const { Itinerary } = require("../models");
+const { Itinerary, Review, ItineraryBooking } = require("../models");
 const mongoose = require("mongoose");
 const { PreferenceTag } = require("../models");
 /* title, duration, startDate, endDate, timeline(day,startTime, activity,location,description,accessibility),
@@ -138,12 +138,12 @@ const getSearchCriteria = async (query) => {
   const tagIds = await PreferenceTag.find({ $text: { $search: query } }).select(
     "_id"
   );
-  console.log(`tags matching ${query}:`, tagIds);
+  // console.log(`tags matching ${query}:`, tagIds);
 
   const itineraryIds = await Itinerary.find({
     $text: { $search: query },
   }).select("_id");
-  console.log(`itineraries matching ${query}:`, itineraryIds);
+  // console.log(`itineraries matching ${query}:`, itineraryIds);
 
   const searchCriteria = {
     $or: [{ tags: { $in: tagIds } }, { _id: { $in: itineraryIds } }],
@@ -206,10 +206,10 @@ const searchItinerariesWithFiltersAndSort = async (req, res) => {
     tags
   );
   const sortCriteria = getSortCriteria(order);
-  console.log("combined criteria: ", {
-    ...searchCriteria,
-    ...filterCriteria,
-  });
+  // console.log("combined criteria: ", {
+  //   ...searchCriteria,
+  //   ...filterCriteria,
+  // });
   try {
     const itineraries = await Itinerary.find({
       ...searchCriteria,
@@ -219,7 +219,7 @@ const searchItinerariesWithFiltersAndSort = async (req, res) => {
       .populate("tags", "name")
       .populate("tourGuide", "username")
       .populate("reviews");
-    console.log("itineraries", itineraries);
+    // console.log("itineraries", itineraries);
     res.status(200).json(itineraries);
   } catch (error) {
     console.log("ERROR:", error);
@@ -243,6 +243,98 @@ const getItinerariesByTourGuideId = async (req, res) => {
   }
 };
 
+const addReviewToItinerary = async (req, res) => {
+  const itineraryId = req.params.id;
+  const { user, rating, comment, date } = req.body;
+  try {
+    const newReview = new Review({
+      user,
+      rating,
+      comment,
+      date,
+    });
+    const reviewId = newReview._id;
+    await newReview.save();
+    const itinerary = await Itinerary.findById(itineraryId)
+      .populate("reviews")
+      .populate("tourGuide");
+
+    if (!itinerary) {
+      return res.status(404).json({ error: "Itinerary not found" });
+    }
+
+    const OldTtotalRating = itinerary.averageRating * itinerary.reviews.length;
+
+    itinerary.reviews.push(reviewId);
+
+    const newTotalRating = OldTtotalRating + rating;
+
+    const newAverageRating = newTotalRating / itinerary.reviews.length;
+
+    // console.log(`OldTtotalRating: ${OldTtotalRating},
+    //   newTotalRating: ${newTotalRating},
+    //   newAverageRating: ${newAverageRating}`);
+    itinerary.averageRating = newAverageRating;
+
+    const updatedItinerary = await itinerary.save();
+
+    res.status(200).json(updatedItinerary);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getBookedItinerariesByTouristId = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const itineraries = await ItineraryBooking.find({ user: id })
+      .populate({
+        path: "itinerary",
+        populate: [
+          { path: "tourGuide" },
+          { path: "tags", select: "name" },
+          {
+            path: "reviews", // populate reviews within activity
+            populate: { path: "user" }, // populate user within each review
+          },
+        ],
+      })
+      .populate("user")
+      .sort({ date: 1 });
+    res.status(200).json(itineraries);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const addItineraryBooking = async (req, res) => {
+  const { itineraryId, userId, date } = req.body;
+  try {
+    const booking = new ItineraryBooking({
+      itinerary: itineraryId,
+      user: userId,
+      date,
+    });
+    await booking.save();
+    res.status(201).json(booking);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const deleteItineraryBooking = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const booking = await ItineraryBooking.findByIdAndDelete(id);
+    if (!booking) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createItinerary,
   getAllItineraries,
@@ -251,4 +343,8 @@ module.exports = {
   deleteItineraryById,
   searchItinerariesWithFiltersAndSort,
   getItinerariesByTourGuideId,
+  addReviewToItinerary,
+  getBookedItinerariesByTouristId,
+  addItineraryBooking,
+  deleteItineraryBooking,
 };

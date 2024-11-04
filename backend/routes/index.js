@@ -29,9 +29,21 @@ router.post("/advertiser", advertiserController.register);
 router.get("/advertiser/:id", advertiserController.getAdvertiserById);
 router.patch("/advertiser/:id", advertiserController.updateAdvertiserById);
 router.get("/advertiser", advertiserController.getAllAdvertisers);
-router.post("/advertiser/identification/upload", advertiserController.uploadMiddleware, advertiserController.uploadId);
-router.post("/advertiser/taxation/upload", advertiserController.uploadMiddleware, advertiserController.uploadTaxation);
-router.post("/advertiser/logo/upload", advertiserController.uploadMiddleware, advertiserController.uploadLogo);
+router.post(
+  "/advertiser/identification/upload",
+  advertiserController.uploadMiddleware,
+  advertiserController.uploadId
+);
+router.post(
+  "/advertiser/taxation/upload",
+  advertiserController.uploadMiddleware,
+  advertiserController.uploadTaxation
+);
+router.post(
+  "/advertiser/logo/upload",
+  advertiserController.uploadMiddleware,
+  advertiserController.uploadLogo
+);
 //--------------------------------------------------------------
 
 //Routes for Seller
@@ -39,9 +51,21 @@ router.post("/seller", sellerController.register);
 router.get("/seller/:id", sellerController.getSellerById);
 router.patch("/seller/:id", sellerController.updateSellerById);
 router.get("/seller", sellerController.getAllSellers);
-router.post("/seller/identification/upload", sellerController.uploadMiddleware, sellerController.uploadId);
-router.post("/seller/taxation/upload", sellerController.uploadMiddleware, sellerController.uploadTaxation);
-router.post("/seller/logo/upload", sellerController.uploadMiddleware, sellerController.uploadLogo);
+router.post(
+  "/seller/identification/upload",
+  sellerController.uploadMiddleware,
+  sellerController.uploadId
+);
+router.post(
+  "/seller/taxation/upload",
+  sellerController.uploadMiddleware,
+  sellerController.uploadTaxation
+);
+router.post(
+  "/seller/logo/upload",
+  sellerController.uploadMiddleware,
+  sellerController.uploadLogo
+);
 //--------------------------------------------------------------
 
 //Routes for Tourist
@@ -64,9 +88,23 @@ router.post("/tourGuide", tourGuideController.register);
 router.get("/tourGuide/:id", tourGuideController.getTourGuideById);
 router.patch("/tourGuide/:id", tourGuideController.updateTourGuideById);
 router.get("/tourGuide", tourGuideController.getAllTourGuides);
-router.post("/tourGuide/identification/upload", tourGuideController.uploadMiddleware, tourGuideController.uploadId);
-router.post("/tourGuide/certificate/upload", tourGuideController.uploadMiddleware, tourGuideController.uploadCertificate);	
-router.post("/tourGuide/photo/upload", tourGuideController.uploadMiddleware, tourGuideController.uploadPhoto);
+router.post(
+  "/tourGuide/identification/upload",
+  tourGuideController.uploadMiddleware,
+  tourGuideController.uploadId
+);
+router.post(
+  "/tourGuide/certificate/upload",
+  tourGuideController.uploadMiddleware,
+  tourGuideController.uploadCertificate
+);
+router.post(
+  "/tourGuide/photo/upload",
+  tourGuideController.uploadMiddleware,
+  tourGuideController.uploadPhoto
+);
+router.post("/tourGuide/review/:id", tourGuideController.addReviewToTourguide);
+
 //--------------------------------------------------------------
 
 //Routes for Product
@@ -77,6 +115,7 @@ router.get("/product-seller/:id", productController.getProductsBySellerId);
 router.delete("/product/:id", productController.deleteProductById);
 router.patch("/product/:id", productController.updateProductById);
 router.get("/product-search", productController.searchProductWithFilters);
+
 //--------------------------------------------------------------
 
 //Routes for activity
@@ -174,6 +213,58 @@ router.get(
 router.get("/complaint/:id", complaintController.getComplaintById);
 router.delete("/complaint/:id", complaintController.deleteComplaintById);
 router.put("/complaint/:id", complaintController.resolveComplaintById);
+//--------------------------------------------------------------
+
+//Routes for activity reviews
+router.post("/activityReviews/:id", activityController.addReviewToActivity);
+//--------------------------------------------------------------
+
+//Routes for activity booking
+router.get(
+  "/activityBookings/:id",
+  activityController.getBookedActivitiesByTouristId
+);
+router.post("/activityBookings", activityController.addActivityBooking);
+router.delete(
+  "/activityBookings/:id",
+  activityController.deleteActivityBooking
+);
+//--------------------------------------------------------------
+
+//Routes for itinerary reviews
+router.post("/itineraryReviews/:id", itineraryController.addReviewToItinerary);
+//--------------------------------------------------------------
+
+//Routes for itinerary booking
+router.get(
+  "/itineraryBookings/:id",
+  itineraryController.getBookedItinerariesByTouristId
+);
+router.post("/itineraryBookings", itineraryController.addItineraryBooking);
+router.delete(
+  "/itineraryBookings/:id",
+  itineraryController.deleteItineraryBooking
+);
+//--------------------------------------------------------------
+
+//Routes for product reviews
+router.post("/productReviews/:id", productController.addReviewToProduct);
+//--------------------------------------------------------------
+
+//Routes for product purchasing
+router.get(
+  "/productPurchasings/:id",
+  productController.getPurchasedProductsByTouristId
+);
+router.post("/productPurchasings", productController.addProductPurchasing);
+router.delete(
+  "/productPurchasings/:id",
+  productController.deleteProductPurchasingById
+);
+router.patch(
+  "/productPurchasings/:id",
+  productController.updateProductPurchasedStatusById
+);
 //--------------------------------------------------------------
 
 module.exports = router;

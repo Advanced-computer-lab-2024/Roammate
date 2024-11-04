@@ -19,8 +19,8 @@ const productPurchasingSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Cancelled"],
-      default: "Active",
+      enum: ["Preparing", "Shipped", "Completed", "Cancelled"],
+      default: "Preparing",
     },
   },
   { timestamps: true }

@@ -99,7 +99,7 @@ const uploadId = async (req, res) => {
     }
     seller.documents.identification = req.file.id;
     await seller.save();
-    console.log(seller);
+    // console.log(seller);
     res.send("File uploaded and associated with tour guide successfully.");
   } catch (error) {
     console.error("Error during file upload:", error);
@@ -149,4 +149,13 @@ const uploadLogo = async (req, res) => {
   }
 };
 
-module.exports = { register, getAllSellers, getSellerById, updateSellerById, uploadMiddleware, uploadId, uploadTaxation, uploadLogo };
+module.exports = {
+  register,
+  getAllSellers,
+  getSellerById,
+  updateSellerById,
+  uploadMiddleware,
+  uploadId,
+  uploadTaxation,
+  uploadLogo,
+};
