@@ -15,6 +15,7 @@ const {
   tourismGovernorController,
   complaintController,
   filesController,
+  bookingController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -222,5 +223,10 @@ router.put("/complaint/:id", complaintController.resolveComplaintById);
 //Routes for Files Download
 router.get("/image/:id", filesController.getImage);
 router.get("/pdf/:id", filesController.getPdf);
+
+//Routes for booking
+router.post("/search-flights",bookingController.searchFlights);
+router.get("/search-hotels",bookingController.searchHotels);
+router.get("/list-hotels",bookingController.getHotelListByCity);
 
 module.exports = router;
