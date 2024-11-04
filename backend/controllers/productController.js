@@ -136,7 +136,7 @@ const getProductsBySellerId = async (req, res) => {
 
 //price
 const getFilterCriteria = (minPrice, maxPrice) => {
-  const filterCriteria = {};
+  const filterCriteria = { archived: false };
   filterCriteria.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
   return filterCriteria;
 };
@@ -315,6 +315,48 @@ const updateProductPurchasedStatusById = async (req, res) => {
   }
 };
 
+const toggleArchivedStatus = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById({ _id: id });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Toggle the archived status
+    product.archived = !product.archived;
+    await product.save();
+
+    res.status(200).json({
+      message: `Product ${
+        product.archived ? "archived" : "unarchived"
+      } successfully`,
+      archived: product.archived,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Function to check if a product is archived
+const checkIfArchived = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById({ _id: id }, "archived"); // Only fetches the archived field
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      archived: product.archived,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addProduct,
   getAllProducts,
@@ -328,4 +370,6 @@ module.exports = {
   addProductPurchasing,
   deleteProductPurchasingById,
   updateProductPurchasedStatusById,
+  toggleArchivedStatus,
+  checkIfArchived,
 };

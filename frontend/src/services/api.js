@@ -8,6 +8,18 @@ export const flagItinerary = async (id) => {};
 
 export const updateActivityStatus = async (id) => {};
 
+export const toggleArchivedStatus = async (productId) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}product/${productId}/toggle-archived`
+    );
+    return response.data.archived; // Return the updated archived status
+  } catch (error) {
+    console.error("Error toggling archived status:", error);
+    throw error;
+  }
+};
+
 // ✅ This function is used to change the Password of users
 export const changePassword = async (id, type, oldPassword, newPassword) => {
   try {

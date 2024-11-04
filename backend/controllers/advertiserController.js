@@ -163,7 +163,6 @@ const requestAdvertiserDeletionIfNoUpcomingBookings = async (req, res) => {
       advertiser: advertiserId,
       startDate: { $gte: new Date() }, // Only consider upcoming activities
     });
-
     // Step 2: Check if any upcoming activity has bookings
     const hasBookingsOnUpcomingActivities = await Promise.all(
       upcomingActivities.map(async (activity) => {
@@ -174,10 +173,12 @@ const requestAdvertiserDeletionIfNoUpcomingBookings = async (req, res) => {
       })
     );
 
+    console.log(hasBookingsOnUpcomingActivities.every((exists) => !exists));
+
     // Step 3: Determine if deletion request can be created
-    const canRequestDeletion =
-      hasBookingsOnUpcomingActivities.every((exists) => !exists) &&
-      upcomingActivities.length === 0;
+    const canRequestDeletion = hasBookingsOnUpcomingActivities.every(
+      (exists) => !exists
+    );
 
     if (canRequestDeletion) {
       // If criteria are met, create a deletion request for the advertiser

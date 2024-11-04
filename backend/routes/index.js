@@ -189,6 +189,11 @@ router.get("/product-seller/:id", productController.getProductsBySellerId);
 router.delete("/product/:id", productController.deleteProductById);
 router.patch("/product/:id", productController.updateProductById);
 router.get("/product-search", productController.searchProductWithFilters);
+router.put(
+  "/product/:id/toggle-archived",
+  productController.toggleArchivedStatus
+);
+router.get("/product/:id/check-archived", productController.checkIfArchived);
 
 //--------------------------------------------------------------
 
