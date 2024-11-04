@@ -32,6 +32,11 @@ const touristSchema = new Schema(
       type: Number,
       default: 0,
     },
+    preferredCurrency: {
+      type: String,
+      enum: ["USD", "EGP", "EUR"], // List the currencies you support
+      default: "USD",
+    },
   },
   {
     timestamps: true,

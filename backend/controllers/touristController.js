@@ -42,19 +42,31 @@ const getTouristById = async (req, res) => {
 
 const updateTouristById = async (req, res) => {
   const { id } = req.params;
-  const { password, email, mobile, nationality, job } = req.body;
+  const { password, email, mobile, nationality, job, preferredCurrency } =
+    req.body;
+
+  // Validate ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid id" });
   }
+
+  // Validate preferredCurrency if provided
+  const supportedCurrencies = ["USD", "EGP", "EUR"]; // Add more supported currencies as needed
+  if (preferredCurrency && !supportedCurrencies.includes(preferredCurrency)) {
+    return res.status(400).json({ message: "Unsupported currency" });
+  }
+
   try {
     const tourist = await Tourist.findByIdAndUpdate(
       id,
-      { password, email, mobile, nationality, job },
-      { new: true }
+      { password, email, mobile, nationality, job, preferredCurrency },
+      { new: true, runValidators: true }
     );
+
     if (!tourist) {
       return res.status(404).json({ message: "Tourist not found" });
     }
+
     res.status(200).json(tourist);
   } catch (error) {
     res.status(400).json({ message: error.message });

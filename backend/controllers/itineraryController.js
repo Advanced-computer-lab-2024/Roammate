@@ -1,6 +1,7 @@
 const { Itinerary, Review, ItineraryBooking } = require("../models");
 const mongoose = require("mongoose");
 const { PreferenceTag } = require("../models");
+const convertCurrency = require("./CurrencyConvertController");
 /* title, duration, startDate, endDate, timeline(day,startTime, activity,location,description,accessibility),
  price, lang, pickUpLocation, dropOffLocation, isBookingAvailable, tags, reviews, averageRating, tourGuide
   */
@@ -46,12 +47,22 @@ const createItinerary = async (req, res) => {
 
 // Get all itineraries
 const getAllItineraries = async (req, res) => {
+  const { currency = "USD" } = req.query; // Default currency is USD
   try {
     const itineraries = await Itinerary.find()
       .populate("tags")
       .populate("tourGuide", "username")
       .populate("reviews");
-    res.status(200).json(itineraries);
+
+    const convertedItineraries = itineraries.map((itinerary) => {
+      const convertedPrice = convertCurrency(itinerary.price, "USD", currency);
+      return {
+        ...itinerary.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedItineraries);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -60,6 +71,7 @@ const getAllItineraries = async (req, res) => {
 // Get an itinerary by ID
 const getItineraryById = async (req, res) => {
   const { id } = req.params;
+  const { currency = "USD" } = req.query;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid id" });
   }
@@ -68,10 +80,17 @@ const getItineraryById = async (req, res) => {
       .populate("tags", "name")
       .populate("tourGuide", "username")
       .populate("reviews");
+
     if (!itinerary) {
       return res.status(404).json({ error: "Itinerary not found" });
     }
-    res.status(200).json(itinerary);
+
+    const convertedPrice = convertCurrency(itinerary.price, "USD", currency);
+    res.status(200).json({
+      ...itinerary.toObject(),
+      price: convertedPrice.toFixed(2),
+      currency,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -194,8 +213,17 @@ const getFilterCriteria = (
 };
 
 const searchItinerariesWithFiltersAndSort = async (req, res) => {
-  const { query, minPrice, maxPrice, minDate, maxDate, lang, tags, order } =
-    req.query;
+  const {
+    query,
+    minPrice,
+    maxPrice,
+    minDate,
+    maxDate,
+    lang,
+    tags,
+    order,
+    currency = "USD",
+  } = req.query;
   const searchCriteria = await getSearchCriteria(query);
   const filterCriteria = getFilterCriteria(
     minPrice,
@@ -206,10 +234,7 @@ const searchItinerariesWithFiltersAndSort = async (req, res) => {
     tags
   );
   const sortCriteria = getSortCriteria(order);
-  // console.log("combined criteria: ", {
-  //   ...searchCriteria,
-  //   ...filterCriteria,
-  // });
+
   try {
     const itineraries = await Itinerary.find({
       ...searchCriteria,
@@ -219,16 +244,24 @@ const searchItinerariesWithFiltersAndSort = async (req, res) => {
       .populate("tags", "name")
       .populate("tourGuide", "username")
       .populate("reviews");
-    // console.log("itineraries", itineraries);
-    res.status(200).json(itineraries);
+
+    const convertedItineraries = itineraries.map((itinerary) => {
+      const convertedPrice = convertCurrency(itinerary.price, "USD", currency);
+      return {
+        ...itinerary.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedItineraries);
   } catch (error) {
-    console.log("ERROR:", error);
     res.status(500).json({ error: error.message });
   }
 };
 
 const getItinerariesByTourGuideId = async (req, res) => {
   const { id } = req.params;
+  const { currency = "USD" } = req.query;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid id" });
   }
@@ -237,7 +270,16 @@ const getItinerariesByTourGuideId = async (req, res) => {
       .populate("tags", "name")
       .populate("tourGuide", "username")
       .populate("reviews");
-    res.status(200).json(itineraries);
+
+    const convertedItineraries = itineraries.map((itinerary) => {
+      const convertedPrice = convertCurrency(itinerary.price, "USD", currency);
+      return {
+        ...itinerary.toObject(),
+        price: convertedPrice.toFixed(2),
+        currency,
+      };
+    });
+    res.status(200).json(convertedItineraries);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
