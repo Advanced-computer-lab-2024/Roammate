@@ -21,7 +21,12 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-const navItems = ["Home", "Add Admin", "Add Governor"];
+const navItems = [
+  "Home",
+  "Add Admin",
+  "Add Governor",
+  "Account Deletion Requests",
+];
 
 const drawerWidth = 240;
 const AdminLayout = () => {
@@ -44,6 +49,8 @@ const AdminLayout = () => {
       navigate(`/admin/complaints?id=`);
     } else if (activeButton === "Edit Profile") {
       navigate("/admin/editProfile");
+    } else if (activeButton === "Account Deletion Requests") {
+      navigate("/admin/deletion-requests");
     }
   }, [activeButton, navigate]);
 
@@ -79,6 +86,8 @@ const AdminLayout = () => {
               onClick={() => {
                 if (text === "Home") {
                   setActiveButton("Users");
+                } else {
+                  setActiveButton(text);
                 }
               }}
             >

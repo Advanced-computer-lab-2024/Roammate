@@ -20,6 +20,7 @@ import {
   uploadTourGuidePhoto,
   downloadImage,
 } from "../../services/api";
+import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 
 const TourGuideManageProfile = ({ id }) => {
   const [username, setUsername] = useState("");
@@ -388,6 +389,8 @@ const TourGuideManageProfile = ({ id }) => {
               Change Password
             </Typography>
             <ChangePasswordComponent id={id} type="tourguide" />
+            <Divider sx={{ my: 4 }} />
+            <DeleteProfileRequest id={id} type="tourguide" />
           </Box>
         </Box>
       </Box>

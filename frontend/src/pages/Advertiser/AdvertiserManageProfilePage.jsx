@@ -21,6 +21,7 @@ import {
   uploadAdvertiserLogo,
   downloadImage,
 } from "../../services/api";
+import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 
 const AdvertiserManageProfile = ({ id }) => {
   //username,email,website,hotline,companyProfile,description,foundedYear,industry,location,employees,services
@@ -443,6 +444,8 @@ const AdvertiserManageProfile = ({ id }) => {
               Change Password
             </Typography>
             <ChangePasswordComponent id={id} type="advertiser" />
+            <Divider sx={{ my: 4 }} />
+            <DeleteProfileRequest id={id} type="advertiser" />
           </Box>
         </Box>
       </Box>

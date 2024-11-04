@@ -3,6 +3,7 @@ import { Box, Typography, TextField, Button, Divider } from "@mui/material";
 import { fetchTouristProfile, updateTouristProfile } from "../../services/api";
 import dayjs from "dayjs";
 import ChangePasswordComponent from "../../components/sharedComponents/ChangePasswordComponent";
+import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 
 const DATE_FORMAT = "DD/MM/YYYY";
 
@@ -66,7 +67,7 @@ const TouristManageProfile = ({ id }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "start",
-          width: "300px",
+          width: "50%",
           gap: "15px",
           padding: "20px",
           border: "1px solid #ddd",
@@ -178,7 +179,7 @@ const TouristManageProfile = ({ id }) => {
       {/* Change Password Component on the Right */}
       <Box
         sx={{
-          width: "300px",
+          width: "50%",
           padding: "20px",
           border: "1px solid #ddd",
           borderRadius: "8px",
@@ -188,6 +189,8 @@ const TouristManageProfile = ({ id }) => {
           Change Password
         </Typography>
         <ChangePasswordComponent id={id} type="tourist" />
+        <Divider sx={{ my: 4 }} />
+        <DeleteProfileRequest id={id} type="tourist" />
       </Box>
     </Box>
   );

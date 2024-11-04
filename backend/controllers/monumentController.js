@@ -115,8 +115,6 @@ const deleteMonumentById = async (req, res) => {
 // Helper function for handling filter criteria
 const getFilterCriteria = (tags, monumentTags) => {
   const filterCriteria = {};
-
-  console.log(tags);
   // Only include tags and monumentTags if they contain valid ObjectIds
   if (tags && tags.length > 0) {
     const validTags = tags.filter((id) => mongoose.Types.ObjectId.isValid(id));

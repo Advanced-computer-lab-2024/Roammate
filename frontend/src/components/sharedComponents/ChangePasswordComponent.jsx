@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Snackbar } from "@mui/material";
-import { changePassword } from "../../services/api"; // assume this is a function in your API service file
+import { changePassword } from "../../services/api";
 
 const ChangePasswordComponent = ({ id, type }) => {
   const [oldPassword, setOldPassword] = useState("");

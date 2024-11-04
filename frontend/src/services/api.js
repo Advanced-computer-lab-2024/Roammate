@@ -19,6 +19,14 @@ export const changePassword = async (id, type, oldPassword, newPassword) => {
   }
 };
 
+export const requestProfileDeletion = async (id, type) => {
+  //TODO
+};
+
+export const checkDeletionRequestStatus = async (id, type) => {
+  //todo
+};
+
 // ✅ This function is used to fetch all activities
 export const fetchActivities = async () => {
   const response = await axios.get(`${API_URL}activity`);
@@ -179,6 +187,15 @@ export const searchAndFilterComplaints = async (query, issuerId) => {
   return response.data;
 };
 
+// ✅ This function is used to search and filter deletion Requests for the Admin TODO
+export const searchAndFilterDeletionRequestsAdmin = async (query) => {
+  // const response = await axios.get(`${API_URL}complaints`, {
+  //   params: query,
+  // });
+  // return response.data;
+  return [];
+};
+
 // ✅ This function is used to search and filter complaints for the Admin
 export const searchAndFilterComplaintsAdmin = async (query) => {
   const response = await axios.get(`${API_URL}complaints`, {
@@ -197,6 +214,12 @@ export const createComplaint = async (data) => {
 export const approveComplaint = async (data, complaintId) => {
   const response = await axios.put(`${API_URL}complaint/${complaintId}`, data);
   return response.data;
+};
+
+// ✅ This function is used to approve complaints
+export const approveDeletionRequest = async (deletionRequestId) => {
+  //todo
+  return [];
 };
 
 // ✅ This function is used to search and filter products

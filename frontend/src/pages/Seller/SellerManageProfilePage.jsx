@@ -20,6 +20,7 @@ import {
   uploadSellerLogo,
   downloadImage,
 } from "../../services/api";
+import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 
 const SellerManageProfilePage = ({ id }) => {
   const [username, setUsername] = useState("");
@@ -348,6 +349,8 @@ const SellerManageProfilePage = ({ id }) => {
               Change Password
             </Typography>
             <ChangePasswordComponent id={id} type="seller" />
+            <Divider sx={{ my: 4 }} />
+            <DeleteProfileRequest id={id} type="seller" />
           </Box>
         </Box>
       </Box>

@@ -29,6 +29,7 @@ import TourismGovernorLayout from "./components/touristGovernerComponents/Touris
 import TourismGovernorMuseumsPage from "./pages/TourismGovernor/TourismGovernerMusuemsPage";
 import TourismGovernorManageProfile from "./pages/TourismGovernor/TourismGovernorManageProfile";
 import TouristMuseumsPage from "./pages/Tourist/TouristMusuemsPage";
+import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
 
 const theme = createTheme({
   // palette: {
@@ -132,6 +133,10 @@ function App() {
             <Route
               path="/admin/editProfile"
               element={<AdminManageProfile id={adminId} />}
+            />
+            <Route
+              path="/admin/deletion-requests"
+              element={<AdminDeletionRequestsPage id={adminId} />}
             />
           </Route>
         </Routes>
