@@ -9,6 +9,45 @@ const getAllTourismGovernors = async (req, res) => {
   }
 };
 
+const getTourismGovernorById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const tourismGovernor = await User.findOne({
+      _id: id,
+      role: "tourism governor",
+    });
+
+    if (!tourismGovernor) {
+      return res.status(404).send({ message: "Tourism Governor not found" });
+    }
+
+    res.status(200).send(tourismGovernor);
+  } catch (error) {
+    res.status(500).send({ message: "Server error", error: error.message });
+  }
+};
+
+const updateTourismGovernorById = async (req, res) => {
+  const { id } = req.params;
+  const { username } = req.body;
+
+  try {
+    const updatedTourismGovernor = await User.findByIdAndUpdate(
+      id,
+      { username },
+      { new: true }
+    );
+
+    if (!updatedTourismGovernor) {
+      return res.status(404).send({ message: "Tourism Governor not found" });
+    }
+
+    res.status(200).send(updatedTourismGovernor);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
 const addTourismGovernor = async (req, res) => {
   const { username, password } = req.body;
   const role = "tourism governor";
@@ -25,4 +64,9 @@ const addTourismGovernor = async (req, res) => {
   }
 };
 
-module.exports = { getAllTourismGovernors, addTourismGovernor };
+module.exports = {
+  getAllTourismGovernors,
+  addTourismGovernor,
+  getTourismGovernorById,
+  updateTourismGovernorById,
+};

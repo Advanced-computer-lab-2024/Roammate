@@ -7,33 +7,27 @@ import {
   CardContent,
   Divider,
   Button,
-  TextField,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { approveComplaint } from "../../services/api";
+import { approveDeletionRequest } from "../../services/api";
 
-const AdminViewComplaint = ({ complaint }) => {
-  const [reply, setReply] = useState(complaint.reply || "");
-  const [status, setStatus] = useState(complaint.status);
+const AdminViewDeletionRequest = ({ request }) => {
+  const [status, setStatus] = useState(request.status);
   const [loading, setLoading] = useState(false);
 
   const handleApprove = async () => {
-    if (!reply) {
-      alert("Please provide a reply before approving.");
-      return;
-    }
     setLoading(true);
     try {
-      await approveComplaint({ reply }, complaint._id);
-      setStatus("Resolved");
+      await approveDeletionRequest(request._id);
+      setStatus("Approved");
     } catch (error) {
-      console.error("Failed to approve complaint:", error);
+      console.error("Failed to approve deletion request:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (!complaint) {
+  if (!request) {
     return (
       <h2>
         Loading
@@ -66,61 +60,22 @@ const AdminViewComplaint = ({ complaint }) => {
           gutterBottom
           sx={{ fontWeight: "bold", color: "primary.main" }}
         >
-          {complaint.title}
+          Account Deletion Request
         </Typography>
 
         <Divider sx={{ my: 2 }} />
 
-        {/* Body */}
+        {/* Account Info */}
         <Typography
           variant="h6"
           sx={{ fontWeight: "bold", mb: 1, color: "text.primary" }}
         >
-          Complaint Details
+          Account Information
         </Typography>
         <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
-          {complaint.body}
+          Account Type: {request.accountType} <br />
+          Account ID: {request.accountId}
         </Typography>
-
-        <Divider sx={{ my: 2 }} />
-
-        {/* Tourist Info */}
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: "bold", color: "text.primary" }}
-        >
-          Issuer Information
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
-          Username: {complaint.issuerId.username} <br />
-          User ID: {complaint.issuerId._id}
-        </Typography>
-
-        <Divider sx={{ my: 2 }} />
-
-        {/* Reply */}
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: "bold", color: "text.primary" }}
-        >
-          Admin Reply
-        </Typography>
-        {status === "Resolved" ? (
-          <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
-            {reply || "No reply provided yet."}
-          </Typography>
-        ) : (
-          <TextField
-            label="Write a Reply"
-            value={reply}
-            onChange={(e) => setReply(e.target.value)}
-            fullWidth
-            multiline
-            rows={3}
-            variant="outlined"
-            sx={{ mb: 2 }}
-          />
-        )}
 
         <Divider sx={{ my: 2 }} />
 
@@ -135,11 +90,11 @@ const AdminViewComplaint = ({ complaint }) => {
           variant="body2"
           sx={{
             mb: 2,
-            color: status === "Resolved" ? "success.main" : "warning.main",
+            color: status === "Approved" ? "success.main" : "warning.main",
             fontWeight: "bold",
           }}
         >
-          {status === "Resolved" ? "Approved" : "Pending Approval"}
+          {status === "Approved" ? "Approved" : "Pending Approval"}
         </Typography>
 
         <Divider sx={{ my: 2 }} />
@@ -149,14 +104,14 @@ const AdminViewComplaint = ({ complaint }) => {
           variant="h6"
           sx={{ fontWeight: "bold", color: "text.primary" }}
         >
-          Created On
+          Requested On
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {dayjs(complaint.createdAt).format("MMMM D, YYYY")}
+          {dayjs(request.createdAt).format("MMMM D, YYYY")}
         </Typography>
 
         {/* Approve Button */}
-        {status !== "Resolved" && (
+        {status !== "Approved" && (
           <Box sx={{ textAlign: "right", mt: 3 }}>
             <Button
               variant="contained"
@@ -164,7 +119,7 @@ const AdminViewComplaint = ({ complaint }) => {
               onClick={handleApprove}
               disabled={loading}
             >
-              {loading ? "Approving..." : "Approve"}
+              {loading ? "Approving..." : "Approve Deletion Request"}
             </Button>
           </Box>
         )}
@@ -173,4 +128,4 @@ const AdminViewComplaint = ({ complaint }) => {
   );
 };
 
-export default AdminViewComplaint;
+export default AdminViewDeletionRequest;

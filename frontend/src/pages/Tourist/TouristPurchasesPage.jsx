@@ -17,7 +17,6 @@ const TouristPurchases = ({ id }) => {
         const fetchPurchases = async () => {
             const response = await fetchPurchasedProductsByTouristId(id);
             setPurchases(response);
-            console.log(response);
 
         }
         fetchPurchases();

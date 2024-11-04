@@ -2,6 +2,31 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/api/";
 
+// ✅ This function is used to change the Password of users
+export const changePassword = async (id, type, oldPassword, newPassword) => {
+  try {
+    const response = await axios.post(`${API_URL}change-password`, {
+      id,
+      type,
+      oldPassword,
+      newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to change password."
+    );
+  }
+};
+
+export const requestProfileDeletion = async (id, type) => {
+  //TODO
+};
+
+export const checkDeletionRequestStatus = async (id, type) => {
+  //todo
+};
+
 // ✅ This function is used to fetch all activities
 export const fetchActivities = async () => {
   const response = await axios.get(`${API_URL}activity`);
@@ -24,6 +49,12 @@ export const fetchItinerariesByTourGuideId = async (id) => {
 export const fetchProductsBySellerId = async (id) => {
   var prodcuts = await axios.get(`${API_URL}product-seller/${id}`);
   return prodcuts.data;
+};
+
+// ✅ This function is used to fetch all Musuems (for the Governor)
+export const fetchMusuemsByTourismGovernorId = async (id) => {
+  var activies = await axios.get(`${API_URL}monument/tourismGovernor/${id}`);
+  return activies.data;
 };
 
 // This function is used to upload identification document for a Seller
@@ -156,6 +187,15 @@ export const searchAndFilterComplaints = async (query, issuerId) => {
   return response.data;
 };
 
+// ✅ This function is used to search and filter deletion Requests for the Admin TODO
+export const searchAndFilterDeletionRequestsAdmin = async (query) => {
+  // const response = await axios.get(`${API_URL}complaints`, {
+  //   params: query,
+  // });
+  // return response.data;
+  return [];
+};
+
 // ✅ This function is used to search and filter complaints for the Admin
 export const searchAndFilterComplaintsAdmin = async (query) => {
   const response = await axios.get(`${API_URL}complaints`, {
@@ -174,6 +214,12 @@ export const createComplaint = async (data) => {
 export const approveComplaint = async (data, complaintId) => {
   const response = await axios.put(`${API_URL}complaint/${complaintId}`, data);
   return response.data;
+};
+
+// ✅ This function is used to approve complaints
+export const approveDeletionRequest = async (deletionRequestId) => {
+  //todo
+  return [];
 };
 
 // ✅ This function is used to search and filter products
@@ -209,6 +255,20 @@ export const fetchAllMonumentTags = async () => {
   return response.data;
 };
 
+// This function is used to fetch all pending users
+export const fetchAllPendingUsers = async (status) => {
+  const response = await axios.get(`${API_URL}/users/status/pending/`);
+  return response.data;
+};
+
+// This function is used to update all users status
+export const updateUserStatus = async (id, status) => {
+  const response = await axios.patch(`${API_URL}/users/status/${id}`, {
+    status: status,
+  });
+  return response.data;
+};
+
 // ✅ This function is used to fetch Tourist's profile
 export const fetchTouristProfile = async (id) => {
   const response = await axios.get(`${API_URL}tourist/${id}`);
@@ -218,6 +278,30 @@ export const fetchTouristProfile = async (id) => {
 // ✅ This function is used to update Tourist's profile
 export const updateTouristProfile = async (id, data) => {
   const response = await axios.patch(`${API_URL}tourist/${id}`, data);
+  return response;
+};
+
+// ✅ This function is used to fetch Tourist's profile
+export const fetchAdminProfile = async (id) => {
+  const response = await axios.get(`${API_URL}admin/${id}`);
+  return response.data;
+};
+
+// ✅ This function is used to update Tourist's profile
+export const updateAdminProfile = async (id, data) => {
+  const response = await axios.patch(`${API_URL}admin/${id}`, data);
+  return response;
+};
+
+// ✅ This function is used to fetch TourismGovernor's profile
+export const fetchTourismGovernorProfile = async (id) => {
+  const response = await axios.get(`${API_URL}tourismGovernor/${id}`);
+  return response.data;
+};
+
+// ✅ This function is used to update TourismGovernor's profile
+export const updateTourismGovernorProfile = async (id, data) => {
+  const response = await axios.patch(`${API_URL}tourismGovernor/${id}`, data);
   return response;
 };
 
@@ -451,8 +535,8 @@ export const fetchMonumentTags = async () => {
 
 export const updateMonument = async (monumentId, updatedData) => {
   try {
-    const response = await axios.put(
-      `${API_URL}monuments/${monumentId}`,
+    const response = await axios.patch(
+      `${API_URL}monument/${monumentId}`,
       updatedData
     );
     return response.data.data;
@@ -476,6 +560,14 @@ export const updateMonumentTag = async (tagId, tagData) => {
 
 export const deleteMonumentTag = async (tagId) => {
   return await axios.delete(`${API_URL}/monumenttags/${tagId}`);
+};
+
+export const downloadImage = async (id) => {
+  return await axios.get(`${API_URL}image/${id}`, { responseType: "blob" });
+};
+
+export const downloadPdf = async (id) => {
+  return await axios.get(`${API_URL}pdf/${id}`, { responseType: "blob" });
 };
 
 //activity bookings

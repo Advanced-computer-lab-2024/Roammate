@@ -27,7 +27,14 @@ import TouristBookedItineraries from "./pages/Tourist/TouristBookedItinerariesPa
 import TouristBookedVisits from "./pages/Tourist/TouristBookedVisitsPage";
 import TouristPurchases from "./pages/Tourist/TouristPurchasesPage";
 import TouristComplaintsPage from "./pages/Tourist/TouristComplaintsPage";
+import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
 import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
+import AdminManageProfile from "./pages/Admin/AdminManageProfile";
+import TourismGovernorLayout from "./components/touristGovernerComponents/TourismGovernorLayout";
+import TourismGovernorMuseumsPage from "./pages/TourismGovernor/TourismGovernerMusuemsPage";
+import TourismGovernorManageProfile from "./pages/TourismGovernor/TourismGovernorManageProfile";
+import TouristMuseumsPage from "./pages/Tourist/TouristMusuemsPage";
+import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
 
 const theme = createTheme({
   // palette: {
@@ -50,10 +57,12 @@ const theme = createTheme({
 
 function App() {
   // const touristId = '671d24b973e0e7cff8d41903';
+  const adminId = "67280e50b680764bbd7428a4";
   const touristId = "671d24b973e0e7cff8d41903";
   const advertiserId = "671d255373e0e7cff8d41909";
   const tourguideId = "671d250873e0e7cff8d41907";
   const sellerId = "6724be8b35b1914550e721f9";
+  const tourismGovernorId = "67281f3d5d85a6e12ab86379";
 
   return (
     <ThemeProvider theme={theme}>
@@ -69,19 +78,13 @@ function App() {
               element={<TouristItinerariesPage />}
             />
             <Route path="/tourist/products" element={<TouristProductsPage />} />
-            <Route path="/tourist/monuments" element={<h2 style={{ color: 'grey' }}>🚧 Under Construction 🚧</h2>} />
             <Route path="/tourist/editProfile" element={<TouristEditProfile id={touristId} />} />
             <Route path="/tourist/bookings/activities" element={<TouristBookedActivities id={touristId} />} />
             <Route path="/tourist/bookings/itineraries" element={<TouristBookedItineraries id={touristId} />} />
             <Route path="/tourist/bookings/visits" element={<TouristBookedVisits id={touristId} />} />
             <Route path="/tourist/purchases" element={<TouristPurchases id={touristId} />} />
 
-            <Route
-              path="/tourist/monuments"
-              element={
-                <h2 style={{ color: "grey" }}>🚧 Under Construction 🚧</h2>
-              }
-            />
+            <Route path="/tourist/monuments" element={<TouristMuseumsPage />} />
             <Route
               path="/tourist/complaints"
               element={<TouristComplaintsPage touristId={touristId} />}
@@ -125,15 +128,28 @@ function App() {
             />
           </Route>
 
-          <Route
-            path="/tourismGovernor"
-            element={
-              <h2 style={{ color: "grey" }}>🚧 Under Construction 🚧</h2>
-            }
-          />
+          <Route path="/tourismGovernor" element={<TourismGovernorLayout />}>
+            <Route
+              path="/tourismGovernor/musuems"
+              element={<TourismGovernorMuseumsPage id={tourismGovernorId} />}
+            />
+            <Route
+              path="/tourismGovernor/editProfile"
+              element={<TourismGovernorManageProfile id={tourismGovernorId} />}
+            />
+          </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/registrations" element={<AdminRegistrationsPage />} />
             <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
+            <Route
+              path="/admin/editProfile"
+              element={<AdminManageProfile id={adminId} />}
+            />
+            <Route
+              path="/admin/deletion-requests"
+              element={<AdminDeletionRequestsPage id={adminId} />}
+            />
           </Route>
         </Routes>
       </Router>

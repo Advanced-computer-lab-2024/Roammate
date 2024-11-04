@@ -14,12 +14,23 @@ const {
   touristController,
   tourismGovernorController,
   complaintController,
+  filesController,
+  userController,
+  bookingController,
 } = require("../controllers");
 
 const router = express.Router();
 
+//Routes for User
+router.patch("/users/status", userController.updateAllUsersStatus); // Update the status of all users
+router.patch("/users/status/:id", userController.updateUserStatus); // Update the status of a specific user by ID
+router.get("/users/status/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status
+//--------------------------------------------------------------
+
 //Routes for Admin
 router.post("/admin", adminController.addAdmin);
+router.get("/admin/:id", adminController.getAdminById);
+router.patch("/admin/:id", adminController.editAdmin);
 router.get("/admin", adminController.getAllAdmins);
 router.delete("/admin/:id", adminController.deleteUser);
 //----------------------------------------------- ---------------
@@ -29,6 +40,21 @@ router.post("/advertiser", advertiserController.register);
 router.get("/advertiser/:id", advertiserController.getAdvertiserById);
 router.patch("/advertiser/:id", advertiserController.updateAdvertiserById);
 router.get("/advertiser", advertiserController.getAllAdvertisers);
+router.post(
+  "/advertiser/identification/upload",
+  advertiserController.uploadMiddleware,
+  advertiserController.uploadId
+);
+router.post(
+  "/advertiser/taxation/upload",
+  advertiserController.uploadMiddleware,
+  advertiserController.uploadTaxation
+);
+router.post(
+  "/advertiser/logo/upload",
+  advertiserController.uploadMiddleware,
+  advertiserController.uploadLogo
+);
 router.post(
   "/advertiser/identification/upload",
   advertiserController.uploadMiddleware,
@@ -66,6 +92,21 @@ router.post(
   sellerController.uploadMiddleware,
   sellerController.uploadLogo
 );
+router.post(
+  "/seller/identification/upload",
+  sellerController.uploadMiddleware,
+  sellerController.uploadId
+);
+router.post(
+  "/seller/taxation/upload",
+  sellerController.uploadMiddleware,
+  sellerController.uploadTaxation
+);
+router.post(
+  "/seller/logo/upload",
+  sellerController.uploadMiddleware,
+  sellerController.uploadLogo
+);
 //--------------------------------------------------------------
 
 //Routes for Tourist
@@ -81,6 +122,14 @@ router.get(
   "/tourismGovernor",
   tourismGovernorController.getAllTourismGovernors
 );
+router.get(
+  "/tourismGovernor/:id",
+  tourismGovernorController.getTourismGovernorById
+);
+router.patch(
+  "/tourismGovernor/:id",
+  tourismGovernorController.updateTourismGovernorById
+);
 //--------------------------------------------------------------
 
 //Routes for Tour Guide
@@ -88,6 +137,21 @@ router.post("/tourGuide", tourGuideController.register);
 router.get("/tourGuide/:id", tourGuideController.getTourGuideById);
 router.patch("/tourGuide/:id", tourGuideController.updateTourGuideById);
 router.get("/tourGuide", tourGuideController.getAllTourGuides);
+router.post(
+  "/tourGuide/identification/upload",
+  tourGuideController.uploadMiddleware,
+  tourGuideController.uploadId
+);
+router.post(
+  "/tourGuide/certificate/upload",
+  tourGuideController.uploadMiddleware,
+  tourGuideController.uploadCertificate
+);
+router.post(
+  "/tourGuide/photo/upload",
+  tourGuideController.uploadMiddleware,
+  tourGuideController.uploadPhoto
+);
 router.post(
   "/tourGuide/identification/upload",
   tourGuideController.uploadMiddleware,
@@ -266,5 +330,66 @@ router.patch(
   productController.updateProductPurchasedStatusById
 );
 //--------------------------------------------------------------
+
+//Routes for activity reviews
+router.post("/activityReviews/:id", activityController.addReviewToActivity);
+//--------------------------------------------------------------
+
+//Routes for activity booking
+router.get(
+  "/activityBookings/:id",
+  activityController.getBookedActivitiesByTouristId
+);
+router.post("/activityBookings", activityController.addActivityBooking);
+router.delete(
+  "/activityBookings/:id",
+  activityController.deleteActivityBooking
+);
+//--------------------------------------------------------------
+
+//Routes for itinerary reviews
+router.post("/itineraryReviews/:id", itineraryController.addReviewToItinerary);
+//--------------------------------------------------------------
+
+//Routes for itinerary booking
+router.get(
+  "/itineraryBookings/:id",
+  itineraryController.getBookedItinerariesByTouristId
+);
+router.post("/itineraryBookings", itineraryController.addItineraryBooking);
+router.delete(
+  "/itineraryBookings/:id",
+  itineraryController.deleteItineraryBooking
+);
+//--------------------------------------------------------------
+
+//Routes for product reviews
+router.post("/productReviews/:id", productController.addReviewToProduct);
+//--------------------------------------------------------------
+
+//Routes for product purchasing
+router.get(
+  "/productPurchasings/:id",
+  productController.getPurchasedProductsByTouristId
+);
+router.post("/productPurchasings", productController.addProductPurchasing);
+router.delete(
+  "/productPurchasings/:id",
+  productController.deleteProductPurchasingById
+);
+router.patch(
+  "/productPurchasings/:id",
+  productController.updateProductPurchasedStatusById
+);
+//--------------------------------------------------------------
+
+//Routes for Files Download
+router.get("/image/:id", filesController.getImage);
+router.get("/pdf/:id", filesController.getPdf);
+
+//Routes for booking
+router.post("/search-flights", bookingController.searchFlights);
+router.get("/search-hotels", bookingController.searchHotels);
+router.get("/list-hotels", bookingController.getHotelListByCity);
 
 module.exports = router;

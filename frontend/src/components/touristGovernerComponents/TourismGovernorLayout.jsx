@@ -17,46 +17,34 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import MuseumIcon from "@mui/icons-material/Museum";
 
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-const navItems = [
-  "Home",
-  "Add Admin",
-  "Add Governor",
-  "Account Deletion Requests",
-];
+const navItems = ["Home", "Add Musuems", "Add Monument Tag"];
 
 const drawerWidth = 240;
-const AdminLayout = () => {
+const TourismGovernorLayout = () => {
   const [open, setOpen] = React.useState(false);
-  const [buttons, setButtons] = React.useState([
-    "Users",
-    "Registrations",
-    "Complaints",
-    "Products",
-  ]);
-  const [activeButton, setActiveButton] = React.useState("Users");
+  const [buttons, setButtons] = React.useState(["Museums"]);
+  const [activeButton, setActiveButton] = React.useState("Museums");
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (activeButton === "Users") {
-      // navigate('/admin/functionalityA');
-    } else if (activeButton === "Registrations") {
-      navigate('/admin/registrations');
-    } else if (activeButton === "Complaints") {
-      navigate(`/admin/complaints?id=`);
+    if (activeButton === "Museums") {
+      navigate(`/tourismGovernor/musuems?id=`);
+    } else if (activeButton === "Add Musuems") {
+      //   navigate("/seller");
     } else if (activeButton === "Edit Profile") {
-      navigate("/admin/editProfile");
-    } else if (activeButton === "Account Deletion Requests") {
-      navigate("/admin/deletion-requests");
+      navigate("/tourismGovernor/editProfile");
     }
   }, [activeButton, navigate]);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <Box
@@ -82,16 +70,8 @@ const AdminLayout = () => {
               alignItems: "center",
             }}
           >
-            <ListItemButton
-              onClick={() => {
-                if (text === "Home") {
-                  setActiveButton("Users");
-                } else {
-                  setActiveButton(text);
-                }
-              }}
-            >
-              {text === "Home" ? <HomeIcon /> : <AddCircleIcon />}
+            <ListItemButton onClick={() => setActiveButton(text)}>
+              {text === "Home" ? <HomeIcon /> : <MuseumIcon />}
               <ListItemText primary={text} sx={{ textAlign: "center" }} />
             </ListItemButton>
           </ListItem>
@@ -154,7 +134,7 @@ const AdminLayout = () => {
                 textAlign: "left",
               }}
             >
-              R
+              Tourism
             </Typography>
             <PublicIcon />
             <Typography
@@ -164,19 +144,9 @@ const AdminLayout = () => {
                 textAlign: "left",
               }}
             >
-              AMMATE
+              Governor
             </Typography>
           </Box>
-          {/* <IconButton
-                        size="large"
-                        edge="end"
-                        color="inherit"
-                        aria-label="profile"
-                        sx={{ ml: 2 }}
-                        onClick={() => setActiveButton('Edit Profile')}
-                    >
-                        <AccountCircleIcon />
-                    </IconButton> */}
           <IconButton
             size="large"
             edge="end"
@@ -236,4 +206,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default TourismGovernorLayout;
