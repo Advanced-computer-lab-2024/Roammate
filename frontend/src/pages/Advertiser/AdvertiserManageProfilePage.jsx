@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  Avatar,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Divider,
-} from "@mui/material";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { Avatar, Box, Typography, TextField, Button, Divider, Alert } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import ChangePasswordComponent from "../../components/sharedComponents/ChangePasswordComponent";
@@ -21,19 +15,22 @@ import {
 } from "../../services/api";
 
 const AdvertiserManageProfile = ({ id }) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [website, setWebsite] = useState("");
-  const [hotline, setHotline] = useState("");
-  const [description, setDescription] = useState("");
-  const [foundedYear, setFoundedYear] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [location, setLocation] = useState("");
-  const [employees, setEmployees] = useState("");
-  const [services, setServices] = useState("");
-  const [disabled, setDisabled] = useState(true);
-  const [edit, setEdit] = useState(false);
-  const [err, setErr] = useState("");
+    //username,email,website,hotline,companyProfile,description,foundedYear,industry,location,employees,services
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [website, setWebsite] = useState("");
+    const [hotline, setHotline] = useState("");
+    const [description, setDescription] = useState("");
+    const [foundedYear, setFoundedYear] = useState("");
+    const [industry, setIndustry] = useState("");
+    const [location, setLocation] = useState("");
+    const [employees, setEmployees] = useState("");
+    const [services, setServices] = useState("");
+    const [status, setStatus] = useState("");
+    const [disabled, setDisabled] = useState(true);
+    const [edit, setEdit] = useState(false);
+    const [err, setErr] = useState("");
+
 
   const [identification, setIdentification] = useState(null);
   const [taxation, setTaxation] = useState(null);
@@ -51,20 +48,21 @@ const AdvertiserManageProfile = ({ id }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchAdvertiser = async () => {
-      try {
-        const data = await fetchAdvertiserProfile(id);
-        setUsername(data.username);
-        setEmail(data.email);
-        setWebsite(data.website);
-        setHotline(data.hotline);
-        setDescription(data.companyProfile.description);
-        setFoundedYear(data.companyProfile.foundedYear);
-        setIndustry(data.companyProfile.industry);
-        setLocation(data.companyProfile.location);
-        setEmployees(data.companyProfile.employees);
-        setServices(data.companyProfile.services);
+    useEffect(() => {
+        // fetch data from backend
+        const fetchAdvertiser = async () => {
+            const data = await fetchAdvertiserProfile(id);
+            setUsername(data.username);
+            setEmail(data.email);
+            setWebsite(data.website);
+            setHotline(data.hotline);
+            setDescription(data.companyProfile.description);
+            setFoundedYear(data.companyProfile.foundedYear);
+            setIndustry(data.companyProfile.industry);
+            setLocation(data.companyProfile.location);
+            setEmployees(data.companyProfile.employees);
+            setServices(data.companyProfile.services);
+            setStatus(data.status);
 
         if (data.documents.logo) fetchLogo(data.documents.logo);
       } catch (err) {
@@ -363,68 +361,64 @@ const AdvertiserManageProfile = ({ id }) => {
             )}
           </form>
 
-          {/* File Upload Section */}
-          <Box
-            component="form"
-            className="file-upload-form"
-            onSubmit={handleDocumentsSubmit}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              padding: 2,
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-            }}
-          >
-            <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
-              Upload Documents
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-                sx={{
-                  backgroundColor: identification ? "green" : "primary.main",
-                  color: "white",
-                }}
-              >
-                Upload Identification
-                <VisuallyHiddenInput
-                  type="file"
-                  onChange={handleIdentificationChange}
-                />
-              </Button>
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-                sx={{
-                  backgroundColor: taxation ? "green" : "primary.main",
-                  color: "white",
-                }}
-              >
-                Upload Taxation
-                <VisuallyHiddenInput
-                  type="file"
-                  onChange={handleTaxationChange}
-                />
-              </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={!identification || !taxation}
-                sx={{
-                  backgroundColor: documentSubmitted ? "green" : "primary.main",
-                  color: "white",
-                }}
-              >
-                Upload
-              </Button>
+                </Box>
+
+                {/* File Upload Section */}
+                {status === "guest" &&
+                    <Box
+                        component="form"
+                        className="file-upload-form"
+                        onSubmit={handleDocumentsSubmit}
+                        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                    >
+                        <Alert severity="warning">You need to upload the following documents to access the system. </Alert>
+                        <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                            {/* Identification Upload */}
+                            <Button
+                                component="label"
+                                variant="contained"
+                                startIcon={<CloudUploadIcon />}
+                                sx={{
+                                    backgroundColor: identification ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload Identification
+                                <VisuallyHiddenInput type="file" onChange={handleIdentificationChange} />
+                            </Button>
+
+                            {/* Taxation Upload */}
+                            <Button
+                                component="label"
+                                variant="contained"
+                                startIcon={<CloudUploadIcon />}
+                                sx={{
+                                    backgroundColor: taxation ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload Taxation Registry Card
+                                <VisuallyHiddenInput type="file" onChange={handleTaxationChange} />
+                            </Button>
+
+                            {/* Submit Button */}
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disabled={!identification || !taxation}
+                                sx={{
+                                    backgroundColor: documentSubmitted ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload
+                            </Button>
+
+                        </Box>
+
+                    </Box>
+                }
             </Box>
-          </Box>
-        </Box>
 
         {/* Change Password Component on the Right */}
         <Box

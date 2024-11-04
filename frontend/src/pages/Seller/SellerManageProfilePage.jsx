@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Box, Typography, TextField, Button } from "@mui/material";
+import { Avatar, Box, Typography, TextField, Button, Alert } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import ChangePasswordComponent from "../../components/sharedComponents/ChangePasswordComponent";
@@ -18,6 +18,7 @@ const SellerManageProfilePage = ({ id }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [about, setAbout] = useState("");
+    const [status, setStatus] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [edit, setEdit] = useState(false);
   const [err, setErr] = useState("");
@@ -46,6 +47,7 @@ const SellerManageProfilePage = ({ id }) => {
         setName(data.name);
         setEmail(data.email);
         setAbout(data.about);
+            setStatus(data.status);
 
         if (data.documents.logo) fetchLogo(data.documents.logo);
       } catch (err) {
@@ -130,209 +132,209 @@ const SellerManageProfilePage = ({ id }) => {
     display: "none",
   });
 
-  return (
-    <Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          mb: 3,
-        }}
-      >
-        <label htmlFor="logo-upload">
-          <Avatar
-            sx={{
-              width: 100,
-              height: 100,
-              cursor: "pointer",
-              backgroundColor: logo ? "transparent" : "primary.main",
-              fontSize: 40,
-            }}
-            src={logo}
-          >
-            {!logo && username.charAt(0).toUpperCase()}
-          </Avatar>
-        </label>
-        <LogoInput id="logo-upload" type="file" onChange={handleLogoChange} />
-      </Box>
-      <Box sx={{ display: "flex", gap: 3, padding: 3 }}>
-        {/* Profile and File Upload Sections */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
-            width: "70%",
-          }}
-        >
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "start",
-              justifyContent: "center",
-              gap: "15px",
-              padding: "20px",
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{ textAlign: "center", width: "100%" }}
-            >
-              Manage Profile
-            </Typography>
+    return (
+        <Box >
 
-            <TextField
-              label="Username"
-              type="text"
-              value={username}
-              disabled
-              variant="standard"
-              sx={{ width: "100%" }}
-            />
-            <TextField
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={disabled}
-              variant="standard"
-              sx={{ width: "100%" }}
-            />
-            <TextField
-              label="Name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={disabled}
-              variant="standard"
-              sx={{ width: "100%" }}
-            />
-            <TextField
-              label="About"
-              type="text"
-              value={about}
-              onChange={(e) => setAbout(e.target.value)}
-              disabled={disabled}
-              variant="standard"
-              sx={{ width: "100%" }}
-            />
-
-            {err && <Typography sx={{ color: "red" }}>{err}</Typography>}
-
-            {!edit && (
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setDisabled(false);
-                  setEdit(true);
-                }}
-                sx={{ color: "white", width: "100%" }}
-              >
-                Edit
-              </Button>
-            )}
-
-            {edit && (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "10px",
-                  width: "100%",
-                }}
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "green",
-                    color: "white",
-                    width: "100%",
-                  }}
-                  type="submit"
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setDisabled(true);
-                    setEdit(false);
-                  }}
-                  sx={{ backgroundColor: "red", color: "white", width: "100%" }}
-                >
-                  Cancel
-                </Button>
-              </Box>
-            )}
-          </form>
-
-          {/* File Upload Section */}
-          <Box
-            component="form"
-            className="file-upload-form"
-            onSubmit={handleDocumentsSubmit}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              padding: 2,
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-            }}
-          >
-            <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
-              Upload Documents
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-                sx={{
-                  backgroundColor: identification ? "green" : "primary.main",
-                  color: "white",
-                }}
-              >
-                Upload Identification
-                <VisuallyHiddenInput
-                  type="file"
-                  onChange={handleIdentificationChange}
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 3 }}>
+                <label htmlFor="logo-upload">
+                    <Avatar
+                        sx={{
+                            width: 100,
+                            height: 100,
+                            cursor: "pointer",
+                            backgroundColor: logo ? "transparent" : "primary.main",
+                            fontSize: 40,
+                        }}
+                        src={logo} // Show the logo if available
+                    >
+                        {!logo && username.charAt(0).toUpperCase()} {/* Show the first letter if no logo */}
+                    </Avatar>
+                </label>
+                <LogoInput
+                    id="logo-upload"
+                    type="file"
+                    onChange={handleLogoChange}
                 />
-              </Button>
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-                sx={{
-                  backgroundColor: taxation ? "green" : "primary.main",
-                  color: "white",
-                }}
-              >
-                Upload Taxation
-                <VisuallyHiddenInput
-                  type="file"
-                  onChange={handleTaxationChange}
-                />
-              </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={!identification || !taxation}
-                sx={{
-                  backgroundColor: documentSubmitted ? "green" : "primary.main",
-                  color: "white",
-                }}
-              >
-                Upload
-              </Button>
             </Box>
-          </Box>
-        </Box>
+
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+
+                {/* Profile Form on the Left */}
+                <Box sx={{ flex: 1 }}>
+
+                    <form onSubmit={handleSubmit} style={
+                        {
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "start",
+                            justifyContent: "center",
+                            width: '300px',
+                            height: "100%",
+                            gap: "15px",
+                            padding: "20px",
+
+                        }}>
+                        <Typography variant="h6" sx={{
+                            textAlign: 'center'
+                        }}>Manage Profile</Typography>
+                        <TextField
+                            label={"Username"}
+                            type={"text"}
+                            value={username}
+                            disabled={true}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Email"}
+                            type={"email"}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Name"}
+                            type={"text"}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"About"}
+                            type={"text"}
+                            value={about}
+                            onChange={(e) => setAbout(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+
+                        {err && <Typography sx={{
+                            color: 'red'
+                        }}>{err}</Typography>}
+
+                        {!edit && <Button
+                            variant="contained"
+                            onClick={() => {
+                                setDisabled(false);
+                                setEdit(true);
+                            }}
+                            sx={{
+                                color: 'white',
+                                width: '100%'
+                            }}
+                        >
+                            Edit
+                        </Button>}
+
+                        {edit &&
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '10px',
+                                width: '100%'
+                            }}><Button
+                                variant="contained"
+                                onClick={() => {
+                                    setDisabled(false);
+                                }}
+                                sx={{
+                                    backgroundColor: 'green',
+                                    color: 'white',
+                                    width: '100%'
+                                }}
+                                type='submit'
+                            >
+                                    Save
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        setDisabled(true);
+                                        setEdit(false);
+                                    }}
+                                    sx={{
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        width: '100%'
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            </Box >
+                        }
+
+                    </form>
+                </Box>
+
+                {/* File Upload Section */}
+                {status === "guest" &&
+                    <Box
+                        component="form"
+                        className="file-upload-form"
+                        onSubmit={handleDocumentsSubmit}
+                        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                    >
+                        <Alert severity="warning">You need to upload the following documents to access the system. </Alert>
+                        <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                            {/* Identification Upload */}
+                            <Button
+                                component="label"
+                                variant="contained"
+                                startIcon={<CloudUploadIcon />}
+                                sx={{
+                                    backgroundColor: identification ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload Identification
+                                <VisuallyHiddenInput type="file" onChange={handleIdentificationChange} />
+                            </Button>
+
+                            {/* Taxation Upload */}
+                            <Button
+                                component="label"
+                                variant="contained"
+                                startIcon={<CloudUploadIcon />}
+                                sx={{
+                                    backgroundColor: taxation ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload Taxation Registry Card
+                                <VisuallyHiddenInput type="file" onChange={handleTaxationChange} />
+                            </Button>
+
+                            {/* Submit Button */}
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disabled={!identification || !taxation}
+                                sx={{
+                                    backgroundColor: documentSubmitted ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload
+                            </Button>
+
+                        </Box>
+
+                    </Box>
+                }
+            </Box>
 
         {/* Change Password Component on the Right */}
         <Box
