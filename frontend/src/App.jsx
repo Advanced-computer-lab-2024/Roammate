@@ -35,6 +35,8 @@ import TourismGovernorManageProfile from "./pages/TourismGovernor/TourismGoverno
 import TouristMuseumsPage from "./pages/Tourist/TouristMusuemsPage";
 import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
 import AdminActivitiesPage from "./pages/Admin/AdminActivitiesPage";
+import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
+import AdminItinerariesPage from "./pages/Admin/AdminItinerariesPage";
 
 const theme = createTheme({
   // palette: {
@@ -167,6 +169,18 @@ function App() {
             <Route
               path="/admin/deletion-requests"
               element={<AdminDeletionRequestsPage id={adminId} />}
+            />
+            <Route
+              path="/admin/activities"
+              element={<AdminActivitiesPage id={adminId} />}
+            />
+            <Route
+              path="/admin/itineraries"
+              element={<AdminItinerariesPage id={adminId} />}
+            />
+            <Route
+              path="/admin/products"
+              element={<TouristProductsPage id={adminId} />}
             />
           </Route>
         </Routes>

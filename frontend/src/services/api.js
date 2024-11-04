@@ -2,6 +2,10 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/api/";
 
+export const updateItineraryStatus = async (id) => {};
+
+export const flagItinerary = async (id) => {};
+
 export const updateActivityStatus = async (id) => {};
 
 // ✅ This function is used to change the Password of users

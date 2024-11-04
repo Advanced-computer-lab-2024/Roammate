@@ -11,22 +11,34 @@ import ShareIcon from "@mui/icons-material/Share";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import StarIcon from "@mui/icons-material/Star";
+import HeartIcon from "@mui/icons-material/Favorite";
 import BlockIcon from "@mui/icons-material/Block";
+import FlagIcon from "@mui/icons-material/Flag";
 import { useNavigate } from "react-router";
-import { updateActivityStatus } from "../../services/api"; // Import the API call function
+import { updateItineraryStatus, flagItinerary } from "../../services/api";
 
 const DATE_FORMAT = "YYYY/MM/DD";
 
-const AdminActivityCard = ({ activity }) => {
-  const [isActive, setIsActive] = useState(activity.isActive || true);
+const AdminItineraryCard = ({ itinerary }) => {
+  const [isActive, setIsActive] = useState(itinerary.isActive || true);
+  const [isFlagged, setIsFlagged] = useState(itinerary.isFlagged || false);
   const navigate = useNavigate();
 
   const handleToggleActive = async () => {
     try {
-      await updateActivityStatus(activity._id, { isActive: !isActive });
+      await updateItineraryStatus(itinerary._id, { isActive: !isActive });
       setIsActive(!isActive);
     } catch (error) {
-      console.error("Failed to update activity status:", error);
+      console.error("Failed to update itinerary status:", error);
+    }
+  };
+
+  const handleToggleFlag = async () => {
+    try {
+      await flagItinerary(itinerary._id, { isFlagged: !isFlagged });
+      setIsFlagged(!isFlagged);
+    } catch (error) {
+      console.error("Failed to flag itinerary:", error);
     }
   };
 
@@ -57,11 +69,11 @@ const AdminActivityCard = ({ activity }) => {
               textAlign: "left",
             }}
           >
-            {activity.title}
+            {itinerary.title}
           </Typography>
           <Rating
             name="read-only"
-            value={activity.averageRating}
+            value={itinerary.averageRating}
             readOnly
             precision={0.5}
             icon={<StarIcon style={{ fill: "orange" }} />}
@@ -79,25 +91,21 @@ const AdminActivityCard = ({ activity }) => {
           </IconButton>
         </Box>
 
-        {/* Description */}
+        {/* Tour Guide Info */}
         <Typography
           variant="body2"
           sx={{
             color: "text.secondary",
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
             textAlign: "left",
             mb: "10px",
             width: "100%",
           }}
         >
-          {activity.description}
+          Tour Guide: {itinerary.tourGuide.username} (ID:{" "}
+          {itinerary.tourGuide._id})
         </Typography>
 
-        {/* Advertiser Info */}
+        {/* Duration */}
         <Typography
           variant="body2"
           sx={{
@@ -107,8 +115,7 @@ const AdminActivityCard = ({ activity }) => {
             width: "100%",
           }}
         >
-          Advertiser: {activity.advertiser.username} (ID:{" "}
-          {activity.advertiser._id})
+          {itinerary.duration} itinerary
         </Typography>
 
         {/* Booking Status and Date */}
@@ -131,13 +138,13 @@ const AdminActivityCard = ({ activity }) => {
               color: "text.secondary",
             }}
           >
-            {dayjs(activity.startDate)
+            {dayjs(itinerary.startDate)
               .startOf("day")
-              .isBefore(dayjs(activity.endDate).startOf("day"))
-              ? `${dayjs(activity.startDate).format(DATE_FORMAT)} - ${dayjs(
-                  activity.endDate
+              .isBefore(dayjs(itinerary.endDate).startOf("day"))
+              ? `${dayjs(itinerary.startDate).format(DATE_FORMAT)} - ${dayjs(
+                  itinerary.endDate
                 ).format(DATE_FORMAT)}`
-              : `${dayjs(activity.startDate).format(DATE_FORMAT)}`}
+              : `${dayjs(itinerary.startDate).format(DATE_FORMAT)}`}
             <IconButton
               size="small"
               disabled
@@ -146,26 +153,18 @@ const AdminActivityCard = ({ activity }) => {
                 ml: "10px",
               }}
             >
-              {activity.isBookingAvailable ? (
-                <EventAvailableIcon
-                  sx={{
-                    fill: "green",
-                  }}
-                />
+              {itinerary.isBookingAvailable ? (
+                <EventAvailableIcon sx={{ fill: "green" }} />
               ) : (
-                <BlockIcon
-                  sx={{
-                    fill: "red",
-                  }}
-                />
+                <BlockIcon sx={{ fill: "red" }} />
               )}
               <Typography
                 fontSize={14}
                 sx={{
-                  color: `${activity.isBookingAvailable ? "green" : "red"}`,
+                  color: `${itinerary.isBookingAvailable ? "green" : "red"}`,
                 }}
               >
-                {activity.isBookingAvailable
+                {itinerary.isBookingAvailable
                   ? "booking available"
                   : "booking closed"}
               </Typography>
@@ -173,11 +172,12 @@ const AdminActivityCard = ({ activity }) => {
           </Typography>
 
           <Typography gutterBottom variant="h4" component="div">
-            ${activity.price}
+            ${itinerary.price}
           </Typography>
         </Box>
       </CardContent>
 
+      {/* Actions */}
       <CardActions
         sx={{
           display: "flex",
@@ -189,17 +189,32 @@ const AdminActivityCard = ({ activity }) => {
           width: "100%",
         }}
       >
+        {/* View Itinerary Button */}
         <Button
           variant="contained"
-          onClick={() => navigate(`/admin/activities?id=${activity._id}`)}
+          onClick={() => navigate(`/admin/itineraries?id=${itinerary._id}`)}
           endIcon={<ArrowForwardIosIcon />}
+        >
+          View
+        </Button>
+
+        {/* Toggle Flag Button */}
+        <ToggleButton
+          value="flagged"
+          selected={isFlagged}
+          onChange={handleToggleFlag}
           sx={{
-            backgroundColor: "green",
+            ml: 1,
+            backgroundColor: isFlagged ? "red" : "gray",
             color: "white",
+            "&:hover": {
+              backgroundColor: isFlagged ? "darkred" : "lightgray",
+            },
           }}
         >
-          View Activity
-        </Button>
+          <FlagIcon sx={{ mr: 1 }} />
+          {isFlagged ? "Inappropriate" : "Appropriate"}
+        </ToggleButton>
 
         {/* Toggle Active Status Button */}
         <ToggleButton
@@ -222,4 +237,4 @@ const AdminActivityCard = ({ activity }) => {
   );
 };
 
-export default AdminActivityCard;
+export default AdminItineraryCard;

@@ -57,6 +57,10 @@ const AdminLayout = () => {
       navigate("/admin/deletion-requests");
     } else if (activeButton === "Activities") {
       navigate(`/admin/activities?id=`);
+    } else if (activeButton === "Itineraries") {
+      navigate(`/admin/itineraries?id=`);
+    } else if (activeButton === "Products") {
+      navigate(`/admin/products?id=`);
     }
   }, [activeButton, navigate]);
 
