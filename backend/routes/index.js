@@ -84,6 +84,14 @@ router.get(
   "/tourismGovernor",
   tourismGovernorController.getAllTourismGovernors
 );
+router.get(
+  "/tourismGovernor/:id",
+  tourismGovernorController.getTourismGovernorById
+);
+router.patch(
+  "/tourismGovernor/:id",
+  tourismGovernorController.updateTourismGovernorById
+);
 //--------------------------------------------------------------
 
 //Routes for Tour Guide

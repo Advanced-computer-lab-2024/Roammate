@@ -43,6 +43,12 @@ export const fetchProductsBySellerId = async (id) => {
   return prodcuts.data;
 };
 
+// ✅ This function is used to fetch all Musuems (for the Governor)
+export const fetchMusuemsByTourismGovernorId = async (id) => {
+  var activies = await axios.get(`${API_URL}monument/tourismGovernor/${id}`);
+  return activies.data;
+};
+
 // This function is used to upload identification document for a Seller
 export const uploadSellerIdentification = async (userId, formData) => {
   const response = await axios.post(
@@ -247,6 +253,18 @@ export const fetchAdminProfile = async (id) => {
 // ✅ This function is used to update Tourist's profile
 export const updateAdminProfile = async (id, data) => {
   const response = await axios.patch(`${API_URL}admin/${id}`, data);
+  return response;
+};
+
+// ✅ This function is used to fetch TourismGovernor's profile
+export const fetchTourismGovernorProfile = async (id) => {
+  const response = await axios.get(`${API_URL}tourismGovernor/${id}`);
+  return response.data;
+};
+
+// ✅ This function is used to update TourismGovernor's profile
+export const updateTourismGovernorProfile = async (id, data) => {
+  const response = await axios.patch(`${API_URL}tourismGovernor/${id}`, data);
   return response;
 };
 
@@ -477,8 +495,8 @@ export const fetchMonumentTags = async () => {
 
 export const updateMonument = async (monumentId, updatedData) => {
   try {
-    const response = await axios.put(
-      `${API_URL}monuments/${monumentId}`,
+    const response = await axios.patch(
+      `${API_URL}monument/${monumentId}`,
       updatedData
     );
     return response.data.data;

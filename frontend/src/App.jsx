@@ -25,6 +25,9 @@ import TouristViewActivity from "./pages/Tourist/TouristViewActivityPage";
 import TouristComplaintsPage from "./pages/Tourist/TouristComplaintsPage";
 import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
 import AdminManageProfile from "./pages/Admin/AdminManageProfile";
+import TourismGovernorLayout from "./components/touristGovernerComponents/TourismGovernorLayout";
+import TourismGovernorMuseumsPage from "./pages/TourismGovernor/TourismGovernerMusuemsPage";
+import TourismGovernorManageProfile from "./pages/TourismGovernor/TourismGovernorManageProfile";
 
 const theme = createTheme({
   // palette: {
@@ -52,6 +55,7 @@ function App() {
   const advertiserId = "671d255373e0e7cff8d41909";
   const tourguideId = "671d250873e0e7cff8d41907";
   const sellerId = "6724be8b35b1914550e721f9";
+  const tourismGovernorId = "67281f3d5d85a6e12ab86379";
 
   return (
     <ThemeProvider theme={theme}>
@@ -116,12 +120,16 @@ function App() {
             />
           </Route>
 
-          <Route
-            path="/tourismGovernor"
-            element={
-              <h2 style={{ color: "grey" }}>🚧 Under Construction 🚧</h2>
-            }
-          />
+          <Route path="/tourismGovernor" element={<TourismGovernorLayout />}>
+            <Route
+              path="/tourismGovernor/musuems"
+              element={<TourismGovernorMuseumsPage id={tourismGovernorId} />}
+            />
+            <Route
+              path="/tourismGovernor/editProfile"
+              element={<TourismGovernorManageProfile id={tourismGovernorId} />}
+            />
+          </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
