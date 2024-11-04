@@ -2,6 +2,8 @@ const { default: mongoose } = require("mongoose");
 const { TourGuide, Review } = require("../models");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
+const AccountDeletionRequest = require("../models/AccountDeletionRequest");
+const ItineraryBooking = require("../models/ItineraryBooking");
 
 // username, password, role, email, mobile, yearsOfExperience, previousWork, languages, about
 const register = async (req, res) => {
@@ -216,6 +218,50 @@ const addReviewToTourguide = async (req, res) => {
   }
 };
 
+const deleteTourGuideIfNoUpcomingBookings = async (req, res) => {
+  const { id } = req.params;
+  const currentDate = new Date();
+
+  try {
+    // Check if the tour guide exists
+    const tourGuide = await TourGuide.findById({ _id: id });
+    if (!tourGuide) {
+      return res.status(404).json({ message: "Tour guide not found" });
+    }
+    // Find any upcoming bookings for itineraries created by this tour guide
+    const upcomingBooking = await ItineraryBooking.findOne({
+      date: { $gte: currentDate },
+    })
+      .populate({
+        path: "itinerary",
+        match: { tourGuide: id }, // Match only itineraries created by this tour guide
+      })
+      .exec();
+
+    // If there is an upcoming booking for one of their itineraries, deny deletion
+    if (upcomingBooking && upcomingBooking.itinerary) {
+      return res.status(403).json({
+        message: "Deletion denied: Tour guide has upcoming booked itineraries.",
+      });
+    }
+
+    // No upcoming bookings found, proceed with creating a deletion request
+    const deletionRequest = new AccountDeletionRequest({
+      accountType: "Tour Guide",
+      accountId: id,
+      status: "pending",
+    });
+    await deletionRequest.save();
+
+    res.status(201).json({
+      message: "Account deletion request for tour guide created successfully.",
+      deletionRequest,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   register,
   getAllTourGuides,
@@ -226,4 +272,5 @@ module.exports = {
   uploadCertificate,
   uploadPhoto,
   addReviewToTourguide,
+  deleteTourGuideIfNoUpcomingBookings,
 };

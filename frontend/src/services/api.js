@@ -25,12 +25,30 @@ export const changePassword = async (id, type, oldPassword, newPassword) => {
   }
 };
 
+// Function to request account deletion
 export const requestProfileDeletion = async (id, type) => {
-  //TODO
+  try {
+    let response;
+    if (type == "Advertiser") {
+      response = await axios.delete(
+        `${API_URL}request-delete-advertiser/${id}`
+      );
+    } else if (type == "Tourguide") {
+      response = await axios.delete(`${API_URL}request-delete-tourguide/${id}`);
+    }
+    return response.data; // Return the created deletion request
+  } catch (error) {
+    console.error("Error requesting profile deletion:", error);
+    throw error;
+  }
 };
 
+// ✅ This function checks the deletion request status for a user
 export const checkDeletionRequestStatus = async (id, type) => {
-  //todo
+  const response = await axios.get(`${API_URL}deletion-request-status`, {
+    params: { accountId: id, accountType: type },
+  });
+  return response.data;
 };
 
 // ✅ This function is used to fetch all activities
@@ -195,11 +213,10 @@ export const searchAndFilterComplaints = async (query, issuerId) => {
 
 // ✅ This function is used to search and filter deletion Requests for the Admin TODO
 export const searchAndFilterDeletionRequestsAdmin = async (query) => {
-  // const response = await axios.get(`${API_URL}complaints`, {
-  //   params: query,
-  // });
-  // return response.data;
-  return [];
+  const response = await axios.get(`${API_URL}deletion-requests`, {
+    params: query,
+  });
+  return response.data;
 };
 
 // ✅ This function is used to search and filter complaints for the Admin
@@ -222,10 +239,30 @@ export const approveComplaint = async (data, complaintId) => {
   return response.data;
 };
 
-// ✅ This function is used to approve complaints
+// ✅ This function is used to approve deletion requests
 export const approveDeletionRequest = async (deletionRequestId) => {
-  //todo
-  return [];
+  try {
+    const response = await axios.put(
+      `${API_URL}deletion-requests/${deletionRequestId}/approve`
+    );
+    return response.data; // Returns the approved deletion request data
+  } catch (error) {
+    console.error("Error approving deletion request:", error);
+    throw error;
+  }
+};
+
+// ✅ This function is used to deny deletion requests
+export const denyDeletionRequest = async (deletionRequestId) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}deletion-requests/${deletionRequestId}/deny`
+    );
+    return response.data; // Returns the denied deletion request data if necessary
+  } catch (error) {
+    console.error("Error denying deletion request:", error);
+    throw error;
+  }
 };
 
 // ✅ This function is used to search and filter products

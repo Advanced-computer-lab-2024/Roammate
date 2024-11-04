@@ -17,6 +17,7 @@ const {
   filesController,
   userController,
   bookingController,
+  deletionRequestsController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -69,6 +70,10 @@ router.post(
   "/advertiser/logo/upload",
   advertiserController.uploadMiddleware,
   advertiserController.uploadLogo
+);
+router.delete(
+  "/request-delete-advertiser/:id",
+  advertiserController.requestAdvertiserDeletionIfNoUpcomingBookings
 );
 //--------------------------------------------------------------
 
@@ -169,6 +174,11 @@ router.post(
 );
 router.post("/tourGuide/review/:id", tourGuideController.addReviewToTourguide);
 
+router.delete(
+  "/request-delete-tourguide/:id",
+  tourGuideController.deleteTourGuideIfNoUpcomingBookings
+);
+
 //--------------------------------------------------------------
 
 //Routes for Product
@@ -199,6 +209,10 @@ router.get(
 router.get(
   "/activity-tourist/:id",
   activityController.getBookedActivitiesByTouristId
+);
+router.get(
+  "/check-activity-booking/:activityId",
+  activityController.checkActivityBookingExists
 );
 //--------------------------------------------------------------
 
@@ -391,5 +405,39 @@ router.get("/pdf/:id", filesController.getPdf);
 router.post("/search-flights", bookingController.searchFlights);
 router.get("/search-hotels", bookingController.searchHotels);
 router.get("/list-hotels", bookingController.getHotelListByCity);
+
+//--------------------------------------------------------------
+
+//Routes for Deletion Requests
+
+router.get(
+  "/deletion-requests",
+  deletionRequestsController.searchDeletionRequestsWithFiltersAndSort
+);
+router.get(
+  "/deletion-requests/user/:userId",
+  deletionRequestsController.getDeletionRequestsByUserId
+);
+router.delete(
+  "/deletion-requests/:id",
+  deletionRequestsController.deleteDeletionRequest
+);
+router.patch(
+  "/deletion-requests/:id",
+  deletionRequestsController.editDeletionRequestStatus
+);
+router.put(
+  "/deletion-requests/:deletionRequestId/approve",
+  deletionRequestsController.approveDeletionRequest
+);
+router.put(
+  "/deletion-requests/:deletionRequestId/deny",
+  deletionRequestsController.denyDeletionRequest
+);
+
+router.get(
+  "/deletion-request-status",
+  deletionRequestsController.checkDeletionRequestStatus
+);
 
 module.exports = router;

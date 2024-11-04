@@ -179,7 +179,7 @@ function App() {
               element={<AdminItinerariesPage id={adminId} />}
             />
             <Route
-              path="/admin/products"
+              path="/admin/itineraries"
               element={<TouristProductsPage id={adminId} />}
             />
           </Route>

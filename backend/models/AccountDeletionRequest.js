@@ -14,7 +14,7 @@ const accountDeletionRequestSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "approved"],
+      enum: ["denied", "pending", "approved"],
       default: "pending",
       required: true,
     },

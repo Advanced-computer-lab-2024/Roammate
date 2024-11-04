@@ -391,7 +391,7 @@ const TourGuideManageProfile = ({ id }) => {
             </Typography>
             <ChangePasswordComponent id={id} type="tourguide" />
             <Divider sx={{ my: 4 }} />
-            <DeleteProfileRequest id={id} type="tourguide" />
+            <DeleteProfileRequest id={id} type="Tourguide" />
           </Box>
         </Box>
       </Box>
