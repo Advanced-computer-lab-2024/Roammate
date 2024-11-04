@@ -23,6 +23,7 @@ import ManageItineraryPage from "./pages/TourGuide/ManageItineraryPage";
 import AdminLayout from "./components/adminComponents/AdminLayout";
 import TouristViewActivity from "./pages/Tourist/TouristViewActivityPage";
 import TouristComplaintsPage from "./pages/Tourist/TouristComplaintsPage";
+import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
 import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
 import AdminManageProfile from "./pages/Admin/AdminManageProfile";
 import TourismGovernorLayout from "./components/touristGovernerComponents/TourismGovernorLayout";
@@ -129,6 +130,7 @@ function App() {
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/registrations" element={<AdminRegistrationsPage/>} />
             <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
             <Route
               path="/admin/editProfile"

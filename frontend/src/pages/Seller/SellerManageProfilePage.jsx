@@ -19,6 +19,7 @@ import {
   uploadSellerTaxation,
   uploadSellerLogo,
   downloadImage,
+  updateUserStatus
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 
@@ -93,6 +94,7 @@ const SellerManageProfilePage = ({ id }) => {
         formData2.append("file", taxation);
         await uploadSellerTaxation(id, formData2);
       }
+      await updateUserStatus(id, "pending");
       setDocumentSubmitted(true);
       alert("Files uploaded successfully!");
     } catch (error) {

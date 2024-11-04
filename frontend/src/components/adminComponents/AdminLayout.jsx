@@ -44,7 +44,7 @@ const AdminLayout = () => {
     if (activeButton === "Users") {
       // navigate('/admin/functionalityA');
     } else if (activeButton === "Registrations") {
-      // navigate('/admin/functionalityB');
+      navigate('/admin/registrations');
     } else if (activeButton === "Complaints") {
       navigate(`/admin/complaints?id=`);
     } else if (activeButton === "Edit Profile") {

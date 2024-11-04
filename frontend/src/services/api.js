@@ -255,6 +255,18 @@ export const fetchAllMonumentTags = async () => {
   return response.data;
 };
 
+// This function is used to fetch all pending users
+export const fetchAllPendingUsers = async (status) => {
+  const response = await axios.get(`${API_URL}/users/status/pending/`);
+  return response.data;
+};
+
+// This function is used to update all users status
+export const updateUserStatus = async (id, status) => {
+  const response = await axios.patch(`${API_URL}/users/status/${id}`, { status: status });
+  return response.data;
+};
+
 // ✅ This function is used to fetch Tourist's profile
 export const fetchTouristProfile = async (id) => {
   const response = await axios.get(`${API_URL}tourist/${id}`);
@@ -550,5 +562,5 @@ export const downloadImage = async (id) => {
 };
 
 export const downloadPdf = async (id) => {
-  return await axios.get(`${API_URL}pdf/${id}`);
+  return await axios.get(`${API_URL}pdf/${id}`, { responseType: "blob" });
 };

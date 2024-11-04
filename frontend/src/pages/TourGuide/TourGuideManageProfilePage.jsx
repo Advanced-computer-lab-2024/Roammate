@@ -19,6 +19,7 @@ import {
   uploadTourGuideCertificate,
   uploadTourGuidePhoto,
   downloadImage,
+  updateUserStatus,
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 
@@ -105,7 +106,7 @@ const TourGuideManageProfile = ({ id }) => {
         formData2.append("file", certificate);
         await uploadTourGuideCertificate(id, formData2);
       }
-
+      await updateUserStatus(id, "pending");
       setDocumentSubmitted(true);
       alert("Files uploaded successfully!");
     } catch (error) {

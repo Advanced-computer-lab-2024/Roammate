@@ -13,6 +13,7 @@ const preferenceTagsController = require("./preferenceTagsController");
 const productController = require("./productController");
 const complaintController = require("./complaintController");
 const filesController = require("./filesController");
+const userController = require("./userController");
 const bookingController=require("./bookingController");
 
 module.exports = {
@@ -31,5 +32,6 @@ module.exports = {
   productController,
   complaintController,
   filesController,
+  userController,
   bookingController,
 };
