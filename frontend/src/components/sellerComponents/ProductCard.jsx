@@ -35,7 +35,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 550, mb: 4 }}>
+    <Card sx={{ maxWidth: "90%", mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
