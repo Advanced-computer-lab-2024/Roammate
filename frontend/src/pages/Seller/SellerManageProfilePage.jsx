@@ -7,6 +7,7 @@ import {
   Button,
   Divider,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -22,6 +23,7 @@ import {
   updateUserStatus
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
+import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
 
 const SellerManageProfilePage = ({ id }) => {
   const [username, setUsername] = useState("");
@@ -37,6 +39,7 @@ const SellerManageProfilePage = ({ id }) => {
   const [taxation, setTaxation] = useState(null);
   const [documentSubmitted, setDocumentSubmitted] = useState(false);
   const [logo, setLogo] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const fetchLogo = async (logo) => {
     try {
@@ -83,6 +86,7 @@ const SellerManageProfilePage = ({ id }) => {
 
   const handleDocumentsSubmit = async (e) => {
     e.preventDefault();
+    setUploading(true);
     try {
       if (identification) {
         const formData1 = new FormData();
@@ -96,10 +100,10 @@ const SellerManageProfilePage = ({ id }) => {
       }
       await updateUserStatus(id, "pending");
       setDocumentSubmitted(true);
-      alert("Files uploaded successfully!");
     } catch (error) {
       console.error("Error during file upload:", error);
-      alert("An error occurred during the file upload.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -279,7 +283,6 @@ const SellerManageProfilePage = ({ id }) => {
             gap: 3,
           }}
         >
-          {/* File Upload Section */}
           {status === "guest" && (
             <Box
               component="form"
@@ -287,9 +290,17 @@ const SellerManageProfilePage = ({ id }) => {
               onSubmit={handleDocumentsSubmit}
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
-              <Alert severity="warning">
-                You need to upload the following documents to access the system.{" "}
-              </Alert>
+              {!documentSubmitted && (
+                <Alert severity="warning">
+                  You need to upload the following documents to access the system.
+                </Alert>
+              )}
+              {uploading && <LinearProgress color="success"></LinearProgress>}
+              {documentSubmitted && (
+                <Alert severity="success">
+                  Documents uploaded successfully!
+                </Alert>
+              )}
               <Box sx={{ display: "flex", gap: 1 }}>
                 <Button
                   component="label"
@@ -300,7 +311,7 @@ const SellerManageProfilePage = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Identification
+                  Identification
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleIdentificationChange}
@@ -315,7 +326,7 @@ const SellerManageProfilePage = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Taxation Registry Card
+                  Taxation Registry Card
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleTaxationChange}
@@ -337,6 +348,14 @@ const SellerManageProfilePage = ({ id }) => {
               </Box>
             </Box>
           )}
+
+          {status === "pending" && (
+            <Alert severity="info">
+              Your documents are under review.
+            </Alert>
+          )}
+
+          {status === "accepted" && <AcceptTosComponent userId={id} setStatus={setStatus} />}
 
           {/* Change Password Component */}
           <Box

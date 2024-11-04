@@ -14,7 +14,8 @@ const productController = require("./productController");
 const complaintController = require("./complaintController");
 const filesController = require("./filesController");
 const userController = require("./userController");
-const bookingController=require("./bookingController");
+const bookingController = require("./bookingController");
+const CurrencyConvertController = require("./CurrencyConvertController");
 
 module.exports = {
   adminController,
@@ -34,4 +35,5 @@ module.exports = {
   filesController,
   userController,
   bookingController,
+  CurrencyConvertController,
 };

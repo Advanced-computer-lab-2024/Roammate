@@ -2,6 +2,7 @@ const { Monument, MonumentTag, PreferenceTag } = require("../models");
 const mongoose = require("mongoose");
 /*name, description, pictures, location, openingHours,
  ticketPrices, tags, monumentTags, tourismGovernor*/
+const convertCurrency = require("./CurrencyConvertController");
 
 const createMonument = async (req, res) => {
   const {
@@ -25,12 +26,25 @@ const createMonument = async (req, res) => {
 };
 
 const getAllMonuments = async (req, res) => {
+  const { currency = "USD" } = req.query;
   try {
     const monuments = await Monument.find()
       .populate("tags", "name")
       .populate("monumentTags", "name")
       .populate("tourismGovernor", "username");
-    res.status(200).send(monuments);
+
+    const convertedMonuments = monuments.map((monument) => {
+      const convertedPrices = monument.ticketPrices.map((price) => ({
+        ...price,
+        amount: convertCurrency(price.amount, "USD", currency),
+      }));
+      return {
+        ...monument.toObject(),
+        ticketPrices: convertedPrices,
+        currency,
+      };
+    });
+    res.status(200).send(convertedMonuments);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -38,6 +52,7 @@ const getAllMonuments = async (req, res) => {
 
 const getMonumentById = async (req, res) => {
   const id = req.params.id;
+  const { currency = "USD" } = req.query;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
@@ -48,7 +63,17 @@ const getMonumentById = async (req, res) => {
       .populate("tourismGovernor", "username");
     if (!monument)
       return res.status(404).send({ message: "Monument not found" });
-    res.status(200).send(monument);
+
+    const convertedPrices = monument.ticketPrices.map((price) => ({
+      ...price,
+      amount: convertCurrency(price.amount, "USD", currency),
+    }));
+
+    res.status(200).send({
+      ...monument.toObject(),
+      ticketPrices: convertedPrices,
+      currency,
+    });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -161,9 +186,13 @@ const getSearchCriteria = async (query) => {
 };
 
 const searchMonumentsWithFilters = async (req, res) => {
-  const { query = "", tags = [], monumentTags = [] } = req.query;
+  const {
+    query = "",
+    tags = [],
+    monumentTags = [],
+    currency = "USD",
+  } = req.query;
 
-  // Parse tags and monumentTags into arrays and filter out invalid ObjectIds
   const parsedTags = Array.isArray(tags) ? tags : tags.split(",");
   const parsedMonumentTags = Array.isArray(monumentTags)
     ? monumentTags
@@ -180,7 +209,19 @@ const searchMonumentsWithFilters = async (req, res) => {
       .populate("tags", "name")
       .populate("monumentTags", "name")
       .populate("tourismGovernor", "username");
-    res.status(200).send(monuments);
+
+    const convertedMonuments = monuments.map((monument) => {
+      const convertedPrices = monument.ticketPrices.map((price) => ({
+        ...price,
+        amount: convertCurrency(price.amount, "USD", currency),
+      }));
+      return {
+        ...monument.toObject(),
+        ticketPrices: convertedPrices,
+        currency,
+      };
+    });
+    res.status(200).send(convertedMonuments);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -188,6 +229,7 @@ const searchMonumentsWithFilters = async (req, res) => {
 
 const getMonumentsByTourismGovernorId = async (req, res) => {
   const id = req.params.id;
+  const { currency = "USD" } = req.query;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
@@ -196,7 +238,19 @@ const getMonumentsByTourismGovernorId = async (req, res) => {
       .populate("tags", "name")
       .populate("monumentTags", "name")
       .populate("tourismGovernor", "username");
-    res.status(200).send(monuments);
+
+    const convertedMonuments = monuments.map((monument) => {
+      const convertedPrices = monument.ticketPrices.map((price) => ({
+        ...price,
+        amount: convertCurrency(price.amount, "USD", currency),
+      }));
+      return {
+        ...monument.toObject(),
+        ticketPrices: convertedPrices,
+        currency,
+      };
+    });
+    res.status(200).send(convertedMonuments);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }

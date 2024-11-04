@@ -27,7 +27,6 @@ import TouristBookedItineraries from "./pages/Tourist/TouristBookedItinerariesPa
 import TouristBookedVisits from "./pages/Tourist/TouristBookedVisitsPage";
 import TouristPurchases from "./pages/Tourist/TouristPurchasesPage";
 import TouristComplaintsPage from "./pages/Tourist/TouristComplaintsPage";
-import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
 import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
 import AdminManageProfile from "./pages/Admin/AdminManageProfile";
 import TourismGovernorLayout from "./components/touristGovernerComponents/TourismGovernorLayout";
@@ -35,6 +34,9 @@ import TourismGovernorMuseumsPage from "./pages/TourismGovernor/TourismGovernerM
 import TourismGovernorManageProfile from "./pages/TourismGovernor/TourismGovernorManageProfile";
 import TouristMuseumsPage from "./pages/Tourist/TouristMusuemsPage";
 import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
+import AdminActivitiesPage from "./pages/Admin/AdminActivitiesPage";
+import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
+import AdminItinerariesPage from "./pages/Admin/AdminItinerariesPage";
 
 const theme = createTheme({
   // palette: {
@@ -78,11 +80,26 @@ function App() {
               element={<TouristItinerariesPage />}
             />
             <Route path="/tourist/products" element={<TouristProductsPage />} />
-            <Route path="/tourist/editProfile" element={<TouristEditProfile id={touristId} />} />
-            <Route path="/tourist/bookings/activities" element={<TouristBookedActivities id={touristId} />} />
-            <Route path="/tourist/bookings/itineraries" element={<TouristBookedItineraries id={touristId} />} />
-            <Route path="/tourist/bookings/visits" element={<TouristBookedVisits id={touristId} />} />
-            <Route path="/tourist/purchases" element={<TouristPurchases id={touristId} />} />
+            <Route
+              path="/tourist/editProfile"
+              element={<TouristEditProfile id={touristId} />}
+            />
+            <Route
+              path="/tourist/bookings/activities"
+              element={<TouristBookedActivities id={touristId} />}
+            />
+            <Route
+              path="/tourist/bookings/itineraries"
+              element={<TouristBookedItineraries id={touristId} />}
+            />
+            <Route
+              path="/tourist/bookings/visits"
+              element={<TouristBookedVisits id={touristId} />}
+            />
+            <Route
+              path="/tourist/purchases"
+              element={<TouristPurchases id={touristId} />}
+            />
 
             <Route path="/tourist/monuments" element={<TouristMuseumsPage />} />
             <Route
@@ -140,7 +157,10 @@ function App() {
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
-            <Route path="/admin/registrations" element={<AdminRegistrationsPage />} />
+            <Route
+              path="/admin/registrations"
+              element={<AdminRegistrationsPage />}
+            />
             <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
             <Route
               path="/admin/editProfile"
@@ -149,6 +169,18 @@ function App() {
             <Route
               path="/admin/deletion-requests"
               element={<AdminDeletionRequestsPage id={adminId} />}
+            />
+            <Route
+              path="/admin/activities"
+              element={<AdminActivitiesPage id={adminId} />}
+            />
+            <Route
+              path="/admin/itineraries"
+              element={<AdminItinerariesPage id={adminId} />}
+            />
+            <Route
+              path="/admin/products"
+              element={<TouristProductsPage id={adminId} />}
             />
           </Route>
         </Routes>

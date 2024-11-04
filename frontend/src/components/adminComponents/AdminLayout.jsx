@@ -20,12 +20,17 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { ArrowRightIcon } from "@mui/x-date-pickers/icons";
 
 const navItems = [
   "Home",
   "Add Admin",
   "Add Governor",
   "Account Deletion Requests",
+  "Products",
+  "Activities",
+  "Itineraries",
+  "Monuments",
 ];
 
 const drawerWidth = 240;
@@ -35,7 +40,6 @@ const AdminLayout = () => {
     "Users",
     "Registrations",
     "Complaints",
-    "Products",
   ]);
   const [activeButton, setActiveButton] = React.useState("Users");
   const navigate = useNavigate();
@@ -44,13 +48,19 @@ const AdminLayout = () => {
     if (activeButton === "Users") {
       // navigate('/admin/functionalityA');
     } else if (activeButton === "Registrations") {
-      navigate('/admin/registrations');
+      navigate("/admin/registrations");
     } else if (activeButton === "Complaints") {
       navigate(`/admin/complaints?id=`);
     } else if (activeButton === "Edit Profile") {
       navigate("/admin/editProfile");
     } else if (activeButton === "Account Deletion Requests") {
       navigate("/admin/deletion-requests");
+    } else if (activeButton === "Activities") {
+      navigate(`/admin/activities?id=`);
+    } else if (activeButton === "Itineraries") {
+      navigate(`/admin/itineraries?id=`);
+    } else if (activeButton === "Products") {
+      navigate(`/admin/products?id=`);
     }
   }, [activeButton, navigate]);
 
@@ -91,7 +101,7 @@ const AdminLayout = () => {
                 }
               }}
             >
-              {text === "Home" ? <HomeIcon /> : <AddCircleIcon />}
+              {text === "Home" ? <HomeIcon /> : <ArrowRightIcon />}
               <ListItemText primary={text} sx={{ textAlign: "center" }} />
             </ListItemButton>
           </ListItem>
