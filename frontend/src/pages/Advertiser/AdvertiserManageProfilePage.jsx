@@ -24,6 +24,7 @@ import {
   updateUserStatus
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
+import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
 
 const AdvertiserManageProfile = ({ id }) => {
   //username,email,website,hotline,companyProfile,description,foundedYear,industry,location,employees,services
@@ -119,6 +120,7 @@ const AdvertiserManageProfile = ({ id }) => {
 
   const handleDocumentsSubmit = async (e) => {
     e.preventDefault();
+    setUploading(true);
     try {
       if (identification) {
         const formData1 = new FormData();
@@ -133,10 +135,10 @@ const AdvertiserManageProfile = ({ id }) => {
       }
       await updateUserStatus(id, "pending");
       setDocumentSubmitted(true);
-      alert("Files uploaded successfully!");
     } catch (error) {
       console.error("Error during file upload:", error);
-      alert("An error occurred during the file upload.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -445,6 +447,15 @@ const AdvertiserManageProfile = ({ id }) => {
               </Box>
             </Box>
           )}
+
+          {status === "pending" && (
+            <Alert severity="info">
+              Your documents are under review.
+            </Alert>
+          )}
+
+          {status === "accepted" && <AcceptTosComponent userId={id} setStatus={setStatus} />}
+
           <Box
             sx={{
               width: "100%",

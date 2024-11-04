@@ -23,6 +23,7 @@ import {
   updateUserStatus,
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
+import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
 
 const TourGuideManageProfile = ({ id }) => {
   const [username, setUsername] = useState("");
@@ -112,9 +113,7 @@ const TourGuideManageProfile = ({ id }) => {
       }
       await updateUserStatus(id, "pending");
       setDocumentSubmitted(true);
-      alert("Files uploaded successfully!");
     } catch (error) {
-      alert("An error occurred during the file upload.");
     } finally {
       setUploading(false);
     }
@@ -336,7 +335,8 @@ const TourGuideManageProfile = ({ id }) => {
             >
               {!documentSubmitted && (
                 <Alert severity="warning">
-                  You need to upload the following documents to access the system.
+                  You need to upload the following documents to access the
+                  system.
                 </Alert>
               )}
               {uploading && <LinearProgress color="success"></LinearProgress>}
@@ -392,6 +392,15 @@ const TourGuideManageProfile = ({ id }) => {
               </Box>
             </Box>
           )}
+
+          {status === "pending" && (
+            <Alert severity="info">
+              Your documents are under review.
+            </Alert>
+          )}
+
+          {status === "accepted" && <AcceptTosComponent userId={id} setStatus={setStatus} />}
+
           <Box
             sx={{
               padding: 2,
