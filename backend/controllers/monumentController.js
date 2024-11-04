@@ -112,40 +112,68 @@ const deleteMonumentById = async (req, res) => {
   }
 };
 
-//tags, monumentTags
+// Helper function for handling filter criteria
 const getFilterCriteria = (tags, monumentTags) => {
   const filterCriteria = {};
-  if (tags) filterCriteria.tags = { $in: tags };
-  if (monumentTags) filterCriteria.monumentTags = { $in: monumentTags };
+
+  console.log(tags);
+  // Only include tags and monumentTags if they contain valid ObjectIds
+  if (tags && tags.length > 0) {
+    const validTags = tags.filter((id) => mongoose.Types.ObjectId.isValid(id));
+    if (validTags.length > 0) {
+      filterCriteria.tags = { $in: validTags };
+    }
+  }
+
+  if (monumentTags && monumentTags.length > 0) {
+    const validMonumentTags = monumentTags.filter((id) =>
+      mongoose.Types.ObjectId.isValid(id)
+    );
+    if (validMonumentTags.length > 0) {
+      filterCriteria.monumentTags = { $in: validMonumentTags };
+    }
+  }
+
   return filterCriteria;
 };
 
-//name, tags, monumentTags
+// Helper function for handling search criteria
 const getSearchCriteria = async (query) => {
-  if (query === "") return {};
+  if (!query) return {};
+
   const tagIds = await PreferenceTag.find({ $text: { $search: query } }).select(
     "_id"
   );
-  const monummentTagIds = await MonumentTag.find({
+  const monumentTagIds = await MonumentTag.find({
     $text: { $search: query },
   }).select("_id");
   const monumentIds = await Monument.find({ $text: { $search: query } }).select(
     "_id"
   );
+
   const searchCriteria = {
     $or: [
       { _id: { $in: monumentIds } },
-      { tags: { $in: tagIds } },
-      { monumentTags: { $in: monummentTagIds } },
+      { tags: { $in: tagIds.map((tag) => tag._id) } },
+      { monumentTags: { $in: monumentTagIds.map((tag) => tag._id) } },
     ],
   };
+
   return searchCriteria;
 };
 
 const searchMonumentsWithFilters = async (req, res) => {
-  const { query, tags, monumentTags } = req.query;
+  const { query = "", tags = [], monumentTags = [] } = req.query;
+
+  // Parse tags and monumentTags into arrays and filter out invalid ObjectIds
+  const parsedTags = Array.isArray(tags) ? tags : tags.split(",");
+  const parsedMonumentTags = Array.isArray(monumentTags)
+    ? monumentTags
+    : monumentTags.split(",");
+
   const searchCriteria = await getSearchCriteria(query);
-  const filterCriteria = getFilterCriteria(tags, monumentTags);
+  const filterCriteria = getFilterCriteria(parsedTags, parsedMonumentTags);
+
   try {
     const monuments = await Monument.find({
       ...searchCriteria,
@@ -156,7 +184,7 @@ const searchMonumentsWithFilters = async (req, res) => {
       .populate("tourismGovernor", "username");
     res.status(200).send(monuments);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({ message: error.message });
   }
 };
 

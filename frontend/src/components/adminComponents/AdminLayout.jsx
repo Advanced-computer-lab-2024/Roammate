@@ -30,6 +30,7 @@ const AdminLayout = () => {
     "Users",
     "Registrations",
     "Complaints",
+    "Products",
   ]);
   const [activeButton, setActiveButton] = React.useState("Users");
   const navigate = useNavigate();

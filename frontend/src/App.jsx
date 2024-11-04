@@ -28,6 +28,7 @@ import AdminManageProfile from "./pages/Admin/AdminManageProfile";
 import TourismGovernorLayout from "./components/touristGovernerComponents/TourismGovernorLayout";
 import TourismGovernorMuseumsPage from "./pages/TourismGovernor/TourismGovernerMusuemsPage";
 import TourismGovernorManageProfile from "./pages/TourismGovernor/TourismGovernorManageProfile";
+import TouristMuseumsPage from "./pages/Tourist/TouristMusuemsPage";
 
 const theme = createTheme({
   // palette: {
@@ -71,12 +72,7 @@ function App() {
               element={<TouristItinerariesPage />}
             />
             <Route path="/tourist/products" element={<TouristProductsPage />} />
-            <Route
-              path="/tourist/monuments"
-              element={
-                <h2 style={{ color: "grey" }}>🚧 Under Construction 🚧</h2>
-              }
-            />
+            <Route path="/tourist/monuments" element={<TouristMuseumsPage />} />
             <Route
               path="/tourist/complaints"
               element={<TouristComplaintsPage touristId={touristId} />}

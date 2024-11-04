@@ -22,7 +22,7 @@ import MuseumIcon from "@mui/icons-material/Museum";
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-const navItems = ["Home", "Museums", "Add Musuems"];
+const navItems = ["Home", "Add Musuems", "Add Monument Tag"];
 
 const drawerWidth = 240;
 const TourismGovernorLayout = () => {
