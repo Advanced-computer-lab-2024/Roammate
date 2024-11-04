@@ -26,8 +26,8 @@ const userSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["active", "pending"],
-      default: "pending",
+      enum: ["guest", "pending", "accepted", "active"],
+      default: "guest",
     },
   },
   {

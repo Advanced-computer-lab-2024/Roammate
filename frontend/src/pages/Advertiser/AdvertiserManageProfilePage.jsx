@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Avatar, Box, Typography, TextField, Button, Divider } from "@mui/material";
+import { Avatar, Box, Typography, TextField, Button, Divider, Alert } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 
@@ -25,6 +25,7 @@ const AdvertiserManageProfile = ({ id }) => {
     const [location, setLocation] = useState("");
     const [employees, setEmployees] = useState("");
     const [services, setServices] = useState("");
+    const [status, setStatus] = useState("");
     const [disabled, setDisabled] = useState(true);
     const [edit, setEdit] = useState(false);
     const [err, setErr] = useState("");
@@ -60,6 +61,7 @@ const AdvertiserManageProfile = ({ id }) => {
             setLocation(data.companyProfile.location);
             setEmployees(data.companyProfile.employees);
             setServices(data.companyProfile.services);
+            setStatus(data.status);
 
             if (data.documents.logo)
                 fetchLogo(data.documents.logo);
@@ -181,248 +183,256 @@ const AdvertiserManageProfile = ({ id }) => {
                 />
             </Box>
 
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
 
-            <form onSubmit={handleSubmit} style={
-                {
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "start",
-                    justifyContent: "center",
-                    width: '300px',
-                    height: "100%",
-                    gap: "15px",
-                    padding: "20px",
+                {/* Profile Form on the Left */}
+                <Box sx={{ flex: 1 }}>
 
-                }}>
-                <Typography variant="h6" sx={{
-                    textAlign: 'center'
-                }}>Advertiser Profile</Typography>
-                <TextField
-                    label={"Username"}
-                    type={"text"}
-                    value={username}
-                    disabled={true}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
-                    label={"Email"}
-                    type={"email"}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
-                    label={"Website"}
-                    type={"text"}
-                    value={website}
-                    onChange={(e) => setWebsite(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
+                    <form onSubmit={handleSubmit} style={
+                        {
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "start",
+                            justifyContent: "center",
+                            width: '300px',
+                            height: "100%",
+                            gap: "15px",
+                            padding: "20px",
 
-                    label={"Hotline"}
-                    type={"text"}
-                    value={hotline}
-                    onChange={(e) => setHotline(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <Divider />
-                <Typography variant="h6" sx={{
-                    textAlign: 'center'
-                }}>Company Profile</Typography>
-                <TextField
+                        }}>
+                        <Typography variant="h6" sx={{
+                            textAlign: 'center'
+                        }}>Advertiser Profile</Typography>
+                        <TextField
+                            label={"Username"}
+                            type={"text"}
+                            value={username}
+                            disabled={true}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Email"}
+                            type={"email"}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Website"}
+                            type={"text"}
+                            value={website}
+                            onChange={(e) => setWebsite(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
 
-                    label={"Description"}
-                    type={"text"}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
-                    label={"Founded Year"}
-                    type={"text"}
-                    value={foundedYear}
-                    onChange={(e) => setFoundedYear(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
-                    label={"Industry"}
-                    type={"text"}
-                    value={industry}
-                    onChange={(e) => setIndustry(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
-                    label={"Location"}
-                    type={"text"}
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
-                    label={"Employees"}
-                    type={"text"}
-                    value={employees}
-                    onChange={(e) => setEmployees(e.target.value)}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
-                <TextField
-                    label={"Services"}
-                    placeholder="eg: service1, service2, service3"
-                    type={"text"}
-                    value={services}
-                    onChange={(e) => setServices((e.target.value).replace(/\s/g, '').split(','))}
-                    disabled={disabled}
-                    variant="standard"
-                    sx={{
-                        width: '100%'
-                    }}
-                />
+                            label={"Hotline"}
+                            type={"text"}
+                            value={hotline}
+                            onChange={(e) => setHotline(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <Divider />
+                        <Typography variant="h6" sx={{
+                            textAlign: 'center'
+                        }}>Company Profile</Typography>
+                        <TextField
 
+                            label={"Description"}
+                            type={"text"}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Founded Year"}
+                            type={"text"}
+                            value={foundedYear}
+                            onChange={(e) => setFoundedYear(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Industry"}
+                            type={"text"}
+                            value={industry}
+                            onChange={(e) => setIndustry(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Location"}
+                            type={"text"}
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Employees"}
+                            type={"text"}
+                            value={employees}
+                            onChange={(e) => setEmployees(e.target.value)}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            label={"Services"}
+                            placeholder="eg: service1, service2, service3"
+                            type={"text"}
+                            value={services}
+                            onChange={(e) => setServices((e.target.value).replace(/\s/g, '').split(','))}
+                            disabled={disabled}
+                            variant="standard"
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
 
-                {err && <Typography sx={{
-                    color: 'red'
-                }}>{err}</Typography>}
+                        {err && <Typography sx={{
+                            color: 'red'
+                        }}>{err}</Typography>}
 
-                {!edit && <Button
-                    variant="contained"
-                    onClick={() => {
-                        setDisabled(false);
-                        setEdit(true);
-                    }}
-                    sx={{
-                        color: 'white',
-                        width: '100%'
-                    }}
-                >
-                    Edit
-                </Button>}
-
-                {edit &&
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '10px',
-                        width: '100%'
-                    }}><Button
-                        variant="contained"
-                        onClick={() => {
-                            setDisabled(false);
-                        }}
-                        sx={{
-                            backgroundColor: 'green',
-                            color: 'white',
-                            width: '100%'
-                        }}
-                        type='submit'
-                    >
-                            Save
-                        </Button>
-                        <Button
+                        {!edit && <Button
                             variant="contained"
                             onClick={() => {
-                                setDisabled(true);
-                                setEdit(false);
+                                setDisabled(false);
+                                setEdit(true);
                             }}
                             sx={{
-                                backgroundColor: 'red',
                                 color: 'white',
                                 width: '100%'
                             }}
                         >
-                            Cancel
-                        </Button>
-                    </Box >
-                }
-            </form>
+                            Edit
+                        </Button>}
 
-            {/* File Upload Section */}
-            <Box
-                component="form"
-                className="file-upload-form"
-                onSubmit={handleDocumentsSubmit}
-                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-            >
-
-                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
-                    {/* Identification Upload */}
-                    <Button
-                        component="label"
-                        variant="contained"
-                        startIcon={<CloudUploadIcon />}
-                        sx={{
-                            backgroundColor: identification ? "green" : "primary.main",
-                            color: "white",
-                        }}
-                    >
-                        Upload Identification
-                        <VisuallyHiddenInput type="file" onChange={handleIdentificationChange} />
-                    </Button>
-
-                    {/* Taxation Upload */}
-                    <Button
-                        component="label"
-                        variant="contained"
-                        startIcon={<CloudUploadIcon />}
-                        sx={{
-                            backgroundColor: taxation ? "green" : "primary.main",
-                            color: "white",
-                        }}
-                    >
-                        Upload Taxation Registry Card
-                        <VisuallyHiddenInput type="file" onChange={handleTaxationChange} />
-                    </Button>
-
-                    {/* Submit Button */}
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        disabled={!identification || !taxation}
-                        sx={{
-                            backgroundColor: documentSubmitted ? "green" : "primary.main",
-                            color: "white",
-                        }}
-                    >
-                        Upload
-                    </Button>
+                        {edit &&
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '10px',
+                                width: '100%'
+                            }}><Button
+                                variant="contained"
+                                onClick={() => {
+                                    setDisabled(false);
+                                }}
+                                sx={{
+                                    backgroundColor: 'green',
+                                    color: 'white',
+                                    width: '100%'
+                                }}
+                                type='submit'
+                            >
+                                    Save
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        setDisabled(true);
+                                        setEdit(false);
+                                    }}
+                                    sx={{
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        width: '100%'
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            </Box >
+                        }
+                    </form>
 
                 </Box>
 
+                {/* File Upload Section */}
+                {status === "guest" &&
+                    <Box
+                        component="form"
+                        className="file-upload-form"
+                        onSubmit={handleDocumentsSubmit}
+                        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                    >
+                        <Alert severity="warning">You need to upload the following documents to access the system. </Alert>
+                        <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                            {/* Identification Upload */}
+                            <Button
+                                component="label"
+                                variant="contained"
+                                startIcon={<CloudUploadIcon />}
+                                sx={{
+                                    backgroundColor: identification ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload Identification
+                                <VisuallyHiddenInput type="file" onChange={handleIdentificationChange} />
+                            </Button>
+
+                            {/* Taxation Upload */}
+                            <Button
+                                component="label"
+                                variant="contained"
+                                startIcon={<CloudUploadIcon />}
+                                sx={{
+                                    backgroundColor: taxation ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload Taxation Registry Card
+                                <VisuallyHiddenInput type="file" onChange={handleTaxationChange} />
+                            </Button>
+
+                            {/* Submit Button */}
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disabled={!identification || !taxation}
+                                sx={{
+                                    backgroundColor: documentSubmitted ? "green" : "primary.main",
+                                    color: "white",
+                                }}
+                            >
+                                Upload
+                            </Button>
+
+                        </Box>
+
+                    </Box>
+                }
             </Box>
 
         </Box>
