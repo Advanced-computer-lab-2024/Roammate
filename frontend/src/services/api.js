@@ -2,6 +2,8 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/api/";
 
+export const updateActivityStatus = async (id) => {};
+
 // ✅ This function is used to change the Password of users
 export const changePassword = async (id, type, oldPassword, newPassword) => {
   try {
@@ -263,7 +265,9 @@ export const fetchAllPendingUsers = async (status) => {
 
 // This function is used to update all users status
 export const updateUserStatus = async (id, status) => {
-  const response = await axios.patch(`${API_URL}/users/status/${id}`, { status: status });
+  const response = await axios.patch(`${API_URL}/users/status/${id}`, {
+    status: status,
+  });
   return response.data;
 };
 

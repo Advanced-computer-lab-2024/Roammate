@@ -23,7 +23,6 @@ import ManageItineraryPage from "./pages/TourGuide/ManageItineraryPage";
 import AdminLayout from "./components/adminComponents/AdminLayout";
 import TouristViewActivity from "./pages/Tourist/TouristViewActivityPage";
 import TouristComplaintsPage from "./pages/Tourist/TouristComplaintsPage";
-import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
 import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
 import AdminManageProfile from "./pages/Admin/AdminManageProfile";
 import TourismGovernorLayout from "./components/touristGovernerComponents/TourismGovernorLayout";
@@ -31,6 +30,7 @@ import TourismGovernorMuseumsPage from "./pages/TourismGovernor/TourismGovernerM
 import TourismGovernorManageProfile from "./pages/TourismGovernor/TourismGovernorManageProfile";
 import TouristMuseumsPage from "./pages/Tourist/TouristMusuemsPage";
 import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
+import AdminActivitiesPage from "./pages/Admin/AdminActivitiesPage";
 
 const theme = createTheme({
   // palette: {
@@ -130,7 +130,6 @@ function App() {
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
-            <Route path="/admin/registrations" element={<AdminRegistrationsPage/>} />
             <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
             <Route
               path="/admin/editProfile"
@@ -140,6 +139,7 @@ function App() {
               path="/admin/deletion-requests"
               element={<AdminDeletionRequestsPage id={adminId} />}
             />
+            <Route path="/admin/activities" element={<AdminActivitiesPage />} />
           </Route>
         </Routes>
       </Router>
