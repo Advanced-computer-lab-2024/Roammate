@@ -8,6 +8,7 @@ import {
   Button,
   Divider,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -45,6 +46,7 @@ const AdvertiserManageProfile = ({ id }) => {
   const [taxation, setTaxation] = useState(null);
   const [documentSubmitted, setDocumentSubmitted] = useState(false);
   const [logo, setLogo] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const fetchLogo = async (logo) => {
     try {
@@ -81,6 +83,7 @@ const AdvertiserManageProfile = ({ id }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setUploading(true);
     const advertiser = {
       email,
       website,
@@ -101,6 +104,8 @@ const AdvertiserManageProfile = ({ id }) => {
     } catch (error) {
       setErr("Failed to update profile! Error: " + error.message);
       console.log(error);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -377,9 +382,17 @@ const AdvertiserManageProfile = ({ id }) => {
               onSubmit={handleDocumentsSubmit}
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
-              <Alert severity="warning">
-                You need to upload the following documents to access the system.{" "}
-              </Alert>
+              {!documentSubmitted && (
+                <Alert severity="warning">
+                  You need to upload the following documents to access the system.
+                </Alert>
+              )}
+              {uploading && <LinearProgress color="success"></LinearProgress>}
+              {documentSubmitted && (
+                <Alert severity="success">
+                  Documents uploaded successfully!
+                </Alert>
+              )}
               <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
                 {/* Identification Upload */}
                 <Button
@@ -391,7 +404,7 @@ const AdvertiserManageProfile = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Identification
+                  Identification
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleIdentificationChange}
@@ -408,7 +421,7 @@ const AdvertiserManageProfile = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Taxation Registry Card
+                  Taxation Registry Card
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleTaxationChange}

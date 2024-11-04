@@ -7,6 +7,7 @@ import {
   Button,
   Divider,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -37,6 +38,7 @@ const SellerManageProfilePage = ({ id }) => {
   const [taxation, setTaxation] = useState(null);
   const [documentSubmitted, setDocumentSubmitted] = useState(false);
   const [logo, setLogo] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const fetchLogo = async (logo) => {
     try {
@@ -83,6 +85,7 @@ const SellerManageProfilePage = ({ id }) => {
 
   const handleDocumentsSubmit = async (e) => {
     e.preventDefault();
+    setUploading(true);
     try {
       if (identification) {
         const formData1 = new FormData();
@@ -100,6 +103,8 @@ const SellerManageProfilePage = ({ id }) => {
     } catch (error) {
       console.error("Error during file upload:", error);
       alert("An error occurred during the file upload.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -287,9 +292,17 @@ const SellerManageProfilePage = ({ id }) => {
               onSubmit={handleDocumentsSubmit}
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
-              <Alert severity="warning">
-                You need to upload the following documents to access the system.{" "}
-              </Alert>
+              {!documentSubmitted && (
+                <Alert severity="warning">
+                  You need to upload the following documents to access the system.
+                </Alert>
+              )}
+              {uploading && <LinearProgress color="success"></LinearProgress>}
+              {documentSubmitted && (
+                <Alert severity="success">
+                  Documents uploaded successfully!
+                </Alert>
+              )}
               <Box sx={{ display: "flex", gap: 1 }}>
                 <Button
                   component="label"
@@ -300,7 +313,7 @@ const SellerManageProfilePage = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Identification
+                  Identification
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleIdentificationChange}
@@ -315,7 +328,7 @@ const SellerManageProfilePage = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Taxation Registry Card
+                  Taxation Registry Card
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleTaxationChange}

@@ -7,6 +7,7 @@ import {
   Button,
   Divider,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -35,10 +36,12 @@ const TourGuideManageProfile = ({ id }) => {
   const [disabled, setDisabled] = useState(true);
   const [edit, setEdit] = useState(false);
   const [err, setErr] = useState("");
+
   const [identification, setIdentification] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const [documentSubmitted, setDocumentSubmitted] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const fetchPhoto = async (photo) => {
     try {
@@ -94,6 +97,7 @@ const TourGuideManageProfile = ({ id }) => {
 
   const handleDocumentsSubmit = async (e) => {
     e.preventDefault();
+    setUploading(true);
     try {
       if (identification) {
         const formData1 = new FormData();
@@ -111,6 +115,8 @@ const TourGuideManageProfile = ({ id }) => {
       alert("Files uploaded successfully!");
     } catch (error) {
       alert("An error occurred during the file upload.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -328,9 +334,17 @@ const TourGuideManageProfile = ({ id }) => {
               onSubmit={handleDocumentsSubmit}
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
-              <Alert severity="warning">
-                You need to upload the following documents to access the system.
-              </Alert>
+              {!documentSubmitted && (
+                <Alert severity="warning">
+                  You need to upload the following documents to access the system.
+                </Alert>
+              )}
+              {uploading && <LinearProgress color="success"></LinearProgress>}
+              {documentSubmitted && (
+                <Alert severity="success">
+                  Documents uploaded successfully!
+                </Alert>
+              )}
               <Box sx={{ display: "flex", gap: 1 }}>
                 <Button
                   component="label"
@@ -341,7 +355,7 @@ const TourGuideManageProfile = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Identification
+                  Identification
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleIdentificationChange}
@@ -356,7 +370,7 @@ const TourGuideManageProfile = ({ id }) => {
                     color: "white",
                   }}
                 >
-                  Upload Certificate
+                  Certificate
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleCertificateChange}
