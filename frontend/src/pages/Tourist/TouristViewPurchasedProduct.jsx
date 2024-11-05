@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { Box, Typography, Paper, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon } from "@mui/material";
+import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon, CardMedia } from "@mui/material";
 import dayjs from "dayjs";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import BlockIcon from '@mui/icons-material/Block';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import { addReviewToActivity, addReviewToProduct } from "../../services/api";
+import po from '../../components/po.png';
+import { addReviewToProduct } from "../../services/api";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -46,9 +43,23 @@ const TouristViewPurchasedProduct = ({ product, touristId, purchaseDate, status 
 
     return (
         <Box sx={{ padding: 3 }}>
-            <Paper elevation={3} sx={{
+            <Card elevation={3} sx={{
                 padding: 2, marginBottom: 3,
+                width: '650px'
             }}>
+                <CardMedia
+                    component="img"
+                    height="300"
+                    image={po}
+                    alt="random"
+                    sx={{
+                        objectFit: 'cover',
+                        objectPosition: 'top',
+                        marginBottom: 2,
+                    }}
+
+                />
+
                 <Typography variant="h4" gutterBottom>{product.name}</Typography>
                 {/* Average Rating */}
                 <Box sx={{
@@ -139,12 +150,15 @@ const TouristViewPurchasedProduct = ({ product, touristId, purchaseDate, status 
                     </Box>
 
                 </Box>
-            </Paper>
+            </Card>
 
 
             {/* Reviews Section */}
-            <Paper elevation={3} sx={{ padding: 2 }}>
-                <Typography variant="h5" gutterBottom>Reviews</Typography>
+            <Card elevation={3} sx={{
+                padding: 2,
+                width: '650px'
+            }}>
+                <Typography variant="h5" gutterBottom>Reviews ({product.reviews.length})</Typography>
 
                 <Box sx={{ display: 'flex', overflowX: 'auto', padding: 2, gap: 2 }}>
                     {/* Reviews */}
@@ -238,7 +252,7 @@ const TouristViewPurchasedProduct = ({ product, touristId, purchaseDate, status 
                                 }}>{response}</Typography>}
                             </Box>)) : null
                 }
-            </Paper>
+            </Card>
         </Box>
     );
 };

@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Alert, IconButton, Rating, Snackbar } from '@mui/material';
+import { Alert, CardMedia, IconButton, Rating, Snackbar } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -15,6 +15,7 @@ import HeartIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
+import po from '../../components/po.png';
 import { useNavigate } from 'react-router';
 
 const ProductCard = ({ product }) => {
@@ -49,6 +50,17 @@ const ProductCard = ({ product }) => {
 
     return (
         <Card sx={{ maxWidth: 500, mb: 4 }}>
+            <CardMedia
+                component="img"
+                height="195"
+                image={po}
+                alt="random"
+                sx={{
+                    objectFit: 'cover',
+                    objectPosition: 'top',
+                }}
+            />
+
             {/* <h1>Itinerary Card</h1> */}
             <CardContent sx={{
                 display: 'flex',

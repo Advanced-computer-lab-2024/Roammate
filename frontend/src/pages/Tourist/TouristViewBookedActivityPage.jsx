@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Paper, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon } from "@mui/material";
+import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon, Stack, Chip } from "@mui/material";
 import dayjs from "dayjs";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -37,6 +37,7 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
             setResponse("Failed to submit review");
         }
     };
+
     const userRatedBefore = () => {
         //Check if the user has already rated this activity
         const existingReview = activity.reviews.find(review => review.user._id === touristId);
@@ -47,7 +48,7 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
     return (
         <Box sx={{ padding: 3 }}>
             {/* Activity Details */}
-            <Paper elevation={3} sx={{
+            <Card elevation={3} sx={{
                 padding: 2, marginBottom: 3,
             }}>
                 <Typography variant="h4" gutterBottom>{activity.title}</Typography>
@@ -67,8 +68,6 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                         width: '25px',
                         height: '25px',
                         fontSize: '14px'
-
-
                     }}>
                         {activity.advertiser.username.charAt(0)}
                     </Avatar>
@@ -88,7 +87,7 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: 2,
-                    width: '100%'
+                    width: '100%',
                 }}>
                     <Rating value={activity.averageRating} readOnly precision={0.5}
                         icon={<StarIcon style={{ fill: 'orange' }} fontSize="large" />}
@@ -96,6 +95,25 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                     />
                     <Typography variant="body1" sx={{ marginLeft: 1 }}>({activity.reviews.length})</Typography>
                 </Box>
+                <Stack direction="row" spacing={1} sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: 2
+                }}>
+                    {activity.category.map((category) => (
+                        <Chip key={category._id} label={category.name} sx={{
+                            backgroundColor: 'lightgray'
+                        }} />
+                    ))}
+                    {activity.tags.map((tag) => (
+                        <Chip key={tag._id} label={tag.name} sx={{
+                            backgroundColor: 'lightgray'
+                        }} variant="outlined" />
+                    ))}
+                </Stack>
+
                 <Typography variant="subtitle1" gutterBottom>{activity.description}</Typography>
 
                 {/* Location */}
@@ -122,11 +140,12 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                 {/* Date, Time */}
                 <Box sx={{
                     display: 'flex',
+                    flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     marginBottom: 2,
-                    width: '100%',
-                    padding: 2
+                    padding: 2,
+
                 }}>
 
                     <Typography variant="body1"> <strong>Available Date(s): </strong>{
@@ -136,7 +155,7 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                     }</Typography>
 
                     <Typography variant="body1" sx={{
-                        ml: -5
+                        ml: -7
                     }}><strong>Time:</strong> {activity.time}</Typography>
 
 
@@ -154,7 +173,6 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                 </Box>
 
                 <Divider sx={{ my: 2 }} />
-
 
                 {/*Booking date, Price and Discount */}
                 <Box mt={2} sx={{
@@ -211,12 +229,12 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                         ))
                     )}
                 </Box>
-            </Paper>
+            </Card>
 
 
             {/* Reviews Section */}
-            <Paper elevation={3} sx={{ padding: 2 }}>
-                <Typography variant="h5" gutterBottom>Reviews</Typography>
+            <Card elevation={3} sx={{ padding: 2 }}>
+                <Typography variant="h5" gutterBottom>Reviews ({activity.reviews.length})</Typography>
 
                 <Box sx={{ display: 'flex', overflowX: 'auto', padding: 2, gap: 2 }}>
                     {/* Reviews */}
@@ -310,7 +328,7 @@ const TouristViewBookedActivity = ({ activity, touristId, bookingDate }) => {
                                 }}>{response}</Typography>}
                             </Box>)) : null
                 }
-            </Paper>
+            </Card>
         </Box>
     );
 };

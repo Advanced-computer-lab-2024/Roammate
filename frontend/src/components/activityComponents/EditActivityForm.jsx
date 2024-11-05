@@ -106,7 +106,9 @@ const EditActivityForm = ({ activity }) => {
                 justifyContent: 'start',
                 alignItems: 'start',
                 gap: '20px',
-                width: '350px',
+                width: '450px',
+                border: '1px solid lightgray',
+                padding: '20px',
             }}
         >
             <h2>Activity Details</h2>

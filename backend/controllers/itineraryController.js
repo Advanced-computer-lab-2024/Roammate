@@ -79,7 +79,10 @@ const getItineraryById = async (req, res) => {
     const itinerary = await Itinerary.findById(id)
       .populate("tags", "name")
       .populate("tourGuide", "username")
-      .populate("reviews");
+      .populate({
+        path: "reviews",
+        populate: { path: "user" },
+      });
 
     if (!itinerary) {
       return res.status(404).json({ error: "Itinerary not found" });
@@ -269,7 +272,10 @@ const getItinerariesByTourGuideId = async (req, res) => {
     const itineraries = await Itinerary.find({ tourGuide: id })
       .populate("tags", "name")
       .populate("tourGuide", "username")
-      .populate("reviews");
+      .populate({
+        path: "reviews",
+        populate: { path: "user" },
+      });
 
     const convertedItineraries = itineraries.map((itinerary) => {
       const convertedPrice = convertCurrency(itinerary.price, "USD", currency);

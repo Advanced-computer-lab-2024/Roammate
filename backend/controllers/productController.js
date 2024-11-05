@@ -49,7 +49,10 @@ const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(id)
       .populate("seller", "username")
-      .populate("reviews");
+      .populate({
+        path: "reviews",
+        populate: { path: "user" },
+      });
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -118,7 +121,10 @@ const getProductsBySellerId = async (req, res) => {
   try {
     const products = await Product.find({ seller: id })
       .populate("seller", "username")
-      .populate("reviews");
+      .populate({
+        path: "reviews",
+        populate: { path: "user" },
+      });
 
     const convertedProducts = products.map((product) => {
       const convertedPrice = convertCurrency(product.price, "USD", currency);

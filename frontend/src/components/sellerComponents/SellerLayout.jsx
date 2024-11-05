@@ -38,6 +38,8 @@ const SellerLayout = () => {
             navigate(`/seller/my-products?id=${id}`);
         } else if (activeButton === 'Edit Profile') {
             navigate('/seller/editProfile');
+        } else if (activeButton === 'Create Product') {
+            navigate('/seller/createProduct');
         }
     }, [activeButton, navigate]);
 

@@ -20,22 +20,23 @@ const TouristActivitiesPage = () => {
 
 
     useEffect(() => {
+        const fetchActivities = async () => {
+            const searchFilterAndSortCriteria = {
+                query: searchQuery,
+                ...filterAndSortCriteria,
+            };
+            const queryParameters = new URLSearchParams(searchFilterAndSortCriteria);
+            // console.log(queryParameters.toString());
+            const result = await searchAndFilterActivities(queryParameters);
+            setActivities(result);
+        };
         fetchActivities();
         if (id) {
             setActiveButton(null)
         }
     }, [id, fetch]);
 
-    const fetchActivities = async () => {
-        const searchFilterAndSortCriteria = {
-            query: searchQuery,
-            ...filterAndSortCriteria,
-        };
-        const queryParameters = new URLSearchParams(searchFilterAndSortCriteria);
-        // console.log(queryParameters.toString());
-        const result = await searchAndFilterActivities(queryParameters);
-        setActivities(result);
-    }
+
 
     return (
         !id ?
@@ -68,7 +69,7 @@ const TouristActivitiesPage = () => {
                 </Grid2 >
             </Box >)
             :
-            <TouristViewActivity activity={activities.find((act) => act._id === id)} />
+            <TouristViewActivity id={id} />
     );
 }
 

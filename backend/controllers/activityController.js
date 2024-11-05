@@ -82,7 +82,10 @@ const getActivityById = (req, res) => {
     .populate("tags", "name")
     .populate("category", "name")
     .populate("advertiser", "username")
-    .populate("reviews")
+    .populate({
+      path: "reviews",
+      populate: { path: "user" },
+    })
     .then((activity) => {
       if (!activity) {
         return res.status(404).json({ error: "Activity not found" });
@@ -299,7 +302,10 @@ const getActivitiesByAdvertiserId = async (req, res) => {
       .populate("category", "name")
       .populate("tags", "name")
       .populate("advertiser", "username")
-      .populate("reviews");
+      .populate({
+        path: "reviews",
+        populate: { path: "user" },
+      });
 
     const convertedActivities = activities.map((activity) => {
       const convertedPrice = convertCurrency(activity.price, "USD", currency);

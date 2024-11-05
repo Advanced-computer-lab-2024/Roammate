@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { IconButton, Rating } from '@mui/material';
+import { CardMedia, IconButton, Rating } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -17,6 +17,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import po from '../../components/po.png';
 import { useNavigate } from 'react-router';
 
 
@@ -32,6 +33,16 @@ const ProductCard = ({ product }) => {
     return (
         <Card sx={{ maxWidth: 550, mb: 4 }}>
             {/* <h1>Itinerary Card</h1> */}
+            <CardMedia
+                component="img"
+                height="195"
+                image={po}
+                alt="random"
+                sx={{
+                    objectFit: 'cover',
+                    objectPosition: 'top',
+                }}
+            />
             <CardContent sx={{
                 display: 'flex',
                 flexDirection: 'column',

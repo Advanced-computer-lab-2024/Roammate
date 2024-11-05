@@ -65,7 +65,7 @@ const TouristProductsPage = () => {
                 <SortAndFilterProducts setFilterAndSortCriteria={setFilterAndSortCriteria} setFetch={setFetch} />
 
             </Grid2 >
-        </Box > : <TouristViewProduct product={products.find((prod) => prod._id === id)} />
+        </Box > : <TouristViewProduct id={id} />
     );
 }
 

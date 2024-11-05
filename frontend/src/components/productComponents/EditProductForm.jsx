@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Box, Button, Checkbox, Chip, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import po from '../po.png'
 import { updateProduct } from "../../services/api";
 
 const EditProductForm = ({ product }) => {
@@ -40,10 +42,24 @@ const EditProductForm = ({ product }) => {
                 justifyContent: 'start',
                 alignItems: 'start',
                 gap: '20px',
-                width: '350px',
+                width: '450px',
+                padding: '20px',
+                border: '1px solid lightgray',
             }}
         >
             <h2>Product Details</h2>
+
+
+            <img src={po} alt="product" style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+                borderRadius: '5px',
+                padding: '3px',
+                border: '1px solid black',
+                backgroundColor: 'gray',
+            }} />
+
 
             {/* <Box sx={{
                 display: 'flex',
@@ -94,6 +110,19 @@ const EditProductForm = ({ product }) => {
                     }}
                 />
 
+                {/*Image URL*/}
+                <h2>Image</h2>
+                <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon />}
+                    disabled={disabled}
+                    onClick={() => { console.log("Upload image") }}
+                >
+                    Upload image
+                </Button>
 
                 {/*Price*/}
                 <h2>Price</h2>

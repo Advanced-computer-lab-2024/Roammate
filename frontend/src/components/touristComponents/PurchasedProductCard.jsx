@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Alert, IconButton, Rating, Snackbar } from '@mui/material';
+import { Alert, CardMedia, IconButton, Rating, Snackbar } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -17,6 +17,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import po from '../../components/po.png';
 import { useNavigate } from 'react-router';
 
 const PurchasedProductCard = ({ purchasedProduct, purchaseDate, status }) => {
@@ -47,7 +48,18 @@ const PurchasedProductCard = ({ purchasedProduct, purchaseDate, status }) => {
     };
 
     return (
-        <Card sx={{ maxWidth: 650, mb: 4 }}>
+        <Card sx={{ maxWidth: 600, mb: 4 }}>
+            {/* <CardMedia
+                component="img"
+                height="195"
+                image={po}
+                alt="random"
+                sx={{
+                    objectFit: 'cover',
+                    objectPosition: 'top',
+                }}
+            /> */}
+
             <CardContent sx={{
                 display: 'flex',
                 flexDirection: 'column',

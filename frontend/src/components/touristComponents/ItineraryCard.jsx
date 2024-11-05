@@ -124,7 +124,7 @@ const ItineraryCard = ({ itinerary }) => {
                             }} /> : <BlockIcon sx={{
                                 fill: 'red'
                             }} />}
-                            <Typography fontSize={14} color="green">${isBookingAvailable ? 'booking available' : 'booking closed'}</Typography>
+                            <Typography fontSize={14} color="green">{isBookingAvailable ? 'booking available' : 'booking closed'}</Typography>
                         </IconButton>
                     </Typography>
 

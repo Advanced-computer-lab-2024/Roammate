@@ -20,6 +20,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router';
 
 const BookedActivityCard = ({ bookedActivity, bookingDate }) => {
+
     const [title, setTitle] = useState(bookedActivity.title);
     const [description, setDescription] = useState(bookedActivity.description);
     const [date, setDate] = useState(dayjs(bookingDate).format(DATE_FORMAT));

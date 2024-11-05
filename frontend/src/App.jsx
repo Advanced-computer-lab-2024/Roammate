@@ -37,6 +37,7 @@ import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
 import AdminActivitiesPage from "./pages/Admin/AdminActivitiesPage";
 import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
 import AdminItinerariesPage from "./pages/Admin/AdminItinerariesPage";
+import SellerCreateProduct from "./pages/Seller/SellerCreateProductPage";
 
 const theme = createTheme({
   // palette: {
@@ -142,6 +143,10 @@ function App() {
             <Route
               path="/seller/editprofile"
               element={<SellerEditProfilePage id={sellerId} />}
+            />
+            <Route
+              path="/seller/createProduct"
+              element={<SellerCreateProduct id={sellerId} />}
             />
           </Route>
 

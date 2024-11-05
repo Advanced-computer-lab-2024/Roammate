@@ -64,7 +64,7 @@ const TouristItinerariesPage = () => {
                     </Grid2>
                     <SortAndFilterItineraries setFilterAndSortCriteria={setFilterAndSortCriteria} setFetch={setFetch} />
                 </Grid2 >
-            </Box > : <TouristViewItinerary itinerary={itineraries.find((it) => it._id === id)} />
+            </Box > : <TouristViewItinerary id={id} />
     );
 }
 

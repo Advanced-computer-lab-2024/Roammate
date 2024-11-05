@@ -141,20 +141,22 @@ export const updatePreferenceTag = async (id, data) => {
   return response;
 };
 
+// ✅ This function is used to create a new itinerary
 export const createItinerary = async (data) => {
   const response = await axios.post(`${API_URL}itinerary`, data);
   return response;
 };
 
+// ✅ This function is used to fetch all itineraries
 export const getAllItineraries = async () => {
   const response = await axios.get(`${API_URL}itinerary`);
   return response.data;
 };
 
-// Fetch an itinerary by ID
-export const fetchItinerary = async (id) => {
+//✅ Get an itinerary by ID
+export const getItineraryById = async (id) => {
   const response = await axios.get(`${API_URL}itinerary/${id}`);
-  return response.data;
+  return response;
 };
 
 // Update an itinerary by ID
@@ -491,6 +493,39 @@ export const updateActivity = async (activityId, updatedData) => {
       "Error updating activity:",
       error.response ? error.response.data : error.message
     );
+    throw error;
+  }
+};
+
+// ✅ This function is used to get an activity by Id
+export const getActivityById = async (activityId) => {
+  try {
+    const response = await axios.get(`${API_URL}activity/${activityId}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching activity:", error);
+    throw error;
+  }
+};
+
+// ✅ This function is used to create a new product
+export const createProduct = async (productData) => {
+  try {
+    const response = await axios.post(`${API_URL}product`, productData);
+    return response;
+  } catch (error) {
+    console.error("Error creating product:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to fetch product by ID
+export const getProductById = async (productId) => {
+  try {
+    const response = await axios.get(`${API_URL}product/${productId}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching product:", error);
     throw error;
   }
 };
