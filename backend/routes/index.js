@@ -18,6 +18,7 @@ const {
   userController,
   bookingController,
   deletionRequestsController,
+  transportationController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -444,5 +445,21 @@ router.get(
   "/deletion-request-status",
   deletionRequestsController.checkDeletionRequestStatus
 );
+
+//--------------------------------------------------------------
+
+//Routes for Transportation
+
+// Route to add a new transportation
+router.post('/addTransportation', transportationController.addTransportation);
+// Route to get transportation list
+router.get('/listTransportation', transportationController.getTransportationList);
+// Route to book transportation
+router.post('/bookTransportation', transportationController.bookTransportation);
+// Route to get all available transportations
+router.get('/availableTransportation', transportationController.getAllAvailableTransportation);
+
+router.get('/touristTransportationBookings', touristController.getBookedTransportations);
+
 
 module.exports = router;
