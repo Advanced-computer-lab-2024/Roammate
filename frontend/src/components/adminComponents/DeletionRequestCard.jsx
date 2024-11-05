@@ -10,9 +10,12 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/HourglassEmpty";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useNavigate } from "react-router";
-import { approveDeletionRequest } from "../../services/api";
+import {
+  approveDeletionRequest,
+  denyDeletionRequest,
+} from "../../services/api";
 
-const DeletionRequestCard = ({ request, onApprove }) => {
+const DeletionRequestCard = ({ request, onApprove, onDeny }) => {
   const [status, setStatus] = useState(request.status);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -22,9 +25,22 @@ const DeletionRequestCard = ({ request, onApprove }) => {
     try {
       await approveDeletionRequest(request._id);
       setStatus("approved");
-      onApprove(request._id); // Trigger any additional actions on approval
+      // onApprove(request._id);
     } catch (error) {
       console.error("Failed to approve deletion request:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeny = async () => {
+    setLoading(true);
+    try {
+      await denyDeletionRequest(request._id);
+      setStatus("denied");
+      // onDeny(request._id);
+    } catch (error) {
+      console.error("Failed to deny deletion request:", error);
     } finally {
       setLoading(false);
     }
@@ -72,7 +88,8 @@ const DeletionRequestCard = ({ request, onApprove }) => {
           }}
         >
           Account Type: {request.accountType} <br />
-          Account ID: {request.accountId}
+          Account ID:{" "}
+          {request.accountId !== null ? request.accountId._id : "No id"}
         </Typography>
 
         {/* Date and Status */}
@@ -99,12 +116,21 @@ const DeletionRequestCard = ({ request, onApprove }) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {status === "approved" ? (
               <CheckCircleIcon sx={{ fill: "green", mr: 1 }} />
+            ) : status === "denied" ? (
+              <CheckCircleIcon sx={{ fill: "red", mr: 1 }} />
             ) : (
               <PendingIcon sx={{ fill: "orange", mr: 1 }} />
             )}
             <Typography
               fontSize={14}
-              sx={{ color: status === "approved" ? "green" : "orange" }}
+              sx={{
+                color:
+                  status === "approved"
+                    ? "green"
+                    : status === "denied"
+                    ? "red"
+                    : "orange",
+              }}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </Typography>
@@ -131,15 +157,34 @@ const DeletionRequestCard = ({ request, onApprove }) => {
         >
           View Details
         </Button>
-        {status !== "approved" && (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleApprove}
-            disabled={loading}
+
+        {/* Approve and Deny Buttons Aligned to the Right */}
+        {status === "pending" && (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
           >
-            {loading ? "Approving..." : "Approve"}
-          </Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleApprove}
+              disabled={loading}
+            >
+              {loading ? "Approving..." : "Approve"}
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeny}
+              disabled={loading}
+            >
+              {loading ? "Denying..." : "Deny"}
+            </Button>
+          </Box>
         )}
       </CardActions>
     </Card>

@@ -3,7 +3,7 @@ import { Button, Typography, Box } from "@mui/material";
 import {
   requestProfileDeletion,
   checkDeletionRequestStatus,
-} from "../../services/api"; // Assuming API has checkDeletionRequestStatus
+} from "../../services/api";
 
 const DeleteProfileRequest = ({ id, type }) => {
   const [status, setStatus] = useState("");
@@ -14,9 +14,13 @@ const DeleteProfileRequest = ({ id, type }) => {
     const fetchDeletionStatus = async () => {
       try {
         const response = await checkDeletionRequestStatus(id, type);
-        if (response.status === "Pending") {
+        setStatus(response.status); // Set the current status from the response
+
+        // Determine button behavior based on status
+        if (response.status === "pending") {
           setIsRequestPending(true);
-          setStatus("A deletion request is already pending.");
+        } else {
+          setIsRequestPending(false);
         }
       } catch (error) {
         console.error("Error checking deletion request status:", error);
@@ -29,11 +33,11 @@ const DeleteProfileRequest = ({ id, type }) => {
   const handleDeleteRequest = async () => {
     try {
       await requestProfileDeletion(id, type);
-      setStatus("Deletion request sent successfully.");
+      setStatus("pending"); // Update the status to pending immediately
       setError("");
       setIsRequestPending(true);
     } catch (error) {
-      setError("Failed to send deletion request.");
+      setError("You can't request deletion.");
       setStatus("");
       console.error("Deletion request error:", error);
     }
@@ -44,16 +48,16 @@ const DeleteProfileRequest = ({ id, type }) => {
       <Typography variant="h6" sx={{ mb: 2 }}>
         Request Account Deletion
       </Typography>
-      {status && <Typography color="success.main">{status}</Typography>}
+      {status && <Typography color="success.main">Status: {status}</Typography>}
       {error && <Typography color="error.main">{error}</Typography>}
       <Button
         variant="contained"
         color="error"
         onClick={handleDeleteRequest}
-        disabled={isRequestPending}
+        disabled={isRequestPending && status === "pending"} // Disable only if pending
         sx={{ mt: 2, width: "100%" }}
       >
-        {isRequestPending
+        {isRequestPending && status === "pending"
           ? "Deletion Request Pending"
           : "Request Account Deletion"}
       </Button>

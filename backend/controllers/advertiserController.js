@@ -2,6 +2,9 @@ const { Advertiser } = require("../models");
 const mongoose = require("mongoose");
 const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
 const multer = require("multer");
+const Activity = require("../models/Activity");
+const ActivityBooking = require("../models/ActivityBooking");
+const AccountDeletionRequest = require("../models/AccountDeletionRequest");
 
 // username, password, role, email, website, hotline, companyProfile
 
@@ -151,6 +154,56 @@ const uploadLogo = async (req, res) => {
   }
 };
 
+const requestAdvertiserDeletionIfNoUpcomingBookings = async (req, res) => {
+  const advertiserId = req.params.id;
+
+  try {
+    // Step 1: Find upcoming activities for the advertiser
+    const upcomingActivities = await Activity.find({
+      advertiser: advertiserId,
+      startDate: { $gte: new Date() }, // Only consider upcoming activities
+    });
+    // Step 2: Check if any upcoming activity has bookings
+    const hasBookingsOnUpcomingActivities = await Promise.all(
+      upcomingActivities.map(async (activity) => {
+        const bookingExists = await ActivityBooking.exists({
+          activity: activity._id,
+        });
+        return bookingExists; // Returns true if a booking exists for this activity
+      })
+    );
+
+    console.log(hasBookingsOnUpcomingActivities.every((exists) => !exists));
+
+    // Step 3: Determine if deletion request can be created
+    const canRequestDeletion = hasBookingsOnUpcomingActivities.every(
+      (exists) => !exists
+    );
+
+    if (canRequestDeletion) {
+      // If criteria are met, create a deletion request for the advertiser
+      const deletionRequest = new AccountDeletionRequest({
+        accountType: "Advertiser",
+        accountId: advertiserId,
+      });
+      await deletionRequest.save();
+
+      res.status(201).json({
+        message: "Account deletion request created successfully.",
+        deletionRequest,
+      });
+    } else {
+      // Else, return an error message
+      res.status(400).json({
+        message:
+          "Cannot create account deletion request. There are upcoming activities with bookings.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   register,
   getAllAdvertisers,
@@ -160,4 +213,5 @@ module.exports = {
   uploadId,
   uploadTaxation,
   uploadLogo,
+  requestAdvertiserDeletionIfNoUpcomingBookings,
 };

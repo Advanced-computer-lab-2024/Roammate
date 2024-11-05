@@ -9,7 +9,10 @@ import {
   Button,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { approveDeletionRequest } from "../../services/api";
+import {
+  approveDeletionRequest,
+  denyDeletionRequest,
+} from "../../services/api";
 
 const AdminViewDeletionRequest = ({ request }) => {
   const [status, setStatus] = useState(request.status);
@@ -19,9 +22,21 @@ const AdminViewDeletionRequest = ({ request }) => {
     setLoading(true);
     try {
       await approveDeletionRequest(request._id);
-      setStatus("Approved");
+      setStatus("approved");
     } catch (error) {
       console.error("Failed to approve deletion request:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeny = async () => {
+    setLoading(true);
+    try {
+      await denyDeletionRequest(request._id);
+      setStatus("denied");
+    } catch (error) {
+      console.error("Failed to deny deletion request:", error);
     } finally {
       setLoading(false);
     }
@@ -74,7 +89,8 @@ const AdminViewDeletionRequest = ({ request }) => {
         </Typography>
         <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
           Account Type: {request.accountType} <br />
-          Account ID: {request.accountId}
+          Account ID:{" "}
+          {request.accountId !== null ? request.accountId._id : "No id"}
         </Typography>
 
         <Divider sx={{ my: 2 }} />
@@ -90,11 +106,16 @@ const AdminViewDeletionRequest = ({ request }) => {
           variant="body2"
           sx={{
             mb: 2,
-            color: status === "Approved" ? "success.main" : "warning.main",
+            color:
+              status === "approved"
+                ? "success.main"
+                : status === "denied"
+                ? "error.main"
+                : "warning.main",
             fontWeight: "bold",
           }}
         >
-          {status === "Approved" ? "Approved" : "Pending Approval"}
+          {status.charAt(0).toUpperCase() + status.slice(1)}
         </Typography>
 
         <Divider sx={{ my: 2 }} />
@@ -110,16 +131,26 @@ const AdminViewDeletionRequest = ({ request }) => {
           {dayjs(request.createdAt).format("MMMM D, YYYY")}
         </Typography>
 
-        {/* Approve Button */}
-        {status !== "Approved" && (
-          <Box sx={{ textAlign: "right", mt: 3 }}>
+        {/* Approve/Deny Buttons */}
+        {status === "pending" && (
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}
+          >
             <Button
               variant="contained"
               color="success"
               onClick={handleApprove}
               disabled={loading}
             >
-              {loading ? "Approving..." : "Approve Deletion Request"}
+              {loading ? "Approving..." : "Approve"}
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeny}
+              disabled={loading}
+            >
+              {loading ? "Denying..." : "Deny"}
             </Button>
           </Box>
         )}

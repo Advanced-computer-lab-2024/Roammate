@@ -21,7 +21,7 @@ import {
   uploadAdvertiserTaxation,
   uploadAdvertiserLogo,
   downloadImage,
-  updateUserStatus
+  updateUserStatus,
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
@@ -470,7 +470,7 @@ const AdvertiserManageProfile = ({ id }) => {
             </Typography>
             <ChangePasswordComponent id={id} type="advertiser" />
             <Divider sx={{ my: 4 }} />
-            <DeleteProfileRequest id={id} type="advertiser" />
+            <DeleteProfileRequest id={id} type="Advertiser" />
           </Box>
         </Box>
       </Box>

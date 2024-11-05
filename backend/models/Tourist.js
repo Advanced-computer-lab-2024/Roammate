@@ -37,6 +37,13 @@ const touristSchema = new Schema(
       enum: ["USD", "EGP", "EUR"], // List the currencies you support
       default: "USD",
     },
+    bookedTransportations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Transportation",
+      },
+    ], // Add array of booked transportations
+
   },
   {
     timestamps: true,

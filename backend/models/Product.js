@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema(
-  //name, image, price, description, seller, reviews, quantity, averageRating
   {
     name: {
       type: String,
       required: true,
     },
     image: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "uploads.files",
       required: true,
     },
     price: {
@@ -21,7 +21,7 @@ const productSchema = mongoose.Schema(
     },
     seller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Seller can be seller or admin
+      ref: "User",
       required: true,
     },
     reviews: [
@@ -40,13 +40,17 @@ const productSchema = mongoose.Schema(
       max: 5,
       default: 0,
     },
+    archived: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-//create text index for name and description field
+// Create a text index for name and description fields for full-text search
 productSchema.index({ name: "text", description: "text" });
 
 const Product = mongoose.model("Product", productSchema);

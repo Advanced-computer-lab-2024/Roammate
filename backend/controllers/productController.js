@@ -1,4 +1,7 @@
-const { Product, Review, ProductPurchasing } = require("../models"); // Ensure this path is correct
+const { Product, Review, ProductPurchasing } = require("../models");
+const multer = require("multer");
+const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
+
 /*name, image, price, description, seller, reviews, quantity, averageRating*/
 
 const convertCurrency = require("./CurrencyConvertController");
@@ -142,7 +145,7 @@ const getProductsBySellerId = async (req, res) => {
 
 //price
 const getFilterCriteria = (minPrice, maxPrice) => {
-  const filterCriteria = {};
+  const filterCriteria = { archived: false };
   filterCriteria.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
   return filterCriteria;
 };
@@ -321,6 +324,84 @@ const updateProductPurchasedStatusById = async (req, res) => {
   }
 };
 
+const toggleArchivedStatus = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById({ _id: id });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Toggle the archived status
+    product.archived = !product.archived;
+    await product.save();
+
+    res.status(200).json({
+      message: `Product ${
+        product.archived ? "archived" : "unarchived"
+      } successfully`,
+      archived: product.archived,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Function to check if a product is archived
+const checkIfArchived = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById({ _id: id }, "archived"); // Only fetches the archived field
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      archived: product.archived,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// GridFsStorage Configuration
+const storage = new GridFsStorage({
+  url: process.env.MONGO_URI,
+  file: (req, file) => {
+    return {
+      filename: file.originalname,
+      bucketName: "uploads",
+    };
+  },
+});
+
+// Multer Middleware
+const upload = multer({ storage });
+const uploadMiddleware = upload.single("file");
+
+// Uploading Photo
+const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+    const product = await Product.findById(
+      mongoose.Types.ObjectId.createFromHexString(req.query.productId)
+    );
+    if (!product) {
+      return res.status(404).send("Product not found.");
+    }
+    product.image = req.file.id;
+    await product.save();
+    res.send("Image uploaded and associated with product successfully.");
+  } catch (error) {
+    console.error("Error during image upload:", error);
+    res.status(500).send("An error occurred during the image upload.");
+  }
+};
+
 module.exports = {
   addProduct,
   getAllProducts,
@@ -334,4 +415,8 @@ module.exports = {
   addProductPurchasing,
   deleteProductPurchasingById,
   updateProductPurchasedStatusById,
+  toggleArchivedStatus,
+  checkIfArchived,
+  uploadMiddleware,
+  uploadImage,
 };

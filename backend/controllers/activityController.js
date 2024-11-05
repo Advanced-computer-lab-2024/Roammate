@@ -411,6 +411,23 @@ const deleteActivityBooking = async (req, res) => {
   }
 };
 
+const checkActivityBookingExists = async (req, res) => {
+  const { activityId } = req.params;
+  try {
+    const bookingExists = await ActivityBooking.exists({
+      activity: activityId,
+    });
+
+    if (bookingExists) {
+      res.status(200).json(true);
+    } else {
+      res.status(404).json(false);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createActivity,
   getAllActivities,
@@ -423,4 +440,5 @@ module.exports = {
   getBookedActivitiesByTouristId,
   addActivityBooking,
   deleteActivityBooking,
+  checkActivityBookingExists,
 };

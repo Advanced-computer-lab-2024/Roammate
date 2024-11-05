@@ -82,9 +82,32 @@ const getAllTourists = async (req, res) => {
   }
 };
 
+// Get list of booked transportations for a tourist
+const getBookedTransportations = async (req, res) => {
+  const touristId = req.body.touristId; 
+
+  try {
+      // Find the tourist and populate the bookedTransportations field
+      const tourist = await Tourist.findById(touristId).populate('bookedTransportations');
+
+      if (!tourist) {
+          return res.status(404).json({ message: "Tourist not found" });
+      }
+
+      // Send the list of booked transportations
+      res.status(200).json(tourist.bookedTransportations);
+  } catch (error) {
+      console.error("Error retrieving booked transportations:", error);
+      res.status(500).json({ message: "Failed to retrieve booked transportations", error });
+  }
+};
+
 module.exports = {
   register,
   getAllTourists,
   getTouristById,
   updateTouristById,
+  getBookedTransportations,
 };
+
+
