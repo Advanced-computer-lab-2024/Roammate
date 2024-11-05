@@ -195,6 +195,11 @@ router.put(
   productController.toggleArchivedStatus
 );
 router.get("/product/:id/check-archived", productController.checkIfArchived);
+router.post(
+  "/product/image/upload",
+  productController.uploadMiddleware,
+  productController.uploadImage
+);
 
 //--------------------------------------------------------------
 

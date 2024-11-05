@@ -7,7 +7,8 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "uploads.files",
       required: true,
     },
     price: {
