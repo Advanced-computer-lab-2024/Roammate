@@ -382,7 +382,7 @@ const uploadImage = async (req, res) => {
       return res.status(400).send("No file uploaded.");
     }
     const product = await Product.findById(
-      mongoose.Types.ObjectId.createFromHexString(req.query.userId)
+      mongoose.Types.ObjectId.createFromHexString(req.query.productId)
     );
     if (!product) {
       return res.status(404).send("Product not found.");

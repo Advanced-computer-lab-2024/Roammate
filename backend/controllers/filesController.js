@@ -89,6 +89,6 @@ const getPdf = async (req, res) => {
 };
 
 module.exports = {
-    getImage,
-    getPdf,
+  getImage,
+  getPdf,
 };

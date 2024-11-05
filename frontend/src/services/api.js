@@ -766,3 +766,17 @@ export const updateProductPurchasedStatus = async (purchasingId, status) => {
   }
 };
 //----------------------------------------------
+
+// This function is used to upload a product image
+export const uploadProductImage = async (productId, formData) => {
+  const response = await axios.post(
+    `${API_URL}product/image/upload?productId=${productId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};
