@@ -5,13 +5,14 @@ const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
 /*name, image, price, description, seller, reviews, quantity, averageRating*/
 
 const convertCurrency = require("./CurrencyConvertController");
+const { default: mongoose } = require("mongoose");
 
 const addProduct = async (req, res) => {
   const { name, image, price, description, seller, quantity } = req.body;
 
   const newProduct = new Product({
     name,
-    image,
+    // image,
     price,
     description,
     seller,

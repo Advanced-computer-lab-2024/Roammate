@@ -92,8 +92,7 @@ const TourGuideManageProfile = ({ id }) => {
     }
   };
 
-  const handleIdentificationChange = (e) =>
-    setIdentification(e.target.files[0]);
+  const handleIdentificationChange = (e) => setIdentification(e.target.files[0]);
   const handleCertificateChange = (e) => setCertificate(e.target.files[0]);
 
   const handleDocumentsSubmit = async (e) => {

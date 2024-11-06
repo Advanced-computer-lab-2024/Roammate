@@ -9,7 +9,7 @@ const productSchema = mongoose.Schema(
     image: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "uploads.files",
-      required: true,
+      // required: true,
     },
     price: {
       type: Number,

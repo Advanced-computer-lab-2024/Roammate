@@ -1,19 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Checkbox, Chip, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import po from '../po.png'
-import { updateProduct } from "../../services/api";
+import { styled } from "@mui/material/styles";
+import placeholder from "../../assets/images/placeholder.png";
+import { downloadImage, updateProduct, uploadProductImage } from "../../services/api";
 
 const EditProductForm = ({ product }) => {
     const [name, setName] = useState(product.name);
     const [description, setDescription] = useState(product.description);
     const [price, setPrice] = useState(product.price);
     const [quantity, setQuantity] = useState(product.quantity);
+    const [currentImage, setCurrentImage] = useState(placeholder);
+    const [newImage, setNewImage] = useState(null);
     const [edit, setEdit] = useState(false);
     const [disabled, setDisabled] = useState(true);
     const [err, setErr] = useState("");
+
+    const fetchImage = async () => {
+        try {
+            const response = await downloadImage(product.image);
+            const blob = response.data;
+            const imageUrl = URL.createObjectURL(blob);
+            setCurrentImage(imageUrl);
+        } catch (error) {
+            console.error("Error fetching the product image:", error);
+        }
+    };
+
+    useEffect(() => {
+        if (product.image)
+            fetchImage();
+    }, [product.image]);
+
+    const handleNewImageChange = (e) => {
+        setCurrentImage(URL.createObjectURL(e.target.files[0]));
+        setNewImage(e.target.files[0]);
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -25,14 +49,30 @@ const EditProductForm = ({ product }) => {
                 quantity
             }
             await updateProduct(product._id, newProduct);
+            if (newImage) {
+                const formData = new FormData();
+                formData.append("file", newImage);
+                await uploadProductImage(product._id, formData);
+            }
             setDisabled(true);
             setEdit(false);
         } catch (error) {
             console.log(error);
             setErr("Failed to update product. Please try again later.");
         }
-
     }
+
+    const VisuallyHiddenInput = styled("input")({
+        clip: "rect(0 0 0 0)",
+        clipPath: "inset(50%)",
+        height: 1,
+        overflow: "hidden",
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        whiteSpace: "nowrap",
+        width: 1,
+    });
 
     return (
         <Box
@@ -50,7 +90,7 @@ const EditProductForm = ({ product }) => {
             <h2>Product Details</h2>
 
 
-            <img src={po} alt="product" style={{
+            <img src={currentImage} alt="product" style={{
                 width: '100%',
                 height: 'auto',
                 objectFit: 'contain',
@@ -114,14 +154,22 @@ const EditProductForm = ({ product }) => {
                 <h2>Image</h2>
                 <Button
                     component="label"
-                    role={undefined}
                     variant="contained"
-                    tabIndex={-1}
                     startIcon={<CloudUploadIcon />}
                     disabled={disabled}
-                    onClick={() => { console.log("Upload image") }}
+                    sx={{
+                        backgroundColor: newImage ? "green" : "primary.main",
+                        color: "white",
+                    }}
                 >
-                    Upload image
+                    Upload Image
+                    <input
+                        type="file"
+                        onChange={(e) => {
+                            handleNewImageChange(e);
+                        }}
+                        style={{ display: "none" }}
+                    />
                 </Button>
 
                 {/*Price*/}

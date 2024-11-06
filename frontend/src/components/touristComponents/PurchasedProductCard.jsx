@@ -17,8 +17,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
-import po from '../../components/po.png';
 import { useNavigate } from 'react-router';
+import ProductImage from '../productComponents/ProductImage';
 
 const PurchasedProductCard = ({ purchasedProduct, purchaseDate, status }) => {
     const [name, setname] = useState(purchasedProduct.name);
@@ -49,16 +49,8 @@ const PurchasedProductCard = ({ purchasedProduct, purchaseDate, status }) => {
 
     return (
         <Card sx={{ maxWidth: 600, mb: 4 }}>
-            {/* <CardMedia
-                component="img"
-                height="195"
-                image={po}
-                alt="random"
-                sx={{
-                    objectFit: 'cover',
-                    objectPosition: 'top',
-                }}
-            /> */}
+
+            <ProductImage imageId={purchasedProduct.image} height={"195"} />
 
             <CardContent sx={{
                 display: 'flex',
