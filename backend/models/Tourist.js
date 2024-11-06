@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+  const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require("./User");
 
@@ -30,12 +30,20 @@ const touristSchema = new Schema(
     },
     wallet: {
       type: Number,
-      default: 0,
+      default: 2000,
     },
     preferredCurrency: {
       type: String,
       enum: ["USD", "EGP", "EUR"], // List the currencies you support
-      default: "USD",
+      default: "EGP",
+    },
+      points: {
+      type: Number,
+      default: 50000,
+    },
+    level: {
+      type: Number,
+      default: 1,
     },
     bookedTransportations: [
       {
