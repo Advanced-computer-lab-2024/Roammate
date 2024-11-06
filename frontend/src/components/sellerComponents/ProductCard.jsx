@@ -17,7 +17,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import po from '../../components/po.png';
+import ProductImage from '../productComponents/ProductImage';
 import { useNavigate } from 'react-router';
 import { toggleArchivedStatus } from "../../services/api";
 
@@ -42,16 +42,9 @@ const ProductCard = ({ product }) => {
 
   return (
     <Card sx={{ width: 650, mb: 4 }}>
-      <CardMedia
-        component="img"
-        height="195"
-        image={po}
-        alt="random"
-        sx={{
-          objectFit: 'cover',
-          objectPosition: 'top',
-        }}
-      />
+
+      <ProductImage imageId={product.image} height={"195"} />
+
       <CardContent
         sx={{
           display: "flex",

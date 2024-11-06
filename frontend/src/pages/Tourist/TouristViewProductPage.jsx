@@ -5,8 +5,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import dayjs from 'dayjs';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import po from '../../components/po.png';
 import { getProductById } from "../../services/api";
+import ProductImage from "../../components/productComponents/ProductImage";
 const TouristViewProduct = ({ id }) => {
     const [product, setProduct] = useState();
     const [loading, setLoading] = useState(true);
@@ -40,17 +40,8 @@ const TouristViewProduct = ({ id }) => {
                     <Card elevation={3} sx={{
                         padding: 2, marginBottom: 3, width: '650px'
                     }}>
-                        <CardMedia
-                            component="img"
-                            height="300"
-                            image={po}
-                            alt="random"
-                            sx={{
-                                objectFit: 'cover',
-                                objectPosition: 'top',
-                                marginBottom: 2
-                            }}
-                        />
+                        <ProductImage imageId={product.image} height={"300"} marginBottom={2} />
+
                         <Typography variant="h4" gutterBottom>{product.name}</Typography>
                         {/* Average Rating */}
                         <Box sx={{

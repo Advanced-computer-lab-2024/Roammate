@@ -89,6 +89,10 @@ const activitySchema = new Schema( // title, description, location, price, categ
       ref: "Advertiser",
       required: true,
     },
+    Appropriate: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

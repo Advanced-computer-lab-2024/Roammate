@@ -102,12 +102,82 @@ const getBookedTransportations = async (req, res) => {
   }
 };
 
+const updateUserOnOrder = async (userId, orderPrice) => {
+  try {
+    // Find the user by ID
+    let user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Step 1: Decrement wallet by the price of the order
+    if (user.wallet < orderPrice) {
+      throw new Error("Insufficient funds in wallet");
+    }
+    user.wallet -= orderPrice;
+
+    // Step 2: Add 50,000 points to the user's current points
+    user.points += 50000;
+
+    // Step 3 & 4: Check and adjust level if needed
+    if (user.points > 500000) {
+      user.level = 3;
+    } else if (user.points > 100000) {
+      user.level = 2;
+    } else {
+      user.level = 1;
+    }
+
+    // Save the user after updates
+    await user.save();
+
+    // Return updated user information
+    return user;
+  } catch (error) {
+    throw new Error(`Error updating user on order: ${error.message}`);
+  }
+};
+
+const redeemPointsToCash = async (userId, pointsToRedeem) => {
+  try {
+    // Find the user by ID
+    let user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Check if user has enough points to redeem
+    if (user.points < pointsToRedeem) {
+      throw new Error("Insufficient points to redeem");
+    }
+
+    // Calculate cash equivalent (10,000 points = 100 EGP)
+    const cashEquivalent = (pointsToRedeem / 10000) * 100;
+
+    // Update wallet and points balance
+    user.wallet += cashEquivalent;
+    user.points -= pointsToRedeem;
+
+    // Save the updated user
+    await user.save();
+
+    // Return updated user information
+    return user;
+  } catch (error) {
+    throw new Error(`Error redeeming points: ${error.message}`);
+  }
+};
+
 module.exports = {
   register,
   getAllTourists,
   getTouristById,
   updateTouristById,
   getBookedTransportations,
+  updateUserOnOrder,
+  redeemPointsToCash,
 };
 
 
