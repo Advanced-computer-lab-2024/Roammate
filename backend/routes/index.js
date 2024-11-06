@@ -466,5 +466,8 @@ router.get('/availableTransportation', transportationController.getAllAvailableT
 
 router.get('/touristTransportationBookings', touristController.getBookedTransportations);
 
+router.patch("/activity/:id",activityController.toggleAppropriateActivity);
+router.patch("/itinerary/:id",itineraryController.toggleItineraryActivation);
+router.patch("/itinerary/:id",itineraryController.toggleAppropriateitinerary);
 
 module.exports = router;

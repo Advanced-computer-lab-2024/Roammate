@@ -427,6 +427,30 @@ const checkActivityBookingExists = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const toggleAppropriateActivity = async (req, res) => {
+  try {
+    const { activityId, Appropriate } = req.body;
+
+    // Find and update the itinerary's isActive status
+    const updatedActivity = await Activity.findByIdAndUpdate(
+      activityId,
+      { Appropriate: Appropriate },
+      { new: true } // Return the updated document
+    );
+
+    // If the itinerary is not found
+    if (!updatedActivity) {
+      return res.status(404).json({ message: "Activity not found" });
+    }
+
+    res.status(200).json({
+      message: `Activity is ${Appropriate ? "Appropriate" : "inAppropriate"}`,
+      activity: updatedActivity,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+};
 
 module.exports = {
   createActivity,
@@ -441,4 +465,6 @@ module.exports = {
   addActivityBooking,
   deleteActivityBooking,
   checkActivityBookingExists,
+  toggleAppropriateActivity,
+
 };
