@@ -43,8 +43,8 @@ const AdminActivitiesPage = () => {
         setFetch={setFetch}
       />
 
-      <Grid2 container spacing={2}>
-        <Grid2 item xs={12}>
+      <Grid2 container spacing={1}>
+        <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
           {activities.length === 0 &&
             (fetch < 1 ? (
               <h2>
@@ -61,7 +61,7 @@ const AdminActivitiesPage = () => {
           ))}
         </Grid2>
 
-        <Grid2 item xs={12} sm={4}>
+        <Grid2 item xs={3}>
           <SortAndFilterActivities
             setFilterAndSortCriteria={setFilterAndSortCriteria}
             setFetch={setFetch}

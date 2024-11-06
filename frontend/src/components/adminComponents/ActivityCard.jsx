@@ -31,7 +31,7 @@ const AdminActivityCard = ({ activity }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 650, mb: 4 }}>
+    <Card sx={{ maxWidth: "90%", mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",

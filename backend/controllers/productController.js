@@ -344,6 +344,7 @@ const toggleArchivedStatus = async (req, res) => {
       archived: product.archived,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
