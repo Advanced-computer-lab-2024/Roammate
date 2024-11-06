@@ -383,6 +383,55 @@ const deleteItineraryBooking = async (req, res) => {
   }
 };
 
+const toggleItineraryActivation = async (req, res) => {
+  try {
+    const { itineraryId, isActive } = req.body;
+
+    // Find and update the itinerary's isActive status
+    const updatedItinerary = await Itinerary.findByIdAndUpdate(
+      itineraryId,
+      { isActive: isActive },
+      { new: true } // Return the updated document
+    );
+
+    // If the itinerary is not found
+    if (!updatedItinerary) {
+      return res.status(404).json({ message: "Itinerary not found" });
+    }
+
+    res.status(200).json({
+      message: `Itinerary successfully ${isActive ? "activated" : "deactivated"}`,
+      itinerary: updatedItinerary,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+};
+const toggleAppropriateitinerary = async (req, res) => {
+  try {
+    const { itineraryId, Appropriate } = req.body;
+
+    // Find and update the itinerary's isActive status
+    const updatedItinerary = await Itinerary.findByIdAndUpdate(
+      itineraryId,
+      { Appropriate: Appropriate },
+      { new: true } // Return the updated document
+    );
+
+    // If the itinerary is not found
+    if (!updatedItinerary) {
+      return res.status(404).json({ message: "Itinerary not found" });
+    }
+
+    res.status(200).json({
+      message: `Itinerary is ${Appropriate ? "Appropriate" : "inAppropriate"}`,
+      itinerary: updatedItinerary,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+};
+
 module.exports = {
   createItinerary,
   getAllItineraries,
@@ -395,4 +444,6 @@ module.exports = {
   getBookedItinerariesByTouristId,
   addItineraryBooking,
   deleteItineraryBooking,
+  toggleItineraryActivation,
+  toggleAppropriateitinerary,
 };
