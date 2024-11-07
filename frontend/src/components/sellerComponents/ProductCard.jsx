@@ -149,7 +149,6 @@ const ProductCard = ({ product }) => {
           </IconButton>
 
           <Typography gutterBottom variant="h4" component="div" sx={{
-            textDecoration: `${product.quantity > 0 ? 'none' : 'line-through'}`,
             color: `${product.quantity > 0 ? 'black' : 'grey'}`,
           }}>
             ${product.price}

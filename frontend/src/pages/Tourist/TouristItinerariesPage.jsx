@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid2 } from '@mui/material';;
+import { Box, CircularProgress, Grid2 } from '@mui/material';;
 import CachedIcon from '@mui/icons-material/Cached';
 import { searchAndFilterItineraries } from '../../services/api';
 import SearchBar from '../../components/touristComponents/SearchBar';
@@ -46,15 +46,7 @@ const TouristItinerariesPage = ({ id }) => {
                         flexGrow: 1,
                     }} >
                         {itineraries.length === 0 && (
-                            fetch < 1 ? (< h2 > loading
-                                <CachedIcon sx={
-                                    {
-                                        fontSize: '25px',
-                                        ml: '10px',
-                                        mb: '-5px',
-                                    }
-                                } />
-                            </h2>) : (<h2>No Itineraries Found</h2>))}
+                            fetch < 1 ? ((<CircularProgress />)) : (<h2>No Itineraries Found</h2>))}
                         {itineraries.map((itinerary) => (
                             <div key={itinerary._id}>
                                 <ItineraryCard itinerary={itinerary} />

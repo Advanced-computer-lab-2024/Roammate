@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import Grid2 from "@mui/material/Grid2";
 import MuseumCard from "../../components/touristComponents/MusuemCard";
 import SortAndFilterMuseums from "../../components/touristComponents/SortAndFilterMusuems";
@@ -48,10 +48,7 @@ const TouristMuseumsPage = () => {
         <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
           {museums.length === 0 &&
             (fetch < 1 ? (
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
+              <CircularProgress />
             ) : (
               <h2>No Museums Found</h2>
             ))}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPurchasedProductsByTouristId } from '../../services/api';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, CircularProgress, Divider, Typography } from '@mui/material';
 import { useLocation } from 'react-router';
 import PurchasedProductCard from '../../components/touristComponents/PurchasedProductCard';
 import TouristViewPurchasedProduct from './TouristViewPurchasedProduct';
@@ -41,7 +41,7 @@ const TouristPurchases = ({ id }) => {
                                     Active Purchases
                                 </Typography>
                                 {purchases.filter((a) => a.status === 'Preparing' || a.status === 'Shipped').map((purchase) => (
-                                    <PurchasedProductCard key={purchase._id} purchasedProduct={purchase.product} purchaseDate={purchase.date} status={purchase.status} />
+                                    <PurchasedProductCard key={purchase._id} purchase={purchase} />
                                 ))}
                             </Box>
 
@@ -61,31 +61,17 @@ const TouristPurchases = ({ id }) => {
                                     Purchases Completed
                                 </Typography>
                                 {purchases.filter((a) => a.status === 'Completed').map((purchase) => (
-                                    <PurchasedProductCard key={purchase._id} purchasedProduct={purchase.product} purchaseDate={purchase.date} status={purchase.status} />
+                                    <PurchasedProductCard key={purchase._id} purchase={purchase} />
                                 ))}
                             </Box>
 
 
                         </div> :
-                        <h2>loading
-                            <CachedIcon sx={{
-                                fontSize: '25px',
-                                ml: '10px',
-                                mb: '-5px',
-                            }} />
-                        </h2>}
+                        <CircularProgress />}
                 </div> :
-                purchases && <TouristViewPurchasedProduct product={purchases.find(
-                    (purchase) => purchase.product._id === purchasedProductId
-                ).product} touristId={id} purchaseDate={
-                    purchases.find(
-                        (purchase) => purchase.product._id === purchasedProductId
-                    ).date
-                } status={
-                    purchases.find(
-                        (purchase) => purchase.product._id === purchasedProductId
-                    ).status
-                } />}
+                purchases && <TouristViewPurchasedProduct touristId={id}
+                    purchase={purchases.find((purchase) => purchase._id === purchasedProductId)}
+                />}
         </div>
 
     );

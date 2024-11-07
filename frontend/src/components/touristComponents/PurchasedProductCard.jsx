@@ -20,7 +20,10 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import { useNavigate } from 'react-router';
 import ProductImage from '../productComponents/ProductImage';
 
-const PurchasedProductCard = ({ purchasedProduct, purchaseDate, status }) => {
+const PurchasedProductCard = ({ purchase }) => {
+    const purchasedProduct = purchase.product;
+    const purchaseDate = purchase.date;
+    const status = purchase.status;
     const [name, setname] = useState(purchasedProduct.name);
     const [description, setDescription] = useState(purchasedProduct.description);
     const [date, setDate] = useState(dayjs(purchaseDate).format(DATE_FORMAT));
@@ -155,13 +158,13 @@ const PurchasedProductCard = ({ purchasedProduct, purchaseDate, status }) => {
             }}>
                 {
                     status === 'Shipped' && <Button color="primary"
-                        onClick={() => navigate(`/tourist/purchases?id=${purchasedProduct._id}`)}>
+                        onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}>
                         View Details
                         <ArrowForwardIosIcon />
                     </Button>
                 }
                 {status === 'Preparing' && <Button variant="contained"
-                    onClick={() => navigate(`/tourist/purchases?id=${purchasedProduct._id}`)}
+                    onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}
                     endIcon={<CancelIcon sx={{
                         fill: 'white'
                     }} />}
@@ -173,7 +176,7 @@ const PurchasedProductCard = ({ purchasedProduct, purchaseDate, status }) => {
                 </Button>
                 }
                 {status === 'Completed' && <Button variant="contained"
-                    onClick={() => navigate(`/tourist/purchases?id=${purchasedProduct._id}`)}
+                    onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}
                     endIcon={<ArrowForwardIosIcon />}>
                     Review
                 </Button>}

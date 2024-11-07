@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, TextField, Button, Divider } from "@mui/material";
+import { Box, Typography, TextField, Button, Divider, IconButton, Alert } from "@mui/material";
 import { fetchTouristProfile, updateTouristProfile } from "../../services/api";
 import dayjs from "dayjs";
 import ChangePasswordComponent from "../../components/sharedComponents/ChangePasswordComponent";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
+import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const DATE_FORMAT = "DD/MM/YYYY";
 
@@ -17,6 +19,8 @@ const TouristManageProfile = ({ id }) => {
   const [disabled, setDisabled] = useState(true);
   const [edit, setEdit] = useState(false);
   const [err, setErr] = useState("");
+  let loyaltyPoints = 200000;
+  let wallet = 300;
 
   useEffect(() => {
     const fetchTourist = async () => {
@@ -54,8 +58,10 @@ const TouristManageProfile = ({ id }) => {
     <Box
       sx={{
         display: "flex",
+        flexDirection: "row",
+        alignItems: "start",
         justifyContent: "space-between",
-        gap: "20px",
+        gap: "10px",
         padding: "20px",
       }}
     >
@@ -66,8 +72,9 @@ const TouristManageProfile = ({ id }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "start",
-          width: "50%",
+          alignItems: "space-around",
+          justifyContent: "space-around",
+          width: "30%",
           gap: "15px",
           padding: "20px",
           border: "1px solid #ddd",
@@ -179,18 +186,94 @@ const TouristManageProfile = ({ id }) => {
       {/* Change Password Component on the Right */}
       <Box
         sx={{
-          width: "50%",
+          width: "30%",
+          padding: "20px",
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+        }}
+      >
+        <Typography variant="h6" sx={{ textAlign: "center", mb: 2, mt: 5 }}>
+          Manage Password
+        </Typography>
+        <ChangePasswordComponent id={id} type="tourist" />
+        <Divider sx={{ my: 6 }} />
+        <DeleteProfileRequest id={id} type="Tourist" />
+      </Box>
+
+      {/*Loyal Points*/}
+      <Box
+        sx={{
+          width: "30%",
           padding: "20px",
           border: "1px solid #ddd",
           borderRadius: "8px",
         }}
       >
         <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
-          Change Password
+          Wallet
         </Typography>
-        <ChangePasswordComponent id={id} type="tourist" />
+        <IconButton sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          gap: '15px',
+        }} disabled>
+          <AccountBalanceWalletIcon fontSize={'large'} mr={2} />
+          <Typography variant="h5">{wallet} EGP</Typography>
+        </IconButton>
+
         <Divider sx={{ my: 4 }} />
-        <DeleteProfileRequest id={id} type="Tourist" />
+
+        <Typography variant="h6" sx={{ textAlign: "center", mb: 2, mt: 4 }}>
+          Loyalty Points
+        </Typography>
+        <IconButton sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          gap: '15px',
+        }} disabled>
+          <LocalPoliceIcon sx={{
+            fill: `${loyaltyPoints >= 100000 ?
+              loyaltyPoints >= 500000 ? 'gold' : 'green' : 'grey'}`,
+          }}
+            fontSize={'large'}
+            mr={2}
+          />
+          <Typography variant="h5">{loyaltyPoints} pts</Typography>
+        </IconButton>
+
+        <Divider sx={{ my: 4 }} />
+
+        {/*Redeem points as cash in wallet*/}
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+          width: '100%',
+        }}>
+          <TextField
+            label="Points"
+            type="number"
+            variant="outlined"
+            sx={{ width: "100%" }}
+          />
+          <Alert severity="info">
+            <strong>Info:</strong> 100 point = 1 EGP
+          </Alert>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: "green", color: "white", width: "100%" }}
+          >
+            Redeem Cash
+          </Button>
+        </Box>
+
+
       </Box>
     </Box>
   );

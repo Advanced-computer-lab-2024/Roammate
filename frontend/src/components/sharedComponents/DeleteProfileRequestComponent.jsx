@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Typography, Box } from "@mui/material";
+import { Button, Typography, Box, Alert } from "@mui/material";
 import {
   requestProfileDeletion,
   checkDeletionRequestStatus,
@@ -44,10 +44,17 @@ const DeleteProfileRequest = ({ id, type }) => {
   };
 
   return (
-    <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Request Account Deletion
+    <Box sx={{
+      width: "100%",
+      padding: "20px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "15px",
+    }}>
+      <Typography variant="h6" sx={{ mb: 2, width: '100%' }}>
+        Delete Account
       </Typography>
+      <Alert severity="error"><strong>Warning:</strong> This action is irreversible.</Alert>
       {status && <Typography color="success.main">Status: {status}</Typography>}
       {error && <Typography color="error.main">{error}</Typography>}
       <Button
@@ -61,7 +68,7 @@ const DeleteProfileRequest = ({ id, type }) => {
           ? "Deletion Request Pending"
           : "Request Account Deletion"}
       </Button>
-    </Box>
+    </Box >
   );
 };
 
