@@ -8,7 +8,9 @@ import ProductImage from "../../components/productComponents/ProductImage";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
-const TouristViewPurchasedProduct = ({ product, touristId, purchaseDate, status }) => {
+const TouristViewPurchasedProduct = ({ purchase, touristId }) => {
+    let product = purchase.product;
+    const purchaseDate = purchase.date;
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState(0);
     const [submitted, setSubmitted] = useState(false);

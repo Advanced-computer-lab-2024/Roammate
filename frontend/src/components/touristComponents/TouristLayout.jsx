@@ -28,6 +28,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
+import CurrencySelector from "./CurrencySelector";
 
 const drawerWidth = 240;
 const TouristLayout = () => {
@@ -257,6 +258,9 @@ const TouristLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <CurrencySelector />
+
                     <IconButton
                         size="large"
                         edge="end"
@@ -267,6 +271,7 @@ const TouristLayout = () => {
                     >
                         <AccountCircleIcon />
                     </IconButton>
+
                 </Toolbar>
 
             </AppBar>

@@ -336,7 +336,6 @@ const toggleArchivedStatus = async (req, res) => {
 
     // Toggle the archived status
     product.archived = !product.archived;
-    product.image = product._id;
     await product.save();
 
     res.status(200).json({

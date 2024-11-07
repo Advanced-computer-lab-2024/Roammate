@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid2 } from "@mui/material";
+import { Box, CircularProgress, Grid2 } from "@mui/material";
 import ProductCard from "../../components/touristComponents/ProductCard";
 import CachedIcon from "@mui/icons-material/Cached";
 import SearchBar from "../../components/touristComponents/SearchBar";
@@ -54,17 +54,7 @@ const TouristProductsPage = () => {
         >
           {products.length === 0 &&
             (fetch < 1 ? (
-              <h2>
-                {" "}
-                loading
-                <CachedIcon
-                  sx={{
-                    fontSize: "25px",
-                    ml: "10px",
-                    mb: "-5px",
-                  }}
-                />
-              </h2>
+              <CircularProgress />
             ) : (
               <h2>No Products Found</h2>
             ))}
