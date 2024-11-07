@@ -8,7 +8,6 @@ const {
 const AccountDeletionRequest = require("../models/AccountDeletionRequest");
 const PreferenceTag = require("../models/PreferenceTag");
 
-
 const register = async (req, res) => {
   const { username, email, password, mobile, nationality, DOB, job } = req.body;
   const role = "tourist";
@@ -275,7 +274,7 @@ const addPreferences = async (req, res) => {
 
     // Add preferences, avoiding duplicates
     tourist.preferences.push(
-      ...preferenceIds.filter(id => !tourist.preferences.includes(id))
+      ...preferenceIds.filter((id) => !tourist.preferences.includes(id))
     );
 
     await tourist.save();
@@ -295,7 +294,7 @@ const removePreferences = async (req, res) => {
 
     // Remove specified preferences
     tourist.preferences = tourist.preferences.filter(
-      id => !preferenceIds.includes(id.toString())
+      (id) => !preferenceIds.includes(id.toString())
     );
 
     await tourist.save();
@@ -318,12 +317,11 @@ const getTouristPreferences = async (req, res) => {
 
     res.status(200).json(tourist.preferences);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving tourist preferences", error });
+    res
+      .status(500)
+      .json({ message: "Error retrieving tourist preferences", error });
   }
 };
-
-
-
 
 module.exports = {
   register,

@@ -504,9 +504,8 @@ router.patch(
   itineraryController.toggleAppropriateItinerary
 );
 
-router.post("/update-points", updateLoyaltyPointsAndLevel);
-router.post("/redeem-points/:touristId", redeemPointsToCash);
-
+router.post("/update-points", touristController.updateLoyaltyPointsAndLevel);
+router.post("/redeem-points/:touristId", touristController.redeemPointsToCash);
 
 // routes to Select preferences for vacation
 // Add preferences to a tourist
