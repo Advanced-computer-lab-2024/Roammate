@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-const { Seller } = require("../models");
+const { Seller, ProductPurchasing, Product } = require("../models");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
+const AccountDeletionRequest = require("../models/AccountDeletionRequest");
 
 // username, password, role, email, name, about
 const register = async (req, res) => {
@@ -149,6 +150,42 @@ const uploadLogo = async (req, res) => {
   }
 };
 
+const requestSellerDeletionIfNoUpcomingProducts = async (req, res) => {
+  const sellerId = req.params.id;
+
+  try {
+    // Step 1: Check for active products (statuses "Preparing" or "Shipped") for the seller
+    const hasActiveProducts = await ProductPurchasing.exists({
+      product: { $in: await Product.find({ seller: sellerId }).select("_id") },
+      status: { $in: ["Preparing", "Shipped"] },
+    });
+
+    // Step 2: Determine if deletion request can be created
+    if (!hasActiveProducts) {
+      // If no active products, create a deletion request for the seller
+      const deletionRequest = new AccountDeletionRequest({
+        accountType: "Seller",
+        accountId: sellerId,
+      });
+      await deletionRequest.save();
+
+      res.status(201).json({
+        message: "Account deletion request created successfully.",
+        deletionRequest,
+      });
+    } else {
+      // If there are active products, return an error message
+      res.status(400).json({
+        message:
+          "Cannot create account deletion request. There are active products.",
+      });
+    }
+  } catch (error) {
+    console.error("Error checking seller's active products:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   register,
   getAllSellers,
@@ -158,4 +195,5 @@ module.exports = {
   uploadId,
   uploadTaxation,
   uploadLogo,
+  requestSellerDeletionIfNoUpcomingProducts,
 };

@@ -113,6 +113,10 @@ router.post(
   sellerController.uploadMiddleware,
   sellerController.uploadLogo
 );
+router.delete(
+  "/request-delete-seller/:id",
+  sellerController.requestSellerDeletionIfNoUpcomingProducts
+);
 //--------------------------------------------------------------
 
 //Routes for Tourist

@@ -71,6 +71,8 @@ export const requestProfileDeletion = async (id, type) => {
       response = await axios.delete(`${API_URL}request-delete-tourguide/${id}`);
     } else if (type == "Tourist") {
       response = await axios.delete(`${API_URL}request-delete-tourist/${id}`);
+    } else if (type == "Seller") {
+      response = await axios.delete(`${API_URL}request-delete-seller/${id}`);
     }
     return response.data; // Return the created deletion request
   } catch (error) {
