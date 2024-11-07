@@ -120,6 +120,10 @@ router.post("/tourist", touristController.register);
 router.get("/tourist/:id", touristController.getTouristById);
 router.patch("/tourist/:id", touristController.updateTouristById);
 router.get("/tourist", touristController.getAllTourists);
+router.delete(
+  "/request-delete-tourist/:id",
+  touristController.requestTouristDeletionIfNoUpcomingBookings
+);
 //--------------------------------------------------------------
 
 //Routes for Tourism Governor
@@ -482,5 +486,21 @@ router.get(
   "/touristTransportationBookings",
   touristController.getBookedTransportations
 );
+
+router.patch(
+  "/activity/:id/toggle-appropriate",
+  activityController.toggleAppropriateActivity
+);
+router.patch(
+  "/itinerary/:id/toggle-active",
+  itineraryController.toggleItineraryActivation
+);
+router.patch(
+  "/itinerary/:id/toggle-appropriate",
+  itineraryController.toggleAppropriateItinerary
+);
+
+router.post("/order/:id", touristController.updateUserOnOrder);
+router.post("/redeem/:id", touristController.redeemPointsToCash);
 
 module.exports = router;

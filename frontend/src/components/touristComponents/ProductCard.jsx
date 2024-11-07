@@ -15,8 +15,8 @@ import HeartIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
-import po from '../../components/po.png';
 import { useNavigate } from "react-router";
+import ProductImage from "../productComponents/ProductImage";
 
 const ProductCard = ({ product }) => {
   const [addedToWatchlist, setAddedToWatchlist] = useState(false);
@@ -48,16 +48,8 @@ const ProductCard = ({ product }) => {
 
   return (
     <Card sx={{ width: 650, mb: 4 }}>
-      <CardMedia
-        component="img"
-        height="250"
-        image={po}
-        alt="random"
-        sx={{
-          objectFit: 'cover',
-          objectPosition: 'top',
-        }}
-      />
+
+      <ProductImage imageId={product.image} height={"250"} />
 
       {/* <h1>Itinerary Card</h1> */}
       <CardContent

@@ -37,7 +37,7 @@ const ComplaintCard = ({ complaint }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 650, mb: 4 }}>
+    <Card sx={{ maxWidth: "90%", mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -65,7 +65,6 @@ const ComplaintCard = ({ complaint }) => {
           >
             {complaint.title}
           </Typography>
-
         </Box>
 
         {/* Complaint Body */}

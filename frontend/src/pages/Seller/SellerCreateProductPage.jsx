@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { CircularProgress, Box, Button, Checkbox, Chip, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
-import { createProduct } from "../../services/api";
+import { createProduct, uploadProductImage } from "../../services/api";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
 
 const SellerCreateProduct = ({ id }) => {
     const [name, setName] = useState();
     const [description, setDescription] = useState();
-    const [imgUrl, setImgUrl] = useState("hhhh");
     const [price, setPrice] = useState();
     const [quantity, setQuantity] = useState();
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState("");
+
+    const [image, setImage] = useState(null); // Track image state with useState
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -19,17 +24,23 @@ const SellerCreateProduct = ({ id }) => {
         try {
             const newProduct = {
                 name,
-                image: imgUrl,
                 description,
                 price,
                 quantity,
                 seller: id,
             }
-            await createProduct(newProduct);
+            const response = await createProduct(newProduct);
+            if (image) {
+                const formData = new FormData();
+                formData.append("file", image);
+                await uploadProductImage(response.data._id, formData);
+            }
             setResponse("Product created successfully");
         } catch (error) {
             console.log(error);
             setResponse("Failed to create product. Please try again later.");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -86,13 +97,21 @@ const SellerCreateProduct = ({ id }) => {
                 <h2>Image</h2>
                 <Button
                     component="label"
-                    role={undefined}
                     variant="contained"
-                    tabIndex={-1}
                     startIcon={<CloudUploadIcon />}
-                    onClick={() => { console.log("Upload image") }}
+                    sx={{
+                        backgroundColor: image ? "green" : "primary.main",
+                        color: "white",
+                    }}
                 >
-                    Upload image
+                    Upload Image
+                    <input
+                        type="file"
+                        onChange={(e) => {
+                            handleImageUpload(e);
+                        }}
+                        style={{ display: "none" }}
+                    />
                 </Button>
 
 

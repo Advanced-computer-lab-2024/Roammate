@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const itinerarySchema = new Schema(
-  // title, duration, startDate, endDate, timeline(day,startTime, activity,location,description,accessibility), price, lang, pickUpLocation, dropOffLocation, isBookingAvailable, tags, reviews, averageRating, tourGuide
   {
     title: {
       type: String,
@@ -74,11 +73,20 @@ const itinerarySchema = new Schema(
       ref: "TourGuide",
       required: true,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    Appropriate: {
+      type: Boolean,
+      default: true,
+    },
+    
   },
   { timestamps: true }
 );
 
-//create text index for title and description for full text search
+// Create text index for title and description for full text search
 itinerarySchema.index({
   title: "text",
   "timeline.plan.description": "text",

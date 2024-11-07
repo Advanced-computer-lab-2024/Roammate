@@ -11,39 +11,36 @@ import ShareIcon from "@mui/icons-material/Share";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import StarIcon from "@mui/icons-material/Star";
-import HeartIcon from "@mui/icons-material/Favorite";
 import BlockIcon from "@mui/icons-material/Block";
 import FlagIcon from "@mui/icons-material/Flag";
 import { useNavigate } from "react-router";
-import { updateItineraryStatus, flagItinerary } from "../../services/api";
+import { flagItinerary } from "../../services/api";
 
 const DATE_FORMAT = "YYYY/MM/DD";
 
-const AdminItineraryCard = ({ itinerary }) => {
-  const [isActive, setIsActive] = useState(itinerary.isActive || true);
-  const [isFlagged, setIsFlagged] = useState(itinerary.isFlagged || false);
+const AdminItineraryCard = ({ itinerary, onStatusChange }) => {
+  const [isFlagged, setIsFlagged] = useState(!itinerary.Appropriate || false);
   const navigate = useNavigate();
-
-  const handleToggleActive = async () => {
-    try {
-      await updateItineraryStatus(itinerary._id, { isActive: !isActive });
-      setIsActive(!isActive);
-    } catch (error) {
-      console.error("Failed to update itinerary status:", error);
-    }
-  };
 
   const handleToggleFlag = async () => {
     try {
-      await flagItinerary(itinerary._id, { isFlagged: !isFlagged });
-      setIsFlagged(!isFlagged);
+      // API call to toggle the flag status
+      const updatedItinerary = await flagItinerary(itinerary._id);
+
+      // Toggle the local state to reflect UI changes immediately
+      setIsFlagged((prevFlagged) => !prevFlagged);
+
+      // Notify the parent component of the status change
+      if (onStatusChange) {
+        onStatusChange({ ...itinerary, Appropriate: !itinerary.Appropriate });
+      }
     } catch (error) {
-      console.error("Failed to flag itinerary:", error);
+      console.error("Failed to toggle itinerary flag status:", error);
     }
   };
 
   return (
-    <Card sx={{ maxWidth: 650, mb: 4 }}>
+    <Card sx={{ maxWidth: "90%", mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -198,7 +195,6 @@ const AdminItineraryCard = ({ itinerary }) => {
           View
         </Button>
 
-        {/* Toggle Flag Button */}
         <ToggleButton
           value="flagged"
           selected={isFlagged}
@@ -214,23 +210,6 @@ const AdminItineraryCard = ({ itinerary }) => {
         >
           <FlagIcon sx={{ mr: 1 }} />
           {isFlagged ? "Inappropriate" : "Appropriate"}
-        </ToggleButton>
-
-        {/* Toggle Active Status Button */}
-        <ToggleButton
-          value="active"
-          selected={isActive}
-          onChange={handleToggleActive}
-          sx={{
-            ml: 1,
-            backgroundColor: isActive ? "green" : "orange",
-            color: "white",
-            "&:hover": {
-              backgroundColor: isActive ? "darkgreen" : "gray",
-            },
-          }}
-        >
-          {isActive ? "Deactivate" : "Activate"}
         </ToggleButton>
       </CardActions>
     </Card>

@@ -12,26 +12,34 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import StarIcon from "@mui/icons-material/Star";
 import BlockIcon from "@mui/icons-material/Block";
+import FlagIcon from "@mui/icons-material/Flag";
 import { useNavigate } from "react-router";
-import { updateActivityStatus } from "../../services/api"; // Import the API call function
+import { flagActivity } from "../../services/api"; // Replace this with the actual API function to toggle appropriate status
 
 const DATE_FORMAT = "YYYY/MM/DD";
 
-const AdminActivityCard = ({ activity }) => {
-  const [isActive, setIsActive] = useState(activity.isActive || true);
+const AdminActivityCard = ({ activity, onStatusChange }) => {
+  const [isAppropriate, setIsAppropriate] = useState(
+    activity.Appropriate || false
+  );
   const navigate = useNavigate();
 
-  const handleToggleActive = async () => {
+  const handleToggleAppropriate = async () => {
     try {
-      await updateActivityStatus(activity._id, { isActive: !isActive });
-      setIsActive(!isActive);
+      const updatedActivity = await flagActivity(activity._id); // Call API to toggle the appropriate status
+      setIsAppropriate((prev) => !prev); // Update local state immediately
+
+      // Notify parent component about the change in status
+      if (onStatusChange) {
+        onStatusChange({ ...activity, Appropriate: !activity.Appropriate });
+      }
     } catch (error) {
-      console.error("Failed to update activity status:", error);
+      console.error("Failed to toggle activity appropriate status:", error);
     }
   };
 
   return (
-    <Card sx={{ maxWidth: 650, mb: 4 }}>
+    <Card sx={{ maxWidth: "90%", mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -147,17 +155,9 @@ const AdminActivityCard = ({ activity }) => {
               }}
             >
               {activity.isBookingAvailable ? (
-                <EventAvailableIcon
-                  sx={{
-                    fill: "green",
-                  }}
-                />
+                <EventAvailableIcon sx={{ fill: "green" }} />
               ) : (
-                <BlockIcon
-                  sx={{
-                    fill: "red",
-                  }}
-                />
+                <BlockIcon sx={{ fill: "red" }} />
               )}
               <Typography
                 fontSize={14}
@@ -178,6 +178,7 @@ const AdminActivityCard = ({ activity }) => {
         </Box>
       </CardContent>
 
+      {/* Actions */}
       <CardActions
         sx={{
           display: "flex",
@@ -189,33 +190,31 @@ const AdminActivityCard = ({ activity }) => {
           width: "100%",
         }}
       >
+        {/* View Activity Button */}
         <Button
           variant="contained"
           onClick={() => navigate(`/admin/activities?id=${activity._id}`)}
           endIcon={<ArrowForwardIosIcon />}
-          sx={{
-            backgroundColor: "green",
-            color: "white",
-          }}
         >
           View Activity
         </Button>
 
-        {/* Toggle Active Status Button */}
+        {/* Toggle Appropriate Status Button */}
         <ToggleButton
-          value="active"
-          selected={isActive}
-          onChange={handleToggleActive}
+          value="appropriate"
+          selected={isAppropriate}
+          onChange={handleToggleAppropriate}
           sx={{
             ml: 1,
-            backgroundColor: isActive ? "green" : "orange",
+            backgroundColor: isAppropriate ? "green" : "red",
             color: "white",
             "&:hover": {
-              backgroundColor: isActive ? "darkgreen" : "gray",
+              backgroundColor: isAppropriate ? "darkgreen" : "darkred",
             },
           }}
         >
-          {isActive ? "Deactivate" : "Activate"}
+          <FlagIcon sx={{ mr: 1 }} />
+          {isAppropriate ? "Appropriate" : "Inappropriate"}
         </ToggleButton>
       </CardActions>
     </Card>

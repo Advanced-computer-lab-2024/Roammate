@@ -256,6 +256,23 @@ const getMonumentsByTourismGovernorId = async (req, res) => {
   }
 };
 
+const getVisitedMonumentsByTouristId = async (req, res) => {
+  const touristId = req.params.id;
+  try {
+    const visitedMonuments = await MonumentsVisiting.find({ user: touristId })
+      .populate({
+        path: "monument",
+        select: "name location history", // select desired fields from the monument
+      })
+      .populate("user", "username email") // populate user details if necessary
+      .sort({ date: 1 }); // sorts by date in ascending order
+
+    res.status(200).json(visitedMonuments);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createMonument,
   getAllMonuments,
@@ -264,4 +281,5 @@ module.exports = {
   deleteMonumentById,
   searchMonumentsWithFilters,
   getMonumentsByTourismGovernorId,
+  getVisitedMonumentsByTouristId,
 };

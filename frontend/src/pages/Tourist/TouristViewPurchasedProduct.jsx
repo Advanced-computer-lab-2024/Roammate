@@ -3,8 +3,8 @@ import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, 
 import dayjs from "dayjs";
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import po from '../../components/po.png';
 import { addReviewToProduct } from "../../services/api";
+import ProductImage from "../../components/productComponents/ProductImage";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -47,18 +47,8 @@ const TouristViewPurchasedProduct = ({ product, touristId, purchaseDate, status 
                 padding: 2, marginBottom: 3,
                 width: '650px'
             }}>
-                <CardMedia
-                    component="img"
-                    height="300"
-                    image={po}
-                    alt="random"
-                    sx={{
-                        objectFit: 'cover',
-                        objectPosition: 'top',
-                        marginBottom: 2,
-                    }}
 
-                />
+                <ProductImage imageId={product.image} height={"300"} marginBottom={2} />
 
                 <Typography variant="h4" gutterBottom>{product.name}</Typography>
                 {/* Average Rating */}

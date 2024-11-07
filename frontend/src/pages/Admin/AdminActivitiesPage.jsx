@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Box, Grid2 } from "@mui/material";
+import React, { useState, useEffect, useCallback } from "react";
+import { Box, Typography, Grid } from "@mui/material";
+import CachedIcon from "@mui/icons-material/Cached";
 import AdminActivityCard from "../../components/adminComponents/ActivityCard";
 import SortAndFilterActivities from "../../components/touristComponents/SortAndFilterActivities";
-import CachedIcon from "@mui/icons-material/Cached";
 import SearchBar from "../../components/touristComponents/SearchBar";
-import { searchAndFilterActivities } from "../../services/api";
+import { getAllActivities } from "../../services/api";
 import { useLocation, useOutletContext } from "react-router";
 import AdminViewActivity from "./AdminViewActivityPage";
 
@@ -26,14 +26,29 @@ const AdminActivitiesPage = () => {
   }, [id, fetch]);
 
   const fetchActivities = async () => {
-    const searchFilterAndSortCriteria = {
-      query: searchQuery,
-      ...filterAndSortCriteria,
-    };
-    const queryParameters = new URLSearchParams(searchFilterAndSortCriteria);
-    const result = await searchAndFilterActivities(queryParameters);
+    const result = await getAllActivities();
     setActivities(result);
   };
+
+  // Separate activities into appropriate and inappropriate lists
+  const inappropriateActivities = activities.filter(
+    (activity) => !activity.Appropriate
+  );
+  const appropriateActivities = activities.filter(
+    (activity) => activity.Appropriate
+  );
+
+  // Callback function to update activity status
+  const updateActivityStatus = useCallback(
+    (updatedActivity) => {
+      setActivities((prevActivities) =>
+        prevActivities.map((activity) =>
+          activity._id === updatedActivity._id ? updatedActivity : activity
+        )
+      );
+    },
+    [setActivities]
+  );
 
   return !id ? (
     <Box>
@@ -43,31 +58,73 @@ const AdminActivitiesPage = () => {
         setFetch={setFetch}
       />
 
-      <Grid2 container spacing={2}>
-        <Grid2 item xs={12}>
-          {activities.length === 0 &&
-            (fetch < 1 ? (
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
-            ) : (
-              <h2>No Activities Found</h2>
-            ))}
-          {activities.map((activity) => (
-            <div key={activity._id}>
-              <AdminActivityCard activity={activity} />
-            </div>
-          ))}
-        </Grid2>
+      {/* Sort and Filter */}
+      {/* <SortAndFilterActivities
+        setFilterAndSortCriteria={setFilterAndSortCriteria}
+        setFetch={setFetch}
+      /> */}
 
-        <Grid2 item xs={12} sm={4}>
-          <SortAndFilterActivities
-            setFilterAndSortCriteria={setFilterAndSortCriteria}
-            setFetch={setFetch}
-          />
-        </Grid2>
-      </Grid2>
+      {/* All Activities */}
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Activities
+        </Typography>
+        <Grid container spacing={2}>
+          {appropriateActivities.length === 0 && fetch < 1 ? (
+            <h2>
+              Loading
+              <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
+            </h2>
+          ) : (
+            appropriateActivities.map((activity) => (
+              <Grid item xs={12} md={6} key={activity._id}>
+                <AdminActivityCard
+                  activity={activity}
+                  onStatusChange={updateActivityStatus}
+                />
+              </Grid>
+            ))
+          )}
+          {activities.length === 0 && fetch >= 1 && (
+            <Typography>No Activities Found</Typography>
+          )}
+        </Grid>
+      </Box>
+
+      {/* Inappropriate Activities */}
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h5" sx={{ mb: 2, color: "red" }}>
+          Inappropriate Activities
+        </Typography>
+        <Box
+          sx={{
+            padding: 2,
+            borderRadius: 2,
+            border: "1px solid red",
+            minHeight: "200px",
+            backgroundColor: "#fdecea",
+          }}
+        >
+          {inappropriateActivities.length === 0 && fetch < 1 ? (
+            <h2>
+              Empty!
+              <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
+            </h2>
+          ) : (
+            inappropriateActivities.map((activity) => (
+              <Box key={activity._id} sx={{ mb: 2 }}>
+                <AdminActivityCard
+                  activity={activity}
+                  onStatusChange={updateActivityStatus}
+                />
+              </Box>
+            ))
+          )}
+          {inappropriateActivities.length === 0 && fetch >= 1 && (
+            <Typography>No Inappropriate Activities Found</Typography>
+          )}
+        </Box>
+      </Box>
     </Box>
   ) : (
     <AdminViewActivity activity={activities.find((act) => act._id === id)} />

@@ -202,7 +202,7 @@ const getFilterCriteria = (
   minRating,
   maxRating
 ) => {
-  let filter = {};
+  let filter = { Appropriate: true };
   filter.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
   if (minDate) {
     filter.startDate = { $gte: new Date(minDate) };
@@ -441,6 +441,34 @@ const checkActivityBookingExists = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const toggleAppropriateActivity = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const activity = await Activity.findById(id);
+
+    if (!activity) {
+      return res.status(404).json({ message: "Activity not found" });
+    }
+
+    const updatedActivity = await Activity.findByIdAndUpdate(
+      { _id: id },
+      { Appropriate: !activity.Appropriate },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: `Activity is now ${
+        updatedActivity.Appropriate ? "Appropriate" : "inAppropriate"
+      }`,
+      activity: updatedActivity,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
 
 module.exports = {
   createActivity,
@@ -456,4 +484,5 @@ module.exports = {
   addActivityBooking,
   deleteActivityBooking,
   checkActivityBookingExists,
+  toggleAppropriateActivity,
 };

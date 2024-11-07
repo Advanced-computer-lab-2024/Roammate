@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { downloadImage } from "../../services/api";
 import CardMedia from '@mui/material/CardMedia';
+import placeholder from "../../assets/images/placeholder.png";
 
-const ProductImage = ({ imageId }) => {
+const ProductImage = ({ imageId, height, marginBottom=0 }) => {
     const [image, setImage] = useState(null);
 
     const fetchImage = async () => {
@@ -17,15 +18,23 @@ const ProductImage = ({ imageId }) => {
     };
 
     useEffect(() => {
-        fetchImage();
+        if (imageId)
+            fetchImage();
     }, [imageId]);
 
     return (
         <CardMedia
             component="img"
+            height={height}
+            image={image ? image : placeholder}
             alt="Product Image"
-            height="140"
-            image={image}
+            sx={{
+                objectFit: 'cover',
+                objectPosition: 'top',
+                marginBottom: {marginBottom}
+            }}
         />
     );
 };
+
+export default ProductImage;
