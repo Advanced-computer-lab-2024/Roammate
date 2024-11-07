@@ -1,4 +1,4 @@
-  const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require("./User");
 
@@ -37,9 +37,9 @@ const touristSchema = new Schema(
       enum: ["USD", "EGP", "EUR"], // List the currencies you support
       default: "EGP",
     },
-      points: {
+    points: {
       type: Number,
-      default: 50000,
+      default: 0,
     },
     level: {
       type: Number,
@@ -51,7 +51,6 @@ const touristSchema = new Schema(
         ref: "Transportation",
       },
     ], // Add array of booked transportations
-
   },
   {
     timestamps: true,

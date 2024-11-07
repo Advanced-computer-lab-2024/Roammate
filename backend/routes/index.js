@@ -504,7 +504,7 @@ router.patch(
   itineraryController.toggleAppropriateItinerary
 );
 
-router.post("/order/:id", touristController.updateUserOnOrder);
-router.post("/redeem/:id", touristController.redeemPointsToCash);
+router.post("/update-points", updateLoyaltyPointsAndLevel);
+router.post("/redeem-points/:touristId", redeemPointsToCash);
 
 module.exports = router;
