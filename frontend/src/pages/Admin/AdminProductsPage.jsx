@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Box, Divider, Grid } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
-import { fetchProductsBySellerId } from "../../services/api";
-import ProductCard from "../../components/sellerComponents/ProductCard";
+import { fetchProducts } from "../../services/api";
+import AdminProductCard from "./AdminProductCard";
 import { useLocation, useOutletContext } from "react-router";
-import ManageProductPage from "./ManageProductPage";
+import ManageProductPage from "../Seller/ManageProductPage";
 import Typography from "@mui/material/Typography";
 
-const SellerProductsPage = ({ id }) => {
+const AdminProductsPage = () => {
   const [archivedProducts, setArchivedProducts] = useState([]);
   const [activeProducts, setActiveProducts] = useState([]);
   const [fetch, setFetch] = useState(0);
@@ -17,8 +17,8 @@ const SellerProductsPage = ({ id }) => {
   const product_id = queryParams.get("id");
 
   useEffect(() => {
-    const fetchMyProducts = async () => {
-      const result = await fetchProductsBySellerId(id);
+    const fetchAllProducts = async () => {
+      const result = await fetchProducts();
 
       // Split products into archived and active
       const archived = result.filter((product) => product.archived);
@@ -30,7 +30,7 @@ const SellerProductsPage = ({ id }) => {
     };
 
     try {
-      fetchMyProducts();
+      fetchAllProducts();
     } catch (err) {
       console.log(err);
     }
@@ -38,12 +38,11 @@ const SellerProductsPage = ({ id }) => {
     if (product_id) {
       setActiveButton(null);
     }
-  }, [product_id, fetch, id]);
+  }, [product_id, fetch]);
 
   // Handle toggle archive status
   const handleToggleArchive = (productId, isArchived) => {
     if (isArchived) {
-      // Move from active to archived
       const product = activeProducts.find((p) => p._id === productId);
       setActiveProducts(activeProducts.filter((p) => p._id !== productId));
       setArchivedProducts([
@@ -51,7 +50,6 @@ const SellerProductsPage = ({ id }) => {
         { ...product, archived: true },
       ]);
     } else {
-      // Move from archived to active
       const product = archivedProducts.find((p) => p._id === productId);
       setArchivedProducts(archivedProducts.filter((p) => p._id !== productId));
       setActiveProducts([...activeProducts, { ...product, archived: false }]);
@@ -75,20 +73,20 @@ const SellerProductsPage = ({ id }) => {
       <Grid container spacing={2}>
         {activeProducts.length === 0 &&
           (fetch < 1 ? (
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <h2>
                 Loading
                 <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
               </h2>
             </Grid>
           ) : (
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <h2>No Active Products Found</h2>
             </Grid>
           ))}
         {activeProducts.map((product) => (
-          <Grid xs={12} sm={6} key={product._id}>
-            <ProductCard
+          <Grid item xs={12} sm={6} key={product._id}>
+            <AdminProductCard
               product={product}
               setActiveButton={setActiveButton}
               onToggleArchive={handleToggleArchive}
@@ -113,20 +111,20 @@ const SellerProductsPage = ({ id }) => {
       <Grid container spacing={2}>
         {archivedProducts.length === 0 &&
           (fetch < 1 ? (
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <h2>
                 Loading
                 <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
               </h2>
             </Grid>
           ) : (
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <h2>No Archived Products Found</h2>
             </Grid>
           ))}
         {archivedProducts.map((product) => (
-          <Grid xs={12} sm={6} key={product._id}>
-            <ProductCard
+          <Grid item xs={12} sm={6} key={product._id}>
+            <AdminProductCard
               product={product}
               setActiveButton={setActiveButton}
               onToggleArchive={handleToggleArchive}
@@ -145,4 +143,4 @@ const SellerProductsPage = ({ id }) => {
   );
 };
 
-export default SellerProductsPage;
+export default AdminProductsPage;

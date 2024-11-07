@@ -6,6 +6,8 @@ const {
   ItineraryBooking,
 } = require("../models");
 const AccountDeletionRequest = require("../models/AccountDeletionRequest");
+const PreferenceTag = require("../models/PreferenceTag");
+
 
 const register = async (req, res) => {
   const { username, email, password, mobile, nationality, DOB, job } = req.body;
@@ -240,6 +242,66 @@ const requestTouristDeletionIfNoUpcomingBookings = async (req, res) => {
   }
 };
 
+// Add preferences to a tourist's profile
+const addPreferences = async (req, res) => {
+  const { touristId, preferenceIds } = req.body; // Get touristId and preferenceIds from the request body
+
+  try {
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) return res.status(404).json({ message: "Tourist not found" });
+
+    // Add preferences, avoiding duplicates
+    tourist.preferences.push(
+      ...preferenceIds.filter(id => !tourist.preferences.includes(id))
+    );
+
+    await tourist.save();
+    res.status(200).json(tourist.preferences);
+  } catch (error) {
+    res.status(500).json({ message: "Error adding preferences", error });
+  }
+};
+
+// Remove preferences from a tourist's profile
+const removePreferences = async (req, res) => {
+  const { touristId, preferenceIds } = req.body; // Get touristId and preferenceIds from the request body
+
+  try {
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) return res.status(404).json({ message: "Tourist not found" });
+
+    // Remove specified preferences
+    tourist.preferences = tourist.preferences.filter(
+      id => !preferenceIds.includes(id.toString())
+    );
+
+    await tourist.save();
+    res.status(200).json(tourist.preferences);
+  } catch (error) {
+    res.status(500).json({ message: "Error removing preferences", error });
+  }
+};
+
+// Get preference tags for a specific tourist
+const getTouristPreferences = async (req, res) => {
+  const { touristId } = req.body; // Assuming touristId is provided in the request body
+
+  try {
+    const tourist = await Tourist.findById(touristId).populate("preferences");
+
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
+
+    res.status(200).json(tourist.preferences);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving tourist preferences", error });
+  }
+};
+
+
+
+
 module.exports = {
   register,
   getAllTourists,
@@ -249,4 +311,7 @@ module.exports = {
   updateUserOnOrder,
   redeemPointsToCash,
   requestTouristDeletionIfNoUpcomingBookings,
+  addPreferences,
+  removePreferences,
+  getTouristPreferences,
 };

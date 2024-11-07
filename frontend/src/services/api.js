@@ -71,6 +71,8 @@ export const requestProfileDeletion = async (id, type) => {
       response = await axios.delete(`${API_URL}request-delete-tourguide/${id}`);
     } else if (type == "Tourist") {
       response = await axios.delete(`${API_URL}request-delete-tourist/${id}`);
+    } else if (type == "Seller") {
+      response = await axios.delete(`${API_URL}request-delete-seller/${id}`);
     }
     return response.data; // Return the created deletion request
   } catch (error) {
@@ -161,7 +163,7 @@ export const uploadSellerLogo = async (userId, formData) => {
 
 // ✅ This function is used to fetch all products
 export const fetchProducts = async () => {
-  var prodcuts = await axios.get(`${API_URL}products`);
+  var prodcuts = await axios.get(`${API_URL}product`);
   return prodcuts.data;
 };
 

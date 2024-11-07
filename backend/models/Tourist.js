@@ -52,6 +52,13 @@ const touristSchema = new Schema(
       },
     ], // Add array of booked transportations
 
+    preferences: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "PreferenceTag",
+      },
+    ],
+
   },
   {
     timestamps: true,

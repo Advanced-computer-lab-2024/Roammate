@@ -20,7 +20,7 @@ import {
   uploadSellerTaxation,
   uploadSellerLogo,
   downloadImage,
-  updateUserStatus
+  updateUserStatus,
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
@@ -292,7 +292,8 @@ const SellerManageProfilePage = ({ id }) => {
             >
               {!documentSubmitted && (
                 <Alert severity="warning">
-                  You need to upload the following documents to access the system.
+                  You need to upload the following documents to access the
+                  system.
                 </Alert>
               )}
               {uploading && <LinearProgress color="success"></LinearProgress>}
@@ -350,12 +351,12 @@ const SellerManageProfilePage = ({ id }) => {
           )}
 
           {status === "pending" && (
-            <Alert severity="info">
-              Your documents are under review.
-            </Alert>
+            <Alert severity="info">Your documents are under review.</Alert>
           )}
 
-          {status === "accepted" && <AcceptTosComponent userId={id} setStatus={setStatus} />}
+          {status === "accepted" && (
+            <AcceptTosComponent userId={id} setStatus={setStatus} />
+          )}
 
           {/* Change Password Component */}
           <Box
@@ -371,7 +372,7 @@ const SellerManageProfilePage = ({ id }) => {
             </Typography>
             <ChangePasswordComponent id={id} type="seller" />
             <Divider sx={{ my: 4 }} />
-            <DeleteProfileRequest id={id} type="seller" />
+            <DeleteProfileRequest id={id} type="Seller" />
           </Box>
         </Box>
       </Box>
