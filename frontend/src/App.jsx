@@ -37,6 +37,7 @@ import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
 import AdminActivitiesPage from "./pages/Admin/AdminActivitiesPage";
 import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
 import AdminItinerariesPage from "./pages/Admin/AdminItinerariesPage";
+import AdminProductsPage from "./pages/Admin/AdminProductsPage";
 
 const theme = createTheme({
   // palette: {
@@ -179,8 +180,8 @@ function App() {
               element={<AdminItinerariesPage id={adminId} />}
             />
             <Route
-              path="/admin/itineraries"
-              element={<TouristProductsPage id={adminId} />}
+              path="/admin/products"
+              element={<AdminProductsPage id={adminId} />}
             />
           </Route>
         </Routes>

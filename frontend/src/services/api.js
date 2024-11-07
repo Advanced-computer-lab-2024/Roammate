@@ -163,7 +163,7 @@ export const uploadSellerLogo = async (userId, formData) => {
 
 // ✅ This function is used to fetch all products
 export const fetchProducts = async () => {
-  var prodcuts = await axios.get(`${API_URL}products`);
+  var prodcuts = await axios.get(`${API_URL}product`);
   return prodcuts.data;
 };
 
