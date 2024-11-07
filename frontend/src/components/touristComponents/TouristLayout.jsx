@@ -27,7 +27,7 @@ import ReportIcon from '@mui/icons-material/Report';
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { Collapse, FormControl, InputLabel, ListItemIcon, ListSubheader, MenuItem, Select } from '@mui/material';
+import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
 import CurrencySelector from "./CurrencySelector";
 
 const drawerWidth = 240;
@@ -45,7 +45,6 @@ const TouristLayout = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get("id") || "");
-    const [currency, setCurrency] = React.useState('EUR');
 
     React.useEffect(() => {
         if (location.pathname === "/tourist") {
@@ -259,7 +258,9 @@ const TouristLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
                     <CurrencySelector />
+
                     <IconButton
                         size="large"
                         edge="end"
