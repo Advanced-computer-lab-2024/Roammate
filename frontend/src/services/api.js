@@ -893,3 +893,34 @@ export const uploadProductImage = async (productId, formData) => {
   );
   return response;
 };
+
+// This function is used to search for flights
+export const searchFlights = async (
+  origin,
+  destination,
+  departureDate,
+  returnDate,
+  passengers
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}search-flights`,
+      {
+        origin,
+        destination,
+        departureDate,
+        returnDate,
+        passengers,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json", // Set content type for JSON data
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error in frontend request:", error);
+    throw error; // Handle or throw error to show in the UI
+  }
+};

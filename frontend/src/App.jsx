@@ -39,6 +39,7 @@ import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
 import AdminItinerariesPage from "./pages/Admin/AdminItinerariesPage";
 import SellerCreateProduct from "./pages/Seller/SellerCreateProductPage";
 import AdminProductsPage from "./pages/Admin/AdminProductsPage";
+import TouristBookFlightsPage from "./pages/Tourist/TouristBookFlightsPage";
 
 const theme = createTheme({
   // palette: {
@@ -104,6 +105,9 @@ function App() {
             />
 
             <Route path="/tourist/monuments" element={<TouristMuseumsPage />} />
+
+            <Route path="/tourist/flights" element={<TouristBookFlightsPage />} />
+
             <Route
               path="/tourist/complaints"
               element={<TouristComplaintsPage touristId={touristId} />}
