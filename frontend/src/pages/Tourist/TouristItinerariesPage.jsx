@@ -8,7 +8,7 @@ import SortAndFilterItineraries from '../../components/touristComponents/SortAnd
 import { useLocation, useOutletContext } from 'react-router';
 import TouristViewItinerary from './TouristViewItineraryPage'
 
-const TouristItinerariesPage = () => {
+const TouristItinerariesPage = ({ id }) => {
     const [itineraries, setItineraries] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterAndSortCriteria, setFilterAndSortCriteria] = useState({});
@@ -16,14 +16,14 @@ const TouristItinerariesPage = () => {
     const { setActiveButton } = useOutletContext();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const id = queryParams.get('id');
+    const queryItineraryId = queryParams.get('id');
 
     useEffect(() => {
         fetchItineraries();
-        if (id) {
+        if (queryItineraryId) {
             setActiveButton(null)
         }
-    }, [id, fetch]);
+    }, [queryItineraryId, fetch]);
 
     const fetchItineraries = async () => {
         const searchFilterAndSortCriteria = {
@@ -37,7 +37,7 @@ const TouristItinerariesPage = () => {
     }
 
     return (
-        !id ?
+        !queryItineraryId ?
             <Box>
                 <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} setFetch={setFetch} />
 
@@ -64,7 +64,7 @@ const TouristItinerariesPage = () => {
                     </Grid2>
                     <SortAndFilterItineraries setFilterAndSortCriteria={setFilterAndSortCriteria} setFetch={setFetch} />
                 </Grid2 >
-            </Box > : <TouristViewItinerary id={id} />
+            </Box > : <TouristViewItinerary id={queryItineraryId} touristId={id} />
     );
 }
 

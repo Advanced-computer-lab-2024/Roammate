@@ -8,7 +8,7 @@ import { searchAndFilterActivities } from '../../services/api';
 import { useLocation, useOutletContext } from 'react-router';
 import TouristViewActivity from './TouristViewActivityPage';
 
-const TouristActivitiesPage = () => {
+const TouristActivitiesPage = ({ id }) => {
     const [activities, setActivities] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterAndSortCriteria, setFilterAndSortCriteria] = useState({});
@@ -16,7 +16,7 @@ const TouristActivitiesPage = () => {
     const { setActiveButton } = useOutletContext();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const id = queryParams.get('id');
+    const queryActivityId = queryParams.get('id');
 
 
     useEffect(() => {
@@ -31,15 +31,15 @@ const TouristActivitiesPage = () => {
             setActivities(result);
         };
         fetchActivities();
-        if (id) {
+        if (queryActivityId) {
             setActiveButton(null)
         }
-    }, [id, fetch]);
+    }, [queryActivityId, fetch]);
 
 
 
     return (
-        !id ?
+        !queryActivityId ?
             (<Box>
                 < SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} setFetch={setFetch} />
 
@@ -69,7 +69,7 @@ const TouristActivitiesPage = () => {
                 </Grid2 >
             </Box >)
             :
-            <TouristViewActivity id={id} />
+            <TouristViewActivity id={queryActivityId} touristId={id} />
     );
 }
 

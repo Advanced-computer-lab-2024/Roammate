@@ -383,6 +383,20 @@ const getBookedActivitiesByTouristId = async (req, res) => {
   }
 };
 
+const checkTouristHasBookedActivity = async (req, res) => {
+  const { activityId, userId, bookingDate } = req.body;
+  try {
+    const bookingExists = await ActivityBooking.exists({
+      activity: activityId,
+      user: userId,
+      date: bookingDate,
+    });
+    res.status(200).json(bookingExists);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const addActivityBooking = async (req, res) => {
   const { activityId, userId, date } = req.body;
   try {
@@ -438,6 +452,7 @@ module.exports = {
   getActivitiesByAdvertiserId,
   addReviewToActivity,
   getBookedActivitiesByTouristId,
+  checkTouristHasBookedActivity,
   addActivityBooking,
   deleteActivityBooking,
   checkActivityBookingExists,

@@ -659,17 +659,40 @@ export const downloadImage = async (id) => {
 export const downloadPdf = async (id) => {
   return await axios.get(`${API_URL}pdf/${id}`, { responseType: "blob" });
 };
+//----------------------------------------------
 
 //activity bookings
 // ✅ This function is used to get all activity bookings by tourist id
 export const fetchActivityBookingsByTouristId = async (touristId) => {
-  const response = await axios.get(`${API_URL}/activityBookings/${touristId}`);
+  const response = await axios.get(`${API_URL}activityBookings/${touristId}`);
   return response.data;
 };
 
+// ✅ This function is used to check if tourist has already booked an activity
+export const checkIfTouristHasBookedActivity = async (
+  touristId,
+  activityId,
+  bookingDate
+) => {
+  const response = await axios.post(`${API_URL}activityBookings-check`, {
+    userId: touristId,
+    activityId,
+    bookingDate,
+  });
+  return response;
+};
+
 // ✅ This function is used to add a new activity booking
-export const addActivityBooking = async (bookingData) => {
-  const response = await axios.post(`${API_URL}/activityBookings`, bookingData);
+export const addActivityBooking = async (
+  touristId,
+  activityId,
+  bookingDate
+) => {
+  const response = await axios.post(`${API_URL}activityBookings`, {
+    activityId,
+    userId: touristId,
+    date: bookingDate,
+  });
   return response;
 };
 
@@ -677,7 +700,7 @@ export const addActivityBooking = async (bookingData) => {
 export const deleteActivityBooking = async (bookingId) => {
   try {
     const response = await axios.delete(
-      `${API_URL}/activityBookings/${bookingId}`
+      `${API_URL}activityBookings/${bookingId}`
     );
     return response;
   } catch (error) {
@@ -706,8 +729,31 @@ export const fetchItineraryBookingsByTouristId = async (touristId) => {
   return response.data;
 };
 
+// ✅ This function is used to check if tourist has already booked an itinerary
+export const checkIfTouristHasBookedItinerary = async (
+  touristId,
+  itineraryId,
+  bookingDate
+) => {
+  const response = await axios.post(`${API_URL}itineraryBookings-check`, {
+    userId: touristId,
+    itineraryId,
+    bookingDate,
+  });
+  return response;
+};
+
 // ✅ This function is used to add a new itinerary booking
-export const addItineraryBooking = async (bookingData) => {
+export const addItineraryBooking = async (
+  touristId,
+  itineraryId,
+  bookingDate
+) => {
+  const bookingData = {
+    itineraryId,
+    userId: touristId,
+    bookingDate,
+  };
   const response = await axios.post(`${API_URL}itineraryBookings`, bookingData);
   return response;
 };
@@ -815,3 +861,6 @@ export const uploadProductImage = async (productId, formData) => {
   );
   return response;
 };
+//----------------------------------------------
+
+//This function is used to get all activity booki

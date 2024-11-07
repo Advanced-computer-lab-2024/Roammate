@@ -211,7 +211,7 @@ const TouristViewPurchasedProduct = ({ product, touristId, purchaseDate, status 
                 {
                     status === 'Completed' ?
                         (userRatedBefore() ?
-                            (<Typography variant="h6" sx={{ color: 'gray' }}>You have already rated this activity {userRatedBefore()}</Typography>)
+                            (<Typography variant="h6" sx={{ color: 'gray' }}>You have already rated this product {userRatedBefore()}</Typography>)
                             :
                             (<Box mt={3}>
                                 <Typography variant="h6">Leave a Review</Typography>

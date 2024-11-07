@@ -17,7 +17,9 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useNavigate } from 'react-router';
 
-const BookedItineraryCard = ({ bookedItinerary, bookingDate }) => {
+const BookedItineraryCard = ({ itineraryBooking }) => {
+    const bookedItinerary = itineraryBooking.itinerary;
+    const bookingDate = itineraryBooking.date;
     const [title, setTitle] = useState(bookedItinerary.title);
     const [duration, setDuration] = useState(bookedItinerary.duration);
     const [date, setDate] = useState(dayjs(bookingDate).format(DATE_FORMAT));
@@ -154,7 +156,7 @@ const BookedItineraryCard = ({ bookedItinerary, bookingDate }) => {
             }}>
                 {dayjs(new Date()).startOf('day').isBefore(dayjs(date).startOf('day')) ?
                     <Button variant="contained"
-                        onClick={() => navigate(`/tourist/bookings/itineraries?id=${bookedItinerary._id}`)}
+                        onClick={() => navigate(`/tourist/bookings/itineraries?id=${itineraryBooking._id}`)}
                         endIcon={<CancelIcon sx={{
                             fill: 'white'
                         }} />}
@@ -165,7 +167,7 @@ const BookedItineraryCard = ({ bookedItinerary, bookingDate }) => {
                         Cancel
                     </Button> :
                     <Button variant="contained"
-                        onClick={() => navigate(`/tourist/bookings/itineraries?id=${bookedItinerary._id}`)}
+                        onClick={() => navigate(`/tourist/bookings/itineraries?id=${itineraryBooking._id}`)}
                         endIcon={<ArrowForwardIosIcon />}>
                         Review
                     </Button>}

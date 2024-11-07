@@ -1,26 +1,32 @@
 import React, { useState } from "react";
-import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon, Chip, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { Box, Typography, Divider, Rating, Button, TextField, IconButton, LinearProgress, Alert, Card, CardHeader, Avatar, CardContent, Icon, Chip, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import dayjs from "dayjs";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import BlockIcon from '@mui/icons-material/Block';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
 import LanguageIcon from '@mui/icons-material/Language';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { addReviewToItinerary, addReviewToTourguide } from "../../services/api";
+import { addReviewToItinerary, addReviewToTourguide, deleteItineraryBooking } from "../../services/api";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
-const TouristViewBookedItinerary = ({ itinerary, touristId, bookingDate }) => {
+const TouristViewBookedItinerary = ({ itineraryBooking, touristId }) => {
+    if (!itineraryBooking)
+        return <Typography variant="h4" gutterBottom>No itinerary found</Typography>;
+    let itinerary = itineraryBooking.itinerary;
+    const bookingDate = itineraryBooking.date;
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState(0);
     const [tourguideRating, setTourguideRating] = useState(0);
     const [tourguideReviewText, setTourguideReviewText] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [response, setResponse] = useState(null);
+    const [cancelMessage, setCancelMessage] = useState(null);
+    const [loadingCancel, setLoadingCancel] = useState(false);
+    const [disabled, setDisabled] = useState(false);
 
     const handleReviewSubmit = async () => {
         try {
@@ -62,6 +68,32 @@ const TouristViewBookedItinerary = ({ itinerary, touristId, bookingDate }) => {
         return existingReview ? existingReview.rating : null;
     };
 
+
+    const canCancelBooking = () => {
+        // Check if the booking can be cancelled if the booked date is at least 48 hours away
+        const startDate = dayjs(bookingDate).startOf('day');
+        const currentDate = dayjs(new Date()).startOf('day');
+        return startDate.diff(currentDate, 'hours') >= 48;
+    };
+
+    const handleCancelBooking = async () => {
+        // Cancel the booking
+        if (!canCancelBooking()) {
+            setCancelMessage("You cannot cancel this booking as the booked date is less than 48 hours away");
+            setDisabled(true);
+            return;
+        }
+        try {
+            setLoadingCancel(true);
+            const response = await deleteItineraryBooking(itineraryBooking._id);
+            setCancelMessage("Booking cancelled successfully. Full ticket price will be refunded to your account wallet");
+            setDisabled(true);
+            setLoadingCancel(false);
+        } catch (error) {
+            console.error(error);
+            setCancelMessage("Failed to cancel booking");
+        }
+    }
 
     return (
         <Box sx={{ padding: 3 }}>
@@ -350,6 +382,36 @@ const TouristViewBookedItinerary = ({ itinerary, touristId, bookingDate }) => {
                     </Box>
                 </Box>
             </Card>
+
+            {/*Cancel booking */}
+            {/* Check if the booking can be cancelled */}
+            {dayjs(bookingDate).startOf('day').isBefore(dayjs(new Date()).startOf('day')) ? null : (
+                <Card elevation={3} sx={{
+                    padding: 2, marginBottom: 3,
+                }}>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginBottom: 2,
+                        width: '100%'
+                    }}>
+                        <Typography variant="h4" sx={{ color: 'grey' }} gutterBottom>Cancellation</Typography>
+                        <Typography variant="body1" sx={{ color: 'grey', mb: 2 }} gutterBottom>You can cancel this booking if the booked date is at least 48 hours away</Typography>
+                        {loadingCancel && <LinearProgress />}
+                        {cancelMessage && (cancelMessage.includes("successfully") ? <Alert severity="success">{cancelMessage}</Alert> : <Alert severity="error">{cancelMessage}</Alert>)}
+                        <Button variant="contained" sx={{ backgroundColor: 'red', marginTop: 2 }}
+                            startIcon={<BlockIcon />}
+                            onClick={handleCancelBooking}
+                            disabled={disabled}
+                        >
+                            Cancel Booking
+                        </Button>
+                    </Box>
+                </Card >
+            )}
+
 
 
             {/* Reviews Section */}

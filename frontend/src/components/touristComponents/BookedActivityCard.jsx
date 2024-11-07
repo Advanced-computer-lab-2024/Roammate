@@ -19,8 +19,9 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router';
 
-const BookedActivityCard = ({ bookedActivity, bookingDate }) => {
-
+const BookedActivityCard = ({ activityBooking }) => {
+    const bookedActivity = activityBooking.activity;
+    const bookingDate = activityBooking.date;
     const [title, setTitle] = useState(bookedActivity.title);
     const [description, setDescription] = useState(bookedActivity.description);
     const [date, setDate] = useState(dayjs(bookingDate).format(DATE_FORMAT));
@@ -158,18 +159,18 @@ const BookedActivityCard = ({ bookedActivity, bookingDate }) => {
             }}>
                 {dayjs(new Date()).startOf('day').isBefore(dayjs(date).startOf('day')) ?
                     <Button variant="contained"
-                        onClick={() => navigate(`/tourist/bookings/activities?id=${bookedActivity._id}`)}
-                        endIcon={<CancelIcon sx={{
+                        onClick={() => navigate(`/tourist/bookings/activities?id=${activityBooking._id}`)}
+                        endIcon={<ArrowForwardIosIcon sx={{
                             fill: 'white'
                         }} />}
                         sx={{
-                            backgroundColor: 'red',
+                            backgroundColor: '#FFBF55',
                         }}
                     >
-                        Cancel
+                        More
                     </Button> :
                     <Button variant="contained"
-                        onClick={() => navigate(`/tourist/bookings/activities?id=${bookedActivity._id}`)}
+                        onClick={() => navigate(`/tourist/bookings/activities?id=${activityBooking._id}`)}
                         endIcon={<ArrowForwardIosIcon />}>
                         Review
                     </Button>}

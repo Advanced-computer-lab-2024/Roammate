@@ -134,7 +134,9 @@ const ActivityCard = ({ activity }) => {
                         </IconButton>
                     </Typography>
 
-                    <Typography gutterBottom variant="h4" component="div">
+                    <Typography gutterBottom variant="h4" component="div" sx={{
+                        color: `${isBookingAvailable > 0 ? 'black' : 'grey'}`,
+                    }}>
                         ${price}
                     </Typography>
                 </Box>
@@ -159,12 +161,12 @@ const ActivityCard = ({ activity }) => {
                 </Button>
 
                 <Button variant="contained" sx={{
-                    backgroundColor: 'green',
+                    backgroundColor: `${isBookingAvailable ? 'green' : 'grey'}`,
                     color: 'white',
                 }}
                     onClick={() => navigate(`/tourist/activities?id=${activity._id}`)}
                     endIcon={<ArrowForwardIosIcon />}>
-                    Book
+                    {isBookingAvailable ? 'Book' : 'View'}
                 </Button>
             </CardActions>
 

@@ -74,11 +74,11 @@ function App() {
           <Route path="/tourist" element={<TouristLayout />}>
             <Route
               path="/tourist/activities"
-              element={<TouristActivitiesPage />}
+              element={<TouristActivitiesPage id={touristId} />}
             />
             <Route
               path="/tourist/itineraries"
-              element={<TouristItinerariesPage />}
+              element={<TouristItinerariesPage id={touristId} />}
             />
             <Route path="/tourist/products" element={<TouristProductsPage />} />
             <Route

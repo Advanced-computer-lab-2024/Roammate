@@ -3,7 +3,7 @@ import { fetchItineraryBookingsByTouristId } from '../../services/api';
 import dayjs from 'dayjs';
 import BookedItineraryCard from '../../components/touristComponents/BookedItineraryCard';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, CircularProgress, Divider, Typography } from '@mui/material';
 import TouristViewBookedItinerary from './TouristViewBookedItineraryPage';
 import { useLocation } from 'react-router';
 
@@ -12,7 +12,7 @@ const TouristBookedItineraries = ({ id }) => {
     //get query parameter
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const bookedItineraryId = queryParams.get('id');
+    const itineraryBookingId = queryParams.get('id');
 
     useEffect(() => {
         const fetchBookedItineraries = async () => {
@@ -20,7 +20,7 @@ const TouristBookedItineraries = ({ id }) => {
             setBookedItineraries(itinerariesBooked);
         }
         fetchBookedItineraries();
-    }, [id, bookedItineraryId]);
+    }, [id, itineraryBookingId]);
 
     const isUpcoming = (itineraryBooking) => {
         const bookingDate = dayjs(itineraryBooking.date).startOf('day');
@@ -29,7 +29,7 @@ const TouristBookedItineraries = ({ id }) => {
 
     return (
         <div>
-            {!bookedItineraryId ?
+            {!itineraryBookingId ?
                 <div>
                     {bookedItineraries ?
                         <div>
@@ -44,7 +44,7 @@ const TouristBookedItineraries = ({ id }) => {
                                     Upcoming Itineraries
                                 </Typography>
                                 {bookedItineraries.filter((a) => isUpcoming(a)).map((itineraryBooking) => (
-                                    <BookedItineraryCard key={itineraryBooking._id} bookedItinerary={itineraryBooking.itinerary} bookingDate={itineraryBooking.date} />
+                                    <BookedItineraryCard key={itineraryBooking._id} itineraryBooking={itineraryBooking} />
                                 ))}
                             </Box>
                             <Divider sx={{
@@ -63,23 +63,15 @@ const TouristBookedItineraries = ({ id }) => {
                                     Past Itineraries
                                 </Typography>
                                 {bookedItineraries.filter((a) => !isUpcoming(a)).map((itineraryBooking) => (
-                                    <BookedItineraryCard key={itineraryBooking._id} bookedItinerary={itineraryBooking.itinerary} bookingDate={itineraryBooking.date} />
+                                    <BookedItineraryCard key={itineraryBooking._id} itineraryBooking={itineraryBooking} />
                                 ))}
                             </Box>
                         </div> :
-                        <h2>loading
-                            <CachedIcon sx={{
-                                fontSize: '25px',
-                                ml: '10px',
-                                mb: '-5px',
-                            }} />
-                        </h2>}
+                        <CircularProgress />}
                 </div> :
-                bookedItineraries && <TouristViewBookedItinerary itinerary={bookedItineraries.find(
-                    (bookedItinerary) => bookedItinerary.itinerary._id === bookedItineraryId
-                ).itinerary} touristId={id} bookingDate={bookedItineraries.find(
-                    (bookedItinerary) => bookedItinerary.itinerary._id === bookedItineraryId
-                ).date} />}
+                bookedItineraries && <TouristViewBookedItinerary itineraryBooking={
+                    bookedItineraries.find((booking) => booking._id === itineraryBookingId)
+                } touristId={id} />}
         </div>
 
     );

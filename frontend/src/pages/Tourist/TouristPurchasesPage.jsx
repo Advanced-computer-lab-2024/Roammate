@@ -29,24 +29,6 @@ const TouristPurchases = ({ id }) => {
                 <div>
                     {purchases ?
                         <div>
-                            <Box>
-                                <Typography sx={{
-                                    fontSize: '25px',
-                                    fontWeight: 'bold',
-                                    mb: '25px',
-                                    color: 'grey',
-                                    textAlign: 'left'
-                                }}>
-                                    Purchases Completed
-                                </Typography>
-                                {purchases.filter((a) => a.status === 'Completed').map((purchase) => (
-                                    <PurchasedProductCard key={purchase._id} purchasedProduct={purchase.product} purchaseDate={purchase.date} status={purchase.status} />
-                                ))}
-                            </Box>
-                            <Divider sx={{
-                                mt: '20px',
-                                mb: '20px',
-                            }} />
 
                             <Box>
                                 <Typography sx={{
@@ -62,6 +44,28 @@ const TouristPurchases = ({ id }) => {
                                     <PurchasedProductCard key={purchase._id} purchasedProduct={purchase.product} purchaseDate={purchase.date} status={purchase.status} />
                                 ))}
                             </Box>
+
+                            <Divider sx={{
+                                mt: '20px',
+                                mb: '20px',
+                            }} />
+
+                            <Box>
+                                <Typography sx={{
+                                    fontSize: '25px',
+                                    fontWeight: 'bold',
+                                    mb: '25px',
+                                    color: 'grey',
+                                    textAlign: 'left'
+                                }}>
+                                    Purchases Completed
+                                </Typography>
+                                {purchases.filter((a) => a.status === 'Completed').map((purchase) => (
+                                    <PurchasedProductCard key={purchase._id} purchasedProduct={purchase.product} purchaseDate={purchase.date} status={purchase.status} />
+                                ))}
+                            </Box>
+
+
                         </div> :
                         <h2>loading
                             <CachedIcon sx={{

@@ -313,6 +313,10 @@ router.get(
   "/activityBookings/:id",
   activityController.getBookedActivitiesByTouristId
 );
+router.post(
+  "/activityBookings-check",
+  activityController.checkTouristHasBookedActivity
+);
 router.post("/activityBookings", activityController.addActivityBooking);
 router.delete(
   "/activityBookings/:id",
@@ -328,6 +332,10 @@ router.post("/itineraryReviews/:id", itineraryController.addReviewToItinerary);
 router.get(
   "/itineraryBookings/:id",
   itineraryController.getBookedItinerariesByTouristId
+);
+router.post(
+  "/itineraryBookings-check",
+  itineraryController.checkTouristHasBookedItinerary
 );
 router.post("/itineraryBookings", itineraryController.addItineraryBooking);
 router.delete(
@@ -456,15 +464,23 @@ router.get(
 //Routes for Transportation
 
 // Route to add a new transportation
-router.post('/addTransportation', transportationController.addTransportation);
+router.post("/addTransportation", transportationController.addTransportation);
 // Route to get transportation list
-router.get('/listTransportation', transportationController.getTransportationList);
+router.get(
+  "/listTransportation",
+  transportationController.getTransportationList
+);
 // Route to book transportation
-router.post('/bookTransportation', transportationController.bookTransportation);
+router.post("/bookTransportation", transportationController.bookTransportation);
 // Route to get all available transportations
-router.get('/availableTransportation', transportationController.getAllAvailableTransportation);
+router.get(
+  "/availableTransportation",
+  transportationController.getAllAvailableTransportation
+);
 
-router.get('/touristTransportationBookings', touristController.getBookedTransportations);
-
+router.get(
+  "/touristTransportationBookings",
+  touristController.getBookedTransportations
+);
 
 module.exports = router;

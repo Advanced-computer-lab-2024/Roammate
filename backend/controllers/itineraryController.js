@@ -355,13 +355,27 @@ const getBookedItinerariesByTouristId = async (req, res) => {
   }
 };
 
+const checkTouristHasBookedItinerary = async (req, res) => {
+  const { itineraryId, userId, bookingDate } = req.body;
+  try {
+    const bookingExists = await ItineraryBooking.exists({
+      itinerary: itineraryId,
+      user: userId,
+      date: bookingDate,
+    });
+    res.status(200).json(bookingExists);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const addItineraryBooking = async (req, res) => {
-  const { itineraryId, userId, date } = req.body;
+  const { itineraryId, userId, bookingDate } = req.body;
   try {
     const booking = new ItineraryBooking({
       itinerary: itineraryId,
       user: userId,
-      date,
+      date: bookingDate,
     });
     await booking.save();
     res.status(201).json(booking);
@@ -393,6 +407,7 @@ module.exports = {
   getItinerariesByTourGuideId,
   addReviewToItinerary,
   getBookedItinerariesByTouristId,
+  checkTouristHasBookedItinerary,
   addItineraryBooking,
   deleteItineraryBooking,
 };

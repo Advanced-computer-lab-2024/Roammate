@@ -1,34 +1,70 @@
 import CachedIcon from '@mui/icons-material/Cached';
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon, Stack, Chip, CircularProgress } from "@mui/material";
+import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon, Stack, Chip, CircularProgress, LinearProgress } from "@mui/material";
 import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import BlockIcon from '@mui/icons-material/Block';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import { getActivityById } from '../../services/api';
+import { addActivityBooking, checkIfTouristHasBookedActivity, getActivityById } from '../../services/api';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
-const DATE_FORMAT = 'YYYY/MM/DD';
-const TouristViewActivity = ({ id }) => {
+const DATE_FORMAT = 'DD/MM/YYYY';
+const TouristViewActivity = ({ id, touristId }) => {
     const [activity, setActivity] = useState();
     const [loading, setLoading] = useState(true);
+    const [loadingBooking, setLoadingBooking] = useState(false);
+    const [bookingDate, setBookingDate] = useState(dayjs());
+    const [msg, setMsg] = useState('');
+    const [disabled, setDisabled] = useState(false);
+
 
     useEffect(() => {
         const fetchActivity = async () => {
-            const response = await getActivityById(id);
-            setActivity(response.data);
-            setLoading(false);
+            try {
+                const response = await getActivityById(id);
+                setActivity(response.data);
+                setBookingDate(dayjs(response.data.startDate));
+                setLoading(false);
+            } catch (error) {
+                console.log("Error fetching activity:", error);
+            }
         };
+        fetchActivity();
+    }, [id, touristId]);
+
+
+    const handleBooking = async (e) => {
+        e.preventDefault();
+        setLoadingBooking(true);
         try {
-            fetchActivity();
+            const response = await checkIfTouristHasBookedActivity(touristId, id, bookingDate);
+            if (response.data) {
+                setMsg('You already have this activity booked for ' + bookingDate.format(DATE_FORMAT));
+                setDisabled(true);
+                setLoadingBooking(false);
+                return;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        try {
+            await addActivityBooking(touristId, id, bookingDate);
+            setMsg('Your booking is successful for ' + bookingDate.format(DATE_FORMAT));
+            setDisabled(true);
+            setLoadingBooking(false);
         }
         catch (error) {
             console.log(error);
+            setMsg('Booking failed');
         }
-    }, [id]);
+    }
 
     return (
         loading ? <Box sx={{
@@ -195,8 +231,76 @@ const TouristViewActivity = ({ id }) => {
                     </Card>
 
 
+                    {/* Booking Section */}
+                    {activity.isBookingAvailable && (<Card elevation={3} sx={{
+                        padding: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: 2,
+                        height: '250px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                        backgroundImage: 'url(https://media.istockphoto.com/id/1223631367/vector/multicultural-group-of-people-is-standing-together-team-of-colleagues-students-happy-men-and.jpg?s=612x612&w=0&k=20&c=9Mwxpq9gADCuEyvFxUdmNhlQea5PED-jwCmqtfgdXhU=)',
+                        backgroundBlendMode: 'lighten',
+                    }}>
+
+                        <form style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 15,
+                            width: '350px'
+
+                        }}
+                            onSubmit={handleBooking}
+                        >
+
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DemoContainer components={['DatePicker']} sx={{
+                                    width: '100%'
+                                }}>
+                                    <DatePicker
+                                        label="On"
+                                        value={bookingDate}
+                                        onChange={(newValue) => {
+                                            setBookingDate(newValue);
+                                        }}
+                                        minDate={dayjs(activity.startDate)}
+                                        maxDate={dayjs(activity.endDate)}
+                                        sx={{
+                                            width: '100%'
+                                        }}
+                                        disabled={disabled}
+                                        format='DD/MM/YYYY'
+                                    />
+                                </DemoContainer>
+                            </LocalizationProvider>
+
+
+                            <Typography variant="body2" color="error" sx={{
+                                display: `${msg ? 'block' : 'none'}`,
+                                color: `${msg.includes('successful') ? 'green' : msg.includes('failed') ? 'red' : 'grey'}`,
+                            }}>
+                                {msg}
+                            </Typography>
+                            {loadingBooking && !msg &&
+                                <Box sx={{ width: '100%' }}>
+                                    <LinearProgress color='inherit' />
+                                </Box>}
+                            <Button type='submit' variant="contained" color="primary" disabled={disabled} sx={{
+                                width: '100%',
+                            }} startIcon={<CheckIcon sx={{
+                                fill: 'white'
+                            }} />}>Book Now</Button>
+                        </form>
+                    </Card>)}
+
+
+
                     {/* Reviews Section */}
-                    <Card elevation={3} sx={{ padding: 2 }}>
+                    <Card elevation={3} sx={{ mt: 3, padding: 2 }}>
                         <Typography variant="h5" gutterBottom>Reviews ({activity.reviews.length})</Typography>
 
                         <Box sx={{ display: 'flex', overflowX: 'auto', padding: 2, gap: 2 }}>

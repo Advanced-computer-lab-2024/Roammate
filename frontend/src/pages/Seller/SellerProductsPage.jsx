@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid2 } from "@mui/material";
+import { Box, Divider, Grid2 } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import { fetchProductsBySellerId } from "../../services/api";
 import ProductCard from "../../components/sellerComponents/ProductCard";
@@ -61,7 +61,13 @@ const SellerProductsPage = ({ id }) => {
   return !product_id ? (
     <Box>
       {/* Active Products Section */}
-      <Typography variant="h5" sx={{ mt: 2, mb: 2 }}>
+      <Typography sx={{
+        fontSize: '25px',
+        fontWeight: 'bold',
+        mb: '25px',
+        color: 'grey',
+        textAlign: 'left'
+      }}>
         Active Products
       </Typography>
       <Grid2 container spacing={1}>
@@ -87,8 +93,15 @@ const SellerProductsPage = ({ id }) => {
         </Grid2>
       </Grid2>
 
+      <Divider sx={{ mt: '20px', mb: '20px' }} />
       {/* Archived Products Section */}
-      <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+      <Typography sx={{
+        fontSize: '25px',
+        fontWeight: 'bold',
+        mb: '25px',
+        color: 'grey',
+        textAlign: 'left'
+      }}>
         Archived Products
       </Typography>
       <Grid2 container spacing={1}>

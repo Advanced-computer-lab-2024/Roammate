@@ -162,8 +162,10 @@ const ProductCard = ({ product }) => {
             </Typography>
           </IconButton>
 
-          <Typography gutterBottom variant="h4" component="div">
-            ${price}
+          <Typography gutterBottom variant="h4" component="div" sx={{
+            color: `${product.quantity > 0 ? 'black' : 'grey'}`,
+          }}>
+            ${product.price}
           </Typography>
         </Box>
       </CardContent>
@@ -196,16 +198,13 @@ const ProductCard = ({ product }) => {
           Add to Watchlist
         </Button>
 
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "green",
-            color: "white",
-          }}
+        <Button variant="contained" sx={{
+          backgroundColor: `${quantity > 0 ? 'green' : 'grey'}`,
+          color: 'white',
+        }}
           onClick={() => navigate(`/tourist/products?id=${product._id}`)}
-          endIcon={<ArrowForwardIosIcon />}
-        >
-          Buy
+          endIcon={<ArrowForwardIosIcon />}>
+          {quantity > 0 ? 'Buy' : 'View'}
         </Button>
       </CardActions>
 

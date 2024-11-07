@@ -3,7 +3,7 @@ import { fetchActivityBookingsByTouristId } from '../../services/api';
 import dayjs from 'dayjs';
 import BookedActivityCard from '../../components/touristComponents/BookedActivityCard';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, CircularProgress, Divider, Typography } from '@mui/material';
 import TouristViewBookedActivity from './TouristViewBookedActivityPage';
 import { useLocation } from 'react-router';
 
@@ -12,7 +12,7 @@ const TouristBookedActivities = ({ id }) => {
     //get query parameter
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const bookedActivityId = queryParams.get('id');
+    const activityBookingId = queryParams.get('id');
 
     useEffect(() => {
         const fetchBookedActivities = async () => {
@@ -20,7 +20,7 @@ const TouristBookedActivities = ({ id }) => {
             setBookedActivities(activitiesBooked);
         }
         fetchBookedActivities();
-    }, [id, bookedActivityId]);
+    }, [id, activityBookingId]);
 
     const isUpcoming = (activityBooking) => {
         const bookingDate = dayjs(activityBooking.date).startOf('day');
@@ -28,7 +28,7 @@ const TouristBookedActivities = ({ id }) => {
     }
     return (
         <div>
-            {!bookedActivityId ?
+            {!activityBookingId ?
                 <div>
                     {bookedActivities ?
                         <div>
@@ -43,7 +43,7 @@ const TouristBookedActivities = ({ id }) => {
                                     Upcoming Activities
                                 </Typography>
                                 {bookedActivities.filter((a) => isUpcoming(a)).map((activityBooking) => (
-                                    <BookedActivityCard key={activityBooking._id} bookedActivity={activityBooking.activity} bookingDate={activityBooking.date} />
+                                    <BookedActivityCard key={activityBooking._id} activityBooking={activityBooking} />
                                 ))}
                             </Box>
                             <Divider sx={{
@@ -62,23 +62,16 @@ const TouristBookedActivities = ({ id }) => {
                                     Past Activities
                                 </Typography>
                                 {bookedActivities.filter((a) => !isUpcoming(a)).map((activityBooking) => (
-                                    <BookedActivityCard key={activityBooking._id} bookedActivity={activityBooking.activity} bookingDate={activityBooking.date} />
+                                    <BookedActivityCard key={activityBooking._id} activityBooking={activityBooking} />
                                 ))}
                             </Box>
                         </div> :
-                        <h2>loading
-                            <CachedIcon sx={{
-                                fontSize: '25px',
-                                ml: '10px',
-                                mb: '-5px',
-                            }} />
-                        </h2>}
+                        <CircularProgress />}
                 </div> :
-                bookedActivities && <TouristViewBookedActivity activity={bookedActivities.find(
-                    (bookedActivity) => bookedActivity.activity._id === bookedActivityId
-                ).activity} touristId={id} bookingDate={bookedActivities.find(
-                    (bookedActivity) => bookedActivity.activity._id === bookedActivityId
-                ).date} />}
+                bookedActivities && <TouristViewBookedActivity
+                    activityBooking={bookedActivities.find((booking) =>
+                        booking._id === activityBookingId)}
+                    touristId={id} />}
         </div>
 
     );

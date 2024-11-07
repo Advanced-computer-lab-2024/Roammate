@@ -124,17 +124,19 @@ const ItineraryCard = ({ itinerary }) => {
                             }} /> : <BlockIcon sx={{
                                 fill: 'red'
                             }} />}
-                            <Typography fontSize={14} color="green">{isBookingAvailable ? 'booking available' : 'booking closed'}</Typography>
+                            <Typography fontSize={14} color={isBookingAvailable ? 'green' : 'red'}>{isBookingAvailable ? 'booking available' : 'booking closed'}</Typography>
                         </IconButton>
                     </Typography>
 
-                    <Typography gutterBottom variant="h4" component="div">
+                    <Typography gutterBottom variant="h4" component="div" sx={{
+                        color: `${isBookingAvailable > 0 ? 'black' : 'grey'}`,
+                    }}>
                         ${price}
                     </Typography>
                 </Box>
 
 
-            </CardContent>
+            </CardContent >
             <CardActions sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -153,14 +155,12 @@ const ItineraryCard = ({ itinerary }) => {
                 </Button>
 
                 <Button variant="contained" sx={{
-                    backgroundColor: 'green',
+                    backgroundColor: `${isBookingAvailable ? 'green' : 'grey'}`,
                     color: 'white',
                 }}
-                    onClick={() => {
-                        navigate(`/tourist/itineraries?id=${itinerary._id}`)
-                    }}
+                    onClick={() => navigate(`/tourist/itineraries?id=${itinerary._id}`)}
                     endIcon={<ArrowForwardIosIcon />}>
-                    Book
+                    {isBookingAvailable ? 'Book' : 'View'}
                 </Button>
             </CardActions>
 
