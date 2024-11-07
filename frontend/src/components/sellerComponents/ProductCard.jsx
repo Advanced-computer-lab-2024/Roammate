@@ -1,24 +1,24 @@
-import React from 'react';
-import { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { CardMedia, IconButton, Rating } from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import StarIcon from '@mui/icons-material/Star';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BlockIcon from '@mui/icons-material/Block';
-import EditIcon from '@mui/icons-material/Edit';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import ProductImage from '../productComponents/ProductImage';
-import { useNavigate } from 'react-router';
+import React from "react";
+import { useState } from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { CardMedia, IconButton, Rating } from "@mui/material";
+import ShareIcon from "@mui/icons-material/Share";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import StarIcon from "@mui/icons-material/Star";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import DeleteIcon from "@mui/icons-material/Delete";
+import BlockIcon from "@mui/icons-material/Block";
+import EditIcon from "@mui/icons-material/Edit";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import ProductImage from "../productComponents/ProductImage";
+import { useNavigate } from "react-router";
 import { toggleArchivedStatus } from "../../services/api";
 
 const ProductCard = ({ product }) => {
@@ -41,8 +41,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <Card sx={{ width: 650, mb: 4 }}>
-
+    <Card sx={{ width: "90%", mb: 4 }}>
       <ProductImage imageId={product.image} height={"195"} />
 
       <CardContent
@@ -148,10 +147,17 @@ const ProductCard = ({ product }) => {
             </Typography>
           </IconButton>
 
-          <Typography gutterBottom variant="h4" component="div" sx={{
-            textDecoration: `${product.quantity > 0 ? 'none' : 'line-through'}`,
-            color: `${product.quantity > 0 ? 'black' : 'grey'}`,
-          }}>
+          <Typography
+            gutterBottom
+            variant="h4"
+            component="div"
+            sx={{
+              textDecoration: `${
+                product.quantity > 0 ? "none" : "line-through"
+              }`,
+              color: `${product.quantity > 0 ? "black" : "grey"}`,
+            }}
+          >
             ${product.price}
           </Typography>
         </Box>

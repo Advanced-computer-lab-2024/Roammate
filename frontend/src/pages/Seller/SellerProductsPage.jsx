@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Divider, Grid2 } from "@mui/material";
+import { Box, Divider, Grid } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import { fetchProductsBySellerId } from "../../services/api";
 import ProductCard from "../../components/sellerComponents/ProductCard";
@@ -61,71 +61,79 @@ const SellerProductsPage = ({ id }) => {
   return !product_id ? (
     <Box>
       {/* Active Products Section */}
-      <Typography sx={{
-        fontSize: '25px',
-        fontWeight: 'bold',
-        mb: '25px',
-        color: 'grey',
-        textAlign: 'left'
-      }}>
+      <Typography
+        sx={{
+          fontSize: "25px",
+          fontWeight: "bold",
+          mb: "25px",
+          color: "grey",
+          textAlign: "left",
+        }}
+      >
         Active Products
       </Typography>
-      <Grid2 container spacing={1}>
-        <Grid2 xs={12} sx={{ flexGrow: 1 }}>
-          {activeProducts.length === 0 &&
-            (fetch < 1 ? (
+      <Grid container spacing={2}>
+        {activeProducts.length === 0 &&
+          (fetch < 1 ? (
+            <Grid xs={12}>
               <h2>
                 Loading
                 <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
               </h2>
-            ) : (
+            </Grid>
+          ) : (
+            <Grid xs={12}>
               <h2>No Active Products Found</h2>
-            ))}
-          {activeProducts.map((product) => (
-            <div key={product._id}>
-              <ProductCard
-                product={product}
-                setActiveButton={setActiveButton}
-                onToggleArchive={handleToggleArchive}
-              />
-            </div>
+            </Grid>
           ))}
-        </Grid2>
-      </Grid2>
+        {activeProducts.map((product) => (
+          <Grid xs={12} sm={6} key={product._id}>
+            <ProductCard
+              product={product}
+              setActiveButton={setActiveButton}
+              onToggleArchive={handleToggleArchive}
+            />
+          </Grid>
+        ))}
+      </Grid>
 
-      <Divider sx={{ mt: '20px', mb: '20px' }} />
+      <Divider sx={{ mt: "20px", mb: "20px" }} />
       {/* Archived Products Section */}
-      <Typography sx={{
-        fontSize: '25px',
-        fontWeight: 'bold',
-        mb: '25px',
-        color: 'grey',
-        textAlign: 'left'
-      }}>
+      <Typography
+        sx={{
+          fontSize: "25px",
+          fontWeight: "bold",
+          mb: "25px",
+          color: "grey",
+          textAlign: "left",
+        }}
+      >
         Archived Products
       </Typography>
-      <Grid2 container spacing={1}>
-        <Grid2 xs={12} sx={{ flexGrow: 1 }}>
-          {archivedProducts.length === 0 &&
-            (fetch < 1 ? (
+      <Grid container spacing={2}>
+        {archivedProducts.length === 0 &&
+          (fetch < 1 ? (
+            <Grid xs={12}>
               <h2>
                 Loading
                 <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
               </h2>
-            ) : (
+            </Grid>
+          ) : (
+            <Grid xs={12}>
               <h2>No Archived Products Found</h2>
-            ))}
-          {archivedProducts.map((product) => (
-            <div key={product._id}>
-              <ProductCard
-                product={product}
-                setActiveButton={setActiveButton}
-                onToggleArchive={handleToggleArchive}
-              />
-            </div>
+            </Grid>
           ))}
-        </Grid2>
-      </Grid2>
+        {archivedProducts.map((product) => (
+          <Grid xs={12} sm={6} key={product._id}>
+            <ProductCard
+              product={product}
+              setActiveButton={setActiveButton}
+              onToggleArchive={handleToggleArchive}
+            />
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   ) : (
     <ManageProductPage
