@@ -39,5 +39,5 @@ module.exports = {
   bookingController,
   deletionRequestsController,
   CurrencyConvertController,
-  transportationController
+  transportationController,
 };

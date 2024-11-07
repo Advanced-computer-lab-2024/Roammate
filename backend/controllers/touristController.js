@@ -8,7 +8,6 @@ const {
 const AccountDeletionRequest = require("../models/AccountDeletionRequest");
 const PreferenceTag = require("../models/PreferenceTag");
 
-
 const register = async (req, res) => {
   const { username, email, password, mobile, nationality, DOB, job } = req.body;
   const role = "tourist";
@@ -114,71 +113,94 @@ const getBookedTransportations = async (req, res) => {
   }
 };
 
-const updateUserOnOrder = async (userId, orderPrice) => {
+const updateLoyaltyPointsAndLevel = async (req, res) => {
+  const { touristId, amountPaid } = req.body;
+
   try {
-    // Find the user by ID
-    let user = await User.findById(userId);
-
-    if (!user) {
-      throw new Error("User not found");
+    // Find the tourist by ID
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) {
+      return res.status(404).send({ message: "Tourist not found" });
     }
 
-    // Step 1: Decrement wallet by the price of the order
-    if (user.wallet < orderPrice) {
-      throw new Error("Insufficient funds in wallet");
+    // Calculate loyalty points based on current level
+    let pointsEarned;
+    switch (tourist.level) {
+      case 1:
+        pointsEarned = amountPaid * 0.5;
+        break;
+      case 2:
+        pointsEarned = amountPaid * 1;
+        break;
+      case 3:
+        pointsEarned = amountPaid * 1.5;
+        break;
+      default:
+        pointsEarned = 0;
     }
-    user.wallet -= orderPrice;
 
-    // Step 2: Add 50,000 points to the user's current points
-    user.points += 50000;
+    // Update tourist's points
+    tourist.points += pointsEarned;
 
-    // Step 3 & 4: Check and adjust level if needed
-    if (user.points > 500000) {
-      user.level = 3;
-    } else if (user.points > 100000) {
-      user.level = 2;
+    // Check and update level based on new points total
+    if (tourist.points > 500000) {
+      tourist.level = 3;
+    } else if (tourist.points > 100000) {
+      tourist.level = 2;
     } else {
-      user.level = 1;
+      tourist.level = 1;
     }
 
-    // Save the user after updates
-    await user.save();
+    // Save changes to database
+    await tourist.save();
 
-    // Return updated user information
-    return user;
+    // Send updated tourist object as response
+    res.status(200).send(tourist);
   } catch (error) {
-    throw new Error(`Error updating user on order: ${error.message}`);
+    res
+      .status(500)
+      .send({ message: "Error updating loyalty points and level", error });
   }
 };
 
-const redeemPointsToCash = async (userId, pointsToRedeem) => {
+const redeemPointsToCash = async (req, res) => {
+  const { touristId } = req.params; // Get touristId from URL parameters
+  const { pointsToRedeem } = req.body;
+  const conversionRate = 100; // EGP for every 10,000 points
+  const pointsRequiredForRedemption = 10000;
+
   try {
-    // Find the user by ID
-    let user = await User.findById(userId);
-
-    if (!user) {
-      throw new Error("User not found");
+    // Fetch the tourist by ID
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) {
+      return res.status(404).send({ message: "Tourist not found" });
     }
 
-    // Check if user has enough points to redeem
-    if (user.points < pointsToRedeem) {
-      throw new Error("Insufficient points to redeem");
+    // Check if tourist has enough points to redeem
+    if (
+      tourist.points < pointsToRedeem ||
+      pointsToRedeem % pointsRequiredForRedemption !== 0
+    ) {
+      return res.status(400).send({
+        message: `Insufficient points or invalid amount. Points should be in multiples of ${pointsRequiredForRedemption}.`,
+      });
     }
 
-    // Calculate cash equivalent (10,000 points = 100 EGP)
-    const cashEquivalent = (pointsToRedeem / 10000) * 100;
+    // Calculate the amount to add to the wallet
+    const cashAmount =
+      (pointsToRedeem / pointsRequiredForRedemption) * conversionRate;
 
-    // Update wallet and points balance
-    user.wallet += cashEquivalent;
-    user.points -= pointsToRedeem;
+    // Deduct points and update wallet balance
+    tourist.points -= pointsToRedeem;
+    tourist.wallet += cashAmount;
 
-    // Save the updated user
-    await user.save();
+    // Save changes to the database
+    await tourist.save();
 
-    // Return updated user information
-    return user;
+    // Send the updated tourist object as response
+    res.status(200).send(tourist);
   } catch (error) {
-    throw new Error(`Error redeeming points: ${error.message}`);
+    res.status(500).send({ message: "Error redeeming points to cash", error });
   }
 };
 
@@ -252,7 +274,7 @@ const addPreferences = async (req, res) => {
 
     // Add preferences, avoiding duplicates
     tourist.preferences.push(
-      ...preferenceIds.filter(id => !tourist.preferences.includes(id))
+      ...preferenceIds.filter((id) => !tourist.preferences.includes(id))
     );
 
     await tourist.save();
@@ -272,7 +294,7 @@ const removePreferences = async (req, res) => {
 
     // Remove specified preferences
     tourist.preferences = tourist.preferences.filter(
-      id => !preferenceIds.includes(id.toString())
+      (id) => !preferenceIds.includes(id.toString())
     );
 
     await tourist.save();
@@ -295,12 +317,11 @@ const getTouristPreferences = async (req, res) => {
 
     res.status(200).json(tourist.preferences);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving tourist preferences", error });
+    res
+      .status(500)
+      .json({ message: "Error retrieving tourist preferences", error });
   }
 };
-
-
-
 
 module.exports = {
   register,
@@ -308,7 +329,7 @@ module.exports = {
   getTouristById,
   updateTouristById,
   getBookedTransportations,
-  updateUserOnOrder,
+  updateLoyaltyPointsAndLevel,
   redeemPointsToCash,
   requestTouristDeletionIfNoUpcomingBookings,
   addPreferences,
