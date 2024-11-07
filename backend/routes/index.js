@@ -456,25 +456,39 @@ router.get(
 //Routes for Transportation
 
 // Route to add a new transportation
-router.post('/addTransportation', transportationController.addTransportation);
+router.post("/addTransportation", transportationController.addTransportation);
 // Route to get transportation list
-router.get('/listTransportation', transportationController.getTransportationList);
+router.get(
+  "/listTransportation",
+  transportationController.getTransportationList
+);
 // Route to book transportation
-router.post('/bookTransportation', transportationController.bookTransportation);
+router.post("/bookTransportation", transportationController.bookTransportation);
 // Route to get all available transportations
-router.get('/availableTransportation', transportationController.getAllAvailableTransportation);
+router.get(
+  "/availableTransportation",
+  transportationController.getAllAvailableTransportation
+);
 
-router.get('/touristTransportationBookings', touristController.getBookedTransportations);
+router.get(
+  "/touristTransportationBookings",
+  touristController.getBookedTransportations
+);
 
-router.patch("/activity/:id",activityController.toggleAppropriateActivity);
-router.patch("/itinerary/:id",itineraryController.toggleItineraryActivation);
-router.patch("/itinerary/:id",itineraryController.toggleAppropriateitinerary);
-
-
+router.patch(
+  "/activity/:id/toggle-appropriate",
+  activityController.toggleAppropriateActivity
+);
+router.patch(
+  "/itinerary/:id/toggle-active",
+  itineraryController.toggleItineraryActivation
+);
+router.patch(
+  "/itinerary/:id/toggle-appropriate",
+  itineraryController.toggleAppropriateItinerary
+);
 
 router.post("/order/:id", touristController.updateUserOnOrder);
 router.post("/redeem/:id", touristController.redeemPointsToCash);
-
-
 
 module.exports = router;

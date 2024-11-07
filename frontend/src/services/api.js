@@ -4,7 +4,29 @@ const API_URL = "http://localhost:8000/api/";
 
 export const updateItineraryStatus = async (id) => {};
 
-export const flagItinerary = async (id) => {};
+export const flagActivity = async (id) => {
+  try {
+    const response = await axios.patch(
+      `${API_URL}activity/${id}/toggle-appropriate`
+    );
+    return response.data.Appropriate;
+  } catch (error) {
+    console.error("Error toggling itinerary appropriate status:", error);
+    throw error;
+  }
+};
+
+export const flagItinerary = async (id) => {
+  try {
+    const response = await axios.patch(
+      `${API_URL}itinerary/${id}/toggle-appropriate`
+    );
+    return response.data.Appropriate;
+  } catch (error) {
+    console.error("Error toggling itinerary appropriate status:", error);
+    throw error;
+  }
+};
 
 export const updateActivityStatus = async (id) => {};
 
@@ -144,6 +166,12 @@ export const fetchProducts = async () => {
 // ✅ This function is used to fetch an activity by ID
 export const fetchActivity = async (id) => {
   const response = await axios.get(`${API_URL}activity/${id}`);
+  return response.data;
+};
+
+// ✅ This function is used to fetch all Activites
+export const getAllActivities = async () => {
+  const response = await axios.get(`${API_URL}activity`);
   return response.data;
 };
 

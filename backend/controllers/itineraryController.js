@@ -200,7 +200,7 @@ const getFilterCriteria = (
   lang,
   tags
 ) => {
-  let filter = {};
+  let filter = { Appropriate: true };
   filter.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
   if (minDate) filter.startDate = { $gte: new Date(minDate) };
   if (maxDate) filter.endDate = { $lte: new Date(maxDate) };
@@ -385,50 +385,61 @@ const deleteItineraryBooking = async (req, res) => {
 
 const toggleItineraryActivation = async (req, res) => {
   try {
-    const { itineraryId, isActive } = req.body;
+    const { id } = req.params.id;
 
-    // Find and update the itinerary's isActive status
-    const updatedItinerary = await Itinerary.findByIdAndUpdate(
-      itineraryId,
-      { isActive: isActive },
-      { new: true } // Return the updated document
-    );
+    // Retrieve the current itinerary to get the current `isActive` value
+    const itinerary = await Itinerary.findById(id);
 
-    // If the itinerary is not found
-    if (!updatedItinerary) {
+    if (!itinerary) {
       return res.status(404).json({ message: "Itinerary not found" });
     }
 
+    // Toggle the `isActive` value
+    const updatedItinerary = await Itinerary.findByIdAndUpdate(
+      { _id: id },
+      { isActive: !itinerary.isActive },
+      { new: true } // Return the updated document
+    );
+
     res.status(200).json({
-      message: `Itinerary successfully ${isActive ? "activated" : "deactivated"}`,
+      message: `Itinerary successfully ${
+        updatedItinerary.isActive ? "activated" : "deactivated"
+      }`,
       itinerary: updatedItinerary,
     });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 };
-const toggleAppropriateitinerary = async (req, res) => {
+
+const toggleAppropriateItinerary = async (req, res) => {
   try {
-    const { itineraryId, Appropriate } = req.body;
+    const { id } = req.params;
 
-    // Find and update the itinerary's isActive status
-    const updatedItinerary = await Itinerary.findByIdAndUpdate(
-      itineraryId,
-      { Appropriate: Appropriate },
-      { new: true } // Return the updated document
-    );
+    const itinerary = await Itinerary.findById(id);
 
-    // If the itinerary is not found
-    if (!updatedItinerary) {
+    if (!itinerary) {
       return res.status(404).json({ message: "Itinerary not found" });
     }
 
+    const updatedItinerary = await Itinerary.findByIdAndUpdate(
+      { _id: id },
+      { Appropriate: !itinerary.Appropriate },
+      { new: true }
+    );
+
     res.status(200).json({
-      message: `Itinerary is ${Appropriate ? "Appropriate" : "inAppropriate"}`,
+      message: `Itinerary is now ${
+        updatedItinerary.Appropriate ? "Appropriate" : "inAppropriate"
+      }`,
       itinerary: updatedItinerary,
     });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 };
 
@@ -445,5 +456,5 @@ module.exports = {
   addItineraryBooking,
   deleteItineraryBooking,
   toggleItineraryActivation,
-  toggleAppropriateitinerary,
+  toggleAppropriateItinerary,
 };

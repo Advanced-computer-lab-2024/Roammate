@@ -202,7 +202,7 @@ const getFilterCriteria = (
   minRating,
   maxRating
 ) => {
-  let filter = {};
+  let filter = { Appropriate: true };
   filter.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
   if (minDate) {
     filter.startDate = { $gte: new Date(minDate) };
@@ -429,26 +429,30 @@ const checkActivityBookingExists = async (req, res) => {
 };
 const toggleAppropriateActivity = async (req, res) => {
   try {
-    const { activityId, Appropriate } = req.body;
+    const { id } = req.params;
 
-    // Find and update the itinerary's isActive status
-    const updatedActivity = await Activity.findByIdAndUpdate(
-      activityId,
-      { Appropriate: Appropriate },
-      { new: true } // Return the updated document
-    );
+    const activity = await Activity.findById(id);
 
-    // If the itinerary is not found
-    if (!updatedActivity) {
+    if (!activity) {
       return res.status(404).json({ message: "Activity not found" });
     }
 
+    const updatedActivity = await Activity.findByIdAndUpdate(
+      { _id: id },
+      { Appropriate: !activity.Appropriate },
+      { new: true }
+    );
+
     res.status(200).json({
-      message: `Activity is ${Appropriate ? "Appropriate" : "inAppropriate"}`,
+      message: `Activity is now ${
+        updatedActivity.Appropriate ? "Appropriate" : "inAppropriate"
+      }`,
       activity: updatedActivity,
     });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 };
 
@@ -466,5 +470,4 @@ module.exports = {
   deleteActivityBooking,
   checkActivityBookingExists,
   toggleAppropriateActivity,
-
 };
