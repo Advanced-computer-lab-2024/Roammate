@@ -259,6 +259,7 @@ const TouristLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+                    <CurrencySelector />
                     <IconButton
                         size="large"
                         edge="end"
