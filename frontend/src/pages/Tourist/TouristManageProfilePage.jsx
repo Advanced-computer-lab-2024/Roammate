@@ -190,7 +190,7 @@ const TouristManageProfile = ({ id }) => {
         </Typography>
         <ChangePasswordComponent id={id} type="tourist" />
         <Divider sx={{ my: 4 }} />
-        <DeleteProfileRequest id={id} type="tourist" />
+        <DeleteProfileRequest id={id} type="Tourist" />
       </Box>
     </Box>
   );

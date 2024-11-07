@@ -69,6 +69,8 @@ export const requestProfileDeletion = async (id, type) => {
       );
     } else if (type == "Tourguide") {
       response = await axios.delete(`${API_URL}request-delete-tourguide/${id}`);
+    } else if (type == "Tourist") {
+      response = await axios.delete(`${API_URL}request-delete-tourist/${id}`);
     }
     return response.data; // Return the created deletion request
   } catch (error) {

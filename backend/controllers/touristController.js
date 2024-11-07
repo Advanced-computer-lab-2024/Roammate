@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 const { Tourist } = require("../models");
+const {
+  ActivityBooking,
+  MonumentsVisiting,
+  ItineraryBooking,
+} = require("../models");
+const AccountDeletionRequest = require("../models/AccountDeletionRequest");
 
 const register = async (req, res) => {
   const { username, email, password, mobile, nationality, DOB, job } = req.body;
@@ -84,21 +90,25 @@ const getAllTourists = async (req, res) => {
 
 // Get list of booked transportations for a tourist
 const getBookedTransportations = async (req, res) => {
-  const touristId = req.body.touristId; 
+  const touristId = req.body.touristId;
 
   try {
-      // Find the tourist and populate the bookedTransportations field
-      const tourist = await Tourist.findById(touristId).populate('bookedTransportations');
+    // Find the tourist and populate the bookedTransportations field
+    const tourist = await Tourist.findById(touristId).populate(
+      "bookedTransportations"
+    );
 
-      if (!tourist) {
-          return res.status(404).json({ message: "Tourist not found" });
-      }
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
 
-      // Send the list of booked transportations
-      res.status(200).json(tourist.bookedTransportations);
+    // Send the list of booked transportations
+    res.status(200).json(tourist.bookedTransportations);
   } catch (error) {
-      console.error("Error retrieving booked transportations:", error);
-      res.status(500).json({ message: "Failed to retrieve booked transportations", error });
+    console.error("Error retrieving booked transportations:", error);
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve booked transportations", error });
   }
 };
 
@@ -170,6 +180,66 @@ const redeemPointsToCash = async (userId, pointsToRedeem) => {
   }
 };
 
+const requestTouristDeletionIfNoUpcomingBookings = async (req, res) => {
+  const touristId = req.params.id;
+
+  try {
+    // Step 1: Check for upcoming itineraries with bookings for the tourist
+    const upcomingItineraries = await ItineraryBooking.exists({
+      user: touristId,
+      date: { $gte: new Date() }, // Only consider upcoming dates
+    });
+
+    // Step 2: Check for upcoming activities with bookings for the tourist
+    const upcomingActivities = await ActivityBooking.exists({
+      user: touristId,
+      date: { $gte: new Date() }, // Only consider upcoming dates
+    });
+
+    // Step 3: Check for upcoming monument visits for the tourist
+    const upcomingMonuments = await MonumentsVisiting.exists({
+      user: touristId,
+      date: { $gte: new Date() }, // Only consider upcoming dates
+    });
+
+    // Step 4: Check if the tourist has booked any transportations
+    const tourist = await Tourist.findById(touristId).select(
+      "bookedTransportations"
+    );
+    const hasBookedTransportations =
+      tourist && tourist.bookedTransportations.length > 0;
+
+    // Step 5: Determine if deletion request can be created
+    const canRequestDeletion =
+      !upcomingItineraries &&
+      !upcomingActivities &&
+      !upcomingMonuments &&
+      !hasBookedTransportations;
+
+    if (canRequestDeletion) {
+      // If no upcoming bookings or transportations, create a deletion request for the tourist
+      const deletionRequest = new AccountDeletionRequest({
+        accountType: "Tourist",
+        accountId: touristId,
+      });
+      await deletionRequest.save();
+
+      res.status(201).json({
+        message: "Account deletion request created successfully.",
+        deletionRequest,
+      });
+    } else {
+      // If there are upcoming bookings or transportations, return an error message
+      res.status(400).json({
+        message:
+          "Cannot create account deletion request. There are upcoming bookings or transportations.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   register,
   getAllTourists,
@@ -178,6 +248,5 @@ module.exports = {
   getBookedTransportations,
   updateUserOnOrder,
   redeemPointsToCash,
+  requestTouristDeletionIfNoUpcomingBookings,
 };
-
-

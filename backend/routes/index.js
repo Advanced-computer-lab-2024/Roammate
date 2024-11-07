@@ -120,6 +120,10 @@ router.post("/tourist", touristController.register);
 router.get("/tourist/:id", touristController.getTouristById);
 router.patch("/tourist/:id", touristController.updateTouristById);
 router.get("/tourist", touristController.getAllTourists);
+router.delete(
+  "/request-delete-tourist/:id",
+  touristController.requestTouristDeletionIfNoUpcomingBookings
+);
 //--------------------------------------------------------------
 
 //Routes for Tourism Governor
