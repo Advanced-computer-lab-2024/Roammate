@@ -507,4 +507,13 @@ router.patch(
 router.post("/update-points", updateLoyaltyPointsAndLevel);
 router.post("/redeem-points/:touristId", redeemPointsToCash);
 
+
+// routes to Select preferences for vacation
+// Add preferences to a tourist
+router.post("/addPreferences", touristController.addPreferences);
+// Remove preferences from a tourist
+router.delete("/deletePreferences", touristController.removePreferences);
+// Get preferences of a tourist
+router.get("/getPreferences", touristController.getTouristPreferences);
+
 module.exports = router;
