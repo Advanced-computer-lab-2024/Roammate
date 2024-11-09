@@ -187,6 +187,22 @@ const AdminProductCard = ({ product }) => {
             ? `Total Sales :  ${productSales}`
             : `Total Sales :  ${productSales}`}
         </Typography>
+
+        {/* Quantity */}
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="div"
+          sx={{
+            textAlign: "left",
+            width: "100%",
+            color: "text.secondary",
+          }}
+        >
+          {quantity
+            ? `Quantity in Stock :  ${quantity}`
+            : `Quantity in Stock :  ${quantity}`}
+        </Typography>
       </CardContent>
 
       {/* Actions */}
