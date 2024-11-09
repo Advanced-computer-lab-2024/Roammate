@@ -11,7 +11,7 @@ function FlightDetails({ flightData }) {
 
     const handleBookFlight = () => {
         setFlightBooked(true);
-        setBookedFlightCode(Math.random().toString(36).substring(7));
+        setBookedFlightCode(Math.random().toString(36).substring(5).toUpperCase());
     }
 
     return (
@@ -19,7 +19,7 @@ function FlightDetails({ flightData }) {
             {/* Price and Luggage Information */}
             <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="body1" color="text.primary">
-                    Total Price: ${price.total}
+                    Total Price: {price.total} {price.currency}
                 </Typography>
                 <Chip label="Included Bags: 1" icon={<LuggageIcon />} variant="outlined" color="primary" />
             </Stack>
@@ -75,7 +75,7 @@ function FlightDetails({ flightData }) {
 
             {flightBooked && (
                 <Alert severity="success" sx={{ mt: 2 }}>
-                    Flight Booked Successfully! Your Booking Code: {bookedFlightCode}
+                    Flight Booked Successfully! Your Booking Reference Code: {bookedFlightCode}
                 </Alert>
             )}
 

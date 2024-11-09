@@ -903,6 +903,7 @@ export const searchFlights = async (
   passengers
 ) => {
   try {
+    const currency = localStorage.getItem("currency") || "EGP";
     const response = await axios.post(
       `${API_URL}search-flights`,
       {
@@ -911,6 +912,7 @@ export const searchFlights = async (
         departureDate,
         returnDate,
         passengers,
+        currency,
       },
       {
         headers: {

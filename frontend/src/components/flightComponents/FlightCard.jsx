@@ -39,7 +39,7 @@ function FlightCard({ flightData }) {
                                     {outbound.segments[0].departure.iataCode} → {outbound.segments[outbound.segments.length - 1].arrival.iataCode}
                                 </Typography>
                                 <Typography variant="h6" fontWeight="bold" color="primary">
-                                    ${price.total}
+                                    {price.total} {price.currency}
                                 </Typography>
                             </Stack>
 
