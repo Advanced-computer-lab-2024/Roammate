@@ -12,7 +12,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import { addItineraryBooking, checkIfTouristHasBookedItinerary, getItineraryById } from "../../services/api";
+import { addItineraryBooking, checkIfTouristHasBookedItinerary, convertPrice, getItineraryById } from "../../services/api";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -28,7 +28,7 @@ const TouristViewItinerary = ({ id, touristId }) => {
     const [bookingDate, setBookingDate] = useState(dayjs());
     const [msg, setMsg] = useState('');
     const [disabled, setDisabled] = useState(false);
-
+    const [displayPrice, setDisplayPrice] = useState();
 
 
     useEffect(() => {
@@ -46,6 +46,20 @@ const TouristViewItinerary = ({ id, touristId }) => {
             console.log(error);
         }
     }, [id]);
+
+    useEffect(() => {
+        const getDisplayPrice = async () => {
+            if (itinerary?.price) {
+                try {
+                    const displayPrice = await convertPrice(itinerary.price);
+                    setDisplayPrice(displayPrice);
+                } catch (error) {
+                    console.error("Error converting price:", error);
+                }
+            }
+        };
+        getDisplayPrice();
+    }, [itinerary]);
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -326,7 +340,7 @@ const TouristViewItinerary = ({ id, touristId }) => {
 
                         }}>
                             <Typography variant="h4">
-                                <strong> ${itinerary.price}</strong>
+                                <strong> {displayPrice}</strong>
                             </Typography>
                         </Box>
                     </Card >

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -16,6 +16,8 @@ import StarIcon from '@mui/icons-material/Star';
 import HeartIcon from '@mui/icons-material/Favorite';
 import BlockIcon from '@mui/icons-material/Block';
 import { useNavigate } from 'react-router';
+import { convertPrice } from '../../services/api';
+import ShareLink from './ShareLink';
 
 const ItineraryCard = ({ itinerary }) => {
     const [addedToWatchlist, setAddedToWatchlist] = useState(false);
@@ -27,26 +29,21 @@ const ItineraryCard = ({ itinerary }) => {
     const [isBookingAvailable, setIsBookingAvailable] = useState(itinerary.isBookingAvailable);
     const [rating, setRating] = useState(itinerary.averageRating);
     const navigate = useNavigate();
+    const [displayPrice, setDisplayPrice] = useState();
 
-    const [open, setOpen] = React.useState(false);
 
+    useEffect(() => {
+        const getDisplayPrice = async (price) => {
+            try {
+                const displayPrice = await convertPrice(price);
+                setDisplayPrice(displayPrice);
+            } catch (error) {
+                console.error("Error converting price:", error);
+            }
+        };
+        getDisplayPrice(price);
+    }, []);
 
-    const copyLinkToClipboard = async () => {
-        const link = `${window.location.origin}/tourist/itineraries?id=` + itinerary._id;
-        await navigator.clipboard.writeText(link);
-        handleClick();
-    };
-
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
 
     return (
         <Card sx={{ maxWidth: 650, mb: 4 }}>
@@ -73,12 +70,7 @@ const ItineraryCard = ({ itinerary }) => {
                         icon={<StarIcon style={{ fill: 'orange' }} />}
                         emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
                     />
-                    <IconButton size="small" color="primary" sx={{
-                        mt: '-5px',
-                        ml: '10px',
-                    }} onClick={copyLinkToClipboard}>
-                        <ShareIcon />
-                    </IconButton>
+                    <ShareLink type={'itinerary'} id={itinerary._id} />
                 </Box>
 
                 <Typography variant="body2" sx={{
@@ -131,7 +123,7 @@ const ItineraryCard = ({ itinerary }) => {
                     <Typography gutterBottom variant="h4" component="div" sx={{
                         color: `${isBookingAvailable > 0 ? 'black' : 'grey'}`,
                     }}>
-                        ${price}
+                        {displayPrice}
                     </Typography>
                 </Box>
 
@@ -163,18 +155,6 @@ const ItineraryCard = ({ itinerary }) => {
                     {isBookingAvailable ? 'Book' : 'View'}
                 </Button>
             </CardActions>
-
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    sx={{
-                        width: '100%',
-                        backgroundColor: '#FFBF00',
-                    }}
-                >
-                    Itinerary Link Copied to Clipboard
-                </Alert>
-            </Snackbar>
 
         </Card >
     );

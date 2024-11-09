@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -17,6 +17,8 @@ import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 import { useNavigate } from "react-router";
 import ProductImage from "../productComponents/ProductImage";
+import { convertPrice } from "../../services/api";
+import ShareLink from "./ShareLink";
 
 const ProductCard = ({ product }) => {
   const [addedToWatchlist, setAddedToWatchlist] = useState(false);
@@ -26,25 +28,22 @@ const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const [rating, setRating] = useState(product.averageRating);
   const navigate = useNavigate();
+  const [displayPrice, setDisplayPrice] = useState();
 
   const [open, setOpen] = React.useState(false);
 
-  const copyLinkToClipboard = async () => {
-    const link = `${window.location.origin}/tourist/products?id=` + product._id;
-    await navigator.clipboard.writeText(link);
-    handleClick();
-  };
+  useEffect(() => {
+    const getDisplayPrice = async (price) => {
+      try {
+        const displayPrice = await convertPrice(price);
+        setDisplayPrice(displayPrice);
+      } catch (error) {
+        console.error("Error converting price:", error);
+      }
+    };
+    getDisplayPrice(price);
+  }, []);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
 
   return (
     <Card sx={{ width: 650, mb: 4 }}>
@@ -87,17 +86,7 @@ const ProductCard = ({ product }) => {
             icon={<StarIcon style={{ fill: "orange" }} />}
             emptyIcon={<StarIcon style={{ fill: "lightgray" }} />}
           />
-          <IconButton
-            size="small"
-            color="primary"
-            sx={{
-              mt: "-5px",
-              ml: "10px",
-            }}
-            onClick={copyLinkToClipboard}
-          >
-            <ShareIcon />
-          </IconButton>
+          <ShareLink type={'product'} id={product._id} />
         </Box>
 
         <Typography
@@ -157,7 +146,7 @@ const ProductCard = ({ product }) => {
           <Typography gutterBottom variant="h4" component="div" sx={{
             color: `${product.quantity > 0 ? 'black' : 'grey'}`,
           }}>
-            ${product.price}
+            {displayPrice}
           </Typography>
         </Box>
       </CardContent>
@@ -199,18 +188,6 @@ const ProductCard = ({ product }) => {
           {quantity > 0 ? 'Buy' : 'View'}
         </Button>
       </CardActions>
-
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          sx={{
-            width: "100%",
-            backgroundColor: "#FFBF00",
-          }}
-        >
-          Product Link Copied to Clipboard
-        </Alert>
-      </Snackbar>
     </Card>
   );
 };

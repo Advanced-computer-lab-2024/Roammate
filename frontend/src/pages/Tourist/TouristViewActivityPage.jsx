@@ -9,7 +9,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import { addActivityBooking, checkIfTouristHasBookedActivity, getActivityById } from '../../services/api';
+import { addActivityBooking, checkIfTouristHasBookedActivity, convertPrice, getActivityById } from '../../services/api';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -23,7 +23,7 @@ const TouristViewActivity = ({ id, touristId }) => {
     const [bookingDate, setBookingDate] = useState(dayjs());
     const [msg, setMsg] = useState('');
     const [disabled, setDisabled] = useState(false);
-
+    const [displayPrice, setDisplayPrice] = useState('');
 
     useEffect(() => {
         const fetchActivity = async () => {
@@ -38,6 +38,20 @@ const TouristViewActivity = ({ id, touristId }) => {
         };
         fetchActivity();
     }, [id, touristId]);
+
+    useEffect(() => {
+        const getDisplayPrice = async () => {
+            if (activity?.price) {
+                try {
+                    const displayPrice = await convertPrice(activity.price);
+                    setDisplayPrice(displayPrice);
+                } catch (error) {
+                    console.error("Error converting price:", error);
+                }
+            }
+        };
+        getDisplayPrice();
+    }, [activity]);
 
 
     const handleBooking = async (e) => {
@@ -212,7 +226,7 @@ const TouristViewActivity = ({ id, touristId }) => {
                         }}>
 
                             <Typography variant="h4">
-                                <strong> ${activity.price}</strong>
+                                <strong> {displayPrice}</strong>
                             </Typography>
 
                             {activity.discount.length > 0 && (

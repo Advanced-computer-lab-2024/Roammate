@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -18,6 +18,8 @@ import BlockIcon from '@mui/icons-material/Block';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
+import { convertPrice } from '../../services/api';
+import ShareLink from './ShareLink';
 
 const ActivityCard = ({ activity }) => {
     const [addedToWatchlist, setAddedToWatchlist] = useState(false);
@@ -29,27 +31,22 @@ const ActivityCard = ({ activity }) => {
     const [isBookingAvailable, setIsBookingAvailable] = useState(activity.isBookingAvailable);
     const [rating, setRating] = useState(activity.averageRating);
     const navigate = useNavigate();
+    const [displayPrice, setDisplayPrice] = useState();
 
 
-    const [open, setOpen] = React.useState(false);
+    useEffect(() => {
+        const getDisplayPrice = async (price) => {
+            try {
+                const displayPrice = await convertPrice(price);
+                setDisplayPrice(displayPrice);
+            } catch (error) {
+                console.error("Error converting price:", error);
+            }
+        };
+        getDisplayPrice(price);
+    }, []);
 
 
-    const copyLinkToClipboard = async () => {
-        const link = window.location.href + activity._id;
-        await navigator.clipboard.writeText(link);
-        handleClick();
-    };
-
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
 
 
     return (
@@ -77,12 +74,7 @@ const ActivityCard = ({ activity }) => {
                         icon={<StarIcon style={{ fill: 'orange' }} />}
                         emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
                     />
-                    <IconButton size="small" color="primary" sx={{
-                        mt: '-5px',
-                        ml: '10px',
-                    }} onClick={copyLinkToClipboard}>
-                        <ShareIcon />
-                    </IconButton>
+                    <ShareLink type={'activity'} id={activity._id} />
                 </Box>
 
                 <Typography variant="body2" sx={{
@@ -137,7 +129,7 @@ const ActivityCard = ({ activity }) => {
                     <Typography gutterBottom variant="h4" component="div" sx={{
                         color: `${isBookingAvailable > 0 ? 'black' : 'grey'}`,
                     }}>
-                        ${price}
+                        {displayPrice}
                     </Typography>
                 </Box>
 
@@ -170,17 +162,7 @@ const ActivityCard = ({ activity }) => {
                 </Button>
             </CardActions>
 
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    sx={{
-                        width: '100%',
-                        backgroundColor: '#FFBF00',
-                    }}
-                >
-                    Activity Link Copied to Clipboard
-                </Alert>
-            </Snackbar>
+
         </Card >
     );
 }

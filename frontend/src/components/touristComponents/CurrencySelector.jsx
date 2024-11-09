@@ -3,13 +3,18 @@ import { Select, MenuItem, IconButton, Box } from '@mui/material';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 function CurrencySelect() {
-    const [currency, setCurrency] = useState('USD');
+    const [currency, setCurrency] = useState(localStorage.getItem('currency') || 'EGP');
     const [open, setOpen] = useState(false);
 
     const handleCurrencyChange = (event) => {
+        if (event.target.value === localStorage.getItem('currency')) {
+            setOpen(false);
+            return;
+        }
         setCurrency(event.target.value);
-        console.log(event.target.value);
+        localStorage.setItem('currency', event.target.value);
         setOpen(false);
+        window.location.reload();
     };
 
     return (

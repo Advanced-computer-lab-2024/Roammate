@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon, CardMedia } from "@mui/material";
 import dayjs from "dayjs";
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import { addReviewToProduct } from "../../services/api";
+import { addReviewToProduct, convertPrice } from "../../services/api";
 import ProductImage from "../../components/productComponents/ProductImage";
 
 
@@ -15,6 +15,19 @@ const TouristViewPurchasedProduct = ({ purchase, touristId }) => {
     const [rating, setRating] = useState(0);
     const [submitted, setSubmitted] = useState(false);
     const [response, setResponse] = useState(null);
+    const [displayPrice, setDisplayPrice] = useState();
+
+    useEffect(() => {
+        const getDisplayPrice = async () => {
+            try {
+                const displayPrice = await convertPrice(product.price);
+                setDisplayPrice(displayPrice);
+            } catch (error) {
+                console.error("Error converting price:", error);
+            }
+        }
+        getDisplayPrice();
+    }, [])
 
     const handleReviewSubmit = async () => {
         try {
@@ -137,7 +150,7 @@ const TouristViewPurchasedProduct = ({ purchase, touristId }) => {
 
 
                         <Typography variant="h4">
-                            <strong> ${product.price}</strong>
+                            <strong> {displayPrice}</strong>
                         </Typography>
                     </Box>
 

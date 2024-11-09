@@ -19,6 +19,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import { useNavigate } from 'react-router';
 import ProductImage from '../productComponents/ProductImage';
+import ShareLink from './ShareLink';
 
 const PurchasedProductCard = ({ purchase }) => {
     const purchasedProduct = purchase.product;
@@ -77,12 +78,7 @@ const PurchasedProductCard = ({ purchase }) => {
                         icon={<StarIcon style={{ fill: 'orange' }} />}
                         emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
                     />
-                    <IconButton size="small" color="primary" sx={{
-                        mt: '-5px',
-                        ml: '10px',
-                    }} onClick={copyLinkToClipboard}>
-                        <ShareIcon />
-                    </IconButton>
+                    <ShareLink type={'product'} id={purchasedProduct._id} />
                 </Box>
 
                 <Typography variant="body2" sx={{
@@ -181,19 +177,6 @@ const PurchasedProductCard = ({ purchase }) => {
                     Review
                 </Button>}
             </CardActions>
-
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    sx={{
-                        width: '100%',
-                        backgroundColor: '#FFBF00',
-                    }}
-                >
-                    Product Link Copied to Clipboard
-                </Alert>
-            </Snackbar>
-
         </Card >
     );
 }

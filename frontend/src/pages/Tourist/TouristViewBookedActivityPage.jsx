@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Divider, Rating, Button, TextField, IconButton, Card, CardHeader, Avatar, CardContent, Icon, Stack, Chip, Alert, CircularProgress, LinearProgress } from "@mui/material";
 import dayjs from "dayjs";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -7,7 +7,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import { addReviewToActivity, deleteActivityBooking } from "../../services/api";
+import { addReviewToActivity, convertPrice, deleteActivityBooking } from "../../services/api";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -23,6 +23,19 @@ const TouristViewBookedActivity = ({ activityBooking, touristId }) => {
     const [cancelMessage, setCancelMessage] = useState(null);
     const [loadingCancel, setLoadingCancel] = useState(false);
     const [disabled, setDisabled] = useState(false);
+    const [displayPrice, setDisplayPrice] = useState();
+
+    useEffect(() => {
+        const getDisplayPrice = async () => {
+            try {
+                const displayPrice = await convertPrice(activity.price);
+                setDisplayPrice(displayPrice);
+            } catch (error) {
+                console.error("Error converting price:", error);
+            }
+        }
+        getDisplayPrice();
+    }, [])
 
     const handleReviewSubmit = async () => {
         try {
@@ -243,7 +256,7 @@ const TouristViewBookedActivity = ({ activityBooking, touristId }) => {
 
 
                         <Typography variant="h4">
-                            <strong> ${activity.price}</strong>
+                            <strong>{displayPrice}</strong>
                         </Typography>
                     </Box>
 

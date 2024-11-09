@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Divider, Rating, Button, TextField, IconButton, LinearProgress, Alert, Card, CardHeader, Avatar, CardContent, Icon, Chip, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import dayjs from "dayjs";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -9,7 +9,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import LanguageIcon from '@mui/icons-material/Language';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { addReviewToItinerary, addReviewToTourguide, deleteItineraryBooking } from "../../services/api";
+import { addReviewToItinerary, addReviewToTourguide, convertPrice, deleteItineraryBooking } from "../../services/api";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -27,6 +27,19 @@ const TouristViewBookedItinerary = ({ itineraryBooking, touristId }) => {
     const [cancelMessage, setCancelMessage] = useState(null);
     const [loadingCancel, setLoadingCancel] = useState(false);
     const [disabled, setDisabled] = useState(false);
+    const [displayPrice, setDisplayPrice] = useState();
+
+    useEffect(() => {
+        const getDisplayPrice = async () => {
+            try {
+                const displayPrice = await convertPrice(itinerary.price);
+                setDisplayPrice(displayPrice);
+            } catch (error) {
+                console.error("Error converting price:", error);
+            }
+        }
+        getDisplayPrice();
+    }, [])
 
     const handleReviewSubmit = async () => {
         try {
@@ -377,7 +390,7 @@ const TouristViewBookedItinerary = ({ itineraryBooking, touristId }) => {
 
 
                         <Typography variant="h4">
-                            <strong> ${itinerary.price}</strong>
+                            <strong> {displayPrice}</strong>
                         </Typography>
                     </Box>
                 </Box>

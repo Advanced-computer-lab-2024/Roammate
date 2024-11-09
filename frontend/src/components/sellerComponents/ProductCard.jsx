@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -20,6 +20,7 @@ import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import ProductImage from "../productComponents/ProductImage";
 import { useNavigate } from "react-router";
 import { toggleArchivedStatus } from "../../services/api";
+import { convertPrice } from "../../services/api";
 
 const ProductCard = ({ product }) => {
   const [archived, setArchived] = useState(product.archived);
@@ -30,6 +31,8 @@ const ProductCard = ({ product }) => {
   const [rating, setRating] = useState(product.averageRating);
   const navigate = useNavigate();
 
+
+
   // Handler to toggle the archived status
   const handleToggleArchived = async () => {
     try {
@@ -39,6 +42,8 @@ const ProductCard = ({ product }) => {
       console.error("Error toggling archived status:", error);
     }
   };
+
+
 
   return (
     <Card sx={{ width: "90%", mb: 4 }}>
@@ -150,7 +155,7 @@ const ProductCard = ({ product }) => {
           <Typography gutterBottom variant="h4" component="div" sx={{
             color: `${product.quantity > 0 ? 'black' : 'grey'}`,
           }}>
-            ${product.price}
+            {price} EGP
           </Typography>
         </Box>
 

@@ -16,6 +16,7 @@ import StarIcon from '@mui/icons-material/Star';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useNavigate } from 'react-router';
+import ShareLink from './ShareLink';
 
 const BookedItineraryCard = ({ itineraryBooking }) => {
     const bookedItinerary = itineraryBooking.itinerary;
@@ -25,26 +26,6 @@ const BookedItineraryCard = ({ itineraryBooking }) => {
     const [date, setDate] = useState(dayjs(bookingDate).format(DATE_FORMAT));
     const [rating, setRating] = useState(bookedItinerary.averageRating);
     const navigate = useNavigate();
-
-    const [open, setOpen] = React.useState(false);
-
-
-    const copyLinkToClipboard = async () => {
-        const link = `${window.location.origin}/tourist/itineraries?id=` + bookedItinerary._id;
-        await navigator.clipboard.writeText(link);
-        handleClick();
-    };
-
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
 
     return (
         <Card sx={{ maxWidth: 650, mb: 4 }}>
@@ -70,12 +51,7 @@ const BookedItineraryCard = ({ itineraryBooking }) => {
                         icon={<StarIcon style={{ fill: 'orange' }} />}
                         emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
                     />
-                    <IconButton size="small" color="primary" sx={{
-                        mt: '-5px',
-                        ml: '10px',
-                    }} onClick={copyLinkToClipboard}>
-                        <ShareIcon />
-                    </IconButton>
+                    <ShareLink type={'itinerary'} id={bookedItinerary._id} />
                 </Box>
 
                 <Typography variant="body2" sx={{
@@ -174,17 +150,6 @@ const BookedItineraryCard = ({ itineraryBooking }) => {
 
 
             </CardActions>
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    sx={{
-                        width: '100%',
-                        backgroundColor: '#FFBF00',
-                    }}
-                >
-                    Itinerary Link Copied to Clipboard
-                </Alert>
-            </Snackbar>
         </Card>
     );
 }

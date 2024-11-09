@@ -893,3 +893,40 @@ export const uploadProductImage = async (productId, formData) => {
   );
   return response;
 };
+//----------------------------------------------
+// Function to fetch and save conversion rates in local storage
+export const fetchConversionRates = async () => {
+  try {
+    //check if rates are already saved and not expired
+    const ratesTimestamp = localStorage.getItem("ratesTimestamp");
+    if (ratesTimestamp) {
+      const currentTime = Date.now();
+      const timeDifference = currentTime - ratesTimestamp;
+      const minutesDifference = timeDifference / 1000 / 60;
+      if (minutesDifference < 60) {
+        // console.log("Conversion rates are still valid");
+        return;
+      }
+    }
+    // console.log("Fetching conversion rates...");
+    const response = await axios.get(
+      `https://v6.exchangerate-api.com/v6/b884e2be49d4a279fb51feab/latest/EGP`
+    );
+    localStorage.setItem("rates", JSON.stringify(response.data));
+    localStorage.setItem("ratesTimestamp", Date.now()); // Save timestamp
+  } catch (error) {
+    console.error("Error fetching conversion rates:", error);
+  }
+};
+
+//✅ This function is used to convert price
+export const convertPrice = async (amount) => {
+  const currency = localStorage.getItem("currency") || "EGP";
+  const conversion_rates = JSON.parse(localStorage.getItem("rates"))[
+    "conversion_rates"
+  ];
+  const saved_rate = conversion_rates[currency];
+  if (saved_rate) {
+    return `${(amount * saved_rate).toFixed(2)} ${currency}`;
+  }
+};

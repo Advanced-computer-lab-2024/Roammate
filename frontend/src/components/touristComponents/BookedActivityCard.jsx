@@ -18,6 +18,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router';
+import ShareLink from './ShareLink';
 
 const BookedActivityCard = ({ activityBooking }) => {
     const bookedActivity = activityBooking.activity;
@@ -27,26 +28,6 @@ const BookedActivityCard = ({ activityBooking }) => {
     const [date, setDate] = useState(dayjs(bookingDate).format(DATE_FORMAT));
     const [rating, setRating] = useState(bookedActivity.averageRating);
     const navigate = useNavigate();
-
-    const [open, setOpen] = React.useState(false);
-
-
-    const copyLinkToClipboard = async () => {
-        const link = `${window.location.origin}/tourist/activities?id=` + bookedActivity._id;
-        await navigator.clipboard.writeText(link);
-        handleClick();
-    };
-
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
 
 
     return (
@@ -73,12 +54,7 @@ const BookedActivityCard = ({ activityBooking }) => {
                         icon={<StarIcon style={{ fill: 'orange' }} />}
                         emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
                     />
-                    <IconButton size="small" color="primary" sx={{
-                        mt: '-5px',
-                        ml: '10px',
-                    }} onClick={copyLinkToClipboard}>
-                        <ShareIcon />
-                    </IconButton>
+                    <ShareLink type={'activity'} id={bookedActivity._id} />
                 </Box>
 
                 <Typography variant="body2" sx={{
@@ -174,20 +150,7 @@ const BookedActivityCard = ({ activityBooking }) => {
                         endIcon={<ArrowForwardIosIcon />}>
                         Review
                     </Button>}
-
-
             </CardActions>
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    sx={{
-                        width: '100%',
-                        backgroundColor: '#FFBF00',
-                    }}
-                >
-                    Activity Link Copied to Clipboard
-                </Alert>
-            </Snackbar>
         </Card >
     );
 }

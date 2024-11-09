@@ -5,11 +5,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import dayjs from 'dayjs';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import { getProductById } from "../../services/api";
+import { convertPrice, getProductById } from "../../services/api";
 import ProductImage from "../../components/productComponents/ProductImage";
 const TouristViewProduct = ({ id }) => {
     const [product, setProduct] = useState();
     const [loading, setLoading] = useState(true);
+    const [displayPrice, setDisplayPrice] = useState();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -25,8 +26,21 @@ const TouristViewProduct = ({ id }) => {
             }
         }
         fetchProduct();
-    }
-        , [id]);
+    }, [id]);
+
+    useEffect(() => {
+        const getDisplayPrice = async () => {
+            if (product?.price) {
+                try {
+                    const displayPrice = await convertPrice(product.price);
+                    setDisplayPrice(displayPrice);
+                } catch (error) {
+                    console.error("Error converting price:", error);
+                }
+            }
+        };
+        getDisplayPrice();
+    }, [product]);
 
 
     return (
@@ -116,7 +130,7 @@ const TouristViewProduct = ({ id }) => {
                             <Typography gutterBottom variant="h4" component="div" sx={{
                                 color: `${product.quantity > 0 ? 'black' : 'grey'}`,
                             }}>
-                                ${product.price}
+                                {displayPrice}
                             </Typography>
                         </Box>
                     </Card>

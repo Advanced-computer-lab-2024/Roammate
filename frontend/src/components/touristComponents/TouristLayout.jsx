@@ -29,6 +29,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
 import CurrencySelector from "./CurrencySelector";
+import { fetchConversionRates } from "../../services/api";
 
 const drawerWidth = 240;
 const TouristLayout = () => {
@@ -40,13 +41,24 @@ const TouristLayout = () => {
         "Products",
         "Monuments",
     ]);
-    const [activeButton, setActiveButton] = React.useState("");
+    const [activeButton, setActiveButton] = React.useState(localStorage.getItem("activeButton"));
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get("id") || "");
 
     React.useEffect(() => {
+        const fetchRates = async () => {
+            try {
+                await fetchConversionRates();
+            } catch (error) {
+                console.error("Error fetching rates:", error);
+            }
+        };
+        //fetch rates
+        fetchRates()
+
+        //fetch path
         if (location.pathname === "/tourist") {
             setActiveButton("Activities");
         }
@@ -61,6 +73,7 @@ const TouristLayout = () => {
         } else if (activeButton === "Edit Profile") {
             navigate("/tourist/editProfile");
         }
+        localStorage.setItem("activeButton", activeButton);
     }, [activeButton, navigate]);
 
     const toggleDrawer = () => {
@@ -92,10 +105,7 @@ const TouristLayout = () => {
                 <ListItemButton
                     onClick={
                         () => {
-                            let pathname = location.pathname;
-                            if (!(pathname === '/tourist/activities' || pathname === '/tourist/itineraries' || pathname === '/tourist/products' || pathname === '/tourist/monuments') || queryParams.get('id') !== '') {
-                                setActiveButton('Activities');
-                            }
+                            setActiveButton('Activities');
                             toggleDrawer();
                         }
                     }>
