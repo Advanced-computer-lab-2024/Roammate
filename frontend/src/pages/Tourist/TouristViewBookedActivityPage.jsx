@@ -7,7 +7,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import { addReviewToActivity, convertPrice, deleteActivityBooking } from "../../services/api";
+import { addReviewToActivity, cancelActivityBooking, convertPrice } from "../../services/api";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -80,7 +80,7 @@ const TouristViewBookedActivity = ({ activityBooking, touristId }) => {
         }
         try {
             setLoadingCancel(true);
-            const response = await deleteActivityBooking(activityBooking._id);
+            const response = await cancelActivityBooking(activityBooking._id, touristId, activity.price);
             setCancelMessage("Booking cancelled successfully. Full ticket price will be refunded to your account wallet");
             setDisabled(true);
             setLoadingCancel(false);

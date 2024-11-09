@@ -9,7 +9,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import LanguageIcon from '@mui/icons-material/Language';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { addReviewToItinerary, addReviewToTourguide, convertPrice, deleteItineraryBooking } from "../../services/api";
+import { addReviewToItinerary, addReviewToTourguide, cancelItineraryBooking, convertPrice } from "../../services/api";
 
 
 const DATE_FORMAT = 'YYYY/MM/DD';
@@ -61,9 +61,9 @@ const TouristViewBookedItinerary = ({ itineraryBooking, touristId }) => {
                 comment: tourguideReviewText,
                 date: new Date()
             };
-            // Add the review to the tour guide
-            console.log(itinerary)
+            // console.log(itinerary)
 
+            // Add the review to the tour guide
             const updatedTourguide = await addReviewToTourguide(itinerary.tourGuide._id, tourguideReview);
             itinerary.tourGuide = updatedTourguide.data;
 
@@ -98,7 +98,7 @@ const TouristViewBookedItinerary = ({ itineraryBooking, touristId }) => {
         }
         try {
             setLoadingCancel(true);
-            const response = await deleteItineraryBooking(itineraryBooking._id);
+            const response = await cancelItineraryBooking(itineraryBooking._id, touristId, itinerary.price);
             setCancelMessage("Booking cancelled successfully. Full ticket price will be refunded to your account wallet");
             setDisabled(true);
             setLoadingCancel(false);

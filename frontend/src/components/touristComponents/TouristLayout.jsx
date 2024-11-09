@@ -106,7 +106,7 @@ const TouristLayout = () => {
                 <ListItemButton
                     onClick={
                         () => {
-                            setActiveButton('Activities');
+                            navigate('/tourist');
                             toggleDrawer();
                         }
                     }>
@@ -266,7 +266,6 @@ const TouristLayout = () => {
                         flexGrow: 1,
                         justifyContent: 'left',
                         alignItems: 'center',
-
                     }}>
                         <Typography variant="h6" component="div" sx={{
                             textAlign: 'left'

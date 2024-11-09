@@ -133,14 +133,14 @@ const BookedItineraryCard = ({ itineraryBooking }) => {
                 {dayjs(new Date()).startOf('day').isBefore(dayjs(date).startOf('day')) ?
                     <Button variant="contained"
                         onClick={() => navigate(`/tourist/bookings/itineraries?id=${itineraryBooking._id}`)}
-                        endIcon={<CancelIcon sx={{
+                        endIcon={<ArrowForwardIosIcon sx={{
                             fill: 'white'
                         }} />}
                         sx={{
-                            backgroundColor: 'red',
+                            backgroundColor: '#FFBF55',
                         }}
                     >
-                        Cancel
+                        More
                     </Button> :
                     <Button variant="contained"
                         onClick={() => navigate(`/tourist/bookings/itineraries?id=${itineraryBooking._id}`)}

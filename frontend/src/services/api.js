@@ -700,43 +700,42 @@ export const fetchActivityBookingsByTouristId = async (touristId) => {
   return response.data;
 };
 
-// ✅ This function is used to check if tourist has already booked an activity
-export const checkIfTouristHasBookedActivity = async (
-  touristId,
+//✅ This function is used to book an activity
+export const bookActivity = async (
   activityId,
-  bookingDate
+  touristId,
+  bookingDate,
+  amount
 ) => {
-  const response = await axios.post(`${API_URL}activityBookings-check`, {
-    userId: touristId,
+  const bookingData = {
     activityId,
+    userId: touristId,
     bookingDate,
-  });
-  return response;
-};
-
-// ✅ This function is used to add a new activity booking
-export const addActivityBooking = async (
-  touristId,
-  activityId,
-  bookingDate
-) => {
-  const response = await axios.post(`${API_URL}activityBookings`, {
-    activityId,
-    userId: touristId,
-    date: bookingDate,
-  });
-  return response;
+    amount,
+  };
+  try {
+    const response = await axios.post(`${API_URL}bookActivity`, bookingData);
+    return response;
+  } catch (error) {
+    console.error("Error booking activity:", error);
+    throw error;
+  }
 };
 
 // ✅ This function is used to delete an activity booking by Id
-export const deleteActivityBooking = async (bookingId) => {
+export const cancelActivityBooking = async (
+  bookingId,
+  userId,
+  refundAmount
+) => {
   try {
     const response = await axios.delete(
-      `${API_URL}activityBookings/${bookingId}`
+      `${API_URL}activityBookings/${bookingId}`,
+      { data: { userId, refundAmount } }
     );
     return response;
   } catch (error) {
-    console.error("Error deleting activity booking:", error);
+    console.error("Error cancelling activity booking:", error);
     throw error;
   }
 };
@@ -761,44 +760,42 @@ export const fetchItineraryBookingsByTouristId = async (touristId) => {
   return response.data;
 };
 
-// ✅ This function is used to check if tourist has already booked an itinerary
-export const checkIfTouristHasBookedItinerary = async (
-  touristId,
+// ✅ This function is used to book an itinerary
+export const bookItinerary = async (
   itineraryId,
-  bookingDate
-) => {
-  const response = await axios.post(`${API_URL}itineraryBookings-check`, {
-    userId: touristId,
-    itineraryId,
-    bookingDate,
-  });
-  return response;
-};
-
-// ✅ This function is used to add a new itinerary booking
-export const addItineraryBooking = async (
   touristId,
-  itineraryId,
-  bookingDate
+  bookingDate,
+  amount
 ) => {
   const bookingData = {
     itineraryId,
     userId: touristId,
     bookingDate,
+    amount,
   };
-  const response = await axios.post(`${API_URL}itineraryBookings`, bookingData);
-  return response;
+  try {
+    const response = await axios.post(`${API_URL}bookItinerary`, bookingData);
+    return response;
+  } catch (error) {
+    console.error("Error booking itinerary:", error);
+    throw error;
+  }
 };
 
-// ✅ This function is used to delete an itinerary booking by Id
-export const deleteItineraryBooking = async (bookingId) => {
+// ✅ This function is used to cancel an itinerary booking by Id
+export const cancelItineraryBooking = async (
+  bookingId,
+  userId,
+  refundAmount
+) => {
   try {
     const response = await axios.delete(
-      `${API_URL}itineraryBookings/${bookingId}`
+      `${API_URL}itineraryBookings/${bookingId}`,
+      { data: { userId, refundAmount } }
     );
     return response;
   } catch (error) {
-    console.error("Error deleting itinerary booking:", error);
+    console.error("Error cancelling itinerary booking:", error);
     throw error;
   }
 };
@@ -959,5 +956,62 @@ export const convertPrice = async (amount) => {
   const saved_rate = conversion_rates[currency];
   if (saved_rate) {
     return `${(amount * saved_rate).toFixed(2)} ${currency}`;
+  }
+};
+
+//✅ This function is used to set tourist preferences
+export const setTouristPreferences = async (touristId, preferences) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}setPreferences/${touristId}`,
+      preferences
+    );
+    return response;
+  } catch (error) {
+    console.error("Error setting tourist preferences:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to set tourist activity categories
+export const setTouristActivityCategories = async (
+  touristId,
+  activityCategories
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}setActivityCategories/${touristId}`,
+      activityCategories
+    );
+    return response;
+  } catch (error) {
+    console.error("Error setting tourist activity categories:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to pay cash and update loyalty points and level
+export const payCashAndUpdateLoyalty = async (touristId, amount) => {
+  try {
+    const response = await axios.post(`${API_URL}pay-cash/${touristId}`, {
+      amountPaid: amount,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error paying cash and updating loyalty:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to redeem points to cash
+export const redeemPointsToCash = async (touristId, pointsToRedeem) => {
+  try {
+    const response = await axios.post(`${API_URL}redeem-points/${touristId}`, {
+      pointsToRedeem,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error redeeming points to cash:", error);
+    throw error;
   }
 };

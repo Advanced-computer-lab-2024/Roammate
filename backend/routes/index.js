@@ -321,14 +321,10 @@ router.get(
   "/activityBookings/:id",
   activityController.getBookedActivitiesByTouristId
 );
-router.post(
-  "/activityBookings-check",
-  activityController.checkTouristHasBookedActivity
-);
-router.post("/activityBookings", activityController.addActivityBooking);
+router.post("/bookActivity", activityController.bookActivity);
 router.delete(
   "/activityBookings/:id",
-  activityController.deleteActivityBooking
+  activityController.cancelActivityBooking
 );
 //--------------------------------------------------------------
 
@@ -341,66 +337,10 @@ router.get(
   "/itineraryBookings/:id",
   itineraryController.getBookedItinerariesByTouristId
 );
-router.post(
-  "/itineraryBookings-check",
-  itineraryController.checkTouristHasBookedItinerary
-);
-router.post("/itineraryBookings", itineraryController.addItineraryBooking);
+router.post("/bookItinerary", itineraryController.bookItinerary);
 router.delete(
   "/itineraryBookings/:id",
-  itineraryController.deleteItineraryBooking
-);
-//--------------------------------------------------------------
-
-//Routes for product reviews
-router.post("/productReviews/:id", productController.addReviewToProduct);
-//--------------------------------------------------------------
-
-//Routes for product purchasing
-router.get(
-  "/productPurchasings/:id",
-  productController.getPurchasedProductsByTouristId
-);
-router.post("/productPurchasings", productController.addProductPurchasing);
-router.delete(
-  "/productPurchasings/:id",
-  productController.deleteProductPurchasingById
-);
-router.patch(
-  "/productPurchasings/:id",
-  productController.updateProductPurchasedStatusById
-);
-//--------------------------------------------------------------
-
-//Routes for activity reviews
-router.post("/activityReviews/:id", activityController.addReviewToActivity);
-//--------------------------------------------------------------
-
-//Routes for activity booking
-router.get(
-  "/activityBookings/:id",
-  activityController.getBookedActivitiesByTouristId
-);
-router.post("/activityBookings", activityController.addActivityBooking);
-router.delete(
-  "/activityBookings/:id",
-  activityController.deleteActivityBooking
-);
-//--------------------------------------------------------------
-
-//Routes for itinerary reviews
-router.post("/itineraryReviews/:id", itineraryController.addReviewToItinerary);
-//--------------------------------------------------------------
-
-//Routes for itinerary booking
-router.get(
-  "/itineraryBookings/:id",
-  itineraryController.getBookedItinerariesByTouristId
-);
-router.post("/itineraryBookings", itineraryController.addItineraryBooking);
-router.delete(
-  "/itineraryBookings/:id",
-  itineraryController.deleteItineraryBooking
+  itineraryController.cancelItineraryBooking
 );
 //--------------------------------------------------------------
 
@@ -503,16 +443,17 @@ router.patch(
   "/itinerary/:id/toggle-appropriate",
   itineraryController.toggleAppropriateItinerary
 );
+//--------------------------------------------------------------
 
-router.post("/update-points", touristController.updateLoyaltyPointsAndLevel);
+// Routes for Wallet
 router.post("/redeem-points/:touristId", touristController.redeemPointsToCash);
 
-// routes to Select preferences for vacation
-// Add preferences to a tourist
-router.post("/addPreferences", touristController.addPreferences);
-// Remove preferences from a tourist
-router.delete("/deletePreferences", touristController.removePreferences);
-// Get preferences of a tourist
-router.get("/getPreferences", touristController.getTouristPreferences);
+//--------------------------------------------------------------
+
+// routes to Select preferences for vacation/activity categories
+router.post("/setPreferences", touristController.setPreferences);
+router.post("/setActivityCategories", touristController.setActivityCategories);
+
+//--------------------------------------------------------------
 
 module.exports = router;

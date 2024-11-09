@@ -58,6 +58,12 @@ const touristSchema = new Schema(
         ref: "PreferenceTag",
       },
     ],
+    activityCategories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ActivityCategory",
+      },
+    ],
   },
   {
     timestamps: true,

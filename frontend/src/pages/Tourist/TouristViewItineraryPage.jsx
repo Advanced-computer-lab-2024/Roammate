@@ -12,7 +12,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import { addItineraryBooking, checkIfTouristHasBookedItinerary, convertPrice, getItineraryById } from "../../services/api";
+import { bookItinerary, convertPrice, getItineraryById } from "../../services/api";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -65,25 +65,13 @@ const TouristViewItinerary = ({ id, touristId }) => {
         e.preventDefault();
         setLoadingBooking(true);
         try {
-            const response = await checkIfTouristHasBookedItinerary(touristId, id, bookingDate);
-            if (response.data) {
-                setMsg('You already have this itinerary booked for ' + bookingDate.format(DATE_FORMAT));
-                setDisabled(true);
-                setLoadingBooking(false);
-                return;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-        try {
-            await addItineraryBooking(touristId, id, bookingDate);
+            await bookItinerary(itinerary._id, touristId, bookingDate, itinerary.price);
             setMsg('Your booking is successful for ' + bookingDate.format(DATE_FORMAT));
             setDisabled(true);
             setLoadingBooking(false);
-        }
-        catch (error) {
-            console.log(error);
-            setMsg('Booking failed');
+        } catch (error) {
+            console.log(error.response.data.error);
+            setMsg('Booking failed! ' + error.response.data.error);
         }
     }
 

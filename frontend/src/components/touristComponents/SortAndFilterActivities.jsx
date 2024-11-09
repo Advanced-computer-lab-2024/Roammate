@@ -104,10 +104,10 @@ const SortAndFilterActivities = ({ setFilterAndSortCriteria, setFetch }) => {
                 alignItems: 'center',
                 gap: '5px',
             }}>
-                <SortIcon sx={{
+                {/*<SortIcon sx={{
                     ml: '10px',
                     fontSize: '30px',
-                }} />
+                }} />*/}
                 <Typography variant="h5" sx={{
                     fontWeight: 'bold',
                 }}>

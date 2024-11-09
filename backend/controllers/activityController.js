@@ -7,6 +7,10 @@ const {
   Review,
 } = require("../models");
 const convertCurrency = require("./CurrencyConvertController");
+const {
+  payCashFromWallet,
+  refundCashToWallet,
+} = require("./touristController");
 /* title, description, location, price, category, tags, 
 discount, startDate, endDate, time, isBookingAvailable, reviews, advertiser, averageRating
 */
@@ -383,43 +387,71 @@ const getBookedActivitiesByTouristId = async (req, res) => {
   }
 };
 
-const checkTouristHasBookedActivity = async (req, res) => {
-  const { activityId, userId, bookingDate } = req.body;
+const checkTouristHasBookedActivity = async (
+  activityId,
+  userId,
+  bookingDate
+) => {
   try {
     const bookingExists = await ActivityBooking.exists({
       activity: activityId,
       user: userId,
       date: bookingDate,
     });
-    res.status(200).json(bookingExists);
+    return bookingExists;
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    throw error;
   }
 };
 
-const addActivityBooking = async (req, res) => {
-  const { activityId, userId, date } = req.body;
+const addActivityBooking = async (activityId, userId, bookingDate) => {
   try {
     const booking = new ActivityBooking({
       activity: activityId,
       user: userId,
-      date,
+      date: bookingDate,
     });
     await booking.save();
-    res.status(201).json(booking);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const bookActivity = async (req, res) => {
+  const { activityId, userId, bookingDate, amount } = req.body;
+  //check if tourist has already booked the activity
+  const touristHasBookedActivityBefore = await checkTouristHasBookedActivity(
+    activityId,
+    userId,
+    bookingDate
+  );
+  if (touristHasBookedActivityBefore) {
+    return res.status(409).json({
+      error: "You have already booked this activity on this date",
+    });
+  }
+  //pay for the activity
+  try {
+    await payCashFromWallet(userId, amount);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+  //add booking to the activity
+  try {
+    await addActivityBooking(activityId, userId, bookingDate);
+    res.status(201).json({ message: "Activity booked successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-const deleteActivityBooking = async (req, res) => {
+const cancelActivityBooking = async (req, res) => {
   const id = req.params.id;
+  const { userId, refundAmount } = req.body;
   try {
-    const booking = await ActivityBooking.findByIdAndDelete(id);
-    if (!booking) {
-      return res.status(404).json({ error: "Booking not found" });
-    }
-    res.status(204).send();
+    await refundCashToWallet(userId, refundAmount);
+    await ActivityBooking.findByIdAndDelete(id);
+    res.status(204).json({ message: "Booking cancelled successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -441,6 +473,7 @@ const checkActivityBookingExists = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 const toggleAppropriateActivity = async (req, res) => {
   try {
     const { id } = req.params;
@@ -480,9 +513,8 @@ module.exports = {
   getActivitiesByAdvertiserId,
   addReviewToActivity,
   getBookedActivitiesByTouristId,
-  checkTouristHasBookedActivity,
-  addActivityBooking,
-  deleteActivityBooking,
+  bookActivity,
+  cancelActivityBooking,
   checkActivityBookingExists,
   toggleAppropriateActivity,
 };

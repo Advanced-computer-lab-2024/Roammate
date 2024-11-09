@@ -42,7 +42,7 @@ const ProductCard = ({ product }) => {
       }
     };
     getDisplayPrice(price);
-  }, []);
+  }, [localStorage.getItem("currency")]);
 
 
   return (

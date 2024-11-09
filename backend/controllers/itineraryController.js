@@ -2,6 +2,10 @@ const { Itinerary, Review, ItineraryBooking } = require("../models");
 const mongoose = require("mongoose");
 const { PreferenceTag } = require("../models");
 const convertCurrency = require("./CurrencyConvertController");
+const {
+  payCashFromWallet,
+  refundCashToWallet,
+} = require("./touristController");
 /* title, duration, startDate, endDate, timeline(day,startTime, activity,location,description,accessibility),
  price, lang, pickUpLocation, dropOffLocation, isBookingAvailable, tags, reviews, averageRating, tourGuide
   */
@@ -355,22 +359,24 @@ const getBookedItinerariesByTouristId = async (req, res) => {
   }
 };
 
-const checkTouristHasBookedItinerary = async (req, res) => {
-  const { itineraryId, userId, bookingDate } = req.body;
+const checkTouristHasBookedItinerary = async (
+  itineraryId,
+  userId,
+  bookingDate
+) => {
   try {
     const bookingExists = await ItineraryBooking.exists({
       itinerary: itineraryId,
       user: userId,
       date: bookingDate,
     });
-    res.status(200).json(bookingExists);
+    return bookingExists;
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    throw error;
   }
 };
 
-const addItineraryBooking = async (req, res) => {
-  const { itineraryId, userId, bookingDate } = req.body;
+const addItineraryBooking = async (itineraryId, userId, bookingDate) => {
   try {
     const booking = new ItineraryBooking({
       itinerary: itineraryId,
@@ -378,20 +384,46 @@ const addItineraryBooking = async (req, res) => {
       date: bookingDate,
     });
     await booking.save();
-    res.status(201).json(booking);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    throw error;
   }
 };
 
-const deleteItineraryBooking = async (req, res) => {
-  const id = req.params.id;
+const bookItinerary = async (req, res) => {
+  const { itineraryId, userId, bookingDate, amount } = req.body;
+  // Check if the user has already booked the itinerary on the same date
+  const bookingExists = await checkTouristHasBookedItinerary(
+    itineraryId,
+    userId,
+    bookingDate
+  );
+  if (bookingExists) {
+    return res.status(409).json({
+      error: "You have already booked this itinerary on this date",
+    });
+  }
+  //pay for the itinerary
   try {
-    const booking = await ItineraryBooking.findByIdAndDelete(id);
-    if (!booking) {
-      return res.status(404).json({ error: "Booking not found" });
-    }
-    res.status(204).send();
+    await payCashFromWallet(userId, amount);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+  // Add the booking to the itinerary
+  try {
+    await addItineraryBooking(itineraryId, userId, bookingDate);
+    res.status(201).json({ message: "Itinerary booked successfully" });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+const cancelItineraryBooking = async (req, res) => {
+  const id = req.params.id;
+  const { userId, refundAmount } = req.body;
+  try {
+    await refundCashToWallet(userId, refundAmount);
+    await ItineraryBooking.findByIdAndDelete(id);
+    res.status(200).json({ message: "Booking cancelled successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -467,9 +499,8 @@ module.exports = {
   getItinerariesByTourGuideId,
   addReviewToItinerary,
   getBookedItinerariesByTouristId,
-  checkTouristHasBookedItinerary,
-  addItineraryBooking,
-  deleteItineraryBooking,
+  bookItinerary,
+  cancelItineraryBooking,
   toggleItineraryActivation,
   toggleAppropriateItinerary,
 };

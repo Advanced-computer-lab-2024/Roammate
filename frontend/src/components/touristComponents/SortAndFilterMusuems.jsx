@@ -105,7 +105,7 @@ const SortAndFilterMuseums = ({ setFilterAndSortCriteria, setFetch }) => {
           gap: "5px",
         }}
       >
-        <SortIcon sx={{ ml: "10px", fontSize: "30px" }} />
+        {/* <SortIcon sx={{ ml: "10px", fontSize: "30px" }} /> */}
         <Typography variant="h5" sx={{ fontWeight: "bold" }}>
           Sort
         </Typography>

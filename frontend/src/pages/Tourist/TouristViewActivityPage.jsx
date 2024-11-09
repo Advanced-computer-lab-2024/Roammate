@@ -9,7 +9,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import StarIcon from '@mui/icons-material/Star';
 import CheckIcon from '@mui/icons-material/Check';
-import { addActivityBooking, checkIfTouristHasBookedActivity, convertPrice, getActivityById } from '../../services/api';
+import { bookActivity, convertPrice, getActivityById } from '../../services/api';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -58,25 +58,13 @@ const TouristViewActivity = ({ id, touristId }) => {
         e.preventDefault();
         setLoadingBooking(true);
         try {
-            const response = await checkIfTouristHasBookedActivity(touristId, id, bookingDate);
-            if (response.data) {
-                setMsg('You already have this activity booked for ' + bookingDate.format(DATE_FORMAT));
-                setDisabled(true);
-                setLoadingBooking(false);
-                return;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-        try {
-            await addActivityBooking(touristId, id, bookingDate);
+            await bookActivity(id, touristId, bookingDate, activity.price);
             setMsg('Your booking is successful for ' + bookingDate.format(DATE_FORMAT));
             setDisabled(true);
             setLoadingBooking(false);
-        }
-        catch (error) {
-            console.log(error);
-            setMsg('Booking failed');
+        } catch (error) {
+            console.log(error.response.data.error);
+            setMsg('Booking failed! ' + error.response.data.error);
         }
     }
 

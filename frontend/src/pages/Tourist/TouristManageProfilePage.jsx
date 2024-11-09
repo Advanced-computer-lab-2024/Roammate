@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, TextField, Button, Divider, IconButton, Alert } from "@mui/material";
-import { fetchTouristProfile, updateTouristProfile } from "../../services/api";
+import { Box, Typography, TextField, Button, Divider, IconButton, Alert, CircularProgress } from "@mui/material";
+import { convertPrice, fetchTouristProfile, redeemPointsToCash, updateTouristProfile } from "../../services/api";
 import dayjs from "dayjs";
 import ChangePasswordComponent from "../../components/sharedComponents/ChangePasswordComponent";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
@@ -16,11 +16,18 @@ const TouristManageProfile = ({ id }) => {
   const [nationality, setNationality] = useState("");
   const [DOB, setDOB] = useState("");
   const [job, setJob] = useState("");
+  const [preferences, setPreference] = useState("");
+  const [activityCategories, setActivityCategories] = useState("");
+  const [wallet, setWallet] = useState(0);
+  const [points, setPoints] = useState(0);
+  const [level, setLevel] = useState(1);
   const [disabled, setDisabled] = useState(true);
   const [edit, setEdit] = useState(false);
   const [err, setErr] = useState("");
-  let loyaltyPoints = 200000;
-  let wallet = 300;
+  const [pointsToRedeem, setPointsToRedeem] = useState(0);
+  const [redeemMsg, setRedeemMsg] = useState("");
+  const [redeemLoading, setRedeemLoading] = useState(false);
+  const [displayWallet, setDisplayWallet] = useState();
 
   useEffect(() => {
     const fetchTourist = async () => {
@@ -32,15 +39,32 @@ const TouristManageProfile = ({ id }) => {
         setNationality(data.nationality);
         setDOB(dayjs(data.DOB).format(DATE_FORMAT));
         setJob(data.job);
+        setPreference(data.preferences);
+        setActivityCategories(data.activityCategories);
+        setWallet(data.wallet);
+        setPoints(data.points);
+        setLevel(data.level);
       } catch (err) {
         console.log(err);
       }
     };
-
     fetchTourist();
   }, [id]);
 
-  const handleSubmit = async (event) => {
+
+  useEffect(() => {
+    const getDisplayWallet = async (wallet) => {
+      try {
+        const displayWallet = await convertPrice(wallet);
+        setDisplayWallet(displayWallet);
+      } catch (error) {
+        console.error("Error converting price:", error);
+      }
+    };
+    getDisplayWallet(wallet);
+  }, [wallet]);
+
+  const handleEditProfile = async (event) => {
     event.preventDefault();
     const tourist = { email, mobile, nationality, job };
 
@@ -53,6 +77,27 @@ const TouristManageProfile = ({ id }) => {
       console.log(error);
     }
   };
+
+
+  const handleRedeemPoints = async (event) => {
+    event.preventDefault();
+    // Redeem points as cash in wallet
+    setRedeemLoading(true);
+    try {
+      const res = await redeemPointsToCash(id, pointsToRedeem);
+      console.log(res);
+      if (res.status === 200) {
+        setWallet(res.data.wallet);
+        setPoints(res.data.points);
+        setLevel(res.data.level);
+        setRedeemMsg("Points redeemed successfully!");
+        setRedeemLoading(false);
+      }
+    } catch (error) {
+      setRedeemMsg("Failed to redeem points! " + error.response.data.message);
+      setRedeemLoading(false);
+    }
+  }
 
   return (
     <Box
@@ -68,7 +113,7 @@ const TouristManageProfile = ({ id }) => {
       {/* Profile Management Form */}
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={handleEditProfile}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -221,7 +266,7 @@ const TouristManageProfile = ({ id }) => {
           gap: '15px',
         }} disabled>
           <AccountBalanceWalletIcon fontSize={'large'} mr={2} />
-          <Typography variant="h5">{wallet} EGP</Typography>
+          <Typography variant="h5">{displayWallet}</Typography>
         </IconButton>
 
         <Divider sx={{ my: 4 }} />
@@ -238,13 +283,12 @@ const TouristManageProfile = ({ id }) => {
           gap: '15px',
         }} disabled>
           <LocalPoliceIcon sx={{
-            fill: `${loyaltyPoints >= 100000 ?
-              loyaltyPoints >= 500000 ? 'gold' : 'green' : 'grey'}`,
+            fill: `${level === 3 ? 'gold' : level === 2 ? 'green' : 'grey'}`,
           }}
             fontSize={'large'}
             mr={2}
           />
-          <Typography variant="h5">{loyaltyPoints} pts</Typography>
+          <Typography variant="h5">{points} pts</Typography>
         </IconButton>
 
         <Divider sx={{ my: 4 }} />
@@ -258,6 +302,11 @@ const TouristManageProfile = ({ id }) => {
         }}>
           <TextField
             label="Points"
+            value={pointsToRedeem}
+            onChange={(e) => {
+              setPointsToRedeem(e.target.value);
+              setRedeemMsg("");
+            }}
             type="number"
             variant="outlined"
             sx={{ width: "100%" }}
@@ -265,11 +314,17 @@ const TouristManageProfile = ({ id }) => {
           <Alert severity="info">
             <strong>Info:</strong> 100 point = 1 EGP
           </Alert>
+          {redeemMsg && pointsToRedeem && <Typography severity="info" sx={{
+            color: `${redeemMsg.includes('Failed') ? 'red' : 'green'}`,
+          }}>{redeemMsg}</Typography>}
+
           <Button
             variant="contained"
             sx={{ backgroundColor: "green", color: "white", width: "100%" }}
+            onClick={handleRedeemPoints}
+            disabled={redeemLoading || !pointsToRedeem}
           >
-            Redeem Cash
+            {redeemLoading ? <CircularProgress /> : "Redeem"}
           </Button>
         </Box>
 

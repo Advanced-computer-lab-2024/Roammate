@@ -113,15 +113,17 @@ const getBookedTransportations = async (req, res) => {
   }
 };
 
-const updateLoyaltyPointsAndLevel = async (req, res) => {
-  const { touristId, amountPaid } = req.body;
-
+const payCashFromWallet = async (touristId, amountPaid) => {
   try {
     // Find the tourist by ID
     const tourist = await Tourist.findById(touristId);
-    if (!tourist) {
-      return res.status(404).send({ message: "Tourist not found" });
+
+    // Check if the tourist has enough money in the wallet
+    if (tourist.wallet < amountPaid) {
+      throw new Error("Insufficient funds in wallet");
     }
+    // Deduct the amount paid from the wallet
+    tourist.wallet -= amountPaid;
 
     // Calculate loyalty points based on current level
     let pointsEarned;
@@ -150,16 +152,49 @@ const updateLoyaltyPointsAndLevel = async (req, res) => {
     } else {
       tourist.level = 1;
     }
-
     // Save changes to database
     await tourist.save();
-
-    // Send updated tourist object as response
-    res.status(200).send(tourist);
   } catch (error) {
-    res
-      .status(500)
-      .send({ message: "Error updating loyalty points and level", error });
+    throw new Error("Error paying from wallet! ", error);
+  }
+};
+const refundCashToWallet = async (touristId, amountReturned) => {
+  try {
+    // console.log("refundCashToWallet", touristId, amountReturned);
+    // Find the tourist by ID
+    const tourist = await Tourist.findById(touristId);
+    // Add the amount returned to the wallet
+    tourist.wallet += amountReturned;
+    let pointsDeducted;
+    switch (tourist.level) {
+      case 1:
+        pointsDeducted = amountReturned * 0.5;
+        break;
+      case 2:
+        pointsDeducted = amountReturned * 1;
+        break;
+      case 3:
+        pointsDeducted = amountReturned * 1.5;
+        break;
+      default:
+        pointsDeducted = 0;
+    }
+    // Update tourist's points
+    tourist.points -= pointsDeducted;
+    tourist.points = tourist.points < 0 ? 0 : tourist.points;
+    // Check and update level based on new points total
+    if (tourist.points > 500000) {
+      tourist.level = 3;
+    } else if (tourist.points > 100000) {
+      tourist.level = 2;
+    } else {
+      tourist.level = 1;
+    }
+    // Save changes to database
+    await tourist.save();
+  } catch (error) {
+    // console.log("Error returning cash to wallet! ", error);
+    throw new Error("Error returning cash to wallet! ", error);
   }
 };
 
@@ -168,21 +203,27 @@ const redeemPointsToCash = async (req, res) => {
   const { pointsToRedeem } = req.body;
   const conversionRate = 100; // EGP for every 10,000 points
   const pointsRequiredForRedemption = 10000;
-
+  // console.log("redeemPointsToCash", touristId, pointsToRedeem);
   try {
     // Fetch the tourist by ID
     const tourist = await Tourist.findById(touristId);
     if (!tourist) {
       return res.status(404).send({ message: "Tourist not found" });
     }
-
+    if (pointsToRedeem <= 0) {
+      return res
+        .status(400)
+        .send({ message: "Points to redeem must be greater than 0." });
+    }
     // Check if tourist has enough points to redeem
-    if (
-      tourist.points < pointsToRedeem ||
-      pointsToRedeem % pointsRequiredForRedemption !== 0
-    ) {
+    if (tourist.points < pointsToRedeem) {
+      return res
+        .status(400)
+        .send({ message: "Insufficient points to redeem." });
+    }
+    if (pointsToRedeem % pointsRequiredForRedemption !== 0) {
       return res.status(400).send({
-        message: `Insufficient points or invalid amount. Points should be in multiples of ${pointsRequiredForRedemption}.`,
+        message: `Points must be in multiples of ${pointsRequiredForRedemption}.`,
       });
     }
 
@@ -193,6 +234,15 @@ const redeemPointsToCash = async (req, res) => {
     // Deduct points and update wallet balance
     tourist.points -= pointsToRedeem;
     tourist.wallet += cashAmount;
+
+    // Check and update level based on new points total
+    if (tourist.points > 500000) {
+      tourist.level = 3;
+    } else if (tourist.points > 100000) {
+      tourist.level = 2;
+    } else {
+      tourist.level = 1;
+    }
 
     // Save changes to the database
     await tourist.save();
@@ -265,18 +315,16 @@ const requestTouristDeletionIfNoUpcomingBookings = async (req, res) => {
 };
 
 // Add preferences to a tourist's profile
-const addPreferences = async (req, res) => {
-  const { touristId, preferenceIds } = req.body; // Get touristId and preferenceIds from the request body
+const setPreferences = async (req, res) => {
+  const touristId = req.params.id;
+  const { preferences } = req.body;
 
   try {
     const tourist = await Tourist.findById(touristId);
     if (!tourist) return res.status(404).json({ message: "Tourist not found" });
 
     // Add preferences, avoiding duplicates
-    tourist.preferences.push(
-      ...preferenceIds.filter((id) => !tourist.preferences.includes(id))
-    );
-
+    tourist.preferences = preferences;
     await tourist.save();
     res.status(200).json(tourist.preferences);
   } catch (error) {
@@ -284,42 +332,22 @@ const addPreferences = async (req, res) => {
   }
 };
 
-// Remove preferences from a tourist's profile
-const removePreferences = async (req, res) => {
-  const { touristId, preferenceIds } = req.body; // Get touristId and preferenceIds from the request body
+const setActivityCategories = async (req, res) => {
+  const touristId = req.params.id;
+  const { activityCategories } = req.body;
 
   try {
     const tourist = await Tourist.findById(touristId);
     if (!tourist) return res.status(404).json({ message: "Tourist not found" });
 
-    // Remove specified preferences
-    tourist.preferences = tourist.preferences.filter(
-      (id) => !preferenceIds.includes(id.toString())
-    );
-
+    // Add activity categories, avoiding duplicates
+    tourist.activityCategories = activityCategories;
     await tourist.save();
-    res.status(200).json(tourist.preferences);
-  } catch (error) {
-    res.status(500).json({ message: "Error removing preferences", error });
-  }
-};
-
-// Get preference tags for a specific tourist
-const getTouristPreferences = async (req, res) => {
-  const { touristId } = req.body; // Assuming touristId is provided in the request body
-
-  try {
-    const tourist = await Tourist.findById(touristId).populate("preferences");
-
-    if (!tourist) {
-      return res.status(404).json({ message: "Tourist not found" });
-    }
-
-    res.status(200).json(tourist.preferences);
+    res.status(200).json(tourist.activityCategories);
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Error retrieving tourist preferences", error });
+      .json({ message: "Error adding activity categories", error });
   }
 };
 
@@ -329,10 +357,10 @@ module.exports = {
   getTouristById,
   updateTouristById,
   getBookedTransportations,
-  updateLoyaltyPointsAndLevel,
+  payCashFromWallet,
+  refundCashToWallet,
   redeemPointsToCash,
   requestTouristDeletionIfNoUpcomingBookings,
-  addPreferences,
-  removePreferences,
-  getTouristPreferences,
+  setPreferences,
+  setActivityCategories,
 };
