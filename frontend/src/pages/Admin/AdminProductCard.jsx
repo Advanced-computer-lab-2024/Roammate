@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,15 +10,31 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import EditIcon from "@mui/icons-material/Edit";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
-import { toggleArchivedStatus } from "../../services/api";
+import { toggleArchivedStatus, getProductSales } from "../../services/api";
 
 const AdminProductCard = ({ product }) => {
   const [archived, setArchived] = useState(product.archived);
+  const [productSales, setProductSales] = useState(null); // Initialize productSales state
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description);
   const [price, setPrice] = useState(product.price);
   const [quantity, setQuantity] = useState(product.quantity);
   const [rating, setRating] = useState(product.averageRating);
+
+  // Fetch product sales data when the component mounts
+  useEffect(() => {
+    const fetchProductSales = async () => {
+      try {
+        const response = await getProductSales(product._id); // Make API call to get sales data
+        const salesData = response.product.totalSales;
+        setProductSales(salesData); // Update state with fetched sales data
+      } catch (error) {
+        console.error("Error fetching product sales:", error);
+      }
+    };
+
+    fetchProductSales(); // Trigger the API call on component render
+  }, [product._id]); // Re-run the effect if product._id changes
 
   // Handler to toggle the archived status
   const handleToggleArchived = async () => {
@@ -167,7 +183,9 @@ const AdminProductCard = ({ product }) => {
             color: "text.secondary",
           }}
         >
-          purchased by _ people
+          {productSales
+            ? `Total Sales :  ${productSales}`
+            : `Total Sales :  ${productSales}`}
         </Typography>
       </CardContent>
 

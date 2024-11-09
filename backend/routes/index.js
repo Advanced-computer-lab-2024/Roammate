@@ -209,6 +209,10 @@ router.post(
   productController.uploadMiddleware,
   productController.uploadImage
 );
+router.get(
+  "/product/:id/product-sales",
+  productController.getProductStockAndSales
+);
 
 //--------------------------------------------------------------
 

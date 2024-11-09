@@ -611,6 +611,19 @@ export const getProductById = async (productId) => {
   }
 };
 
+//✅ This function is used to fetch a product sales
+export const getProductSales = async (productId) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}product/${productId}/product-sales`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching product sales:", error);
+    throw error;
+  }
+};
+
 // ✅ This function is used to update a product by Id
 export const updateProduct = async (productId, updatedData) => {
   try {
