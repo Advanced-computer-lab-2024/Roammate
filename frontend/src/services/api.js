@@ -51,7 +51,7 @@ export const changePassword = async (id, type, oldPassword, newPassword) => {
       oldPassword,
       newPassword,
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Failed to change password."

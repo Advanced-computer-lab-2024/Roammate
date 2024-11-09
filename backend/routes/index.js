@@ -19,6 +19,7 @@ const {
   bookingController,
   deletionRequestsController,
   transportationController,
+  passwordController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -514,5 +515,8 @@ router.post("/addPreferences", touristController.addPreferences);
 router.delete("/deletePreferences", touristController.removePreferences);
 // Get preferences of a tourist
 router.get("/getPreferences", touristController.getTouristPreferences);
+
+//Change Password of Users
+router.post("/change-password", passwordController.changePassword);
 
 module.exports = router;
