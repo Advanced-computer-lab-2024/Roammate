@@ -30,6 +30,7 @@ import Button from "@mui/material/Button";
 import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
 import CurrencySelector from "./CurrencySelector";
 import { fetchConversionRates } from "../../services/api";
+import { AirplaneTicket } from "@mui/icons-material";
 
 const drawerWidth = 240;
 const TouristLayout = () => {
@@ -115,7 +116,6 @@ const TouristLayout = () => {
                     <ListItemText primary={'Home'} />
                 </ListItemButton>
 
-
                 <ListItemButton
                     onClick={handleMyBookingsClick}>
                     <ListItemIcon>
@@ -189,6 +189,18 @@ const TouristLayout = () => {
                         <ShoppingBagIcon />
                     </ListItemIcon>
                     <ListItemText primary={'My Purchases'} />
+                </ListItemButton>
+
+                <ListItemButton onClick={
+                    () => {
+                        toggleDrawer();
+                        navigate('/tourist/flights');
+                        setActiveButton('');
+                    }}>
+                    <ListItemIcon>
+                        <AirplaneTicket />
+                    </ListItemIcon>
+                    <ListItemText primary={'Flights'} />
                 </ListItemButton>
 
                 <Divider sx={{
