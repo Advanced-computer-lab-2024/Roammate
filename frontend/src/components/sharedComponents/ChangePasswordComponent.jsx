@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, Typography, Snackbar } from "@mui/material";
+import { Box, Button, TextField, Typography, Snackbar, Alert } from "@mui/material";
 import { changePassword } from "../../services/api";
 
 const ChangePasswordComponent = ({ id, type }) => {
@@ -44,6 +44,12 @@ const ChangePasswordComponent = ({ id, type }) => {
         gap: "15px",
       }}
     >
+      <Typography variant="h6" sx={{ textAlign: "center", mb: 2, mt: 5 }}>
+        Manage Password
+      </Typography>
+      <Alert severity="info" sx={{ mb: 2 }}>
+        <strong>Info:</strong> Strong passwords contain at least 8 characters, uppercase and lowercase letters, numbers, and special characters.
+      </Alert>
       <Button
         variant="contained"
         onClick={() => setIsChanging(true)}

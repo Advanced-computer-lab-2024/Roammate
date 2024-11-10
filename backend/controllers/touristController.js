@@ -37,7 +37,9 @@ const getTouristById = async (req, res) => {
     return res.status(400).json({ message: "Invalid id" });
   }
   try {
-    const tourist = await Tourist.findById(id);
+    const tourist = await Tourist.findById(id)
+      .populate("preferences")
+      .populate("activityCategories");
     if (!tourist) {
       return res.status(404).json({ message: "Tourist not found" });
     }
@@ -49,8 +51,16 @@ const getTouristById = async (req, res) => {
 
 const updateTouristById = async (req, res) => {
   const { id } = req.params;
-  const { password, email, mobile, nationality, job, preferredCurrency } =
-    req.body;
+  const {
+    password,
+    email,
+    mobile,
+    nationality,
+    job,
+    preferredCurrency,
+    preferences,
+    activityCategories,
+  } = req.body;
 
   // Validate ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -66,7 +76,16 @@ const updateTouristById = async (req, res) => {
   try {
     const tourist = await Tourist.findByIdAndUpdate(
       id,
-      { password, email, mobile, nationality, job, preferredCurrency },
+      {
+        password,
+        email,
+        mobile,
+        nationality,
+        job,
+        preferredCurrency,
+        preferences,
+        activityCategories,
+      },
       { new: true, runValidators: true }
     );
 

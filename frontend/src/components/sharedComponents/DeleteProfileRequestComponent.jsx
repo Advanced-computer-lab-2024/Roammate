@@ -62,7 +62,7 @@ const DeleteProfileRequest = ({ id, type }) => {
         color="error"
         onClick={handleDeleteRequest}
         disabled={isRequestPending && status === "pending"} // Disable only if pending
-        sx={{ mt: 2, width: "100%" }}
+        sx={{ mt: 2, width: "100%", mb: 5 }}
       >
         {isRequestPending && status === "pending"
           ? "Deletion Request Pending"

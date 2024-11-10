@@ -959,37 +959,6 @@ export const convertPrice = async (amount) => {
   }
 };
 
-//✅ This function is used to set tourist preferences
-export const setTouristPreferences = async (touristId, preferences) => {
-  try {
-    const response = await axios.post(
-      `${API_URL}setPreferences/${touristId}`,
-      preferences
-    );
-    return response;
-  } catch (error) {
-    console.error("Error setting tourist preferences:", error);
-    throw error;
-  }
-};
-
-//✅ This function is used to set tourist activity categories
-export const setTouristActivityCategories = async (
-  touristId,
-  activityCategories
-) => {
-  try {
-    const response = await axios.post(
-      `${API_URL}setActivityCategories/${touristId}`,
-      activityCategories
-    );
-    return response;
-  } catch (error) {
-    console.error("Error setting tourist activity categories:", error);
-    throw error;
-  }
-};
-
 //✅ This function is used to pay cash and update loyalty points and level
 export const payCashAndUpdateLoyalty = async (touristId, amount) => {
   try {

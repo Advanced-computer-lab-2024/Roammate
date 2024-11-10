@@ -450,10 +450,4 @@ router.post("/redeem-points/:touristId", touristController.redeemPointsToCash);
 
 //--------------------------------------------------------------
 
-// routes to Select preferences for vacation/activity categories
-router.post("/setPreferences", touristController.setPreferences);
-router.post("/setActivityCategories", touristController.setActivityCategories);
-
-//--------------------------------------------------------------
-
 module.exports = router;
