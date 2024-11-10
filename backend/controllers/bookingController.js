@@ -21,7 +21,7 @@ const authenticateWithAmadeus = async () => {
 
 // Search for flights
 const searchFlights = async (req, res) => {
-    const { origin, destination, departureDate, returnDate, passengers } = req.body;
+    const { origin, destination, departureDate, returnDate, passengers, currency } = req.body;
     try {
       const accessToken = await authenticateWithAmadeus(); // Get access token
   
@@ -35,7 +35,7 @@ const searchFlights = async (req, res) => {
             departureDate,
             returnDate,
             adults: passengers,
-            currencyCode: "USD", // Adjust currency if needed
+            currencyCode: currency, // Adjust currency if needed
           },
         }
       );  

@@ -9,6 +9,7 @@ const ChangePasswordComponent = ({ id, type }) => {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [isChanging, setIsChanging] = useState(false);
 
   const handlePasswordChange = async () => {
@@ -22,7 +23,9 @@ const ChangePasswordComponent = ({ id, type }) => {
       if (response.status === 200) {
         setSuccess(true);
         setOpen(true);
-        setIsChanging(false);
+        setIsChanging(true);
+        setSuccessMessage("Password Change Successful");
+        setError("");
       } else {
         throw new Error(
           "Failed to change password. Please check the old password."
@@ -30,6 +33,7 @@ const ChangePasswordComponent = ({ id, type }) => {
       }
     } catch (err) {
       setError(err.message);
+      setSuccessMessage("");
       setOpen(true);
     }
   };
@@ -102,6 +106,9 @@ const ChangePasswordComponent = ({ id, type }) => {
       )}
 
       {error && <Typography sx={{ color: "red" }}>{error}</Typography>}
+      {success && (
+        <Typography sx={{ color: "green" }}>{successMessage}</Typography>
+      )}
 
       <Snackbar
         open={open}

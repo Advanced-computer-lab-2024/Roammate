@@ -51,7 +51,7 @@ export const changePassword = async (id, type, oldPassword, newPassword) => {
       oldPassword,
       newPassword,
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Failed to change password."
@@ -611,6 +611,19 @@ export const getProductById = async (productId) => {
   }
 };
 
+//✅ This function is used to fetch a product sales
+export const getProductSales = async (productId) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}product/${productId}/product-sales`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching product sales:", error);
+    throw error;
+  }
+};
+
 // ✅ This function is used to update a product by Id
 export const updateProduct = async (productId, updatedData) => {
   try {
@@ -900,6 +913,7 @@ export const searchFlights = async (
   passengers
 ) => {
   try {
+    const currency = localStorage.getItem("currency") || "EGP";
     const response = await axios.post(
       `${API_URL}search-flights`,
       {
@@ -908,6 +922,7 @@ export const searchFlights = async (
         departureDate,
         returnDate,
         passengers,
+        currency,
       },
       {
         headers: {

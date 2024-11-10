@@ -404,6 +404,43 @@ const uploadImage = async (req, res) => {
   }
 };
 
+// Function to view available quantity, sales, and sale dates of products for admins/sellers
+const getProductStockAndSales = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Get product details
+    const product = await Product.findById(id).populate("seller", "username");
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Retrieve completed purchases for the product to get total sales and sale dates
+    const completedPurchases = await ProductPurchasing.find({
+      product: id,
+      status: "Completed",
+    });
+
+    const totalSales = completedPurchases.length;
+    const salesDates = completedPurchases.map((purchase) => purchase.date);
+
+    // Return product quantity, total sales, and sale dates
+    res.status(200).json({
+      product: {
+        name: product.name,
+        availableQuantity: product.quantity,
+        totalSales,
+        salesDates,
+        price: product.price,
+      },
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving product stock and sales", error });
+  }
+};
+
 module.exports = {
   addProduct,
   getAllProducts,
@@ -421,4 +458,5 @@ module.exports = {
   checkIfArchived,
   uploadMiddleware,
   uploadImage,
+  getProductStockAndSales,
 };

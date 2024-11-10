@@ -58,6 +58,10 @@ const SellerProductsPage = ({ id }) => {
     }
   };
 
+  const selectedProduct =
+    activeProducts.find((prod) => prod._id === product_id) ||
+    archivedProducts.find((prod) => prod._id === product_id);
+
   return !product_id ? (
     <Box>
       {/* Active Products Section */}
@@ -137,10 +141,8 @@ const SellerProductsPage = ({ id }) => {
     </Box>
   ) : (
     <ManageProductPage
-      product={
-        activeProducts.find((prod) => prod._id === product_id) ||
-        archivedProducts.find((prod) => prod._id === product_id)
-      }
+      product={selectedProduct}
+      productId={selectedProduct ? selectedProduct._id : null}
     />
   );
 };
