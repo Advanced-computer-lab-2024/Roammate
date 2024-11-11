@@ -25,6 +25,8 @@ const {
 const router = express.Router();
 
 //Routes for User
+router.get("/users", userController.getAllUsers); // Get all users
+router.delete("/users/:id", userController.deleteUser); // Delete a user by ID
 router.patch("/users/status", userController.updateAllUsersStatus); // Update the status of all users
 router.patch("/users/status/:id", userController.updateUserStatus); // Update the status of a specific user by ID
 router.get("/users/status/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status

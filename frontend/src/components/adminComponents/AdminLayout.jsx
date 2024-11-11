@@ -46,7 +46,7 @@ const AdminLayout = () => {
 
   React.useEffect(() => {
     if (activeButton === "Users") {
-      // navigate('/admin/functionalityA');
+      navigate('/admin/users');
     } else if (activeButton === "Registrations") {
       navigate("/admin/registrations");
     } else if (activeButton === "Complaints") {
