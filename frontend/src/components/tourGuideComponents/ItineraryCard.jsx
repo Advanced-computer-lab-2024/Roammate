@@ -33,7 +33,7 @@ const ItineraryCard = ({ itinerary }) => {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ maxWidth: "90%", mb: 4 }}>
+    <Card sx={{ width: "600px", mb: 4 }}>
       {/* <h1>Itinerary Card</h1> */}
       <CardContent
         sx={{
@@ -125,8 +125,8 @@ const ItineraryCard = ({ itinerary }) => {
               .startOf("day")
               .isBefore(dayjs(endDate).startOf("day"))
               ? `${dayjs(startDate).format(DATE_FORMAT)} - ${dayjs(
-                  endDate
-                ).format(DATE_FORMAT)}`
+                endDate
+              ).format(DATE_FORMAT)}`
               : `${dayjs(startDate).format(DATE_FORMAT)}`}
 
             <IconButton
@@ -151,7 +151,7 @@ const ItineraryCard = ({ itinerary }) => {
                 />
               )}
               <Typography fontSize={14} color="green">
-                ${isBookingAvailable ? "booking available" : "booking closed"}
+                {isBookingAvailable ? "booking available" : "booking closed"}
               </Typography>
             </IconButton>
           </Typography>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Grid2 } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import { fetchItinerariesByTourGuideId } from "../../services/api";
 import ItineraryCard from "../../components/tourGuideComponents/ItineraryCard";
@@ -32,8 +32,8 @@ const TourGuideItinerariesPage = ({ id }) => {
 
   return !itinerary_id ? (
     <Box>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
+      <Grid2 spacing={2}>
+        <Grid2 xs={12}>
           {itineraries.length === 0 &&
             (fetch < 1 ? (
               <h2>
@@ -43,14 +43,14 @@ const TourGuideItinerariesPage = ({ id }) => {
             ) : (
               <h2>No Itineraries Found</h2>
             ))}
-        </Grid>
+        </Grid2>
 
         {itineraries.map((itinerary) => (
-          <Grid item xs={12} sm={6} key={itinerary._id}>
+          <Grid2 item xs={12} sm={6} key={itinerary._id}>
             <ItineraryCard itinerary={itinerary} />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Box>
   ) : (
     <ManageItineraryPage
