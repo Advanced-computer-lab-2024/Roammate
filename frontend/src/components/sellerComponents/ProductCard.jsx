@@ -18,9 +18,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import ProductImage from "../productComponents/ProductImage";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { toggleArchivedStatus } from "../../services/api";
 import { convertPrice } from "../../services/api";
+import { getProductSales } from "../../services/api";
 
 const ProductCard = ({ product }) => {
   const [archived, setArchived] = useState(product.archived);
@@ -30,8 +31,10 @@ const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const [rating, setRating] = useState(product.averageRating);
   const navigate = useNavigate();
+  const [productSales, setProductSales] = useState(0);
+  const location = useLocation();
 
-
+  const basePath = location.pathname.split("/")[1];
 
   // Handler to toggle the archived status
   const handleToggleArchived = async () => {
@@ -43,7 +46,19 @@ const ProductCard = ({ product }) => {
     }
   };
 
-
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        const response = await getProductSales(product._id);
+        setProductSales(response.product.totalSales || []);
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProductData();
+  }, [product._id]);
 
   return (
     <Card sx={{ width: "90%", mb: 4 }}>
@@ -152,9 +167,14 @@ const ProductCard = ({ product }) => {
             </Typography>
           </IconButton>
 
-          <Typography gutterBottom variant="h4" component="div" sx={{
-            color: `${product.quantity > 0 ? 'black' : 'grey'}`,
-          }}>
+          <Typography
+            gutterBottom
+            variant="h4"
+            component="div"
+            sx={{
+              color: `${product.quantity > 0 ? "black" : "grey"}`,
+            }}
+          >
             {price} EGP
           </Typography>
         </Box>
@@ -170,7 +190,7 @@ const ProductCard = ({ product }) => {
             color: "text.secondary",
           }}
         >
-          purchased by _ people
+          purchased by {productSales == 0 ? "0" : productSales} people
         </Typography>
       </CardContent>
       <CardActions
@@ -215,7 +235,7 @@ const ProductCard = ({ product }) => {
           sx={{ color: "white" }}
           endIcon={<ArrowForwardIosIcon />}
           onClick={() => {
-            navigate(`/seller/my-products?id=${product._id}`);
+            navigate(`/${basePath}/my-products?id=${product._id}`);
           }}
         >
           View

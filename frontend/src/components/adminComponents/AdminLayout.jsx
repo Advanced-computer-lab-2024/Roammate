@@ -31,6 +31,7 @@ const navItems = [
   "Activities",
   "Itineraries",
   "Monuments",
+  "My Products",
 ];
 
 const drawerWidth = 240;
@@ -61,6 +62,8 @@ const AdminLayout = () => {
       navigate(`/admin/itineraries?id=`);
     } else if (activeButton === "Products") {
       navigate(`/admin/products?id=`);
+    } else if (activeButton === "My Products") {
+      navigate(`/admin/my-products?id=`);
     }
   }, [activeButton, navigate]);
 
