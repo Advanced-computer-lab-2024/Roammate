@@ -489,6 +489,19 @@ const toggleAppropriateItinerary = async (req, res) => {
   }
 };
 
+const getItineraryBookingsCount = async (req, res) => {
+  const itineraryId = req.params.id;
+  try {
+    const bookingsCount = await ItineraryBooking.countDocuments({
+      itinerary: itineraryId,
+      date: { $gte: new Date() },
+    });
+    res.status(200).json(bookingsCount);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createItinerary,
   getAllItineraries,
@@ -503,4 +516,5 @@ module.exports = {
   cancelItineraryBooking,
   toggleItineraryActivation,
   toggleAppropriateItinerary,
+  getItineraryBookingsCount,
 };

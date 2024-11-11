@@ -1025,3 +1025,16 @@ export const getActivityBookingsCount = async (activityId) => {
     throw error;
   }
 };
+
+//✅ This function is used to count itinerary bookings
+export const getItineraryBookingsCount = async (itineraryId) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}itineraryBookings-count/${itineraryId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching itinerary bookings count:", error);
+    throw error;
+  }
+};

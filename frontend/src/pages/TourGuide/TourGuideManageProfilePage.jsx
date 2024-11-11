@@ -8,6 +8,7 @@ import {
   Divider,
   Alert,
   LinearProgress,
+  Rating,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -24,6 +25,7 @@ import {
 } from "../../services/api";
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
+import StarIcon from '@mui/icons-material/Star';
 
 const TourGuideManageProfile = ({ id }) => {
   const [username, setUsername] = useState("");
@@ -43,6 +45,7 @@ const TourGuideManageProfile = ({ id }) => {
   const [documentSubmitted, setDocumentSubmitted] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [avgRating, setAvgRating] = useState(0);
 
   const fetchPhoto = async (photo) => {
     try {
@@ -66,6 +69,7 @@ const TourGuideManageProfile = ({ id }) => {
       setLanguages(data.languages);
       setAbout(data.about);
       setStatus(data.status);
+      setAvgRating(data.averageRating);
 
       if (data.documents.photo) fetchPhoto(data.documents.photo);
     };
@@ -149,11 +153,13 @@ const TourGuideManageProfile = ({ id }) => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           mb: 3,
         }}
       >
+
         <label htmlFor="photo-upload">
           <Avatar
             sx={{
@@ -172,6 +178,15 @@ const TourGuideManageProfile = ({ id }) => {
           id="photo-upload"
           type="file"
           onChange={handlePhotoChange}
+        />
+        <Rating
+          name="read-only"
+          value={avgRating}
+          readOnly
+          precision={0.1}
+          sx={{ fontSize: 40, mt: 2 }}
+          icon={<StarIcon style={{ fill: 'orange' }} fontSize="large" />}
+          emptyIcon={<StarIcon style={{ fill: 'lightgray' }} fontSize="large" />}
         />
       </Box>
       <Box sx={{ display: "flex", gap: 3, padding: 3 }}>
@@ -315,6 +330,23 @@ const TourGuideManageProfile = ({ id }) => {
               </Box>
             )}
           </form>
+
+          <Box
+            sx={{
+              width: '100%',
+              padding: 2,
+              mt: 3,
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+            }}
+          >
+            {/* <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
+              Change Password
+            </Typography> */}
+            <ChangePasswordComponent id={id} type="tourguide" />
+            <Divider sx={{ my: 4 }} />
+            <DeleteProfileRequest id={id} type="Tourguide" />
+          </Box>
         </Box>
 
         {/* Document Upload Section */}
@@ -323,14 +355,21 @@ const TourGuideManageProfile = ({ id }) => {
             width: "50%",
             display: "flex",
             flexDirection: "column",
-            gap: 3,
+            alignItems: "start",
+            justifyContent: "start",
+
           }}
         >
           {status === "guest" && (
             <Box
               component="form"
               onSubmit={handleDocumentsSubmit}
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              sx={{
+                display: "flex", flexDirection: "column", gap: 2, gap: 3,
+                padding: 3,
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+              }}
             >
               {!documentSubmitted && (
                 <Alert severity="warning">
@@ -399,23 +438,6 @@ const TourGuideManageProfile = ({ id }) => {
           )}
 
           {status === "accepted" && <AcceptTosComponent userId={id} setStatus={setStatus} />}
-
-          <Box
-            sx={{
-              width: '500px',
-              padding: 2,
-              mt: 3,
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-            }}
-          >
-            {/* <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
-              Change Password
-            </Typography> */}
-            <ChangePasswordComponent id={id} type="tourguide" />
-            <Divider sx={{ my: 4 }} />
-            <DeleteProfileRequest id={id} type="Tourguide" />
-          </Box>
         </Box>
       </Box>
     </Box>

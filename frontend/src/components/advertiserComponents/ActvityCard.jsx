@@ -41,7 +41,6 @@ const ActivityCard = ({ activity }) => {
     } catch (err) {
       console.log(err);
     }
-    return 10;
   }
   useEffect(() => {
     getActivityEnrollment();

@@ -353,6 +353,10 @@ router.delete(
   "/itineraryBookings/:id",
   itineraryController.cancelItineraryBooking
 );
+router.get(
+  "/itineraryBookings-count/:id",
+  itineraryController.getItineraryBookingsCount
+);
 //--------------------------------------------------------------
 
 //Routes for product reviews

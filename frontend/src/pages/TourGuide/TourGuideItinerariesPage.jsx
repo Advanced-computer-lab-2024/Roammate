@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Grid2 } from "@mui/material";
+import { Box, CircularProgress, Grid, Grid2 } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import { fetchItinerariesByTourGuideId } from "../../services/api";
 import ItineraryCard from "../../components/tourGuideComponents/ItineraryCard";
@@ -36,10 +36,7 @@ const TourGuideItinerariesPage = ({ id }) => {
         <Grid2 xs={12}>
           {itineraries.length === 0 &&
             (fetch < 1 ? (
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
+              <CircularProgress />
             ) : (
               <h2>No Itineraries Found</h2>
             ))}

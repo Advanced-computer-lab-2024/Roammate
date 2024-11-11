@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import dayjs from "dayjs";
 const DATE_FORMAT = "YYYY/MM/DD";
@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { IconButton, Rating } from "@mui/material";
+import { Alert, IconButton, Rating } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import BlockIcon from "@mui/icons-material/Block";
 import { useNavigate } from "react-router";
+import { getItineraryBookingsCount } from "../../services/api";
 
 const ItineraryCard = ({ itinerary }) => {
   const [archived, setArchived] = useState(false);
@@ -30,7 +31,22 @@ const ItineraryCard = ({ itinerary }) => {
     itinerary.isBookingAvailable
   );
   const [rating, setRating] = useState(itinerary.averageRating);
+  const [enrollments, setEnrollments] = useState(0);
+  const [appropriate, setAppropriate] = useState(itinerary.Appropriate);
   const navigate = useNavigate();
+
+  const geItineraryEnrollment = async () => {
+    try {
+      const response = await getItineraryBookingsCount(itinerary._id);
+      setEnrollments(response);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+    geItineraryEnrollment();
+  }
+    , [itinerary]);
 
   return (
     <Card sx={{ width: "600px", mb: 4 }}>
@@ -150,8 +166,10 @@ const ItineraryCard = ({ itinerary }) => {
                   }}
                 />
               )}
-              <Typography fontSize={14} color="green">
-                {isBookingAvailable ? "booking available" : "booking closed"}
+              <Typography fontSize={14}
+                color={isBookingAvailable ? "green" : "red"}
+              >
+                {isBookingAvailable ? "Booking Enabled" : "Booking Disabled"}
               </Typography>
             </IconButton>
           </Typography>
@@ -172,7 +190,7 @@ const ItineraryCard = ({ itinerary }) => {
             color: "text.secondary",
           }}
         >
-          _ people enrolled
+          {enrollments} currently enrolled
         </Typography>
       </CardContent>
       <CardActions
@@ -209,6 +227,13 @@ const ItineraryCard = ({ itinerary }) => {
           View
         </Button>
       </CardActions>
+      <Box sx={{
+        width: "100%",
+        mb: "10px",
+        px: "10px",
+      }}>
+        {!appropriate && (<Alert severity="error">This itinerary has been flagged inappropriate by admin</Alert>)}
+      </Box>
     </Card>
   );
 };
