@@ -22,7 +22,7 @@ const RegistrationCard = ({ user, onRemove }) => {
     };
 
     return (
-        <Card sx={{ maxWidth: 650, mb: 4 }}>
+        <Card sx={{ maxWidth: '400px', mb: 4 }}>
             <CardContent
                 sx={{
                     display: "flex",
