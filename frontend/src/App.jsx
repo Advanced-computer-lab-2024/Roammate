@@ -40,6 +40,8 @@ import AdminItinerariesPage from "./pages/Admin/AdminItinerariesPage";
 import SellerCreateProduct from "./pages/Seller/SellerCreateProductPage";
 import AdminProductsPage from "./pages/Admin/AdminProductsPage";
 import TouristBookFlightsPage from "./pages/Tourist/TouristBookFlightsPage";
+import { Create } from "@mui/icons-material";
+import CreateActivityPage from "./pages/Advertiser/CreateActivityPage";
 
 const theme = createTheme({
   // palette: {
@@ -129,6 +131,10 @@ function App() {
             <Route
               path="/advertiser/editprofile"
               element={<AdvertiserEditProfile id={advertiserId} />}
+            />
+            <Route
+              path='/advertiser/create-activity'
+              element={<CreateActivityPage id={advertiserId} />}
             />
           </Route>
 

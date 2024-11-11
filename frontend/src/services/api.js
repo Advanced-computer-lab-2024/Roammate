@@ -999,3 +999,17 @@ export const redeemPointsToCash = async (touristId, pointsToRedeem) => {
     throw error;
   }
 };
+
+//✅ This function is used to count activity bookings
+export const getActivityBookingsCount = async (activityId) => {
+  try {
+    // console.log("activityId", activityId);
+    const response = await axios.get(
+      `${API_URL}activityBookings-count/${activityId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching activity bookings count:", error);
+    throw error;
+  }
+};

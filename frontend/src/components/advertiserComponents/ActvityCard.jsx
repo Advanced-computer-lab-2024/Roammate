@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import dayjs from "dayjs";
 const DATE_FORMAT = "YYYY/MM/DD";
@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { IconButton, Rating } from "@mui/material";
+import { Alert, IconButton, Rating } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import StarIcon from "@mui/icons-material/Star";
@@ -17,6 +17,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import BlockIcon from "@mui/icons-material/Block";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router";
+import { deleteActivity, getActivityBookingsCount } from "../../services/api";
 
 const ActivityCard = ({ activity }) => {
   const [archived, setArchived] = useState(false);
@@ -29,10 +30,41 @@ const ActivityCard = ({ activity }) => {
     activity.isBookingAvailable
   );
   const [rating, setRating] = useState(activity.averageRating);
+  const [enrollments, setEnrollments] = useState(0);
+  const [appropriate, setAppropriate] = useState(activity.Appropriate);
   const navigate = useNavigate();
 
+  const getActivityEnrollment = async () => {
+    try {
+      const response = await getActivityBookingsCount(activity._id);
+      setEnrollments(response);
+    } catch (err) {
+      console.log(err);
+    }
+    return 10;
+  }
+  useEffect(() => {
+    getActivityEnrollment();
+  }
+    , [activity]);
+
+  const handleDeleteActivity = async () => {
+    alert("Are you sure you want to delete this activity?");
+    try {
+      const response = await deleteActivity(activity._id);
+      if (response.status === 204) {
+        alert("Activity deleted successfully");
+        navigate("/advertiser/my-activities");
+      } else {
+        throw new Error("Failed to delete activity" + response.response.data)
+      }
+    } catch (err) {
+      alert(err.response.data.error);
+    }
+  }
+
   return (
-    <Card sx={{ maxWidth: "90%", mb: 4 }}>
+    <Card sx={{ maxWidth: "650px", mb: 4 }}>
       {/* <h1>Activity Card</h1> */}
       <CardContent
         sx={{
@@ -124,8 +156,8 @@ const ActivityCard = ({ activity }) => {
               .startOf("day")
               .isBefore(dayjs(endDate).startOf("day"))
               ? `${dayjs(startDate).format(DATE_FORMAT)} - ${dayjs(
-                  endDate
-                ).format(DATE_FORMAT)}`
+                endDate
+              ).format(DATE_FORMAT)}`
               : `${dayjs(startDate).format(DATE_FORMAT)}`}
 
             <IconButton
@@ -155,7 +187,7 @@ const ActivityCard = ({ activity }) => {
                   color: `${isBookingAvailable ? "green" : "red"}`,
                 }}
               >
-                {isBookingAvailable ? "Available" : "Not Available"}
+                {isBookingAvailable ? "Booking Enabled" : "Booking Disabled"}
               </Typography>
             </IconButton>
           </Typography>
@@ -176,7 +208,7 @@ const ActivityCard = ({ activity }) => {
             color: "text.secondary",
           }}
         >
-          _ people enrolled
+          {enrollments} currently enrolled
         </Typography>
       </CardContent>
       <CardActions
@@ -196,6 +228,7 @@ const ActivityCard = ({ activity }) => {
             color: "white",
             backgroundColor: "red",
           }}
+        // onClick={handleDeleteActivity}
         >
           Delete
         </Button>
@@ -212,7 +245,15 @@ const ActivityCard = ({ activity }) => {
         >
           View
         </Button>
+
       </CardActions>
+      <Box sx={{
+        width: "100%",
+        mb: "10px",
+        px: "10px",
+      }}>
+        {!appropriate && (<Alert severity="error">This activity has been flagged inappropriate by admin</Alert>)}
+      </Box>
     </Card>
   );
 };

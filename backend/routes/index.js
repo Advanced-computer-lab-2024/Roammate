@@ -331,6 +331,10 @@ router.delete(
   "/activityBookings/:id",
   activityController.cancelActivityBooking
 );
+router.get(
+  "/activityBookings-count/:id",
+  activityController.getActivityBookingsCount
+);
 //--------------------------------------------------------------
 
 //Routes for itinerary reviews

@@ -38,8 +38,11 @@ const AdvertiserLayout = () => {
             navigate(`/advertiser/my-activities?id=${id}`);
         } else if (activeButton === 'Edit Profile') {
             navigate('/advertiser/editProfile');
+        } else if (activeButton === 'Create Activity') {
+            navigate('/advertiser/create-activity');
         }
-    }, [activeButton, navigate]);
+
+    }, [activeButton, navigate, id]);
 
 
     const toggleDrawer = (newOpen) => () => {
@@ -63,6 +66,7 @@ const AdvertiserLayout = () => {
                         <ListItemButton onClick={
                             () => {
                                 if (text === 'Home') {
+                                    setId('');
                                     setActiveButton('My Activities');
                                 } else if (text === 'Create Activity') {
                                     setActiveButton('Create Activity');
@@ -152,12 +156,13 @@ const AdvertiserLayout = () => {
                 }}>
                     {buttons.map((button, index) => (
                         <Button variant="text" key={index} onClick={() => {
-                            setActiveButton(button)
-                            setId('')
+                            setId('');
+                            setActiveButton(button);
                         }}
                             sx={{
                                 borderBottom: `${activeButton === button ? '3px solid lightgreen' : 'default'}`,
-                            }}
+                            }
+                            }
                         >{button}</Button>
                     ))}
                 </Box>

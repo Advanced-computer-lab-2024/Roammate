@@ -26,7 +26,7 @@ import {
   uploadProductImage,
 } from "../../services/api";
 
-const EditProductForm = ({ product, productsales }) => {
+const EditProductForm = ({ product }) => {
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description);
   const [price, setPrice] = useState(product.price);
@@ -223,17 +223,6 @@ const EditProductForm = ({ product, productsales }) => {
           }}
         />
 
-        {/*Total Sales*/}
-        <h2>Total Sales</h2>
-        <TextField
-          label="Total Sales"
-          variant="outlined"
-          value={productsales}
-          disabled={disabled}
-          sx={{
-            width: "fit-content",
-          }}
-        />
 
         <Divider />
 

@@ -12,7 +12,8 @@ import { fetchAllActivityCategories, fetchAllPreferenceTags, updateActivity } fr
 const EditActivityForm = ({ activity }) => {
     const [title, setTitle] = useState(activity.title);
     const [description, setDescription] = useState(activity.description);
-    const [location, setLocation] = useState(activity.location);
+    const [latitude, setLatitude] = useState(activity.location.lat);
+    const [longitude, setLongitude] = useState(activity.location.lng);
     const [category, setCategory] = useState(activity.category);
     const [tags, setTags] = useState(activity.tags);
     const [price, setPrice] = useState(activity.price);
@@ -79,7 +80,7 @@ const EditActivityForm = ({ activity }) => {
         const newActivity = {
             title,
             description,
-            location,
+            location: { lat: latitude, lng: longitude },
             price,
             category: AllAvailableCategoryTags.filter((category) => selectedCategories.includes(category.name)).map((category) => category._id),
             tags: AllAvailableTags.filter((tag) => selectedTags.includes(tag.name)).map((tag) => tag._id),
@@ -163,13 +164,23 @@ const EditActivityForm = ({ activity }) => {
                 />
                 <h2>Location</h2>
                 <TextField
-                    label="Location"
+                    label="Latitude"
                     variant="outlined"
-                    value={location.lng + ', ' + location.lat}
+                    value={latitude}
                     disabled={disabled}
-                    onChange={(e) => setLocation(e.target.value)}
+                    onChange={(e) => setLatitude(e.target.value)}
                     sx={{
-                        width: '100%',
+                        width: 'fit-content',
+                    }}
+                />
+                <TextField
+                    label="Longitude"
+                    variant="outlined"
+                    value={longitude}
+                    disabled={disabled}
+                    onChange={(e) => setLongitude(e.target.value)}
+                    sx={{
+                        width: 'fit-content',
                     }}
                 />
 

@@ -129,15 +129,15 @@ const TourismGovernorManageProfile = ({ id }) => {
       {/* Change Password Component on the Right */}
       <Box
         sx={{
-          width: "30%",
+          width: '500px',
           padding: 2,
           border: "1px solid #ddd",
           borderRadius: "8px",
         }}
       >
-        <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
+        {/* <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
           Change Password
-        </Typography>
+        </Typography> */}
         <ChangePasswordComponent id={id} type="tourismGovernor" />
       </Box>
     </Box>

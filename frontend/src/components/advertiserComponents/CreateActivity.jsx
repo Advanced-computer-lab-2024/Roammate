@@ -1,77 +1,84 @@
-import { useEffect, useState } from 'react';
-import { createActivity, fetchAllActivityCategories, fetchAllPreferenceTags } from '../../services/api';
+import { Box, Button, Checkbox, Chip, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { fetchAllActivityCategories, fetchAllPreferenceTags, createActivity } from "../../services/api";
 
 const CreateActivity = ({ id }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState({ lat: '', lng: '' });
-  const [price, setPrice] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  const [price, setPrice] = useState();
   const [discount, setDiscount] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [time, setTime] = useState('');
-  const [isBookingAvailable, setIsBookingAvailable] = useState(false);
-  const [availableTags, setAvailableTags] = useState([]);
-  const [availableCategories, setAvailableCategories] = useState([]);
-  const [msg, setMsg] = useState('');
-  const [msgClassName, setMsgClassName] = useState('');
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [isBookingAvailable, setIsBookingAvailable] = useState();
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [AllAvailableCategoryTags, setAllAvailableCategoryTags] = useState([])
+  const [AllAvailableTags, setAllAvailableTags] = useState([])
+  const [disabled, setDisabled] = useState(false);
+  const [err, setErr] = useState("");
 
   useEffect(() => {
-    const fetchActivityCategories = async () => {
-      const fetchedCategories = await fetchAllActivityCategories();
-      setAvailableCategories(fetchedCategories);
-    };
-    const fetchPreferenceTags = async () => {
-      const fetchedTags = await fetchAllPreferenceTags();
-      setAvailableTags(fetchedTags);
-    };
-    fetchActivityCategories();
-    fetchPreferenceTags();
-  }, []);
-
-  // Handle multi-select for categories
-  const handleCategoryChange = (e) => {
-    const selectedCategories = Array.from(e.target.selectedOptions, (option) => option.value);
-    setCategories(selectedCategories);
-  };
-
-  // Handle multi-select for tags
-  const handleTagChange = (e) => {
-    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
-    setTags(selectedTags);
-  };
-
-  // Add a new discount entry
-  const handleAddDiscount = () => {
-    setDiscount([...discount, { percentage: '', description: '' }]);
-  };
-
-  const handleRemoveDiscount = () => {
-    if (discount.length >= 1) {
-      const updatedDiscount = [...discount];
-      updatedDiscount.pop();
-      setDiscount(updatedDiscount);
+    const fetch = async () => {
+      try {
+        const categories = await fetchAllActivityCategories();
+        const tags = await fetchAllPreferenceTags();
+        setAllAvailableCategoryTags(categories);
+        setAllAvailableTags(tags);
+      } catch (err) {
+        console.log(err);
+      }
     }
-  };
+    fetch();
+  }, [])
 
-  // Update discount fields dynamically
+  const handleCategoryChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setSelectedCategories(
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  }
+
+  const handleTagChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedTags(
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  }
+
   const handleDiscountChange = (index, field, value) => {
     const updatedDiscount = [...discount];
     updatedDiscount[index][field] = value;
     setDiscount(updatedDiscount);
   };
 
+  const handleDeleteDiscount = (index) => {
+    const updatedDiscount = [...discount];
+    updatedDiscount.splice(index, 1);
+    setDiscount(updatedDiscount);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newActivity = {
       title,
       description,
-      location,
+      location: { lat: latitude, lng: longitude },
       price,
-      category: categories,
-      tags,
+      category: AllAvailableCategoryTags.filter((category) => selectedCategories.includes(category.name)).map((category) => category._id),
+      tags: AllAvailableTags.filter((tag) => selectedTags.includes(tag.name)).map((tag) => tag._id),
       discount,
       startDate,
       endDate,
@@ -82,198 +89,305 @@ const CreateActivity = ({ id }) => {
 
     try {
       await createActivity(newActivity);
-      setMsg('Activity created successfully!');
-      setMsgClassName('success-msg');
+      setErr('Activity created successfully!');
+      setDisabled(true);
     } catch (error) {
-      setMsg(`Failed to create activity! Error: ${error.message}`);
-      setMsgClassName('err-msg');
+      setErr(`Failed to create activity! Error: ${error.response.data.message}`);
     }
   };
 
   return (
-    <div className="activity-container">
-      <h2>Create Activity</h2>
-      {/* Feedback Message */}
-      {msg && <p className={msgClassName}>{msg}</p>}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        alignItems: 'start',
+        gap: '20px',
+        width: '450px',
+        border: '1px solid lightgray',
+        padding: '20px',
+      }}
+    >
+      <h2>Activity Details</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className="activity-header">
-          <label>
-            Title:  <br />
-            <input
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
+      <form noValidate autoComplete="off" onSubmit={handleSubmit} style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '25px',
+        width: '100%',
+        alignItems: 'start',
+        justifyContent: 'start',
+      }}>
+        <TextField
+          label="Title"
+          variant="outlined"
+          value={title}
+          disabled={disabled}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{
+            width: '100%',
+          }}
+        />
+
+        <TextField
+          label="Description"
+          variant="outlined"
+          multiline
+          rows={3}
+          value={description}
+          disabled={disabled}
+          onChange={(e) => setDescription(e.target.value)}
+          sx={{
+            width: '100%',
+          }}
+        />
+        <h2>Location</h2>
+        <TextField
+          label="Latitude"
+          variant="outlined"
+          value={latitude}
+          disabled={disabled}
+          onChange={(e) => setLatitude(e.target.value)}
+          sx={{
+            width: 'fit-content',
+          }}
+        />
+        <TextField
+          label="Longitude"
+          variant="outlined"
+          value={longitude}
+          disabled={disabled}
+          onChange={(e) => setLongitude(e.target.value)}
+          sx={{
+            width: 'fit-content',
+          }}
+        />
+
+        {/*Category*/}
+        <h2>Category</h2>
+        <FormControl sx={{ width: 200 }}>
+          <InputLabel>Choose</InputLabel>
+          <Select
+            multiple
+            value={selectedCategories}
+            disabled={disabled}
+            onChange={handleCategoryChange}
+            input={<OutlinedInput label="Choose" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+
+          >
+            {AllAvailableCategoryTags.map((category) => (
+              <MenuItem
+                key={category._id}
+                value={category.name}
+              >
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/*Tags*/}
+        <h2>Tags</h2>
+        <FormControl sx={{ width: 200 }}>
+          <InputLabel>Choose</InputLabel>
+          <Select
+            multiple
+            value={selectedTags}
+            disabled={disabled}
+            onChange={handleTagChange}
+            input={<OutlinedInput label="Choose" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+
+          >
+            {AllAvailableTags.map((tag) => (
+              <MenuItem
+                key={tag._id}
+                value={tag.name}
+              >
+                {tag.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/*Price*/}
+        <h2>Price</h2>
+        <TextField
+          label="Price"
+          variant="outlined"
+          value={price}
+          disabled={disabled}
+          onChange={(e) => setPrice(e.target.value)}
+          sx={{
+            width: 'fit-content',
+          }}
+        />
+
+        {/*Discount*/}
+        {discount && discount.length > 0 && discount.map((disc, index) => (
+          <Box key={index} sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'start',
+            alignItems: 'start',
+            gap: '10px',
+            width: '100%',
+            border: '1px solid lightgray',
+            padding: '10px',
+            borderRadius: '5px',
+          }}>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'start',
+              justifyContent: 'start',
+              gap: '10px',
+              width: '100%',
+            }}>
+              <Typography sx={{
+                color: 'gray',
+                flexGrow: 1,
+                textAlign: 'left',
+              }} variant="h6">Discount {index + 1} </Typography>
+
+              <IconButton disabled={disabled} onClick={() => {
+                handleDeleteDiscount(index);
+              }}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+            {/*TO DO*/}
+            <TextField
+              label="Percentage"
+              variant="outlined"
+              value={disc.percentage}
+              tyor='percentage'
+              disabled={disabled}
+              onChange={(e) => handleDiscountChange(index, 'percentage', e.target.value)}
+              sx={{
+                width: 'fit-content',
+              }}
             />
-          </label>
-        </div>
+            <TextField
+              label="Description"
+              variant="outlined"
+              value={disc.description}
+              disabled={disabled}
+              onChange={(e) => handleDiscountChange(index, 'description', e.target.value)}
+              sx={{
+                width: '100%',
+              }}
+            />
+          </Box>
+        ))}
 
-        <div className="activity-body">
-          <div className="description-section">
-            <label>
-              Description:
-              <br />
-              <input
-                type="text"
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-            </label>
-          </div>
+        <Button
+          variant="contained"
+          disabled={disabled}
 
-          <div className="location-section">
+          onClick={() => {
+            setDiscount([...discount, { percentage: 0, description: "" }]);
+          }}
+          sx={{
+            backgroundColor: 'gray',
+            color: 'white',
+            width: '100%'
+          }}
+        >
+          Add Discount
+        </Button>
 
-            <label>
-              Location:
-              <br />
-              <input
-                type="text"
-                placeholder="Latitude"
-                value={location.lat}
-                onChange={(e) => setLocation({ lat: e.target.value, lng: location.lng })} // Update only the latitude
-                required
-              />
-              <br />
-              <input
-                type="text"
-                placeholder="Longitude"
-                value={location.lng}
-                onChange={(e) => setLocation({ lat: location.lat, lng: e.target.value })} // Update only the longitude
-                required
-              />
-            </label>
-          </div>
+        {/*Date and Time*/}
+        <h2>Date and Time</h2>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'start',
+          alignItems: 'start',
+          gap: '25px',
+        }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} >
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker label="From" value={startDate} disabled={disabled}
+                onChange={
+                  (newValue) => setStartDate(newValue)
+                } />
+            </DemoContainer>
+          </LocalizationProvider>
 
-          <div className="price-section">
-            <label>
-              Price:
-              <br />
-              <input
-                type="number"
-                placeholder="Price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                required
-              />
-            </label>
-          </div>
-
-          <div className="category-section">
-            {/* Multi-select for Categories */}
-            <label>
-              Categories:
-              <select multiple onChange={handleCategoryChange}>
-                <option value="">Select categories</option>
-                {availableCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <div className="tags-section">
-            {/* Multi-select for Tags */}
-            <label> Tags:
-              <select multiple onChange={handleTagChange}>
-                <option value="">Select tags</option>
-                {availableTags.map((tag) => (
-                  <option key={tag.id} value={tag.id}>
-                    {tag.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <div className="discount-section">
-            {/* Discounts section */}
-            <div>
-              <h3>Discounts</h3>
-              {discount.map((d, index) => (
-                <div key={index} className="discount-inputs">
-                  <input
-                    type="number"
-                    placeholder="Percentage"
-                    value={d.percentage}
-                    onChange={(e) => handleDiscountChange(index, 'percentage', e.target.value)}
-                    min="0"
-                    max="100"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Description"
-                    value={d.description}
-                    onChange={(e) => handleDiscountChange(index, 'description', e.target.value)}
-                  />
-                </div>
-              ))}
-              <button className="btn" type="button" onClick={handleAddDiscount}>
-                Add Discount
-              </button>
-              <button className="btn" type="button" onClick={handleRemoveDiscount}>
-                Remove Discount
-              </button>
-            </div>
-
-
-          </div>
-
-          <div className="availability-section">
-            <label>
-              Start Date:
-              <br />
-              <input
-                type="date"
-                placeholder="Start date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                required
-              />
-            </label>
-            <label>
-              End Date:
-              <br />
-              <input
-                type="date"
-                placeholder="End date"
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker label="To"
                 value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                disabled={disabled}
+                onChange={
+                  (newValue) => setEndDate(newValue)
+                }
               />
-            </label>
-            <label>
-              Time:
-              <br />
-              <input
-                type="time"
-                placeholder="Time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                required
-              />
-            </label>
-            {/* Checkbox for Booking Availability */}
-            <label>
-              Is booking available?
-              <input
-                type="checkbox"
-                checked={isBookingAvailable}
-                onChange={(e) => setIsBookingAvailable(e.target.checked)}
-              />
-            </label>
-          </div>
+            </DemoContainer>
+          </LocalizationProvider>
 
-          <button className="submit-btn" type="submit">Create</button>
-        </div>
+          <TextField
+            label="Time"
+            variant="outlined"
+            value={time}
+            type="time"
+            disabled={disabled}
+            onChange={(e) => setTime(e.target.value)}
+            sx={{
+              width: 'fit-content',
+            }}
+          />
+        </Box>
+
+        {/*Booking Availability*/}
+        <h2>Booking Availability</h2>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <InputLabel>Is Booking Available?</InputLabel>
+          <Checkbox
+            checked={isBookingAvailable}
+            disabled={disabled}
+            onChange={(e) => setIsBookingAvailable(e.target.checked)}
+          />
+        </Box>
+
+
+        <Divider />
+        <Typography sx={{
+          color:
+            `${err.includes('Activity created successfully') ? 'green' : 'red'}`
+        }}>{err}</Typography>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            backgroundColor: 'green',
+            color: 'white',
+            width: '100%'
+          }}
+          onClick={handleSubmit}
+          disabled={disabled}
+        >
+          Create Activity
+        </Button>
+
       </form>
 
-    </div>
+    </Box>
   );
-};
+}
 
 export default CreateActivity;

@@ -31,7 +31,8 @@ const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const [rating, setRating] = useState(product.averageRating);
   const navigate = useNavigate();
-  const [productSales, setProductSales] = useState(0);
+  const [productSales, setProductSales] = useState();
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
 
   const basePath = location.pathname.split("/")[1];

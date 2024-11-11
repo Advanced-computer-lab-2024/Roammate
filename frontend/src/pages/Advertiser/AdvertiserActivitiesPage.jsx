@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid2 } from "@mui/material";
 import ActivityCard from "../../components/advertiserComponents/ActvityCard";
 import CachedIcon from "@mui/icons-material/Cached";
 import { fetchActivitiesByAdvertiserId } from "../../services/api";
@@ -30,30 +30,36 @@ const AdvertiserActivitiesPage = ({ id }) => {
     }
   }, [activity_id]);
 
+
+
   return !activity_id ? (
     <Box>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
+      <Grid2 >
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+          width: '100%',
+        }}>
           {activities.length === 0 &&
             (fetch < 1 ? (
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
+              <CircularProgress />
             ) : (
               <h2>No Activities Found</h2>
             ))}
-        </Grid>
+        </Box>
+
 
         {activities.map((activity) => (
-          <Grid item xs={12} sm={6} key={activity._id}>
+          <Grid2 xs={12} sm={6} key={activity._id}>
             <ActivityCard
               activity={activity}
               setActiveButton={setActiveButton}
             />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Box>
   ) : (
     <ManageActivityPage

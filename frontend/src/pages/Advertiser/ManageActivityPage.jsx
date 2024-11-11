@@ -1,29 +1,21 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Checkbox, Chip, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
-import { useLocation, useParams } from "react-router";
-import { useEffect, useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
+import { Avatar, Box, Button, Card, CardContent, CardHeader, Checkbox, Chip, CircularProgress, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { fetchAllActivityCategories, fetchAllPreferenceTags, updateActivity } from "../../services/api";
 import EditActivityForm from "../../components/activityComponents/EditActivityForm";
-import CachedIcon from '@mui/icons-material/Cached';
+import { useEffect } from "react";
+
 
 const ManageActivityPage = ({ activity }) => {
     if (!activity) {
         return (
-            < h2 > loading
-                <CachedIcon sx={
-                    {
-                        fontSize: '25px',
-                        ml: '10px',
-                        mb: '-5px',
-                    }
-                } />
-            </h2>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                width: '100%',
+            }}>
+                <CircularProgress />
+            </Box>
         )
     }
 
@@ -32,7 +24,7 @@ const ManageActivityPage = ({ activity }) => {
             sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'start',
+                justifyContent: 'center',
                 alignItems: 'start',
                 gap: '50px',
                 mt: '20px',
@@ -42,7 +34,7 @@ const ManageActivityPage = ({ activity }) => {
             <EditActivityForm activity={activity} />
 
             {/* Reviews Section */}
-            <Card elevation={3} sx={{ padding: 2, width: '600px' }}>
+            <Card elevation={1} sx={{ padding: 2, width: '600px' }}>
                 <Typography variant="h5" gutterBottom>Reviews ({activity.reviews.length})</Typography>
 
                 <Box sx={{ display: 'flex', overflowX: 'auto', padding: 2, gap: 2 }}>

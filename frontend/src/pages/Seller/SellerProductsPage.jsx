@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Divider, Grid } from "@mui/material";
-import CachedIcon from "@mui/icons-material/Cached";
+import { Box, CircularProgress, Divider, Grid } from "@mui/material";
 import { fetchProductsBySellerId } from "../../services/api";
 import ProductCard from "../../components/sellerComponents/ProductCard";
 import { useLocation, useOutletContext } from "react-router";
@@ -63,13 +62,13 @@ const SellerProductsPage = ({ id }) => {
     archivedProducts.find((prod) => prod._id === product_id);
 
   return !product_id ? (
-    <Box>
+    <Box ml={4}>
       {/* Active Products Section */}
       <Typography
         sx={{
-          fontSize: "25px",
+          fontSize: "30px",
           fontWeight: "bold",
-          mb: "25px",
+          mb: "35px",
           color: "grey",
           textAlign: "left",
         }}
@@ -79,19 +78,16 @@ const SellerProductsPage = ({ id }) => {
       <Grid container spacing={2}>
         {activeProducts.length === 0 &&
           (fetch < 1 ? (
-            <Grid xs={12}>
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
+            <Grid item xs={12}>
+              <CircularProgress />
             </Grid>
           ) : (
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <h2>No Active Products Found</h2>
             </Grid>
           ))}
         {activeProducts.map((product) => (
-          <Grid xs={12} sm={6} key={product._id}>
+          <Grid item xs={12} sm={6} key={product._id}>
             <ProductCard
               product={product}
               setActiveButton={setActiveButton}
@@ -105,9 +101,9 @@ const SellerProductsPage = ({ id }) => {
       {/* Archived Products Section */}
       <Typography
         sx={{
-          fontSize: "25px",
+          fontSize: "30px",
           fontWeight: "bold",
-          mb: "25px",
+          mb: "35px",
           color: "grey",
           textAlign: "left",
         }}
@@ -117,14 +113,11 @@ const SellerProductsPage = ({ id }) => {
       <Grid container spacing={2}>
         {archivedProducts.length === 0 &&
           (fetch < 1 ? (
-            <Grid xs={12}>
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
+            <Grid item xs={12}>
+              <CircularProgress />
             </Grid>
           ) : (
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <h2>No Archived Products Found</h2>
             </Grid>
           ))}

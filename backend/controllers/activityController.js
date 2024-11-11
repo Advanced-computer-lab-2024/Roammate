@@ -156,21 +156,32 @@ const updateActivityById = async (req, res) => {
   }
 };
 
-const deleteActivityById = (req, res) => {
+const deleteActivityById = async (req, res) => {
   const activityId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(activityId)) {
     return res.status(400).json({ error: "Invalid activity id" });
   }
-  Activity.findByIdAndDelete(activityId)
-    .then((result) => {
-      if (!result) {
-        return res.status(404).json({ error: "Activity not found" });
-      }
-      res.status(204).send({ message: "Activity deleted" });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
+  //check activity has no bookings
+  const activityHasBookings = await ActivityBooking.exists({
+    activity: activityId,
+    date: { $gte: new Date() },
+  });
+  // console.log(activityHasBookings);
+  if (activityHasBookings) {
+    return res.status(409).json({
+      error: "Activity has active bookings. Cannot delete activity",
     });
+  }
+
+  try {
+    const deletedActivity = await Activity.findByIdAndDelete(activityId);
+    if (!deletedActivity) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 //title, category and tags
@@ -503,6 +514,19 @@ const toggleAppropriateActivity = async (req, res) => {
   }
 };
 
+const getActivityBookingsCount = async (req, res) => {
+  const activityId = req.params.id;
+  try {
+    const bookingsCount = await ActivityBooking.countDocuments({
+      activity: activityId,
+      date: { $gte: new Date() },
+    });
+    res.status(200).json(bookingsCount);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createActivity,
   getAllActivities,
@@ -517,4 +541,5 @@ module.exports = {
   cancelActivityBooking,
   checkActivityBookingExists,
   toggleAppropriateActivity,
+  getActivityBookingsCount,
 };

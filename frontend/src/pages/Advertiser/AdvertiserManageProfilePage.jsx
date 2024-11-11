@@ -169,14 +169,16 @@ const AdvertiserManageProfile = ({ id }) => {
   });
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+        width: "100%",
+        alignItems: "center",
+      }}
+    >
+      <Box>
         <label htmlFor="logo-upload">
           <Avatar
             sx={{
@@ -193,14 +195,14 @@ const AdvertiserManageProfile = ({ id }) => {
         </label>
         <LogoInput id="logo-upload" type="file" onChange={handleLogoChange} />
       </Box>
-      <Box sx={{ display: "flex", gap: 3, padding: 3 }}>
+
+      <Box sx={{
+        display: "flex", flexDirection: 'row', gap: 5, mt: 3, width: '100%', justifyContent: 'space-between'
+      }}>
         {/* Profile and File Upload Sections */}
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
-            width: "50%",
+            width: "500px",
           }}
         >
           <form
@@ -211,7 +213,7 @@ const AdvertiserManageProfile = ({ id }) => {
               alignItems: "start",
               justifyContent: "center",
               gap: "15px",
-              padding: "20px",
+              padding: "40px",
               border: "1px solid #ddd",
               borderRadius: "8px",
             }}
@@ -373,7 +375,27 @@ const AdvertiserManageProfile = ({ id }) => {
               </Box>
             )}
           </form>
+
+          <Box
+            sx={{
+              width: "100%",
+              padding: 2,
+              mt: 3,
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+            }}
+          >
+            {/* <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
+              Change Password
+            </Typography> */}
+            <ChangePasswordComponent id={id} type="advertiser" />
+            <Divider sx={{ my: 4 }} />
+            <DeleteProfileRequest id={id} type="Advertiser" />
+          </Box>
+
         </Box>
+
+
 
         <Box>
           {/* File Upload Section */}
@@ -382,8 +404,17 @@ const AdvertiserManageProfile = ({ id }) => {
               component="form"
               className="file-upload-form"
               onSubmit={handleDocumentsSubmit}
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              sx={{
+                display: "flex", flexDirection: "column", gap: 2,
+                border: "1px solid #ddd",
+                padding: 2,
+                borderRadius: "8px",
+                width: '550px'
+              }}
             >
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                Documents Upload
+              </Typography>
               {!documentSubmitted && (
                 <Alert severity="warning">
                   You need to upload the following documents to access the system.
@@ -456,22 +487,7 @@ const AdvertiserManageProfile = ({ id }) => {
 
           {status === "accepted" && <AcceptTosComponent userId={id} setStatus={setStatus} />}
 
-          <Box
-            sx={{
-              width: "100%",
-              padding: 2,
-              mt: 3,
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-            }}
-          >
-            <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
-              Change Password
-            </Typography>
-            <ChangePasswordComponent id={id} type="advertiser" />
-            <Divider sx={{ my: 4 }} />
-            <DeleteProfileRequest id={id} type="Advertiser" />
-          </Box>
+
         </Box>
       </Box>
       {/* Change Password Component on the Right */}

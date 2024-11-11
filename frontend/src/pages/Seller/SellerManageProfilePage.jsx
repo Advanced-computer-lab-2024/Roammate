@@ -159,7 +159,13 @@ const SellerManageProfilePage = ({ id }) => {
         </label>
         <LogoInput id="logo-upload" type="file" onChange={handleLogoChange} />
       </Box>
-      <Box sx={{ display: "flex", gap: 3, padding: 3 }}>
+
+      <Box sx={{
+        display: "flex", gap: 3, padding: 3,
+        flexDirection: 'row',
+        alignItems: 'start',
+        justifyContent: 'start',
+      }}>
         {/* Profile and File Upload Sections */}
         <Box
           sx={{
@@ -273,6 +279,21 @@ const SellerManageProfilePage = ({ id }) => {
               </Box>
             )}
           </form>
+
+          {/* Change Password Component and request delete acc*/}
+          <Box
+            sx={{
+              padding: 2,
+              mt: 3,
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+            }}
+          >
+            <ChangePasswordComponent id={id} type="seller" />
+            <Divider sx={{ my: 4 }} />
+            <DeleteProfileRequest id={id} type="Seller" />
+          </Box>
+
         </Box>
 
         <Box
@@ -281,6 +302,9 @@ const SellerManageProfilePage = ({ id }) => {
             display: "flex",
             flexDirection: "column",
             gap: 3,
+            border: "1px solid #ddd",
+            padding: 3,
+            borderRadius: "8px",
           }}
         >
           {status === "guest" && (
@@ -358,22 +382,7 @@ const SellerManageProfilePage = ({ id }) => {
             <AcceptTosComponent userId={id} setStatus={setStatus} />
           )}
 
-          {/* Change Password Component */}
-          <Box
-            sx={{
-              padding: 2,
-              mt: 3,
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-            }}
-          >
-            <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
-              Change Password
-            </Typography>
-            <ChangePasswordComponent id={id} type="seller" />
-            <Divider sx={{ my: 4 }} />
-            <DeleteProfileRequest id={id} type="Seller" />
-          </Box>
+
         </Box>
       </Box>
     </Box>
