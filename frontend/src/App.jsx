@@ -106,7 +106,10 @@ function App() {
 
             <Route path="/tourist/monuments" element={<TouristMuseumsPage />} />
 
-            <Route path="/tourist/flights" element={<TouristBookFlightsPage />} />
+            <Route
+              path="/tourist/flights"
+              element={<TouristBookFlightsPage />}
+            />
 
             <Route
               path="/tourist/complaints"
@@ -154,7 +157,6 @@ function App() {
               path="/seller/createProduct"
               element={<SellerCreateProduct id={sellerId} />}
             />
-
           </Route>
 
           <Route path="/tourismGovernor" element={<TourismGovernorLayout />}>
@@ -193,6 +195,14 @@ function App() {
             <Route
               path="/admin/products"
               element={<AdminProductsPage id={adminId} />}
+            />
+            <Route
+              path="/admin/my-products"
+              element={<SellerProductsPage id={adminId} />}
+            />
+            <Route
+              path="/admin/create-product"
+              element={<SellerCreateProduct id={adminId} />}
             />
           </Route>
         </Routes>
