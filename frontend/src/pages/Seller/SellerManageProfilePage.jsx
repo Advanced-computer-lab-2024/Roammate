@@ -316,8 +316,7 @@ const SellerManageProfilePage = ({ id }) => {
             >
               {!documentSubmitted && (
                 <Alert severity="warning">
-                  You need to upload the following documents to access the
-                  system.
+                  You need to upload the following documents to access the system.
                 </Alert>
               )}
               {uploading && <LinearProgress color="success"></LinearProgress>}
