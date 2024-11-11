@@ -36,6 +36,7 @@ import TouristMuseumsPage from "./pages/Tourist/TouristMusuemsPage";
 import AdminDeletionRequestsPage from "./pages/Admin/AdminDeletionRequestsPage";
 import AdminActivitiesPage from "./pages/Admin/AdminActivitiesPage";
 import AdminRegistrationsPage from "./pages/Admin/AdminRegistrationsPage";
+import AdminUsersPage from "./pages/Admin/AdminUsersPage";
 import AdminItinerariesPage from "./pages/Admin/AdminItinerariesPage";
 import SellerCreateProduct from "./pages/Seller/SellerCreateProductPage";
 import AdminProductsPage from "./pages/Admin/AdminProductsPage";
@@ -177,6 +178,10 @@ function App() {
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
+            <Route
+              path="/admin/users"
+              element={<AdminUsersPage />}
+            />
             <Route
               path="/admin/registrations"
               element={<AdminRegistrationsPage />}

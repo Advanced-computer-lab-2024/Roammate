@@ -344,6 +344,18 @@ export const fetchAllMonumentTags = async () => {
   return response.data;
 };
 
+// This function is used to fetch all users
+export const fetchAllUsers = async () => {
+  const response = await axios.get(`${API_URL}users`);
+  return response.data;
+};
+
+// This function is used to delete a user
+export const deleteUser = async (id) => {
+  const response = await axios.delete(`${API_URL}users/${id}`);
+  return response.data;
+};
+
 // This function is used to fetch all pending users
 export const fetchAllPendingUsers = async (status) => {
   const response = await axios.get(`${API_URL}/users/status/pending/`);

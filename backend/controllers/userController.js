@@ -1,6 +1,27 @@
 const mongoose = require("mongoose");
 const { User } = require("../models");
 
+// get all users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+};
+
+
+// delete a user by id
+const deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).send("User deleted.");
+  } catch (error) {
+    res.status(500).send;
+  }
+};
+
 // get all users with pending status
 const getAllPendingUsers = async (req, res) => {
   try {
@@ -38,6 +59,8 @@ const updateUserStatus = async (req, res) => {
 };
 
 module.exports = {
+  getAllUsers,
+  deleteUser,
   getAllPendingUsers,
   updateAllUsersStatus,
   updateUserStatus,
