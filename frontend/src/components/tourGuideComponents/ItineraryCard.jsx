@@ -175,7 +175,7 @@ const ItineraryCard = ({ itinerary }) => {
           </Typography>
 
           <Typography gutterBottom variant="h4" component="div">
-            ${price}
+            {price} EGP
           </Typography>
         </Box>
 

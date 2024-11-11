@@ -46,7 +46,7 @@ const ProductCard = ({ product }) => {
 
 
   return (
-    <Card sx={{ width: 550, mb: 4 }}>
+    <Card sx={{ width: '550px', mb: 4 }}>
 
       <ProductImage imageId={product.image} height={"250"} />
 

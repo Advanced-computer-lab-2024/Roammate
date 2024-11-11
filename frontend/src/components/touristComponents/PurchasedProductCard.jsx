@@ -52,9 +52,9 @@ const PurchasedProductCard = ({ purchase }) => {
     };
 
     return (
-        <Card sx={{ maxWidth: 600, mb: 4 }}>
+        <Card sx={{ maxWidth: '550px', mb: 4 }}>
 
-            <ProductImage imageId={purchasedProduct.image} height={"195"} />
+            <ProductImage imageId={purchasedProduct.image} height={"250"} />
 
             <CardContent sx={{
                 display: 'flex',

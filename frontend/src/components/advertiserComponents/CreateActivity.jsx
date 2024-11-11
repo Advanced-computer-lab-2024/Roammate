@@ -148,6 +148,7 @@ const CreateActivity = ({ id }) => {
           variant="outlined"
           value={latitude}
           disabled={disabled}
+
           onChange={(e) => setLatitude(e.target.value)}
           sx={{
             width: 'fit-content',
@@ -158,6 +159,7 @@ const CreateActivity = ({ id }) => {
           variant="outlined"
           value={longitude}
           disabled={disabled}
+
           onChange={(e) => setLongitude(e.target.value)}
           sx={{
             width: 'fit-content',
@@ -379,7 +381,7 @@ const CreateActivity = ({ id }) => {
             width: '100%'
           }}
           onClick={handleSubmit}
-          disabled={disabled}
+          disabled={disabled || !title || !description || !latitude || !longitude || !price || !startDate || !endDate || !time || !isBookingAvailable}
         >
           Create Activity
         </Button>

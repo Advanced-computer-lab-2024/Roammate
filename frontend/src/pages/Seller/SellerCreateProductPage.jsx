@@ -72,7 +72,6 @@ const SellerCreateProduct = ({ id }) => {
                     label="name"
                     variant="outlined"
                     value={name}
-                    required
                     onChange={(e) => setName(e.target.value)}
                     sx={{
                         width: '100%',
@@ -86,7 +85,6 @@ const SellerCreateProduct = ({ id }) => {
                     multiline
                     rows={3}
                     value={description}
-                    required
                     onChange={(e) => setDescription(e.target.value)}
                     sx={{
                         width: '100%',
@@ -121,7 +119,6 @@ const SellerCreateProduct = ({ id }) => {
                     label="Price"
                     variant="outlined"
                     value={price}
-                    required
                     onChange={(e) => setPrice(e.target.value)}
                     sx={{
                         width: 'fit-content',
@@ -134,7 +131,6 @@ const SellerCreateProduct = ({ id }) => {
                     label="Quantity"
                     variant="outlined"
                     value={quantity}
-                    required
                     onChange={(e) => setQuantity(e.target.value)}
                     sx={{
                         width: 'fit-content',
@@ -155,7 +151,7 @@ const SellerCreateProduct = ({ id }) => {
                     sx={{
                         width: '100%'
                     }}
-                    disabled={!name || !description || !price || !quantity}
+                    disabled={!name || !description || !price || !quantity || image === null || loading}
                 >
                     {loading &&
                         response === ""

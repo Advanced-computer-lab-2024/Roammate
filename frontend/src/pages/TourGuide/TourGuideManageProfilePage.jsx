@@ -365,7 +365,7 @@ const TourGuideManageProfile = ({ id }) => {
               component="form"
               onSubmit={handleDocumentsSubmit}
               sx={{
-                display: "flex", flexDirection: "column", gap: 2, gap: 3,
+                display: "flex", flexDirection: "column", gap: 3,
                 padding: 3,
                 border: "1px solid #ddd",
                 borderRadius: "8px",

@@ -173,6 +173,18 @@ const EditItineraryForm = ({ itinerary }) => {
                     }}
                 />
 
+                {/*Language*/}
+                <TextField
+                    label="Language"
+                    variant="outlined"
+                    value={lang}
+                    disabled={disabled}
+                    onChange={(e) => setLang(e.target.value)}
+                    sx={{
+                        width: '100%',
+                    }}
+                />
+
                 {/*Timeline*/}
                 <h2>Timeline</h2>
                 {timeline && timeline.length > 0 && timeline.map((day, index) => (
@@ -326,9 +338,34 @@ const EditItineraryForm = ({ itinerary }) => {
                     }}
                 />
 
+                {/*Pick Up Location*/}
+                <h2>Pick Up Location</h2>
+                <TextField
+                    label="Pick Up Location"
+                    variant="outlined"
+                    value={pickUpLocation}
+                    disabled={disabled}
+                    onChange={(e) => setPickUpLocation(e.target.value)}
+                    sx={{
+                        width: '100%',
+                    }}
+                />
+
+                {/*Drop Off Location*/}
+                <h2>Drop Off Location</h2>
+                <TextField
+                    label="Drop Off Location"
+                    variant="outlined"
+                    value={dropOffLocation}
+                    disabled={disabled}
+                    onChange={(e) => setDropOffLocation(e.target.value)}
+                    sx={{
+                        width: '100%',
+                    }}
+                />
 
                 {/*Date and Time*/}
-                <h2>Date and Time</h2>
+                <h2>Date</h2>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',

@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react';
 import { createItinerary, fetchAllPreferenceTags } from '../../services/api';
+import { Box, Button, Checkbox, Chip, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import StarIcon from '@mui/icons-material/Star';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CreateItinerary = ({ id }) => {
-  const [title, setTitle] = useState('');
-  const [duration, setDuration] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [title, setTitle] = useState();
+  const [duration, setDuration] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [timeline, setTimeline] = useState([{
     day: 1,
     plan: [
@@ -18,42 +26,59 @@ const CreateItinerary = ({ id }) => {
       },
     ],
   }]);
-  const [price, setPrice] = useState('');
-  const [lang, setLang] = useState('');
-  const [pickUpLocation, setPickUpLocation] = useState('');
-  const [dropOffLocation, setDropOffLocation] = useState('');
-  const [isBookingAvailable, setIsBookingAvailable] = useState('');
+  const [price, setPrice] = useState();
+  const [lang, setLang] = useState();
+  const [pickUpLocation, setPickUpLocation] = useState();
+  const [dropOffLocation, setDropOffLocation] = useState();
+  const [isBookingAvailable, setIsBookingAvailable] = useState();
   const [tags, setTags] = useState([]);
-  const [availableTags, setAvailableTags] = useState([]);
+  const [AllAvailableTags, setAllAvailableTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [msg, setMsg] = useState('');
-  const [msgClassName, setMsgClassName] = useState('');
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    const fetchPreferenceTags = async () => {
-      const fetchedTags = await fetchAllPreferenceTags();
-      setAvailableTags(fetchedTags);
-    };
-    fetchPreferenceTags();
-  }, []);
+    const fetch = async () => {
+      try {
+        const tags = await fetchAllPreferenceTags();
+        setAllAvailableTags(tags);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetch();
+  }, [])
 
+  const handleTagChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedTags(
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  }
 
-  // Handle multi-select for tags
-  const handleTagChange = (e) => {
-    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
-    setTags(selectedTags);
-  };
-
-  // Handle change for timeline
   const handleTimelineChange = (dayIndex, planIndex, field, value) => {
     const updatedTimeline = [...timeline];
     updatedTimeline[dayIndex].plan[planIndex][field] = value;
     setTimeline(updatedTimeline);
   };
 
-  // Add a new day to the timeline
+  const handleAddActivity = (dayIndex) => {
+    const newActivity = {
+      startTime: '',
+      activity: '',
+      location: '',
+      description: '',
+    };
+    const updatedTimeline = [...timeline];
+    updatedTimeline[dayIndex].plan.push(newActivity);
+    setTimeline(updatedTimeline);
+  };
+
   const handleAddDay = () => {
     const newDay = {
-      day: timeline.length + 1, // Increment the day number
+      day: timeline.length + 1,
       plan: [
         {
           startTime: '',
@@ -66,15 +91,11 @@ const CreateItinerary = ({ id }) => {
     };
     setTimeline([...timeline, newDay]);
   };
+  const handleDeleteDay = (index) => {
+    const newTimeline = timeline.filter((day, i) => i !== index);
+    setTimeline(newTimeline);
+  };
 
-  // Delete a day from the timeline
-  const handleDeleteDay = () => {
-    if (timeline.length >= 1) {
-      const updatedTimeline = [...timeline];
-      updatedTimeline.pop();
-      setTimeline(updatedTimeline);
-    }
-  }
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,252 +110,319 @@ const CreateItinerary = ({ id }) => {
       pickUpLocation,
       dropOffLocation,
       isBookingAvailable,
-      tags,
+      tags: AllAvailableTags.filter((tag) => selectedTags.includes(tag.name)).map((tag) => tag._id),
       tourGuide: id,
     };
     try {
       await createItinerary(Itinerary);
       setMsg('Itinerary created successfully');
-      setMsgClassName('success-msg');
-      setIsEdit(false);
+      setDisabled(true);
     } catch (error) {
       setMsg('Failed to create itinerary');
-      setMsgClassName('error-msg');
     }
   };
 
   return (
-    <div className="itinerary-container">
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        alignItems: 'start',
+        gap: '20px',
+        width: '450px',
+        border: '1px solid lightgray',
+        padding: '20px',
+      }}
+    >
+      <h2>Itinerary Details</h2>
 
-      <h2>Create Itinerary</h2>
+      <form noValidate autoComplete="off" onSubmit={handleSubmit} style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '25px',
+        width: '100%',
+        alignItems: 'start',
+        justifyContent: 'start',
+      }}>
+        <TextField
+          label="Title"
+          variant="outlined"
+          value={title}
+          disabled={disabled}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{
+            width: '100%',
+          }}
+        />
 
-      <div className="itinerary-header">
-        {msg && <p className={msgClassName}>{msg}</p>}
-      </div>
+        <TextField
+          label="Duration"
+          variant="outlined"
+          value={duration}
+          disabled={disabled}
+          onChange={(e) => setDuration(e.target.value)}
+          sx={{
+            width: '100%',
+          }}
+        />
 
-      <form className="itinerary-body" onSubmit={handleSubmit}>
+        {/*Language*/}
+        <TextField
+          label="Language"
+          variant="outlined"
+          value={lang}
+          disabled={disabled}
+          onChange={(e) => setLang(e.target.value)}
+          sx={{
+            width: '100%',
+          }}
+        />
 
-        <div className="title-section">
-          <label>
-            Title:
-            <br />
-            <input
-              type="text"
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </label>
+        {/*Timeline*/}
+        <h2>Timeline</h2>
+        {timeline && timeline.length > 0 && timeline.map((day, index) => (
+          <Box key={index} sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'start',
+            alignItems: 'start',
+            gap: '10px',
+            width: '100%',
+            border: '1px solid lightgray',
+            padding: '10px',
+            borderRadius: '5px',
+          }}>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'start',
+              justifyContent: 'start',
+              gap: '10px',
+              width: '100%',
+            }}>
+              <Typography sx={{
+                color: 'gray',
+                flexGrow: 1,
+                textAlign: 'left',
+              }} variant="h6">Day {index + 1} </Typography>
 
-          <label>
-            Duration:
-            <br />
-            <input
-              type="text"
-              name="duration"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              required
-            />
-          </label>
-        </div>
+              <IconButton disabled={disabled} onClick={() => {
+                handleDeleteDay(index);
+              }}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+            {day.plan && day.plan.length > 0 && day.plan.map((plan, i) => (
+              <Box key={i} sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'start',
+                alignItems: 'start',
+                gap: '10px',
+                width: '100%',
+              }}>
+                <TextField
+                  label="Start Time"
+                  variant="outlined"
+                  value={plan.startTime}
+                  type="time"
+                  disabled={disabled}
+                  onChange={(e) => handleTimelineChange(index, i, 'startTime', e.target.value)}
+                  sx={{
+                    width: '100%',
+                  }}
+                />
+                <TextField
+                  label="Activity"
+                  variant="outlined"
+                  value={plan.activity}
+                  disabled={disabled}
+                  onChange={(e) => handleTimelineChange(index, i, 'activity', e.target.value)}
+                  sx={{
+                    width: '100%',
+                  }}
+                />
+                <TextField
+                  label="Location"
+                  variant="outlined"
+                  value={plan.location}
+                  disabled={disabled}
+                  onChange={(e) => handleTimelineChange(index, i, 'location', e.target.value)}
+                  sx={{
+                    width: '100%',
+                  }}
+                />
+                <TextField
+                  label="Description"
+                  variant="outlined"
+                  value={plan.description}
+                  disabled={disabled}
+                  onChange={(e) => handleTimelineChange(index, i, 'description', e.target.value)}
+                  sx={{
+                    width: '100%',
+                    mb: '30px',
+                  }}
+                />
+
+              </Box>
+
+            )
+            )}
+            <Button variant="contained"
+              disabled={disabled}
+              sx={{
+                width: '100%',
+                backgroundColor: 'gray',
+              }} onClick={() => handleAddActivity(index)}>
+              Add Activity
+            </Button>
+
+          </Box>
 
 
-        <div className='tags-section'>
-          <label>
-            Tags:
-            <br />
-            <select multiple value={tags} onChange={handleTagChange}>
-              {availableTags.map((tag) => (
-                <option key={tag._id} value={tag._id}>
-                  {tag.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+        ))}
+
+        <Button variant="contained"
+          disabled={disabled}
+          sx={{
+            width: '100%',
+            backgroundColor: 'gray',
+          }} onClick={handleAddDay}>Add Day</Button>
+
+        {/*Tags*/}
+        <h2>Tags</h2>
+        <FormControl sx={{ width: 200 }}>
+          <InputLabel>Choose</InputLabel>
+          <Select
+            multiple
+            value={selectedTags}
+            disabled={disabled}
+            onChange={handleTagChange}
+            input={<OutlinedInput label="Choose" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+
+          >
+            {AllAvailableTags.map((tag) => (
+              <MenuItem
+                key={tag._id}
+                value={tag.name}
+              >
+                {tag.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/*Price*/}
+        <h2>Price</h2>
+        <TextField
+          label="Price"
+          variant="outlined"
+          value={price}
+          disabled={disabled}
+          onChange={(e) => setPrice(e.target.value)}
+          sx={{
+            width: 'fit-content',
+          }}
+        />
+
+        {/*Pick Up Location*/}
+        <h2>Pick Up Location</h2>
+        <TextField
+          label="Pick Up Location"
+          variant="outlined"
+          value={pickUpLocation}
+          disabled={disabled}
+          onChange={(e) => setPickUpLocation(e.target.value)}
+          sx={{
+            width: '100%',
+          }}
+        />
+
+        {/*Drop Off Location*/}
+        <h2>Drop Off Location</h2>
+        <TextField
+          label="Drop Off Location"
+          variant="outlined"
+          value={dropOffLocation}
+          disabled={disabled}
+          onChange={(e) => setDropOffLocation(e.target.value)}
+          sx={{
+            width: '100%',
+          }}
+        />
 
 
-        <div className='timeline-section'>
-          <h3>Timeline:</h3>
-          {timeline.map((item, dayIndex) => (
-            <div key={dayIndex}>
-              <p>Day {item.day}</p>
-              {item.plan.map((plan, planIndex) => (
-                <div key={planIndex}>
-                  <label>
-                    Start Time:
-                    <br />
-                    <input
-                      type="text"
-                      value={plan.startTime}
-                      onChange={(e) =>
-                        handleTimelineChange(dayIndex, planIndex, 'startTime', e.target.value)
-                      }
-                    />
-                  </label>
-                  <label>
-                    Activity:
-                    <br />
-                    <input
-                      type="text"
-                      value={plan.activity}
-                      onChange={(e) =>
-                        handleTimelineChange(dayIndex, planIndex, 'activity', e.target.value)
-                      }
-                    />
-                  </label>
-                  <label>
-                    Location:
-                    <br />
-                    <input
-                      type="text"
-                      value={plan.location}
-                      onChange={(e) =>
-                        handleTimelineChange(dayIndex, planIndex, 'location', e.target.value)
-                      }
-                    />
-                  </label>
-                  <label>
-                    Description:
-                    <br />
-                    <input
-                      type="text"
-                      value={plan.description}
-                      onChange={(e) =>
-                        handleTimelineChange(dayIndex, planIndex, 'description', e.target.value)
-                      }
-                    />
-                  </label>
-                  <label>
+        {/*Date and Time*/}
+        <h2>Date</h2>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'start',
+          alignItems: 'start',
+          gap: '25px',
+        }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} >
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker label="From" value={startDate} disabled={disabled}
+                onChange={
+                  (newValue) => setStartDate(newValue)
+                } />
+            </DemoContainer>
+          </LocalizationProvider>
 
-                    Accessibility:
-                    <input
-                      type="checkbox"
-                      checked={plan.accessibility}
-                      onChange={(e) =>
-                        handleTimelineChange(dayIndex, planIndex, 'accessibility', e.target.checked)
-                      }
-                    />
-                  </label>
-                </div>
-              ))}
-            </div>
-          ))}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker label="To"
+                value={endDate}
+                disabled={disabled}
+                onChange={
+                  (newValue) => setEndDate(newValue)
+                }
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </Box>
 
-          {/* Button to add a new day */}
-          <button className="btn" type="button" onClick={handleAddDay}>
-            Add Day
-          </button>
-          <button className="btn" type="button" onClick={handleDeleteDay}>
-            Delete Day
-          </button>
-        </div>
+        {/*Booking Availability*/}
+        <h2>Booking Availability</h2>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <InputLabel>Is Booking Available?</InputLabel>
+          <Checkbox
+            checked={isBookingAvailable}
+            disabled={disabled}
+            onChange={(e) => setIsBookingAvailable(e.target.checked)}
+          />
+        </Box>
 
-        <div className='price-section'>
-          <label>
-            Price:
-            <br />
-            <input
-              type="number"
-              name="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-          </label>
-        </div>
 
-        <div className='lang-section'>
-          <label>
-            Language:
-            <br />
-            <input
-              type="text"
-              name="lang"
-              value={lang}
-              onChange={(e) => setLang(e.target.value)}
-              required
-            />
-          </label>
-        </div>
+        <Divider />
+        <Typography
+          sx={{
+            color: `${msg === 'Itinerary created successfully' ? 'green' : 'red'}`,
+          }}
+        >{msg}</Typography>
 
-        <div className='location-section'>
-          <label>
-            Pick Up Location:
-            <br />
-            <input
-              type="text"
-              name="pickUpLocation"
-              value={pickUpLocation}
-              onChange={(e) => setPickUpLocation(e.target.value)}
-              required
-            />
-          </label>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          sx={{
+            width: '100%',
+          }}
+          disabled={disabled || !title || !duration || !startDate || !endDate || !timeline || !price || !lang || !pickUpLocation || !dropOffLocation || !isBookingAvailable}
+        >
+          Create Itinerary
+        </Button>
 
-          {/* Drop Off Location */}
-          <label>
-            Drop Off Location:
-            <br />
-            <input
-              type="text"
-              name="dropOffLocation"
-              value={dropOffLocation}
-              onChange={(e) => setDropOffLocation(e.target.value)}
-              required
-            />
-          </label>
-
-        </div>
-
-        <div className='availability-section'>
-          <label>
-            Start Date:
-            <br />
-            <input
-              type="date"
-              name="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-            />
-          </label>
-
-          {/* End Date */}
-          <label>
-            End Date:
-            <br />
-            <input
-              type="date"
-              name="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </label>
-
-          <label>
-            <br />
-            Is booking available?
-            <input
-              style={{ marginLeft: '0px' }}
-              type="checkbox"
-              checked={isBookingAvailable}
-              onChange={(e) => setIsBookingAvailable(e.target.checked)}
-            />
-          </label>
-
-        </div>
-
-        {/* Submit Button */}
-        <button className='submit-btn' type="submit">Save Itinerary</button>
-
-        {/* Cancel Button */}
-        <button className="cancel-btn" type="button" onClick={() => setIsEdit(false)}>
-          Cancel
-        </button>
       </form>
-    </div>
+    </Box>
   );
 };
 

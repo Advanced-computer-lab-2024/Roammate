@@ -104,7 +104,6 @@ const AdminLayout = () => {
                 }
               }}
             >
-              {text === "Home" ? <HomeIcon /> : <ArrowRightIcon />}
               <ListItemText primary={text} sx={{ textAlign: "center" }} />
             </ListItemButton>
           </ListItem>
@@ -225,9 +224,8 @@ const AdminLayout = () => {
               key={index}
               onClick={() => setActiveButton(button)}
               sx={{
-                borderBottom: `${
-                  activeButton === button ? "3px solid lightgreen" : "default"
-                }`,
+                borderBottom: `${activeButton === button ? "3px solid lightgreen" : "default"
+                  }`,
               }}
             >
               {button}

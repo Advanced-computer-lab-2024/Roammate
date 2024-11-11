@@ -62,7 +62,7 @@ const SellerProductsPage = ({ id }) => {
     archivedProducts.find((prod) => prod._id === product_id);
 
   return !product_id ? (
-    <Box ml={4}>
+    <Box ml={3}>
       {/* Active Products Section */}
       <Typography
         sx={{

@@ -43,6 +43,7 @@ import AdminProductsPage from "./pages/Admin/AdminProductsPage";
 import TouristBookFlightsPage from "./pages/Tourist/TouristBookFlightsPage";
 import { Create } from "@mui/icons-material";
 import CreateActivityPage from "./pages/Advertiser/CreateActivityPage";
+import CreateItinerary from "./components/tourGuideComponents/CreateItinerary";
 
 const theme = createTheme({
   // palette: {
@@ -70,6 +71,8 @@ function App() {
   const advertiserId = "671d255373e0e7cff8d41909";
   const tourguideId = "671d250873e0e7cff8d41907";
   const sellerId = "6724be8b35b1914550e721f9";
+  //seller to test with delete account request
+  // const sellerId = "673261d1728876603010e456"
   const tourismGovernorId = "67281f3d5d85a6e12ab86379";
 
   return (
@@ -147,6 +150,10 @@ function App() {
             <Route
               path="/tourguide/editprofile"
               element={<TourGuideEditProfile id={tourguideId} />}
+            />
+            <Route
+              path="/tourguide/create-itinerary"
+              element={<CreateItinerary id={tourguideId} />}
             />
           </Route>
 

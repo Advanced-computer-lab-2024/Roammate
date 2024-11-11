@@ -62,8 +62,8 @@ const ProductCard = ({ product }) => {
   }, [product._id]);
 
   return (
-    <Card sx={{ width: "90%", mb: 4 }}>
-      <ProductImage imageId={product.image} height={"195"} />
+    <Card sx={{ maxWidth: '550px', mb: 4, }}>
+      <ProductImage imageId={product.image} height={"250"} />
 
       <CardContent
         sx={{
@@ -205,12 +205,6 @@ const ProductCard = ({ product }) => {
           width: "100%",
         }}
       >
-        <Button
-          variant="contained"
-          sx={{ color: "white", backgroundColor: "red" }}
-        >
-          Delete
-        </Button>
 
         <Button
           variant="contained"

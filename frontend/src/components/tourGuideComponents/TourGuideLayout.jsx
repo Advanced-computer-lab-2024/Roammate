@@ -38,6 +38,8 @@ const TourGuideLayout = () => {
             navigate(`/tourguide/my-itineraries?id=${id}`);
         } else if (activeButton === 'Edit Profile') {
             navigate('/tourguide/editProfile');
+        } else if (activeButton === 'Create Itinerary') {
+            navigate('/tourguide/create-itinerary');
         }
     }, [activeButton, navigate]);
 

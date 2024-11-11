@@ -149,13 +149,12 @@ const AdminProductCard = ({ product }) => {
             variant="h4"
             component="div"
             sx={{
-              textDecoration: `${
-                product.quantity > 0 ? "none" : "line-through"
-              }`,
+              textDecoration: `${product.quantity > 0 ? "none" : "line-through"
+                }`,
               color: `${product.quantity > 0 ? "black" : "grey"}`,
             }}
           >
-            ${price}
+            {price} EGP
           </Typography>
         </Box>
 
@@ -217,13 +216,6 @@ const AdminProductCard = ({ product }) => {
           width: "100%",
         }}
       >
-        <Button
-          variant="contained"
-          sx={{ color: "white", backgroundColor: "red" }}
-        >
-          Delete
-        </Button>
-
         <Button
           variant="contained"
           onClick={handleToggleArchived}
