@@ -19,91 +19,136 @@ const authenticateWithAmadeus = async () => {
   }
 };
 
+const getIataCode = async (cityName, accessToken) => {
+  try {
+    const response = await axios.get(
+      "https://test.api.amadeus.com/v1/reference-data/locations",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: {
+          keyword: cityName,
+          subType: "AIRPORT,CITY",
+        },
+      }
+    );
+
+    const locations = response.data.data;
+
+    if (locations && locations.length > 0) {
+      console.log(`Locations for ${cityName}:`, locations); // Debug available options
+
+      // Prioritize city-level IATA codes, fallback to airport
+      const city = locations.find((loc) => loc.subType === "CITY");
+      return city ? city.iataCode : locations[0].iataCode;
+    }
+
+    throw new Error(`IATA code not found for city: ${cityName}`);
+  } catch (error) {
+    console.error(`Error fetching IATA code for ${cityName}:`, error);
+    throw new Error(`Unable to find IATA code for city: ${cityName}`);
+  }
+};
+
+
 // Search for flights
 const searchFlights = async (req, res) => {
-    const { origin, destination, departureDate, returnDate, passengers, currency } = req.body;
-    try {
-      const accessToken = await authenticateWithAmadeus(); // Get access token
-  
-      const response = await axios.get(
-        "https://test.api.amadeus.com/v2/shopping/flight-offers",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          params: {
-            originLocationCode: origin,
-            destinationLocationCode: destination,
-            departureDate,
-            returnDate,
-            adults: passengers,
-            currencyCode: currency, // Adjust currency if needed
-          },
-        }
-      );  
-      // Send flight offers to the frontend
-      res.status(200).json(response.data.data);
-    } catch (error) {
-      console.error("Error searching for flights:", error);
-      res.status(500).json({ message: "Error searching for flights" });
-    }
+  const { origin, destination, departureDate, returnDate, passengers, currency } = req.body;
+
+  try {
+    const accessToken = await authenticateWithAmadeus(); // Get access token
+
+    // Convert city names to IATA codes
+    const originIata = await getIataCode(origin, accessToken);
+    const destinationIata = await getIataCode(destination, accessToken);
+
+    const response = await axios.get(
+      "https://test.api.amadeus.com/v2/shopping/flight-offers",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: {
+          originLocationCode: originIata,
+          destinationLocationCode: destinationIata,
+          departureDate,
+          returnDate,
+          adults: passengers,
+          currencyCode: currency, // Adjust currency if needed
+        },
+      }
+    );
+
+    // Send flight offers to the frontend
+    res.status(200).json(response.data.data);
+  } catch (error) {
+    console.error("Error searching for flights:", error);
+    res.status(500).json({ message: "Error searching for flights" });
+  }
+};
+
+// Function to get hotels by city
+const getHotelsByCity = async (req, res) => {
+  const { cityName, page = 1 } = req.query;
+
+  if (!cityName || cityName.trim() === "") {
+      return res.status(400).json({
+          message: "City name is required and cannot be empty",
+      });
+  }
+
+  const options = {
+      method: "GET",
+      url: "https://tripadvisor-scraper.p.rapidapi.com/hotels/list",
+      headers: {
+          "x-rapidapi-key": "b811a12092msh20d707194921e1bp16e32fjsn90a9d51fcd92",
+          "x-rapidapi-host": "tripadvisor-scraper.p.rapidapi.com",
+      },
+      params: { query: cityName, page: page },
   };
 
-  // Get a list of hotels by city code
-const getHotelListByCity = async (req, res) => {
-    const { cityCode } = req.query;
-
-    try {
-        const accessToken = await authenticateWithAmadeus(); // Get access token
-
-        const response = await axios.get(
-            "https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city",
-            {
-                headers: { Authorization: `Bearer ${accessToken}` },
-                params: {
-                    cityCode,
-                },
-            }
-        );
-
-        // Send the list of hotels to the frontend
-        res.status(200).json(response.data.data);
-    } catch (error) {
-        console.error("Error fetching hotel list:", error.response ? error.response.data : error.message);
-        res.status(error.response ? error.response.status : 500).json({
-            message: "Error fetching hotel list",
-            details: error.response ? error.response.data : error.message,
-        });
-    }
+  try {
+      const response = await axios.request(options);
+      res.status(200).json(response.data);
+  } catch (error) {
+      console.error("Error fetching hotel list:", error.response?.data || error.message);
+      res.status(500).json({
+          message: "Error fetching hotel list",
+          details: error.response?.data || error.message,
+      });
+  }
 };
-// Search for hotels
-const searchHotels = async (req, res) => {
-    const { hotelIds, adults, checkInDate, checkOutDate,roomQuantity  } = req.query;
-  
-    try {
-      const accessToken = await authenticateWithAmadeus(); // Get access token
-  
-      const response = await axios.get(
-        "https://test.api.amadeus.com/v3/shopping/hotel-offers",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          params: {
-            hotelIds,
-            adults,
-            checkInDate,
-            checkOutDate,
-            roomQuantity,
-            currencyCode: "USD", // Adjust currency if needed
-          },
-        }
-      );
-  
-      // Send hotel offers to the frontend
-      res.status(200).json(response.data.data);
-    }  catch (error) {
-        console.error("Error searching hotels:", error.response ? error.response.data : error.message);
-        res.status(500).json({ message: "Error searching hotels", details: error.response ? error.response.data : error.message });
-    }
-  };  
 
+// Get hotel details (including images)
+const getHotelDetails =async (req, res) => {
+  const { hotelId} = req.query;
+    
+  if (!hotelId || hotelId.trim() === "") {
+    return res.status(400).json({
+        message: "Hotel ID is required and cannot be empty",
+    });
+}
+
+const options = {
+    method: 'GET',
+    url: 'https://tripadvisor-scraper.p.rapidapi.com/hotels/detail',
+    headers: {
+        'x-rapidapi-key': 'b811a12092msh20d707194921e1bp16e32fjsn90a9d51fcd92',
+        'x-rapidapi-host': 'tripadvisor-scraper.p.rapidapi.com',
+    },
+    params: {
+        id: hotelId, // Use the hotelId from request parameters
+    },
+};
+
+try {
+    const response = await axios.request(options);
+    res.status(200).json(response.data); // Return the hotel details including images
+} catch (error) {
+    console.error('Error fetching hotel details:', error.response ? error.response.data : error.message);
+    res.status(500).json({
+        message: "Error fetching hotel details",
+        details: error.response ? error.response.data : error.message,
+    });
+}
+};
   
 
-module.exports = { authenticateWithAmadeus, searchFlights,searchHotels, getHotelListByCity };
+module.exports = { authenticateWithAmadeus, searchFlights, getHotelDetails, getHotelsByCity};
