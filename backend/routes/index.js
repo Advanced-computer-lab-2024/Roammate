@@ -387,8 +387,8 @@ router.get("/pdf/:id", filesController.getPdf);
 
 //Routes for booking
 router.post("/search-flights", bookingController.searchFlights);
-router.get("/search-hotels", bookingController.searchHotels);
-router.get("/list-hotels", bookingController.getHotelListByCity);
+router.get("/search-hotel", bookingController.getHotelDetails);
+router.get("/list-hotels", bookingController.getHotelsByCity);
 
 //--------------------------------------------------------------
 
