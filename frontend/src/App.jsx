@@ -79,7 +79,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/tourist" element={<TouristLayout />}>
+          <Route path="/tourist" element={<TouristLayout touristId={touristId} />}>
             <Route
               path="/tourist/activities"
               element={<TouristActivitiesPage id={touristId} />}
@@ -127,7 +127,7 @@ function App() {
             />
           </Route>
 
-          <Route path="/advertiser" element={<AdvertiserLayout />}>
+          <Route path="/advertiser" element={<AdvertiserLayout advertiserId={advertiserId} />}>
             <Route
               path="/advertiser/my-activities"
               element={<AdvertiserActivitiesPage id={advertiserId} />}
@@ -142,7 +142,7 @@ function App() {
             />
           </Route>
 
-          <Route path="/tourguide" element={<TourGuideLayout />}>
+          <Route path="/tourguide" element={<TourGuideLayout tourguideId={tourguideId} />}>
             <Route
               path="/tourguide/my-itineraries"
               element={<TourGuideItinerariesPage id={tourguideId} />}
@@ -157,7 +157,7 @@ function App() {
             />
           </Route>
 
-          <Route path="/seller" element={<SellerLayout />}>
+          <Route path="/seller" element={<SellerLayout sellerId={sellerId}/>}>
             <Route
               path="/seller/my-products"
               element={<SellerProductsPage id={sellerId} />}
@@ -184,7 +184,7 @@ function App() {
             />
           </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminLayout adminId={adminId}/>}>
             <Route
               path="/admin/users"
               element={<AdminUsersPage />}

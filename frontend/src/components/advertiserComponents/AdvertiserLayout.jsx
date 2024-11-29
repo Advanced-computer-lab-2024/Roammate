@@ -18,13 +18,16 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
+import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 
 const navItems = ['Home', 'Create Activity'];
 
 const drawerWidth = 240;
-const AdvertiserLayout = () => {
+const AdvertiserLayout = ({ advertiserId }) => {
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Activities']);
     const [activeButton, setActiveButton] = React.useState('My Activities');
@@ -32,6 +35,25 @@ const AdvertiserLayout = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get('id') || '');
+
+    const [notifications, setNotifications] = React.useState([]);
+
+    const _fetchUserNotifications = async () => {
+        try {
+            let result = await fetchUserNotifications(advertiserId);
+            setNotifications(result);
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    const _clearAllUserNotifications = async () => {
+        try {
+            await clearAllUserNotifications(advertiserId);
+        } catch (error) {
+            console.error("Error reading notifications:", error);
+        }
+    };
 
     React.useEffect(() => {
         if (activeButton === 'My Activities') {
@@ -42,8 +64,8 @@ const AdvertiserLayout = () => {
             navigate('/advertiser/create-activity');
         }
 
+        _fetchUserNotifications();
     }, [activeButton, navigate, id]);
-
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -134,6 +156,9 @@ const AdvertiserLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
+
                     <IconButton
                         size="large"
                         edge="end"

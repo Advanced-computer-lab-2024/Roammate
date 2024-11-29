@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const notificationSchema = require("./Notification");
 const Schema = mongoose.Schema;
+
 const userSchema = new Schema(
   {
     username: {
@@ -29,6 +31,9 @@ const userSchema = new Schema(
       enum: ["guest", "pending", "accepted", "active"],
       default: "guest",
     },
+    notifications: [
+      notificationSchema
+    ],
   },
   {
     timestamps: true,

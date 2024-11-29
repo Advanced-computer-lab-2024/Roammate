@@ -18,13 +18,16 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
+import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 
 const navItems = ['Home', 'Create Itinerary'];
 
 const drawerWidth = 240;
-const TourGuideLayout = () => {
+const TourGuideLayout = ({tourguideId}) => {
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Itineraries']);
     const [activeButton, setActiveButton] = React.useState('My Itineraries');
@@ -32,6 +35,25 @@ const TourGuideLayout = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get('id') || '');
+
+    const [notifications, setNotifications] = React.useState([]);
+
+    const _fetchUserNotifications = async () => {
+        try {
+            let result = await fetchUserNotifications(tourguideId);
+            setNotifications(result);
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    const _clearAllUserNotifications = async () => {
+        try {
+            await clearAllUserNotifications(tourguideId);
+        } catch (error) {
+            console.error("Error reading notifications:", error);
+        }
+    };
 
     React.useEffect(() => {
         if (activeButton === 'My Itineraries') {
@@ -41,6 +63,8 @@ const TourGuideLayout = () => {
         } else if (activeButton === 'Create Itinerary') {
             navigate('/tourguide/create-itinerary');
         }
+
+        _fetchUserNotifications();
     }, [activeButton, navigate]);
 
 
@@ -83,7 +107,6 @@ const TourGuideLayout = () => {
     );
 
     return (
-
         <Box sx={{
             display: 'flex', flexDirection: 'column', flexGrow: 1, pl: `calc(${open ? drawerWidth : 0}px)`,
             transition: 'padding-left 225ms',
@@ -132,6 +155,9 @@ const TourGuideLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
+
                     <IconButton
                         size="large"
                         edge="end"

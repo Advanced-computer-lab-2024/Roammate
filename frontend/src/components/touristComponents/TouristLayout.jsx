@@ -25,6 +25,8 @@ import MuseumIcon from '@mui/icons-material/Museum';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ReportIcon from '@mui/icons-material/Report';
 
+import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
@@ -32,8 +34,10 @@ import CurrencySelector from "./CurrencySelector";
 import { fetchConversionRates } from "../../services/api";
 import { AirplaneTicket } from "@mui/icons-material";
 
+import NotificationDropdown from '../sharedComponents/NotificationDropdown';
+
 const drawerWidth = 240;
-const TouristLayout = () => {
+const TouristLayout = ({touristId}) => {
     const [open, setOpen] = React.useState(false);
     const [myBookingsOpen, setMyBookingsOpen] = React.useState(open);
     const [buttons, setButtons] = React.useState([
@@ -47,6 +51,25 @@ const TouristLayout = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get("id") || "");
+
+    const [notifications, setNotifications] = React.useState([]);
+
+    const _fetchUserNotifications = async () => {
+        try {
+            let result = await fetchUserNotifications(touristId);
+            setNotifications(result);
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    const _clearAllUserNotifications = async () => {
+        try {
+            await clearAllUserNotifications(touristId);
+        } catch (error) {
+            console.error("Error reading notifications:", error);
+        }
+    };
 
     React.useEffect(() => {
         const fetchRates = async () => {
@@ -75,6 +98,8 @@ const TouristLayout = () => {
             navigate("/tourist/editProfile");
         }
         localStorage.setItem("activeButton", activeButton);
+
+        _fetchUserNotifications();
     }, [activeButton, navigate]);
 
     const toggleDrawer = () => {
@@ -279,6 +304,8 @@ const TouristLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
 
                     <CurrencySelector />
 

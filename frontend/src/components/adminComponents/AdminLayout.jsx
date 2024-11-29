@@ -18,9 +18,13 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
+import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { ArrowRightIcon } from "@mui/x-date-pickers/icons";
+
+import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 
 const navItems = [
   "Home",
@@ -35,7 +39,7 @@ const navItems = [
 ];
 
 const drawerWidth = 240;
-const AdminLayout = () => {
+const AdminLayout = ({adminId}) => {
   const [open, setOpen] = React.useState(false);
   const [buttons, setButtons] = React.useState([
     "Users",
@@ -44,6 +48,25 @@ const AdminLayout = () => {
   ]);
   const [activeButton, setActiveButton] = React.useState("Users");
   const navigate = useNavigate();
+
+  const [notifications, setNotifications] = React.useState([]);
+
+  const _fetchUserNotifications = async () => {
+      try {
+          let result = await fetchUserNotifications(adminId);
+          setNotifications(result);
+      } catch (error) {
+          console.error("Error fetching notifications:", error);
+      }
+  };
+
+  const _clearAllUserNotifications = async () => {
+      try {
+          await clearAllUserNotifications(adminId);
+      } catch (error) {
+          console.error("Error reading notifications:", error);
+      }
+  };
 
   React.useEffect(() => {
     if (activeButton === "Users") {
@@ -65,6 +88,7 @@ const AdminLayout = () => {
     } else if (activeButton === "My Products") {
       navigate(`/admin/my-products?id=`);
     }
+    _fetchUserNotifications();
   }, [activeButton, navigate]);
 
   const toggleDrawer = (newOpen) => () => {
@@ -179,16 +203,9 @@ const AdminLayout = () => {
               AMMATE
             </Typography>
           </Box>
-          {/* <IconButton
-                        size="large"
-                        edge="end"
-                        color="inherit"
-                        aria-label="profile"
-                        sx={{ ml: 2 }}
-                        onClick={() => setActiveButton('Edit Profile')}
-                    >
-                        <AccountCircleIcon />
-                    </IconButton> */}
+
+          <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
+
           <IconButton
             size="large"
             edge="end"

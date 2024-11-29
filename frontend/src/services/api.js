@@ -370,6 +370,19 @@ export const updateUserStatus = async (id, status) => {
   return response.data;
 };
 
+// This function is used to get all user notifications
+export const fetchUserNotifications = async (id) => {
+  const response = await axios.get(`${API_URL}users/notifications/${id}`);
+  return response.data;
+};
+
+// This function is used to mark all user notifications as read
+export const clearAllUserNotifications = async (id) => {
+  console.log(`${API_URL}users/notifications/${id}`);
+  const response = await axios.patch(`${API_URL}users/notifications/${id}`);
+  return response.data;
+};
+
 // ✅ This function is used to fetch Tourist's profile
 export const fetchTouristProfile = async (id) => {
   const response = await axios.get(`${API_URL}tourist/${id}`);

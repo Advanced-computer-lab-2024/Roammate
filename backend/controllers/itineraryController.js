@@ -6,6 +6,7 @@ const {
   payCashFromWallet,
   refundCashToWallet,
 } = require("./touristController");
+const sendEmail = require("../utils/nodeMailer");
 /* title, duration, startDate, endDate, timeline(day,startTime, activity,location,description,accessibility),
  price, lang, pickUpLocation, dropOffLocation, isBookingAvailable, tags, reviews, averageRating, tourGuide
   */
@@ -464,10 +465,29 @@ const toggleAppropriateItinerary = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const itinerary = await Itinerary.findById(id);
+    const itinerary = await Itinerary.findById(id)
+      .populate("tourGuide", "email notifications");;
 
     if (!itinerary) {
       return res.status(404).json({ message: "Itinerary not found" });
+    }
+
+    const tourGuide = itinerary.tourGuide;
+
+    // If the itinerary is being marked inappropriate, add a notification
+    if (itinerary.Appropriate) {
+      // Add notification to the tourGuide's notifications
+      tourGuide.notifications.push({
+        message: `Your itinerary "${itinerary.title}" has been marked inappropriate.`,
+      });
+      await tourGuide.save();
+
+      // Send email notification
+      sendEmail(
+        tourGuide.email,
+        "Itinerary marked inappropriate",
+        `Your itinerary "${itinerary.title}" has been marked inappropriate. Please review it.`
+      );
     }
 
     const updatedItinerary = await Itinerary.findByIdAndUpdate(

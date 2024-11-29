@@ -11,6 +11,7 @@ const {
   payCashFromWallet,
   refundCashToWallet,
 } = require("./touristController");
+const sendEmail = require("../utils/nodeMailer");
 /* title, description, location, price, category, tags, 
 discount, startDate, endDate, time, isBookingAvailable, reviews, advertiser, averageRating
 */
@@ -489,21 +490,42 @@ const toggleAppropriateActivity = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const activity = await Activity.findById(id);
-
+    // Find the activity and populate advertiser details
+    const activity = await Activity.findById(id)
+      .populate("advertiser", "email notifications");
+    
     if (!activity) {
       return res.status(404).json({ message: "Activity not found" });
     }
 
+    const advertiser = activity.advertiser;
+
+    // If the activity is being marked inappropriate, add a notification
+    if (activity.Appropriate) {
+      // Add notification to the advertiser's notifications
+      advertiser.notifications.push({
+        message: `Your activity "${activity.title}" has been marked inappropriate.`,
+      });
+      await advertiser.save();
+
+      // Send email notification
+      sendEmail(
+        advertiser.email,
+        "Activity marked inappropriate",
+        `Your activity "${activity.title}" has been marked inappropriate. Please review it.`
+      );
+    }
+
+    // Toggle the "Appropriate" property of the activity
     const updatedActivity = await Activity.findByIdAndUpdate(
-      { _id: id },
+      id,
       { Appropriate: !activity.Appropriate },
-      { new: true }
+      { new: true } // Return the updated document
     );
 
     res.status(200).json({
       message: `Activity is now ${
-        updatedActivity.Appropriate ? "Appropriate" : "inAppropriate"
+        updatedActivity.Appropriate ? "Appropriate" : "Inappropriate"
       }`,
       activity: updatedActivity,
     });

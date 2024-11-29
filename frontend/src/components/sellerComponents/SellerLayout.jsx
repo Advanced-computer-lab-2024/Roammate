@@ -18,13 +18,17 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
+import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+
+import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 
 const navItems = ['Home', 'Create Product'];
 
 const drawerWidth = 240;
-const SellerLayout = () => {
+const SellerLayout = ({sellerId}) => {
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Products']);
     const [activeButton, setActiveButton] = React.useState('My Products');
@@ -32,6 +36,25 @@ const SellerLayout = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get('id') || '');
+
+    const [notifications, setNotifications] = React.useState([]);
+
+    const _fetchUserNotifications = async () => {
+        try {
+            let result = await fetchUserNotifications(sellerId);
+            setNotifications(result);
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    const _clearAllUserNotifications = async () => {
+        try {
+            await clearAllUserNotifications(sellerId);
+        } catch (error) {
+            console.error("Error reading notifications:", error);
+        }
+    };
 
     React.useEffect(() => {
         if (activeButton === 'My Products') {
@@ -41,6 +64,8 @@ const SellerLayout = () => {
         } else if (activeButton === 'Create Product') {
             navigate('/seller/createProduct');
         }
+
+        _fetchUserNotifications();
     }, [activeButton, navigate]);
 
 
@@ -132,6 +157,9 @@ const SellerLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
+
                     <IconButton
                         size="large"
                         edge="end"
