@@ -20,6 +20,8 @@ const {
   deletionRequestsController,
   transportationController,
   passwordController,
+  productWishlistController,
+  userCartController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -387,8 +389,8 @@ router.get("/pdf/:id", filesController.getPdf);
 
 //Routes for booking
 router.post("/search-flights", bookingController.searchFlights);
-router.get("/search-hotels", bookingController.searchHotels);
-router.get("/list-hotels", bookingController.getHotelListByCity);
+router.get("/search-hotel", bookingController.getHotelDetails);
+router.get("/list-hotels", bookingController.getHotelsByCity);
 
 //--------------------------------------------------------------
 
@@ -469,5 +471,24 @@ router.post("/redeem-points/:touristId", touristController.redeemPointsToCash);
 
 //Change Password of Users
 router.post("/change-password", passwordController.changePassword);
+
+//--------------------------------------------------------------
+
+// Routes for Product Wishlisting
+router.post(
+  "/wishlist/:userId/add",
+  productWishlistController.addProductToWishlist
+);
+router.get("/wishlist/:userId", productWishlistController.getWishlistByUserId);
+router.post(
+  "/wishlist/:userId/toggle",
+  productWishlistController.toggleProductInWishlist
+);
+
+// Routes for User Cart
+router.post("/cart/:userId/add", userCartController.addProductToCart);
+router.patch("/cart/:userId/update", userCartController.updateProductQuantity);
+router.delete("/cart/:userId/remove", userCartController.removeProductFromCart);
+router.get("/cart/:userId", userCartController.getUserCart);
 
 module.exports = router;

@@ -70,7 +70,7 @@ const AdminLayout = ({adminId}) => {
 
   React.useEffect(() => {
     if (activeButton === "Users") {
-      navigate('/admin/users');
+      navigate("/admin/users");
     } else if (activeButton === "Registrations") {
       navigate("/admin/registrations");
     } else if (activeButton === "Complaints") {
@@ -241,8 +241,9 @@ const AdminLayout = ({adminId}) => {
               key={index}
               onClick={() => setActiveButton(button)}
               sx={{
-                borderBottom: `${activeButton === button ? "3px solid lightgreen" : "default"
-                  }`,
+                borderBottom: `${
+                  activeButton === button ? "3px solid lightgreen" : "default"
+                }`,
               }}
             >
               {button}

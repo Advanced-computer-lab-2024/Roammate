@@ -6,7 +6,14 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Alert, CardMedia, IconButton, Rating, Snackbar } from "@mui/material";
+import {
+  Alert,
+  CardMedia,
+  IconButton,
+  Rating,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
@@ -17,10 +24,15 @@ import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 import { useNavigate } from "react-router";
 import ProductImage from "../productComponents/ProductImage";
-import { convertPrice } from "../../services/api";
+import {
+  convertPrice,
+  toggleProductWishlist,
+  getUserWishlistedProducts,
+  addProductToCart,
+} from "../../services/api";
 import ShareLink from "./ShareLink";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, id, refreshWishlist }) => {
   const [addedToWatchlist, setAddedToWatchlist] = useState(false);
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description);
@@ -29,25 +41,50 @@ const ProductCard = ({ product }) => {
   const [rating, setRating] = useState(product.averageRating);
   const navigate = useNavigate();
   const [displayPrice, setDisplayPrice] = useState();
+  const [cartQuantity, setCartQuantity] = useState(1);
 
   const [open, setOpen] = React.useState(false);
 
+  const handleWishlistToggle = async () => {
+    try {
+      const response = await toggleProductWishlist(id, product._id);
+      refreshWishlist();
+      setAddedToWatchlist(!addedToWatchlist);
+    } catch (error) {
+      console.error("Failed to toggle wishlist status:", error);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      await addProductToCart(id, product._id, cartQuantity);
+      setOpen(true); // Show success message
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+    }
+  };
+
   useEffect(() => {
-    const getDisplayPrice = async (price) => {
+    const initialize = async (price) => {
       try {
         const displayPrice = await convertPrice(price);
+
+        const wishlistedProducts = await getUserWishlistedProducts(id);
+        const isWishlisted = wishlistedProducts.some(
+          (product1) => product1._id === product._id
+        );
+        setAddedToWatchlist(isWishlisted);
+
         setDisplayPrice(displayPrice);
       } catch (error) {
         console.error("Error converting price:", error);
       }
     };
-    getDisplayPrice(price);
-  }, [localStorage.getItem("currency")]);
-
+    initialize(price);
+  }, [id, product._id, localStorage.getItem("currency")]);
 
   return (
-    <Card sx={{ width: '550px', mb: 4 }}>
-
+    <Card sx={{ width: "550px", mb: 4 }}>
       <ProductImage imageId={product.image} height={"250"} />
 
       {/* <h1>Itinerary Card</h1> */}
@@ -86,7 +123,7 @@ const ProductCard = ({ product }) => {
             icon={<StarIcon style={{ fill: "orange" }} />}
             emptyIcon={<StarIcon style={{ fill: "lightgray" }} />}
           />
-          <ShareLink type={'product'} id={product._id} />
+          <ShareLink type={"product"} id={product._id} />
         </Box>
 
         <Typography
@@ -143,9 +180,14 @@ const ProductCard = ({ product }) => {
             </Typography>
           </IconButton>
 
-          <Typography gutterBottom variant="h4" component="div" sx={{
-            color: `${product.quantity > 0 ? 'black' : 'grey'}`,
-          }}>
+          <Typography
+            gutterBottom
+            variant="h4"
+            component="div"
+            sx={{
+              color: `${product.quantity > 0 ? "black" : "grey"}`,
+            }}
+          >
             {displayPrice}
           </Typography>
         </Box>
@@ -163,11 +205,7 @@ const ProductCard = ({ product }) => {
       >
         <Button
           variant="contained"
-          onClick={
-            addedToWatchlist
-              ? () => setAddedToWatchlist(false)
-              : () => setAddedToWatchlist(true)
-          }
+          onClick={handleWishlistToggle}
           endIcon={
             <HeartIcon
               sx={{
@@ -176,16 +214,30 @@ const ProductCard = ({ product }) => {
             />
           }
         >
-          Add to Watchlist
+          {addedToWatchlist ? "Remove from Wishlist" : "Add to Wishlist"}
         </Button>
 
-        <Button variant="contained" sx={{
-          backgroundColor: `${quantity > 0 ? 'green' : 'grey'}`,
-          color: 'white',
-        }}
+        <TextField
+          type="number"
+          size="small"
+          value={cartQuantity}
+          onChange={(e) => setCartQuantity(Math.max(1, e.target.value))}
+          sx={{ width: "60px" }}
+        />
+        <Button variant="contained" color="primary" onClick={handleAddToCart}>
+          Add to Cart
+        </Button>
+
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: `${quantity > 0 ? "green" : "grey"}`,
+            color: "white",
+          }}
           onClick={() => navigate(`/tourist/products?id=${product._id}`)}
-          endIcon={<ArrowForwardIosIcon />}>
-          {quantity > 0 ? 'Buy' : 'View'}
+          endIcon={<ArrowForwardIosIcon />}
+        >
+          {quantity > 0 ? "Buy" : "View"}
         </Button>
       </CardActions>
     </Card>
