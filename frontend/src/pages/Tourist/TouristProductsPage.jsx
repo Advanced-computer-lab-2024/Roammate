@@ -8,7 +8,7 @@ import SortAndFilterProducts from "../../components/touristComponents/SortAndFil
 import { useLocation, useOutletContext } from "react-router";
 import TouristViewProduct from "./TouristViewProductPage";
 
-const TouristProductsPage = () => {
+const TouristProductsPage = ({ touristId }) => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterAndSortCriteria, setFilterAndSortCriteria] = useState({});
@@ -53,14 +53,10 @@ const TouristProductsPage = () => {
           }}
         >
           {products.length === 0 &&
-            (fetch < 1 ? (
-              <CircularProgress />
-            ) : (
-              <h2>No Products Found</h2>
-            ))}
+            (fetch < 1 ? <CircularProgress /> : <h2>No Products Found</h2>)}
           {products.map((product) => (
             <div key={product._id}>
-              <ProductCard product={product} />
+              <ProductCard product={product} id={touristId} />
             </div>
           ))}
         </Grid2>
@@ -75,6 +71,5 @@ const TouristProductsPage = () => {
     <TouristViewProduct id={id} />
   );
 };
-
 
 export default TouristProductsPage;

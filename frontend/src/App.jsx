@@ -44,6 +44,8 @@ import TouristBookFlightsPage from "./pages/Tourist/TouristBookFlightsPage";
 import { Create } from "@mui/icons-material";
 import CreateActivityPage from "./pages/Advertiser/CreateActivityPage";
 import CreateItinerary from "./components/tourGuideComponents/CreateItinerary";
+import TouristWishlistPage from "./pages/Tourist/TouristWishlistPage";
+import TouristCartPage from "./pages/Tourist/TouristCartPage";
 
 const theme = createTheme({
   // palette: {
@@ -79,16 +81,27 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/tourist" element={<TouristLayout />}>
+          <Route path="/tourist" element={<TouristLayout userId={touristId} />}>
             <Route
               path="/tourist/activities"
               element={<TouristActivitiesPage id={touristId} />}
             />
             <Route
+              path="/tourist/wishlist"
+              element={<TouristWishlistPage id={touristId} />}
+            />
+            <Route
               path="/tourist/itineraries"
               element={<TouristItinerariesPage id={touristId} />}
             />
-            <Route path="/tourist/products" element={<TouristProductsPage />} />
+            <Route
+              path="/tourist/products"
+              element={<TouristProductsPage touristId={touristId} />}
+            />
+            <Route
+              path="/tourist/cart"
+              element={<TouristCartPage userId={touristId} />}
+            />
             <Route
               path="/tourist/editProfile"
               element={<TouristEditProfile id={touristId} />}
@@ -137,7 +150,7 @@ function App() {
               element={<AdvertiserEditProfile id={advertiserId} />}
             />
             <Route
-              path='/advertiser/create-activity'
+              path="/advertiser/create-activity"
               element={<CreateActivityPage id={advertiserId} />}
             />
           </Route>
@@ -185,10 +198,7 @@ function App() {
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
-            <Route
-              path="/admin/users"
-              element={<AdminUsersPage />}
-            />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
             <Route
               path="/admin/registrations"
               element={<AdminRegistrationsPage />}

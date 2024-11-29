@@ -16,6 +16,38 @@ export const flagActivity = async (id) => {
   }
 };
 
+export const getUserCart = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}cart/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user cart:", error);
+    throw error;
+  }
+};
+
+export const toggleProductWishlist = async (userId, productId) => {
+  try {
+    const response = await axios.post(`${API_URL}wishlist/${userId}/toggle`, {
+      productId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error toggling product wishlist status:", error);
+    throw error;
+  }
+};
+
+export const getUserWishlistedProducts = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}wishlist/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user's wishlisted products:", error);
+    throw error;
+  }
+};
+
 export const flagItinerary = async (id) => {
   try {
     const response = await axios.patch(
@@ -56,6 +88,44 @@ export const changePassword = async (id, type, oldPassword, newPassword) => {
     throw new Error(
       error.response?.data?.message || "Failed to change password."
     );
+  }
+};
+
+export const removeProductFromCart = async (userId, productId) => {
+  try {
+    const response = await axios.delete(`${API_URL}cart/${userId}/remove`, {
+      data: { productId }, // Send productId in the request body
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error removing product from cart:", error);
+    throw error;
+  }
+};
+
+export const addProductToCart = async (userId, productId, quantity) => {
+  try {
+    const response = await axios.post(`${API_URL}cart/${userId}/add`, {
+      productId,
+      quantity,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding product to cart:", error);
+    throw error;
+  }
+};
+
+export const updateProductQuantity = async (userId, productId, quantity) => {
+  try {
+    const response = await axios.patch(`${API_URL}cart/${userId}/update`, {
+      productId,
+      quantity, // Send productId and new quantity in the request body
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product quantity in cart:", error);
+    throw error;
   }
 };
 

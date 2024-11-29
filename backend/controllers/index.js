@@ -19,6 +19,8 @@ const CurrencyConvertController = require("./CurrencyConvertController");
 const deletionRequestsController = require("./deletionRequestController");
 const transportationController = require("./transportationController");
 const passwordController = require("./passwordController");
+const productWishlistController = require("./productWishlistController");
+const userCartController = require("./userCartController");
 
 module.exports = {
   adminController,
@@ -42,4 +44,6 @@ module.exports = {
   CurrencyConvertController,
   transportationController,
   passwordController,
+  productWishlistController,
+  userCartController,
 };
