@@ -22,6 +22,7 @@ const {
   passwordController,
   productWishlistController,
   userCartController,
+  PromoCodeController,
 } = require("../controllers");
 
 const router = express.Router();
@@ -491,4 +492,10 @@ router.patch("/cart/:userId/update", userCartController.updateProductQuantity);
 router.delete("/cart/:userId/remove", userCartController.removeProductFromCart);
 router.get("/cart/:userId", userCartController.getUserCart);
 
+// Promo Code Routes
+router.post("/promoCodes", PromoCodeController.createPromoCode);
+router.post("/promoCodes/birthday", PromoCodeController.sendBirthdayPromoCode);
+router.post("/promoCodes/apply", PromoCodeController.applyPromoCode);
+router.get("/promoCodes", PromoCodeController.getAllPromoCodes);
+router.get("/promoCodes/user/:userId", PromoCodeController.getPromoCodesByUser);
 module.exports = router;

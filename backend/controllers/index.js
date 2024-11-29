@@ -21,7 +21,7 @@ const transportationController = require("./transportationController");
 const passwordController = require("./passwordController");
 const productWishlistController = require("./productWishlistController");
 const userCartController = require("./userCartController");
-
+const PromoCodeController = require("./PromoCodeController");
 module.exports = {
   adminController,
   advertiserController,
@@ -46,4 +46,5 @@ module.exports = {
   passwordController,
   productWishlistController,
   userCartController,
+  PromoCodeController,
 };
