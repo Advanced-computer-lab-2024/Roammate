@@ -27,7 +27,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import { ShoppingCart } from "@mui/icons-material";
 import { useState } from "react";
 
-import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -73,9 +73,9 @@ const TouristLayout = ({ userId }) => {
         }
     };
 
-    const _clearAllUserNotifications = async () => {
+    const _readAllUserNotifications = async () => {
         try {
-            await clearAllUserNotifications(userId);
+            await readAllUserNotifications(userId);
         } catch (error) {
             console.error("Error reading notifications:", error);
         }
@@ -382,7 +382,7 @@ const TouristLayout = ({ userId }) => {
                         </Typography>
                     </Box>
 
-                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
+                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} readAllUserNotifications={_readAllUserNotifications} />
 
                     <CurrencySelector />
 

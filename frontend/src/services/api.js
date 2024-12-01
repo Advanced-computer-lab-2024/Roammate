@@ -447,7 +447,7 @@ export const fetchUserNotifications = async (id) => {
 };
 
 // This function is used to mark all user notifications as read
-export const clearAllUserNotifications = async (id) => {
+export const readAllUserNotifications = async (id) => {
   console.log(`${API_URL}users/notifications/${id}`);
   const response = await axios.patch(`${API_URL}users/notifications/${id}`);
   return response.data;

@@ -46,6 +46,7 @@ import CreateActivityPage from "./pages/Advertiser/CreateActivityPage";
 import CreateItinerary from "./components/tourGuideComponents/CreateItinerary";
 import TouristWishlistPage from "./pages/Tourist/TouristWishlistPage";
 import TouristCartPage from "./pages/Tourist/TouristCartPage";
+import AdminManagePromocodesPage from "./pages/Admin/AdminManagePromocodesPage";
 
 const theme = createTheme({
   // palette: {
@@ -210,6 +211,10 @@ function App() {
             <Route
               path="/admin/editProfile"
               element={<AdminManageProfile id={adminId} />}
+            />
+            <Route
+              path="/admin/add-promocode"
+              element={<AdminManagePromocodesPage />}
             />
             <Route
               path="/admin/deletion-requests"

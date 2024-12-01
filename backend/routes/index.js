@@ -34,7 +34,7 @@ router.patch("/users/status", userController.updateAllUsersStatus); // Update th
 router.patch("/users/status/:id", userController.updateUserStatus); // Update the status of a specific user by ID
 router.get("/users/status/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status
 router.get("/users/notifications/:id", userController.getUserNotifications); // Get all notifications for a user
-router.patch("/users/notifications/:id", userController.clearAllNotifications); // Mark all notifications as read for a user
+router.patch("/users/notifications/:id", userController.readAllNotifications); // Mark all notifications as read for a user
 //--------------------------------------------------------------
 
 //Routes for Admin

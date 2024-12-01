@@ -11,7 +11,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-
 // delete a user by id
 const deleteUser = async (req, res) => {
   try {
@@ -37,7 +36,7 @@ const updateAllUsersStatus = async (req, res) => {
   try {
     const status = req.body.status;
     if (!status)
-        return res.status(400).send("Please provide a status to update to.");
+      return res.status(400).send("Please provide a status to update to.");
     await User.updateMany({}, { status: status });
     res.status(200).send(`Updated all users to ${status}.`);
   } catch (error) {
@@ -50,7 +49,7 @@ const updateUserStatus = async (req, res) => {
   try {
     const status = req.body.status;
     if (!status)
-        return res.status(400).send("Please provide a status to update to.");
+      return res.status(400).send("Please provide a status to update to.");
     await User.findByIdAndUpdate(req.params.id, { status: status });
     res.status(200).send("Updated user to ppending.");
   } catch (error) {
@@ -69,6 +68,21 @@ const getUserNotifications = async (req, res) => {
 };
 
 // Read all notifications for a user
+const readAllNotifications = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      $set: {
+        "notifications.$[].isRead": true,
+      },
+    });
+    res.status(200).send("All notifications marked as read.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+
+// Clear all notifications for a user
 const clearAllNotifications = async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.params.id, {
@@ -87,5 +101,6 @@ module.exports = {
   updateAllUsersStatus,
   updateUserStatus,
   getUserNotifications,
+  readAllNotifications,
   clearAllNotifications,
 };

@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-const NotificationDropdown = ({ notifications, setNotifications, clearAllUserNotifications }) => {
+const NotificationDropdown = ({ notifications, setNotifications, readAllUserNotifications }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -26,7 +26,7 @@ const NotificationDropdown = ({ notifications, setNotifications, clearAllUserNot
     setNotifications((prev) =>
       prev.map((notification) => ({ ...notification, isRead: true }))
     );
-    clearAllUserNotifications();
+    readAllUserNotifications();
   };
 
   return (
@@ -45,7 +45,7 @@ const NotificationDropdown = ({ notifications, setNotifications, clearAllUserNot
         onClose={handleClose}
         PaperProps={{
           style: {
-            maxHeight: 400,
+            maxHeight: 600,
             width: "60ch",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             borderRadius: "8px",
@@ -84,14 +84,24 @@ const NotificationDropdown = ({ notifications, setNotifications, clearAllUserNot
                 }}
               >
                 <CardContent sx={{ padding: "8px" }}>
+
                   <ListItemText
-                    primary={notification.message}
-                    primaryTypographyProps={{
-                      variant: "body2",
-                      fontWeight: notification.isRead ? "400" : "600",
-                      color: notification.isRead ? "text.secondary" : "text.primary",
-                    }}
+                    primary={
+                      <Typography
+                        variant="body2"
+                        fontWeight={notification.isRead ? "400" : "600"}
+                        color={notification.isRead ? "text.secondary" : "text.primary"}
+                        style={{
+                          whiteSpace: "normal", // Allow text to wrap
+                          wordBreak: "break-word", // Break words if they exceed the container width
+                          overflow: "visible", // Ensure the text doesn't get truncated
+                        }}
+                      >
+                        {notification.message}
+                      </Typography>
+                    }
                   />
+
                 </CardContent>
               </Card>
             </MenuItem>

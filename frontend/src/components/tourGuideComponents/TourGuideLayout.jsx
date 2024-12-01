@@ -18,7 +18,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
 
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -47,9 +47,9 @@ const TourGuideLayout = ({tourguideId}) => {
         }
     };
 
-    const _clearAllUserNotifications = async () => {
+    const _readAllUserNotifications = async () => {
         try {
-            await clearAllUserNotifications(tourguideId);
+            await readAllUserNotifications(tourguideId);
         } catch (error) {
             console.error("Error reading notifications:", error);
         }
@@ -156,7 +156,7 @@ const TourGuideLayout = ({tourguideId}) => {
                         </Typography>
                     </Box>
 
-                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
+                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} readAllUserNotifications={_readAllUserNotifications} />
 
                     <IconButton
                         size="large"

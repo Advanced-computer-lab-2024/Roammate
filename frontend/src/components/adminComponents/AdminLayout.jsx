@@ -18,7 +18,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import { fetchUserNotifications, clearAllUserNotifications } from '../../services/api';
+import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
 
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -30,6 +30,7 @@ const navItems = [
   "Home",
   "Add Admin",
   "Add Governor",
+  "Add Promocode",
   "Account Deletion Requests",
   "Products",
   "Activities",
@@ -39,7 +40,7 @@ const navItems = [
 ];
 
 const drawerWidth = 240;
-const AdminLayout = ({adminId}) => {
+const AdminLayout = ({ adminId }) => {
   const [open, setOpen] = React.useState(false);
   const [buttons, setButtons] = React.useState([
     "Users",
@@ -52,20 +53,20 @@ const AdminLayout = ({adminId}) => {
   const [notifications, setNotifications] = React.useState([]);
 
   const _fetchUserNotifications = async () => {
-      try {
-          let result = await fetchUserNotifications(adminId);
-          setNotifications(result);
-      } catch (error) {
-          console.error("Error fetching notifications:", error);
-      }
+    try {
+      let result = await fetchUserNotifications(adminId);
+      setNotifications(result);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
   };
 
-  const _clearAllUserNotifications = async () => {
-      try {
-          await clearAllUserNotifications(adminId);
-      } catch (error) {
-          console.error("Error reading notifications:", error);
-      }
+  const _readAllUserNotifications = async () => {
+    try {
+      await readAllUserNotifications(adminId);
+    } catch (error) {
+      console.error("Error reading notifications:", error);
+    }
   };
 
   React.useEffect(() => {
@@ -77,6 +78,8 @@ const AdminLayout = ({adminId}) => {
       navigate(`/admin/complaints?id=`);
     } else if (activeButton === "Edit Profile") {
       navigate("/admin/editProfile");
+    } else if (activeButton === "Add Promocode") {
+      navigate("/admin/add-promocode");
     } else if (activeButton === "Account Deletion Requests") {
       navigate("/admin/deletion-requests");
     } else if (activeButton === "Activities") {
@@ -204,7 +207,7 @@ const AdminLayout = ({adminId}) => {
             </Typography>
           </Box>
 
-          <NotificationDropdown notifications={notifications} setNotifications={setNotifications} clearAllUserNotifications={_clearAllUserNotifications} />
+          <NotificationDropdown notifications={notifications} setNotifications={setNotifications} readAllUserNotifications={_readAllUserNotifications} />
 
           <IconButton
             size="large"
@@ -241,9 +244,8 @@ const AdminLayout = ({adminId}) => {
               key={index}
               onClick={() => setActiveButton(button)}
               sx={{
-                borderBottom: `${
-                  activeButton === button ? "3px solid lightgreen" : "default"
-                }`,
+                borderBottom: `${activeButton === button ? "3px solid lightgreen" : "default"
+                  }`,
               }}
             >
               {button}
