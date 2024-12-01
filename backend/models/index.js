@@ -17,7 +17,9 @@ const ProductPurchasing = require("./ProductPurchasing");
 const MonumentsVisiting = require("./MonumentsVisiting");
 const Complaint = require("./Complaint");
 const transportation = require("./Transportation");
-
+const ProductWishlist = require("./ProductWishlist");
+const UserCart = require("./UserCart");
+const PromoCode = require("./PromoCode");
 // Export all models
 module.exports = {
   User,
@@ -39,4 +41,6 @@ module.exports = {
   MonumentsVisiting,
   Complaint,
   transportation,
+  ProductWishlist,
+  UserCart,
 };

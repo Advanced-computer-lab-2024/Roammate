@@ -6,7 +6,6 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -15,39 +14,74 @@ import Typography from "@mui/material/Typography";
 import PublicIcon from "@mui/icons-material/Public";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import HomeIcon from '@mui/icons-material/Home';
-import SnowboardingIcon from '@mui/icons-material/Snowboarding';
-import MapIcon from '@mui/icons-material/Map';
-import MuseumIcon from '@mui/icons-material/Museum';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import ReportIcon from '@mui/icons-material/Report';
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import HomeIcon from "@mui/icons-material/Home";
+import SnowboardingIcon from "@mui/icons-material/Snowboarding";
+import { Favorite } from "@mui/icons-material";
+import MapIcon from "@mui/icons-material/Map";
+import MuseumIcon from "@mui/icons-material/Museum";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import ReportIcon from "@mui/icons-material/Report";
+import { ShoppingCart } from "@mui/icons-material";
+import { useState } from "react";
+
+import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
+import { Badge, Collapse, ListItemIcon, ListSubheader } from "@mui/material";
 import CurrencySelector from "./CurrencySelector";
-import { fetchConversionRates, logout } from "../../services/api";
+import { fetchConversionRates, getUserCart, logout } from "../../services/api";
 import { AirplaneTicket } from "@mui/icons-material";
+
+import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 const TouristLayout = () => {
+    const userId = localStorage.getItem("userId");
     const [open, setOpen] = React.useState(false);
     const [myBookingsOpen, setMyBookingsOpen] = React.useState(open);
+    const [cartItemCount, setCartItemCount] = useState(0); // Track cart item count
     const [buttons, setButtons] = React.useState([
         "Activities",
         "Itineraries",
         "Products",
         "Monuments",
     ]);
-    const [activeButton, setActiveButton] = React.useState(localStorage.getItem("activeButton"));
+    const [activeButton, setActiveButton] = React.useState(
+        localStorage.getItem("activeButton")
+    );
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get("id") || "");
+
+    const handleCartClick = () => {
+        navigate("/tourist/cart");
+        setActiveButton("Cart");
+    };
+
+    const [notifications, setNotifications] = React.useState([]);
+
+    const _fetchUserNotifications = async () => {
+        try {
+            let result = await fetchUserNotifications(userId);
+            setNotifications(result);
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    const _readAllUserNotifications = async () => {
+        try {
+            await readAllUserNotifications(userId);
+        } catch (error) {
+            console.error("Error reading notifications:", error);
+        }
+    };
 
     React.useEffect(() => {
         const fetchRates = async () => {
@@ -57,8 +91,27 @@ const TouristLayout = () => {
                 console.error("Error fetching rates:", error);
             }
         };
+
+        const fetchCartData = async () => {
+            try {
+                const cart = await getUserCart(userId); // Fetch the user's cart
+                const totalItems = cart?.products.reduce(
+                    (sum, product) => sum + product.quantity,
+                    0
+                );
+                setCartItemCount(totalItems || 0); // Update the item count
+            } catch (error) {
+                console.error("Error fetching cart data:", error);
+            }
+        };
+        fetchCartData();
+
         //fetch rates
-        fetchRates()
+        fetchRates();
+
+        // if (location.pathname.startsWith("/tourist/cart")) {
+        //   return;
+        // }
 
         //fetch path
         if (location.pathname === "/tourist") {
@@ -77,7 +130,9 @@ const TouristLayout = () => {
             navigate("/tourist/editProfile");
         }
         localStorage.setItem("activeButton", activeButton);
-    }, [activeButton, navigate]);
+
+        _fetchUserNotifications();
+    }, [activeButton, navigate, userId]);
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -97,37 +152,57 @@ const TouristLayout = () => {
     }
 
     const drawerList = (
-        <Box sx={{ width: 250 }} role="presentation" >
-            <Box flexGrow={1} display="flex" justifyContent="right" alignItems="center" sx={{ height: 64 }} >
+        <Box sx={{ width: 250 }} role="presentation">
+            <Box
+                flexGrow={1}
+                display="flex"
+                justifyContent="right"
+                alignItems="center"
+                sx={{ height: 64 }}
+            >
                 <IconButton size="medium" onClick={toggleDrawer} sx={{ mr: 1 }}>
                     <ArrowBackIosNewIcon />
                 </IconButton>
             </Box>
             <Divider />
             <List
-                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
             // subheader={
             //     <ListSubheader component="div" id="nested-list-subheader">
             //         Roammate
             //     </ListSubheader>
             // }
             >
-
                 <ListItemButton
-                    onClick={
-                        () => {
-                            navigate('/tourist');
-                            toggleDrawer();
-                        }
-                    }>
+                    onClick={() => {
+                        navigate("/tourist");
+                        toggleDrawer();
+                    }}
+                >
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>
-                    <ListItemText primary={'Home'} />
+                    <ListItemText primary={"Home"} />
                 </ListItemButton>
 
                 <ListItemButton
-                    onClick={handleMyBookingsClick}>
+                    onClick={() => {
+                        navigate("/tourist/wishlist");
+                        setActiveButton("");
+                    }}
+                >
+                    <ListItemIcon>
+                        <Favorite fontSize="small" />{" "}
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="My Products Wishlist"
+                        primaryTypographyProps={{
+                            fontSize: "0.9rem",
+                        }}
+                    />
+                </ListItemButton>
+
+                <ListItemButton onClick={handleMyBookingsClick}>
                     <ListItemIcon>
                         <MenuBookIcon />
                     </ListItemIcon>
@@ -137,126 +212,144 @@ const TouristLayout = () => {
 
                 <Collapse in={myBookingsOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        <ListItemButton sx={{ pl: 4 }} onClick={
-                            () => {
+                        <ListItemButton
+                            sx={{ pl: 4 }}
+                            onClick={() => {
                                 toggleDrawer();
-                                navigate('/tourist/bookings/activities');
-                                setActiveButton('');
-                            }}>
+                                navigate("/tourist/bookings/activities");
+                                setActiveButton("");
+                            }}
+                        >
                             <ListItemIcon>
-                                <SnowboardingIcon fontSize='small' />
+                                <SnowboardingIcon fontSize="small" />
                             </ListItemIcon>
                             <ListItemText
                                 primary="My Activities"
                                 primaryTypographyProps={{
-                                    fontSize: '0.9rem',
+                                    fontSize: "0.9rem",
                                 }}
                             />
                         </ListItemButton>
 
-                        <ListItemButton sx={{ pl: 4 }} onClick={
-                            () => {
+                        <ListItemButton
+                            sx={{ pl: 4 }}
+                            onClick={() => {
                                 toggleDrawer();
-                                navigate('/tourist/bookings/itineraries');
-                                setActiveButton('');
-                            }}>
+                                navigate("/tourist/bookings/itineraries");
+                                setActiveButton("");
+                            }}
+                        >
                             <ListItemIcon>
-                                <MapIcon fontSize='small' />
+                                <MapIcon fontSize="small" />
                             </ListItemIcon>
                             <ListItemText
                                 primary="My Itineraries"
                                 primaryTypographyProps={{
-                                    fontSize: '0.9rem',
-                                }} />
+                                    fontSize: "0.9rem",
+                                }}
+                            />
                         </ListItemButton>
 
-                        <ListItemButton sx={{ pl: 4 }} onClick={
-                            () => {
+                        <ListItemButton
+                            sx={{ pl: 4 }}
+                            onClick={() => {
                                 toggleDrawer();
-                                navigate('/tourist/bookings/visits');
-                                setActiveButton('');
-                            }}>
+                                navigate("/tourist/bookings/visits");
+                                setActiveButton("");
+                            }}
+                        >
                             <ListItemIcon>
-                                <MuseumIcon fontSize='small' />
+                                <MuseumIcon fontSize="small" />
                             </ListItemIcon>
                             <ListItemText
                                 primary="My Visits"
                                 primaryTypographyProps={{
-                                    fontSize: '0.9rem',
-                                }} />
+                                    fontSize: "0.9rem",
+                                }}
+                            />
                         </ListItemButton>
-
                     </List>
                 </Collapse>
 
-                <ListItemButton onClick={
-                    () => {
+                <ListItemButton
+                    onClick={() => {
                         toggleDrawer();
-                        navigate('/tourist/purchases');
-                        setActiveButton('');
-                    }}>
+                        navigate("/tourist/purchases");
+                        setActiveButton("");
+                    }}
+                >
                     <ListItemIcon>
                         <ShoppingBagIcon />
                     </ListItemIcon>
-                    <ListItemText primary={'My Purchases'} />
+                    <ListItemText primary={"My Purchases"} />
                 </ListItemButton>
 
-                <ListItemButton onClick={
-                    () => {
+                <ListItemButton
+                    onClick={() => {
                         toggleDrawer();
-                        navigate('/tourist/flights');
-                        setActiveButton('');
-                    }}>
+                        navigate("/tourist/flights");
+                        setActiveButton("");
+                    }}
+                >
                     <ListItemIcon>
                         <AirplaneTicket />
                     </ListItemIcon>
-                    <ListItemText primary={'Flights'} />
+                    <ListItemText primary={"Flights"} />
                 </ListItemButton>
 
-                <Divider sx={{
-                    mt: '10px',
-                    mb: '10px',
-                }} />
+                <Divider
+                    sx={{
+                        mt: "10px",
+                        mb: "10px",
+                    }}
+                />
 
-                <ListItemButton onClick={
-                    () => {
+                <ListItemButton
+                    onClick={() => {
                         toggleDrawer();
-                        navigate('/tourist/complaints');
-                        setActiveButton('');
-                    }}>
+                        navigate("/tourist/complaints");
+                        setActiveButton("");
+                    }}
+                >
                     <ListItemIcon>
-                        <ReportIcon fontSize='medium' />
+                        <ReportIcon fontSize="medium" />
                     </ListItemIcon>
                     <ListItemText
                         primary="Complaints"
                         primaryTypographyProps={{
-                            fontSize: '1rem',
-                        }} />
+                            fontSize: "1rem",
+                        }}
+                    />
                 </ListItemButton>
-
             </List>
-
-
-        </Box >
+        </Box>
     );
 
     return (
-
-        <Box sx={{
-            display: 'flex', flexDirection: 'column', flexGrow: 1, pl: `calc(${open ? drawerWidth : 0}px)`,
-            transition: 'padding-left 225ms',
-        }}>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                flexGrow: 1,
+                pl: `calc(${open ? drawerWidth : 0}px)`,
+                transition: "padding-left 225ms",
+            }}
+        >
             <CssBaseline />
             <Drawer open={open} onClose={toggleDrawer}>
                 {drawerList}
             </Drawer>
-            <AppBar position="fixed" color='primary' sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                pl: `calc(${open ? drawerWidth : 0}px)`,
-                transition: 'padding-left 225ms',
-            }}>
+            <AppBar
+                position="fixed"
+                color="primary"
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    pl: `calc(${open ? drawerWidth : 0}px)`,
+                    transition: "padding-left 225ms",
+                }}
+            >
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -264,31 +357,43 @@ const TouristLayout = () => {
                         color="inherit"
                         aria-label="menu"
                         sx={{
-                            mr: 2, display: `${open ? 'none' : 'block'}`,
+                            mr: 2,
+                            display: `${open ? "none" : "block"}`,
                         }}
                         onClick={toggleDrawer}
-
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Box sx={{
-                        display: 'flex',
-                        flexGrow: 1,
-                        justifyContent: 'left',
-                        alignItems: 'center',
-                    }}>
-                        <Typography variant="h6" component="div" sx={{
-                            textAlign: 'left'
-                        }}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexGrow: 1,
+                            justifyContent: "left",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{
+                                textAlign: "left",
+                            }}
+                        >
                             R
                         </Typography>
                         <PublicIcon />
-                        <Typography variant="h6" component="div" sx={{
-                            textAlign: 'left'
-                        }}>
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{
+                                textAlign: "left",
+                            }}
+                        >
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} readAllUserNotifications={_readAllUserNotifications} />
 
                     <CurrencySelector />
 
@@ -309,42 +414,94 @@ const TouristLayout = () => {
                         color="inherit"
                         aria-label="profile"
                         sx={{ ml: 2 }}
-                        onClick={() => setActiveButton('Edit Profile')}
+                        onClick={() => setActiveButton("Edit Profile")}
                     >
                         <AccountCircleIcon />
                     </IconButton>
-
                 </Toolbar>
-
             </AppBar>
-            <Box sx={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                backgroundColor: 'primary', mt: '50px', mb: '0'
-            }}>
-                <Box variant="text" aria-label="text primary button group" sx={{
-                    mb: '20px',
-                }}>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "primary",
+                    mt: "50px",
+                    mb: "0",
+                }}
+            >
+                <Box
+                    variant="text"
+                    aria-label="text primary button group"
+                    sx={{
+                        mb: "20px",
+                    }}
+                >
                     {buttons.map((button, index) => (
-                        <Button variant="text" key={index} onClick={() => {
-                            setActiveButton(button)
-                            setId('')
-                        }}
-                            sx={{
-                                borderBottom: `${activeButton === button ? '3px solid lightgreen' : 'default'}`,
+                        <Button
+                            variant="text"
+                            key={index}
+                            onClick={() => {
+                                setActiveButton(button);
+                                setId("");
                             }}
-                        >{button}</Button>
+                            sx={{
+                                borderBottom: `${activeButton === button ? "3px solid lightgreen" : "default"
+                                    }`,
+                            }}
+                        >
+                            {button}
+                        </Button>
                     ))}
                 </Box>
-
             </Box>
-            <Box sx={{
-                flexGrow: 1, display: 'flex', flexDirection: 'column',
-                mt: '0px',
-            }}>
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    mt: "0px",
+                }}
+            >
                 <Outlet context={{ setActiveButton }} />
             </Box>
-        </Box >
+
+            <Box
+                sx={{
+                    position: "fixed",
+                    bottom: 16,
+                    right: 16,
+                    zIndex: 1000,
+                    backgroundColor: "white",
+                    borderRadius: "12px",
+                    boxShadow: 3,
+                    padding: "8px 16px", // Added padding for spacing
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1, // Space between icon and text
+                    cursor: "pointer", // Make it clear the box is clickable
+                    transition: "transform 0.3s", // Animation on hover
+                    "&:hover": {
+                        transform: "scale(1.05)", // Slightly enlarge on hover
+                    },
+                }}
+                onClick={handleCartClick} // Attach click handler to the entire box
+            >
+                <Badge badgeContent={cartItemCount} color="secondary">
+                    <ShoppingCart fontSize="large" color="primary" />
+                </Badge>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        fontWeight: "bold",
+                        color: "primary.main",
+                    }}
+                >
+                    Cart ({cartItemCount} items)
+                </Typography>
+            </Box>
+        </Box>
     );
-}
+};
 
 export default TouristLayout;

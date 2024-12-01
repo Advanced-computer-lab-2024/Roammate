@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const schedule = require("node-schedule");
+const setupSchedulers = require("./utils/scheduler");
 dotenv.config();
 const cookieParser = require("cookie-parser");
 
@@ -25,6 +27,7 @@ mongoose
   .then(() => {
     console.log("MongoDB is now connected!");
     // Starting server here only after successful database connection
+    setupSchedulers();
     app.listen(port, () => {
       console.log(`Listening to requests on http://localhost:${port}`);
     });

@@ -20,6 +20,9 @@ const {
   deletionRequestsController,
   transportationController,
   passwordController,
+  productWishlistController,
+  userCartController,
+  PromoCodeController,
 } = require("../controllers");
 const { requireAuth } = require("../middleware/AuthMiddleware");
 
@@ -31,6 +34,8 @@ router.delete("/users/:id", userController.deleteUser); // Delete a user by ID
 router.patch("/users/status", userController.updateAllUsersStatus); // Update the status of all users
 router.patch("/users/status/:id", userController.updateUserStatus); // Update the status of a specific user by ID
 router.get("/users/status/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status
+router.get("/users/notifications/:id", userController.getUserNotifications); // Get all notifications for a user
+router.patch("/users/notifications/:id", userController.readAllNotifications); // Mark all notifications as read for a user
 //--------------------------------------------------------------
 
 //Routes for Admin
@@ -387,8 +392,8 @@ router.get("/pdf/:id", filesController.getPdf);
 
 //Routes for booking
 router.post("/search-flights", bookingController.searchFlights);
-router.get("/search-hotels", bookingController.searchHotels);
-router.get("/list-hotels", bookingController.getHotelListByCity);
+router.get("/search-hotel", bookingController.getHotelDetails);
+router.get("/list-hotels", bookingController.getHotelsByCity);
 
 //--------------------------------------------------------------
 
@@ -484,4 +489,47 @@ router.post("/logout", userController.logoutUser);
 router.get("/userRole", userController.getUserRole);
 //--------------------------------------------------------------
 
+//--------------------------------------------------------------
+
+// Login User
+router.post("/login", userController.loginUser);
+//--------------------------------------------------------------
+
+// Logout User
+router.post("/logout", userController.logoutUser);
+//--------------------------------------------------------------
+
+// Get user role
+router.get("/userRole", userController.getUserRole);
+//--------------------------------------------------------------
+
+//--------------------------------------------------------------
+
+// Routes for Product Wishlisting
+router.post(
+  "/wishlist/:userId/add",
+  productWishlistController.addProductToWishlist
+);
+router.get("/wishlist/:userId", productWishlistController.getWishlistByUserId);
+router.post(
+  "/wishlist/:userId/toggle",
+  productWishlistController.toggleProductInWishlist
+);
+
+// Routes for User Cart
+router.post("/cart/:userId/add", userCartController.addProductToCart);
+router.patch("/cart/:userId/update", userCartController.updateProductQuantity);
+router.delete("/cart/:userId/remove", userCartController.removeProductFromCart);
+router.get("/cart/:userId", userCartController.getUserCart);
+
+// Promo Code Routes
+router.post("/promoCodes", PromoCodeController.createPromoCode);
+router.post("/promoCodes/birthday", PromoCodeController.sendBirthdayPromoCode);
+router.post("/promoCodes/apply", PromoCodeController.applyPromoCode);
+router.get("/promoCodes", PromoCodeController.getAllPromoCodes);
+router.get("/promoCodes/user/:userId", PromoCodeController.getPromoCodesByUser);
+router.post(
+  "/reset-birthday-promo",
+  PromoCodeController.resetBirthdayPromoSent
+);
 module.exports = router;

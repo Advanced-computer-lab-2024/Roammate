@@ -42,6 +42,9 @@ import TouristRegister from "./pages/Tourist/TouristRegister";
 import Login from "./pages/Registration&Login/LoginPage";
 import ProtectedRoute from "./components/ProtectedRouteComponent";
 import OthersRegisteration from "./pages/Registration&Login/OthersRegisteration";
+import TouristWishlistPage from "./pages/Tourist/TouristWishlistPage";
+import TouristCartPage from "./pages/Tourist/TouristCartPage";
+import AdminManagePromocodesPage from "./pages/Admin/AdminManagePromocodesPage";
 
 const theme = createTheme({
   // palette: {
@@ -97,10 +100,21 @@ function App() {
               element={<TouristActivitiesPage />}
             />
             <Route
+              path="/tourist/wishlist"
+              element={<TouristWishlistPage />}
+            />
+            <Route
               path="/tourist/itineraries"
               element={<TouristItinerariesPage />}
             />
-            <Route path="/tourist/products" element={<TouristProductsPage />} />
+            <Route
+              path="/tourist/products"
+              element={<TouristProductsPage />}
+            />
+            <Route
+              path="/tourist/cart"
+              element={<TouristCartPage />}
+            />
             <Route
               path="/tourist/editProfile"
               element={<TouristEditProfile />}
@@ -240,6 +254,14 @@ function App() {
             <Route
               path="/admin/editProfile"
               element={<AdminManageProfile />}
+            />
+            <Route
+              path="/admin/add-promocode"
+              element={<AdminManagePromocodesPage />}
+            />
+            <Route
+              path="/admin/add-promocode"
+              element={<AdminManagePromocodesPage />}
             />
             <Route
               path="/admin/deletion-requests"

@@ -119,6 +119,43 @@ const getUserRole = async (req, res) => {
   }
 };
 
+// Get all notifications for a user
+const getUserNotifications = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user.notifications);
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+};
+
+// Read all notifications for a user
+const readAllNotifications = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      $set: {
+        "notifications.$[].isRead": true,
+      },
+    });
+    res.status(200).send("All notifications marked as read.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+
+// Clear all notifications for a user
+const clearAllNotifications = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      notifications: [],
+    });
+    res.status(200).send("All notifications read.");
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+};
+
 module.exports = {
   getAllUsers,
   deleteUser,
@@ -128,4 +165,7 @@ module.exports = {
   loginUser,
   logoutUser,
   getUserRole,
+  getUserNotifications,
+  readAllNotifications,
+  clearAllNotifications,
 };

@@ -22,15 +22,20 @@ import MuseumIcon from "@mui/icons-material/Museum";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CategoryIcon from '@mui/icons-material/Category';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
+
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from "../../services/api";
 
+import NotificationDropdown from '../sharedComponents/NotificationDropdown';
+
 const navItems = [
   "Home",
   "Add Admin",
   "Add Governor",
+  "Add Promocode",
   "Account Deletion Requests",
   'Create Product',
   "Products",
@@ -42,6 +47,7 @@ const navItems = [
 
 const drawerWidth = 240;
 const AdminLayout = () => {
+  const adminId = localStorage.getItem('userId');
   const [open, setOpen] = React.useState(false);
   const [buttons, setButtons] = React.useState([
     "Users",
@@ -51,19 +57,40 @@ const AdminLayout = () => {
   const [activeButton, setActiveButton] = React.useState();
   const navigate = useNavigate();
 
+  const [notifications, setNotifications] = React.useState([]);
+
+  const _fetchUserNotifications = async () => {
+    try {
+      let result = await fetchUserNotifications(adminId);
+      setNotifications(result);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  const _readAllUserNotifications = async () => {
+    try {
+      await readAllUserNotifications(adminId);
+    } catch (error) {
+      console.error("Error reading notifications:", error);
+    }
+  };
+
   React.useEffect(() => {
     if (location.pathname === '/admin' && activeButton !== 'Users') {
       setActiveButton('Users');
     }
 
     if (activeButton === "Users") {
-      navigate('/admin/users');
+      navigate("/admin/users");
     } else if (activeButton === "Registrations") {
       navigate("/admin/registrations");
     } else if (activeButton === "Complaints") {
       navigate(`/admin/complaints?id=`);
     } else if (activeButton === "Edit Profile") {
       navigate("/admin/editProfile");
+    } else if (activeButton === "Add Promocode") {
+      navigate("/admin/add-promocode");
     } else if (activeButton === "Account Deletion Requests") {
       navigate("/admin/deletion-requests");
     } else if (activeButton === "Activities") {
@@ -77,6 +104,7 @@ const AdminLayout = () => {
     } else if (activeButton === 'Create Product') {
       navigate('/admin/create-product');
     }
+    _fetchUserNotifications();
   }, [activeButton, navigate]);
 
   const toggleDrawer = (newOpen) => () => {
@@ -279,16 +307,9 @@ const AdminLayout = () => {
               AMMATE
             </Typography>
           </Box>
-          {/* <IconButton
-                        size="large"
-                        edge="end"
-                        color="inherit"
-                        aria-label="profile"
-                        sx={{ ml: 2 }}
-                        onClick={() => setActiveButton('Edit Profile')}
-                    >
-                        <AccountCircleIcon />
-                    </IconButton> */}
+
+          <NotificationDropdown notifications={notifications} setNotifications={setNotifications} readAllUserNotifications={_readAllUserNotifications} />
+
 
           <IconButton
             size="large"
