@@ -498,4 +498,8 @@ router.post("/promoCodes/birthday", PromoCodeController.sendBirthdayPromoCode);
 router.post("/promoCodes/apply", PromoCodeController.applyPromoCode);
 router.get("/promoCodes", PromoCodeController.getAllPromoCodes);
 router.get("/promoCodes/user/:userId", PromoCodeController.getPromoCodesByUser);
+router.post(
+  "/reset-birthday-promo",
+  PromoCodeController.resetBirthdayPromoSent
+);
 module.exports = router;

@@ -1,6 +1,6 @@
 const PromoCode = require("../models/PromoCode");
 const Tourist = require("../models/Tourist");
-const nodemailer = require("nodemailer");
+const sendEmail = require("../utils/nodeMailer");
 
 // Create a promo code
 const createPromoCode = async (req, res) => {
@@ -28,63 +28,131 @@ const createPromoCode = async (req, res) => {
   }
 };
 
-// Send promo code on user's birthday
-const sendBirthdayPromoCode = async (req, res) => {
+//Send promo code on user's birthday
+const sendBirthdayPromoCode = async () => {
+  console.log("Running birthday promo code function...");
   try {
     const today = new Date();
-    const tourists = await Tourist.find({
-      DOB: {
-        $eq: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-      },
+
+    // Calculate MM-DD for yesterday, today, and tomorrow
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const yesterdayMMDD = `${String(yesterday.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(yesterday.getDate()).padStart(2, "0")}`;
+    const todayMMDD = `${String(today.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(today.getDate()).padStart(2, "0")}`;
+    const tomorrowMMDD = `${String(tomorrow.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(tomorrow.getDate()).padStart(2, "0")}`;
+
+    console.log(
+      "Checking birthdays for:",
+      yesterdayMMDD,
+      todayMMDD,
+      tomorrowMMDD
+    );
+
+    // Fetch all tourists and compare their MM-DD values
+    const allTourists = await Tourist.find({});
+    console.log("Total tourists:", allTourists.length);
+
+    const matchedTourists = allTourists.filter((tourist) => {
+      const dobMMDD = tourist.DOB.toISOString().slice(5, 10); // Extract MM-DD from DOB
+      console.log(`Tourist: ${tourist.username}, DOB: ${dobMMDD}`);
+      if ([yesterdayMMDD, todayMMDD, tomorrowMMDD].includes(dobMMDD)) {
+        console.log(`Match found: ${tourist.username} with DOB: ${dobMMDD}`);
+        return true;
+      } else {
+        console.log(`No match for: ${tourist.username} with DOB: ${dobMMDD}`);
+        return false;
+      }
     });
 
-    if (!tourists.length)
-      return res.status(200).json({ message: "No birthdays today" });
+    if (!matchedTourists.length) {
+      console.log("No matching birthdays found.");
+      return;
+    }
 
-    tourists.forEach(async (tourist) => {
+    for (const tourist of matchedTourists) {
+      console.log("Processing birthday for:", tourist.username);
+
       const promoCode = new PromoCode({
-        code: `HBD-${tourist.username.toUpperCase()}-${Date.now()}`,
+        code: Math.random().toString(36).substring(2, 7).toUpperCase(), // Generate a 5-char alphanumeric code
+
         discount: 20, // 20% discount
         expirationDate: new Date(
           today.getFullYear(),
           today.getMonth() + 1,
           today.getDate()
-        ), // 1 month validity
+        ), // 1 month valid
         usageLimit: 1,
-        applicableRoles: ["tourist"],
+        userId: tourist._id,
       });
 
       await promoCode.save();
 
-      // Send email using Nodemailer
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
+      try {
+        tourist.notifications.push({
+          message: `Happy Birthday! Enjoy your promo code: ${
+            promoCode.code
+          }.\n20% discount on your next booking, until ${promoCode.expirationDate.toDateString()}.`,
+        });
+        await sendEmail(
+          tourist.email,
+          "Happy Birthday! Here's Your Promo Code 🎉",
+          `Dear ${
+            tourist.username
+          },\n\nCelebrate your special day with this exclusive promo code: ${
+            promoCode.code
+          }.\nEnjoy a 20% discount on your next booking. Code valid until ${promoCode.expirationDate.toDateString()}.\n\nBest Wishes,\nVirtual Trip Planner Team`
+        );
+        console.log(`Promo email sent to: ${tourist.email}`);
+      } catch (emailError) {
+        console.error(
+          `Failed to send email to ${tourist.email}:`,
+          emailError.message
+        );
+        continue; // Skip updating if email fails
+      }
 
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: tourist.email,
-        subject: "Happy Birthday! Here's Your Promo Code 🎉",
-        text: `Dear ${
-          tourist.username
-        },\n\nCelebrate your special day with this exclusive promo code: ${
-          promoCode.code
-        }.\nEnjoy a 20% discount on your next booking. Code valid until ${promoCode.expirationDate.toDateString()}.\n\nBest Wishes,\nVirtual Trip Planner Team`,
-      };
+      // Update `birthdayPromoSent` flag
+      tourist.birthdayPromoSent = new Date();
+      await tourist.save();
+      console.log(`Promo sent status updated for: ${tourist.username}`);
+    }
 
-      await transporter.sendMail(mailOptions);
-    });
-
-    res.status(200).json({ message: "Birthday promo codes sent!" });
+    console.log("Birthday promo codes process completed!");
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error in sendBirthdayPromoCode:", error.message);
   }
 };
 
+const resetBirthdayPromoSent = async (req, res) => {
+  try {
+    const result = await Tourist.updateMany(
+      {},
+      { $set: { birthdayPromoSent: null } }
+    );
+    res.status(200).json({
+      message: `Reset birthdayPromoSent for ${result.modifiedCount} tourists.`,
+    });
+  } catch (error) {
+    console.error("Error resetting birthdayPromoSent:", error.message);
+    res.status(500).json({
+      message: "Error resetting birthdayPromoSent.",
+      error: error.message,
+    });
+  }
+};
 // Apply promo code
 const applyPromoCode = async (req, res) => {
   const { code, userId } = req.body;
@@ -160,4 +228,5 @@ module.exports = {
   applyPromoCode,
   getAllPromoCodes,
   getPromoCodesByUser,
+  resetBirthdayPromoSent,
 };
