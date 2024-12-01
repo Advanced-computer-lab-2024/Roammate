@@ -64,6 +64,10 @@ const touristSchema = new Schema(
         ref: "ActivityCategory",
       },
     ],
+    birthdayPromoSent: {
+      type: Date, // Store the date when the promo was last sent
+      default: null,
+    },
   },
   {
     timestamps: true,

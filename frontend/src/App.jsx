@@ -69,6 +69,9 @@ const theme = createTheme({
 function App() {
   // const touristId = '671d24b973e0e7cff8d41903';
   const adminId = "67280e50b680764bbd7428a4";
+  // GEORGE MEDHAT TOURISTID = 674c95371b3c2313258344e1
+  //OLD= 671d24b973e0e7cff8d41903
+
   const touristId = "671d24b973e0e7cff8d41903";
   const advertiserId = "671d255373e0e7cff8d41909";
   const tourguideId = "671d250873e0e7cff8d41907";
@@ -140,7 +143,10 @@ function App() {
             />
           </Route>
 
-          <Route path="/advertiser" element={<AdvertiserLayout advertiserId={advertiserId} />}>
+          <Route
+            path="/advertiser"
+            element={<AdvertiserLayout advertiserId={advertiserId} />}
+          >
             <Route
               path="/advertiser/my-activities"
               element={<AdvertiserActivitiesPage id={advertiserId} />}
@@ -155,7 +161,10 @@ function App() {
             />
           </Route>
 
-          <Route path="/tourguide" element={<TourGuideLayout tourguideId={tourguideId} />}>
+          <Route
+            path="/tourguide"
+            element={<TourGuideLayout tourguideId={tourguideId} />}
+          >
             <Route
               path="/tourguide/my-itineraries"
               element={<TourGuideItinerariesPage id={tourguideId} />}
@@ -170,7 +179,7 @@ function App() {
             />
           </Route>
 
-          <Route path="/seller" element={<SellerLayout sellerId={sellerId}/>}>
+          <Route path="/seller" element={<SellerLayout sellerId={sellerId} />}>
             <Route
               path="/seller/my-products"
               element={<SellerProductsPage id={sellerId} />}
@@ -197,11 +206,8 @@ function App() {
             />
           </Route>
 
-          <Route path="/admin" element={<AdminLayout adminId={adminId}/>}>
-            <Route
-              path="/admin/users"
-              element={<AdminUsersPage />}
-            />
+          <Route path="/admin" element={<AdminLayout adminId={adminId} />}>
+            <Route path="/admin/users" element={<AdminUsersPage />} />
             <Route
               path="/admin/registrations"
               element={<AdminRegistrationsPage />}
