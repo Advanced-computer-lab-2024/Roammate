@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Box, CircularProgress, Grid, Grid2 } from "@mui/material";
-import CachedIcon from "@mui/icons-material/Cached";
+import { Box, CircularProgress, Grid2 } from "@mui/material";
 import { fetchItinerariesByTourGuideId } from "../../services/api";
 import ItineraryCard from "../../components/tourGuideComponents/ItineraryCard";
 import { useLocation, useOutletContext } from "react-router";
 import ManageItineraryPage from "./ManageItineraryPage";
 
-const TourGuideItinerariesPage = ({ id }) => {
+const TourGuideItinerariesPage = () => {
+  const id = localStorage.getItem("userId");
+
+
   const [itineraries, setItineraries] = useState([]);
   const [fetch, setFetch] = useState(0);
   const { setActiveButton } = useOutletContext();
@@ -15,6 +17,8 @@ const TourGuideItinerariesPage = ({ id }) => {
   const itinerary_id = queryParams.get("id");
 
   useEffect(() => {
+    setItineraries([]);
+    setFetch(0);
     const fetchMyItineraries = async () => {
       const result = await fetchItinerariesByTourGuideId(id);
       setItineraries(result);
@@ -32,22 +36,23 @@ const TourGuideItinerariesPage = ({ id }) => {
 
   return !itinerary_id ? (
     <Box>
-      <Grid2 spacing={2}>
-        <Grid2 xs={12}>
-          {itineraries.length === 0 &&
-            (fetch < 1 ? (
-              <CircularProgress />
-            ) : (
-              <h2>No Itineraries Found</h2>
-            ))}
-        </Grid2>
 
-        {itineraries.map((itinerary) => (
-          <Grid2 item xs={12} sm={6} key={itinerary._id}>
-            <ItineraryCard itinerary={itinerary} />
-          </Grid2>
+      {itineraries.length === 0 &&
+        (fetch < 1 ? (
+          <CircularProgress />
+        ) : (
+          <h2>No Itineraries Found</h2>
         ))}
-      </Grid2>
+
+
+      {itineraries.map((itinerary) => (
+
+        <ItineraryCard
+          key={itinerary._id}
+          itinerary={itinerary} />
+
+      ))}
+
     </Box>
   ) : (
     <ManageItineraryPage

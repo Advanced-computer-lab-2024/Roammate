@@ -4,7 +4,10 @@ import ChangePasswordComponent from "../../components/sharedComponents/ChangePas
 
 import { fetchAdminProfile, updateAdminProfile } from "../../services/api";
 
-const AdminManageProfile = ({ id }) => {
+const AdminManageProfile = () => {
+  const id = localStorage.getItem("userId");
+
+
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -39,9 +42,9 @@ const AdminManageProfile = ({ id }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", gap: 3, padding: 3 }}>
+    <Box sx={{ display: "flex", gap: 3, padding: 3, flexDirection: 'column' }}>
       {/* Profile Form Section */}
-      <Box sx={{ width: "70%" }}>
+      <Box sx={{ width: "500px" }}>
         <form
           onSubmit={handleSubmit}
           style={{
@@ -125,15 +128,15 @@ const AdminManageProfile = ({ id }) => {
       {/* Change Password Component on the Right */}
       <Box
         sx={{
-          width: "30%",
+          width: "500px",
           padding: 2,
           border: "1px solid #ddd",
           borderRadius: "8px",
         }}
       >
-        <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
+        {/* <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
           Change Password
-        </Typography>
+        </Typography> */}
         <ChangePasswordComponent id={id} type="admin" />
       </Box>
     </Box>

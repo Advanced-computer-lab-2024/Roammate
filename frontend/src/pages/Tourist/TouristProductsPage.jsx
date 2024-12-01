@@ -9,6 +9,9 @@ import { useLocation, useOutletContext } from "react-router";
 import TouristViewProduct from "./TouristViewProductPage";
 
 const TouristProductsPage = () => {
+  const id = localStorage.getItem("userId");
+
+
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterAndSortCriteria, setFilterAndSortCriteria] = useState({});
@@ -16,20 +19,19 @@ const TouristProductsPage = () => {
   const { setActiveButton } = useOutletContext();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
+  const queryProductId = queryParams.get("id");
 
   useEffect(() => {
     fetchProducts();
-    if (id) {
+    if (queryProductId) {
       setActiveButton(null);
     }
-  }, [id, fetch]);
+  }, [queryProductId, fetch]);
 
   const fetchProducts = async () => {
     const searchFilterAndSortCriteria = {
       query: searchQuery,
-      ...filterAndSortCriteria,
-      archived: false,
+      ...filterAndSortCriteria
     };
     const queryParameters = new URLSearchParams(searchFilterAndSortCriteria);
     // console.log(queryParameters.toString());
@@ -37,7 +39,7 @@ const TouristProductsPage = () => {
     setProducts(result);
   };
 
-  return !id ? (
+  return !queryProductId ? (
     <Box>
       <SearchBar
         searchQuery={searchQuery}
@@ -72,7 +74,7 @@ const TouristProductsPage = () => {
       </Grid2>
     </Box>
   ) : (
-    <TouristViewProduct id={id} />
+    <TouristViewProduct id={queryProductId} />
   );
 };
 

@@ -18,11 +18,14 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MuseumIcon from "@mui/icons-material/Museum";
+import LabelIcon from '@mui/icons-material/Label';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { logout } from "../../services/api";
 
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-const navItems = ["Home", "Add Musuems", "Add Monument Tag"];
+const navItems = ["Home", "Add Musuems", "Manage Tags"];
 
 const drawerWidth = 240;
 const TourismGovernorLayout = () => {
@@ -44,6 +47,14 @@ const TourismGovernorLayout = () => {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+
+  const handleLogOut = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -134,7 +145,7 @@ const TourismGovernorLayout = () => {
                 textAlign: "left",
               }}
             >
-              Tourism
+              R
             </Typography>
             <PublicIcon />
             <Typography
@@ -144,9 +155,20 @@ const TourismGovernorLayout = () => {
                 textAlign: "left",
               }}
             >
-              Governor
+              AMMATE
             </Typography>
           </Box>
+          <IconButton
+            size="large"
+            edge="end"
+            color="inherit"
+            aria-label="profile"
+            sx={{ ml: 2 }}
+            onClick={handleLogOut}
+          >
+            <LogoutIcon />
+          </IconButton>
+
           <IconButton
             size="large"
             edge="end"
@@ -182,9 +204,8 @@ const TourismGovernorLayout = () => {
               key={index}
               onClick={() => setActiveButton(button)}
               sx={{
-                borderBottom: `${
-                  activeButton === button ? "3px solid lightgreen" : "default"
-                }`,
+                borderBottom: `${activeButton === button ? "3px solid lightgreen" : "default"
+                  }`,
               }}
             >
               {button}

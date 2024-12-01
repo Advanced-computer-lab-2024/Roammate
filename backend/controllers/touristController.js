@@ -7,15 +7,18 @@ const {
 } = require("../models");
 const AccountDeletionRequest = require("../models/AccountDeletionRequest");
 const PreferenceTag = require("../models/PreferenceTag");
+const bcrypt = require("bcrypt");
 
 const register = async (req, res) => {
   const { username, email, password, mobile, nationality, DOB, job } = req.body;
   const role = "tourist";
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
   try {
     const tourist = new Tourist({
       username,
       email,
-      password,
+      password: hashedPassword,
       role,
       mobile,
       nationality,

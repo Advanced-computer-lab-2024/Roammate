@@ -121,32 +121,31 @@ const updateProductById = async (req, res) => {
 
 const getProductsBySellerId = async (req, res) => {
   const { id } = req.params;
-  const { currency = "USD" } = req.query;
+  const { query, minPrice, maxPrice, order } = req.query;
   try {
-    const products = await Product.find({ seller: id })
+    const searchCriteria = getSearchCriteria(query);
+    const filterCriteria = getFilterCriteria(minPrice, maxPrice);
+    const sortCriteria = getSortCriteria(order);
+    const products = await Product.find({
+      ...searchCriteria,
+      ...filterCriteria,
+      seller: id,
+    })
       .populate("seller", "username")
       .populate({
         path: "reviews",
         populate: { path: "user" },
-      });
-
-    const convertedProducts = products.map((product) => {
-      const convertedPrice = convertCurrency(product.price, "USD", currency);
-      return {
-        ...product.toObject(),
-        price: convertedPrice.toFixed(2),
-        currency,
-      };
-    });
-    res.status(200).json(convertedProducts);
+      })
+      .sort(sortCriteria);
+    res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving product", error });
+    res.status(500).json({ error: error.message });
   }
 };
 
 //price
 const getFilterCriteria = (minPrice, maxPrice) => {
-  const filterCriteria = { archived: false };
+  const filterCriteria = {};
   filterCriteria.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
   return filterCriteria;
 };
@@ -183,20 +182,13 @@ const searchProductWithFilters = async (req, res) => {
     const products = await Product.find({
       ...searchCriteria,
       ...filterCriteria,
+      archived: false,
     })
       .populate("seller", "username")
       .populate("reviews")
       .sort(sortCriteria);
 
-    const convertedProducts = products.map((product) => {
-      const convertedPrice = convertCurrency(product.price, "USD", currency);
-      return {
-        ...product.toObject(),
-        price: convertedPrice.toFixed(2),
-        currency,
-      };
-    });
-    res.status(200).json(convertedProducts);
+    res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -253,7 +245,7 @@ const getPurchasedProductsByTouristId = async (req, res) => {
         ],
       })
       .populate("user")
-      .sort({ date: 1 });
+      .sort({ date: -1 });
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving products", error });

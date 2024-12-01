@@ -55,8 +55,11 @@ const TouristViewProduct = ({ id }) => {
                     <Card elevation={3} sx={{
                         padding: 2, marginBottom: 3, width: '650px'
                     }}>
-                        <ProductImage imageId={product.image} height={"300"} marginBottom={2} />
-
+                        <Box sx={{
+                            mb: '20px'
+                        }}>
+                            <ProductImage imageId={product.image} />
+                        </Box>
                         <Typography variant="h4" gutterBottom>{product.name}</Typography>
                         {/* Average Rating */}
                         <Box sx={{

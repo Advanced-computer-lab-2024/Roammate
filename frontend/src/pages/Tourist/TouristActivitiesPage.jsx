@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Box, CircularProgress, Grid2 } from '@mui/material';
 import ActivityCard from '../../components/touristComponents/ActivityCard';
 import SortAndFilterActivities from '../../components/touristComponents/SortAndFilterActivities';
-import CachedIcon from '@mui/icons-material/Cached';
 import SearchBar from '../../components/touristComponents/SearchBar';
 import { searchAndFilterActivities } from '../../services/api';
 import { useLocation, useOutletContext } from 'react-router';
 import TouristViewActivity from './TouristViewActivityPage';
 
-const TouristActivitiesPage = ({ id }) => {
+const TouristActivitiesPage = () => {
+    const id = localStorage.getItem('userId');
+
+
     const [activities, setActivities] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterAndSortCriteria, setFilterAndSortCriteria] = useState({});

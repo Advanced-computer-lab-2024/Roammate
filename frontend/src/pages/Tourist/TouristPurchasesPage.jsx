@@ -6,7 +6,10 @@ import { useLocation } from 'react-router';
 import PurchasedProductCard from '../../components/touristComponents/PurchasedProductCard';
 import TouristViewPurchasedProduct from './TouristViewPurchasedProduct';
 
-const TouristPurchases = ({ id }) => {
+const TouristPurchases = () => {
+    const id = localStorage.getItem('userId');
+
+
     const [purchases, setPurchases] = useState();
     //get query parameter
     const location = useLocation();

@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -16,17 +16,23 @@ import PublicIcon from "@mui/icons-material/Public";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import HomeIcon from "@mui/icons-material/Home";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import SnowboardingIcon from "@mui/icons-material/Snowboarding";
+import MapIcon from "@mui/icons-material/Map";
+import MuseumIcon from "@mui/icons-material/Museum";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CategoryIcon from '@mui/icons-material/Category';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { ArrowRightIcon } from "@mui/x-date-pickers/icons";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { logout } from "../../services/api";
 
 const navItems = [
   "Home",
   "Add Admin",
   "Add Governor",
   "Account Deletion Requests",
+  'Create Product',
   "Products",
   "Activities",
   "Itineraries",
@@ -42,10 +48,14 @@ const AdminLayout = () => {
     "Registrations",
     "Complaints",
   ]);
-  const [activeButton, setActiveButton] = React.useState("Users");
+  const [activeButton, setActiveButton] = React.useState();
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    if (location.pathname === '/admin' && activeButton !== 'Users') {
+      setActiveButton('Users');
+    }
+
     if (activeButton === "Users") {
       navigate('/admin/users');
     } else if (activeButton === "Registrations") {
@@ -64,12 +74,23 @@ const AdminLayout = () => {
       navigate(`/admin/products?id=`);
     } else if (activeButton === "My Products") {
       navigate(`/admin/my-products?id=`);
+    } else if (activeButton === 'Create Product') {
+      navigate('/admin/create-product');
     }
   }, [activeButton, navigate]);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+
+  const handleLogOut = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <Box
@@ -84,30 +105,109 @@ const AdminLayout = () => {
         </IconButton>
       </Box>
       <Divider />
-      <List>
-        {navItems.map((text, index) => (
-          <ListItem
-            disablePadding
-            key={index}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ListItemButton
-              onClick={() => {
-                if (text === "Home") {
-                  setActiveButton("Users");
-                } else {
-                  setActiveButton(text);
-                }
-              }}
-            >
-              <ListItemText primary={text} sx={{ textAlign: "center" }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+      >
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Users")
+        }>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Home" />
+        </ListItemButton>
+
+        <Divider />
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Add Admin")
+        }>
+          <ListItemIcon>
+            <AccountCircleIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Add Admin" />
+        </ListItemButton>
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Add Governor")
+        }>
+          <ListItemIcon>
+            <AccountCircleIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Add Governor" />
+        </ListItemButton>
+
+        <Divider />
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Account Deletion Requests")
+        }>
+          <ListItemIcon>
+            <PersonRemoveIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Account Deletion Requests" />
+        </ListItemButton>
+
+        <Divider />
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Create Product")
+        }>
+          <ListItemIcon>
+            <AddCircleIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Create Product" />
+        </ListItemButton>
+
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("My Products")
+        }>
+          <ListItemIcon>
+            <CategoryIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="My Products" />
+        </ListItemButton>
+
+        <Divider />
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Activities")
+        }>
+          <ListItemIcon>
+            <SnowboardingIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Activities" />
+        </ListItemButton>
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Itineraries")
+        }>
+          <ListItemIcon>
+            <MapIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Itineraries" />
+        </ListItemButton>
+
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Monuments")
+        }>
+          <ListItemIcon>
+            <MuseumIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Monuments" />
+        </ListItemButton>
+
+        {/* <ListItemButton sx={{ pl: 4 }}>
+          <ListItemIcon>
+            <CategoryIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Products" />
+        </ListItemButton> */}
+
+
       </List>
     </Box>
   );
@@ -189,6 +289,18 @@ const AdminLayout = () => {
                     >
                         <AccountCircleIcon />
                     </IconButton> */}
+
+          <IconButton
+            size="large"
+            edge="end"
+            color="inherit"
+            aria-label="profile"
+            sx={{ ml: 2 }}
+            onClick={handleLogOut}
+          >
+            <LogoutIcon />
+          </IconButton>
+
           <IconButton
             size="large"
             edge="end"

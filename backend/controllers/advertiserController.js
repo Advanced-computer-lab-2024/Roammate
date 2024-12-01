@@ -5,6 +5,7 @@ const multer = require("multer");
 const Activity = require("../models/Activity");
 const ActivityBooking = require("../models/ActivityBooking");
 const AccountDeletionRequest = require("../models/AccountDeletionRequest");
+const bcrypt = require("bcrypt");
 
 // username, password, role, email, website, hotline, companyProfile
 
@@ -12,11 +13,13 @@ const register = async (req, res) => {
   const { username, email, password, website, hotline, companyProfile } =
     req.body;
   const role = "advertiser";
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
   try {
     const advertiser = new Advertiser({
       username,
       email,
-      password,
+      password: hashedPassword,
       role,
       website,
       hotline,

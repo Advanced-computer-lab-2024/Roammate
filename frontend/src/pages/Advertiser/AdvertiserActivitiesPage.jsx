@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box, CircularProgress, Grid2 } from "@mui/material";
 import ActivityCard from "../../components/advertiserComponents/ActvityCard";
-import CachedIcon from "@mui/icons-material/Cached";
 import { fetchActivitiesByAdvertiserId } from "../../services/api";
 import { useLocation, useOutletContext } from "react-router";
 import ManageActivityPage from "./ManageActivityPage";
 
-const AdvertiserActivitiesPage = ({ id }) => {
+const AdvertiserActivitiesPage = () => {
+  const id = localStorage.getItem("userId");
   const [activities, setActivities] = useState([]);
   const [fetch, setFetch] = useState(0);
   const { setActiveButton } = useOutletContext();
@@ -15,7 +15,10 @@ const AdvertiserActivitiesPage = ({ id }) => {
   const activity_id = queryParams.get("id");
 
   useEffect(() => {
+
+    setFetch(0);
     const fetchMyActivities = async () => {
+      setActivities([]);
       const result = await fetchActivitiesByAdvertiserId(id);
       setActivities(result);
       setFetch(fetch + 1);

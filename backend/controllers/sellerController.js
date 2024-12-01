@@ -3,16 +3,19 @@ const { Seller, ProductPurchasing, Product } = require("../models");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
 const AccountDeletionRequest = require("../models/AccountDeletionRequest");
+const bcrypt = require("bcrypt");
 
 // username, password, role, email, name, about
 const register = async (req, res) => {
   const { username, email, password, name, about } = req.body;
   const role = "seller";
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
   try {
     const seller = new Seller({
       username,
       email,
-      password,
+      password: hashedPassword,
       name,
       about,
       role,

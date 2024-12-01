@@ -26,8 +26,8 @@ const SortAndFilterProducts = ({ setFilterAndSortCriteria, setFetch }) => {
 
     const handleApplyFilters = () => {
         const filterCriteria = {
-            minPrice,
-            maxPrice,
+            minPrice: minPrice ? minPrice / JSON.parse(localStorage.getItem('rates'))["conversion_rates"][localStorage.getItem('currency')] : '',
+            maxPrice: maxPrice ? maxPrice / JSON.parse(localStorage.getItem('rates'))["conversion_rates"][localStorage.getItem('currency')] : '',
             order: isAscending ? sortParam : `-${sortParam}`
         }
         setFilterAndSortCriteria(filterCriteria);

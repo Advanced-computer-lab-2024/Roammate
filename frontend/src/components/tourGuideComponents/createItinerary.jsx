@@ -9,7 +9,10 @@ import dayjs from "dayjs";
 import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const CreateItinerary = ({ id }) => {
+const CreateItinerary = () => {
+  const id = localStorage.getItem('userId');
+
+
   const [title, setTitle] = useState();
   const [duration, setDuration] = useState();
   const [startDate, setStartDate] = useState();

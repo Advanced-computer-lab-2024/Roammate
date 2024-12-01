@@ -7,7 +7,10 @@ import { Box, CircularProgress, Divider, Typography } from '@mui/material';
 import TouristViewBookedActivity from './TouristViewBookedActivityPage';
 import { useLocation } from 'react-router';
 
-const TouristBookedActivities = ({ id }) => {
+const TouristBookedActivities = () => {
+    const id = localStorage.getItem('userId');
+
+
     const [bookedActivities, setBookedActivities] = useState();
     //get query parameter
     const location = useLocation();

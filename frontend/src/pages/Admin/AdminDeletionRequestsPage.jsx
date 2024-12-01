@@ -74,11 +74,11 @@ const AdminDeletionRequestsPage = () => {
   return !id ? (
     <Box>
       {/* Search Bar */}
-      <SearchBar
+      {/* <SearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setFetch={setFetch}
-      />
+      /> */}
 
       <Grid container spacing={2} sx={{ mt: 4 }}>
         {/* Pending Deletion Requests */}
@@ -93,6 +93,7 @@ const AdminDeletionRequestsPage = () => {
               border: "1px solid orange",
               minHeight: "200px",
               backgroundColor: "#fff3e0",
+
             }}
           >
             {pendingRequests

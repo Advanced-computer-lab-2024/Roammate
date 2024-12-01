@@ -26,7 +26,7 @@ const sortParams = ["name"]; // Adjusted sort parameters to reflect relevant opt
 const SortAndFilterMuseums = ({ setFilterAndSortCriteria, setFetch }) => {
   const [selectedMonumentTags, setSelectedMonumentTags] = useState([]);
   const [selectedPreferenceTags, setSelectedPreferenceTags] = useState([]);
-  const [sortParam, setSortParam] = useState("");
+  const [sortParam, setSortParam] = useState("name"); // Adjusted default sort parameter
   const [isAscending, setIsAscending] = useState(true);
   const [allAvailableMonumentTags, setAllAvailableMonumentTags] = useState([]);
   const [allAvailablePreferenceTags, setAllAvailablePreferenceTags] = useState(

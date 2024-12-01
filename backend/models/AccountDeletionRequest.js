@@ -10,7 +10,7 @@ const accountDeletionRequestSchema = new mongoose.Schema(
     accountId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      refPath: "accountTypeRef",
+      ref: "User",
     },
     status: {
       type: String,
@@ -23,21 +23,6 @@ const accountDeletionRequestSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-accountDeletionRequestSchema.virtual("accountTypeRef").get(function () {
-  switch (this.accountType) {
-    case "Tourist":
-      return "Tourist";
-    case "Tour Guide":
-      return "TourGuide";
-    case "Advertiser":
-      return "Advertiser";
-    case "Seller":
-      return "Seller";
-    default:
-      return null;
-  }
-});
 
 const AccountDeletionRequest = mongoose.model(
   "AccountDeletionRequest",

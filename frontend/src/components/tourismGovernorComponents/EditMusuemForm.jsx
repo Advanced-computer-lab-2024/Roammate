@@ -258,7 +258,7 @@ const EditMuseumForm = ({ museum }) => {
               </IconButton>
             </Box>
             <TextField
-              label="For"
+              placeholder="For"
               variant="outlined"
               value={price.for}
               disabled={disabled}
@@ -268,7 +268,7 @@ const EditMuseumForm = ({ museum }) => {
               sx={{ width: "100%" }}
             />
             <TextField
-              label="Price"
+              placeholder="price"
               variant="outlined"
               type="number"
               value={price.price}

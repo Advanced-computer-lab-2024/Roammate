@@ -1,8 +1,5 @@
-import axios from "axios";
-
+import axios from "./axios";
 const API_URL = "http://localhost:8000/api/";
-
-export const updateItineraryStatus = async (id) => {};
 
 export const flagActivity = async (id) => {
   try {
@@ -108,9 +105,11 @@ export const fetchItinerariesByTourGuideId = async (id) => {
 };
 
 // ✅ This function is used to fetch all products (for the seller)
-export const fetchProductsBySellerId = async (id) => {
-  var prodcuts = await axios.get(`${API_URL}product-seller/${id}`);
-  return prodcuts.data;
+export const fetchProductsBySellerId = async (id, query) => {
+  var products = await axios.get(`${API_URL}product-seller/${id}`, {
+    params: query,
+  });
+  return products.data;
 };
 
 // ✅ This function is used to fetch all Musuems (for the Governor)
@@ -275,7 +274,9 @@ export const searchAndFilterComplaintsAdmin = async (query) => {
 
 // ✅ This function is used to create a Complaint
 export const createComplaint = async (data) => {
-  const response = await axios.post(`${API_URL}complaint`, data);
+  const response = await axios.post(`${API_URL}complaint`, data, {
+    withCredentials: true,
+  });
   return response;
 };
 
@@ -965,7 +966,10 @@ export const fetchConversionRates = async () => {
     }
     // console.log("Fetching conversion rates...");
     const response = await axios.get(
-      `https://v6.exchangerate-api.com/v6/b884e2be49d4a279fb51feab/latest/EGP`
+      `https://v6.exchangerate-api.com/v6/b884e2be49d4a279fb51feab/latest/EGP`,
+      {
+        withCredentials: false, // Set to false to prevent CORS issues
+      }
     );
     localStorage.setItem("rates", JSON.stringify(response.data));
     localStorage.setItem("ratesTimestamp", Date.now()); // Save timestamp
@@ -1036,5 +1040,85 @@ export const getItineraryBookingsCount = async (itineraryId) => {
   } catch (error) {
     console.error("Error fetching itinerary bookings count:", error);
     throw error;
+  }
+};
+
+//✅ This function is used to register a new tourist
+export const registerTourist = async (touristData) => {
+  try {
+    const response = await axios.post(`${API_URL}tourist`, touristData);
+    return response;
+  } catch (error) {
+    console.error("Error registering tourist:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to register a new seller
+export const registerSeller = async (sellerData) => {
+  try {
+    const response = await axios.post(`${API_URL}seller`, sellerData);
+    return response;
+  } catch (error) {
+    console.error("Error registering seller:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to register a new advertiser
+export const registerAdvertiser = async (advertiserData) => {
+  try {
+    const response = await axios.post(`${API_URL}advertiser`, advertiserData);
+    return response;
+  } catch (error) {
+    console.error("Error registering advertiser:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to register a new tour guide
+export const registerTourGuide = async (tourGuideData) => {
+  try {
+    const response = await axios.post(`${API_URL}tourGuide`, tourGuideData);
+    return response;
+  } catch (error) {
+    console.error("Error registering tour guide:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to login a user
+export const login = async (username, password) => {
+  try {
+    const response = await axios.post(`${API_URL}login`, {
+      username,
+      password,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to get user's role
+export const getUserRole = async () => {
+  try {
+    const response = await axios.get(`${API_URL}userRole`);
+    //console.log(response.data.role);
+    return response.data.role;
+  } catch (error) {
+    console.error("Error getting user role:", error);
+    throw error;
+  }
+};
+
+//✅ This function is log out a user
+export const logout = async () => {
+  try {
+    const response = await axios.post(`${API_URL}logout`);
+    window.location.href = `/login`;
+  } catch (error) {
+    console.log(error);
   }
 };

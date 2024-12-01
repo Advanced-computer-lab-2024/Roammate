@@ -48,7 +48,7 @@ const ChangePasswordComponent = ({ id, type }) => {
         gap: "15px",
       }}
     >
-      <Typography variant="h6" sx={{ textAlign: "center", mb: 2, mt: 5 }}>
+      <Typography variant="h6" sx={{ textAlign: "center", mb: 2, mt: 1 }}>
         Manage Password
       </Typography>
       <Alert severity="info" sx={{ mb: 2 }}>

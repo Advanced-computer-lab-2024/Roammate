@@ -7,6 +7,7 @@ import {
   CardContent,
   Divider,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import dayjs from "dayjs";
 import {
@@ -44,16 +45,7 @@ const AdminViewDeletionRequest = ({ request }) => {
 
   if (!request) {
     return (
-      <h2>
-        Loading
-        <CachedIcon
-          sx={{
-            fontSize: "25px",
-            ml: "10px",
-            mb: "-5px",
-          }}
-        />
-      </h2>
+      <CircularProgress />
     );
   }
 
@@ -89,8 +81,8 @@ const AdminViewDeletionRequest = ({ request }) => {
         </Typography>
         <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
           Account Type: {request.accountType} <br />
-          Account ID:{" "}
-          {request.accountId !== null ? request.accountId._id : "No id"}
+          Username:{" "}
+          {request.accountId.username !== null ? request.accountId.username : "No id"}
         </Typography>
 
         <Divider sx={{ my: 2 }} />
@@ -110,8 +102,8 @@ const AdminViewDeletionRequest = ({ request }) => {
               status === "approved"
                 ? "success.main"
                 : status === "denied"
-                ? "error.main"
-                : "warning.main",
+                  ? "error.main"
+                  : "warning.main",
             fontWeight: "bold",
           }}
         >
@@ -134,7 +126,7 @@ const AdminViewDeletionRequest = ({ request }) => {
         {/* Approve/Deny Buttons */}
         {status === "pending" && (
           <Box
-            sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}
+            sx={{ display: "flex", justifyContent: "center", gap: 2, mt: 5 }}
           >
             <Button
               variant="contained"

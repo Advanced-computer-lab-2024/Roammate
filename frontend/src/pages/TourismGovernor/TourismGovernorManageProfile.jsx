@@ -6,7 +6,10 @@ import {
   updateTourismGovernorProfile,
 } from "../../services/api";
 
-const TourismGovernorManageProfile = ({ id }) => {
+const TourismGovernorManageProfile = () => {
+  const id = localStorage.getItem("userId");
+
+
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
   const [region, setRegion] = useState("");
@@ -43,9 +46,13 @@ const TourismGovernorManageProfile = ({ id }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", gap: 3, padding: 3 }}>
+    <Box sx={{
+      display: "flex", gap: 3, padding: 3,
+      justifyContent: "space-between", alignItems: "start", flexDirection: "column"
+
+    }}>
       {/* Profile Form Section */}
-      <Box sx={{ width: "70%" }}>
+      <Box sx={{ width: "500px" }}>
         <form
           onSubmit={handleSubmit}
           style={{
@@ -53,9 +60,10 @@ const TourismGovernorManageProfile = ({ id }) => {
             flexDirection: "column",
             alignItems: "start",
             gap: "15px",
-            padding: "20px",
+            padding: "25px",
             border: "1px solid #ddd",
             borderRadius: "8px",
+
           }}
         >
           <Typography variant="h6" sx={{ textAlign: "center", width: "100%" }}>
@@ -133,6 +141,7 @@ const TourismGovernorManageProfile = ({ id }) => {
           padding: 2,
           border: "1px solid #ddd",
           borderRadius: "8px",
+          mb: 2,
         }}
       >
         {/* <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid2 } from "@mui/material";
+import { Box, CircularProgress, Grid2 } from "@mui/material";
 import ComplaintCard from "../../components/adminComponents/ComplaintCard";
 import SortAndFilterComplaints from "../../components/adminComponents/SortAndFilterComplaints";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -38,21 +38,18 @@ const AdminComplaintsPage = () => {
   return !id ? (
     <Box>
       {/* Search Bar */}
-      <SearchBar
+      {/* <SearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setFetch={setFetch}
-      />
+      /> */}
 
-      <Grid2 container spacing={1}>
+      <Grid2 container spacing={1} sx={{ mt: 3 }}>
         <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
           {/* Complaints List */}
           {complaints.length === 0 &&
             (fetch < 1 ? (
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
+              <CircularProgress />
             ) : (
               <h2>No Complaints Found</h2>
             ))}

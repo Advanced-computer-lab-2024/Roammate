@@ -33,6 +33,7 @@ const EditProductForm = ({ product }) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const [currentImage, setCurrentImage] = useState(placeholder);
   const [newImage, setNewImage] = useState(null);
+  const [averageRating, setAverageRating] = useState(product.averageRating);
   const [edit, setEdit] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [err, setErr] = useState("");
@@ -105,6 +106,23 @@ const EditProductForm = ({ product }) => {
         border: "1px solid lightgray",
       }}
     >
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '10px',
+        mb: '10px',
+        width: '100%'
+
+      }}>
+        <Rating name="read-only" value={averageRating} readOnly precision={0.5}
+          icon={<StarIcon style={{ fill: 'orange' }} />}
+          emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
+        />
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          ({product.reviews.length})
+        </Typography>
+      </Box>
       <h2>Product Details</h2>
 
       <img
@@ -121,22 +139,34 @@ const EditProductForm = ({ product }) => {
         }}
       />
 
-      {/* <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                mb: '10px',
 
-            }}>
-                <Typography variant="h5" sx={{
-                    color: 'lightgray',
-                }}>rated: </Typography>
+      {/*Image URL*/}
+      <Box sx={{
+        width: '100%',
+        mb: '20px'
+      }}>
+        <Button
+          component="label"
+          variant="contained"
+          startIcon={<CloudUploadIcon />}
+          disabled={disabled}
+          sx={{
+            backgroundColor: newImage ? "green" : "primary.main",
+            color: "white",
+            textAlign: "center",
+          }}
+        >
+          Upload Image
+          <input
+            type="file"
+            onChange={(e) => {
+              handleNewImageChange(e);
+            }}
+            style={{ display: "none" }}
+          />
+        </Button>
+      </Box>
 
-                <Rating name="read-only" value={rating} readOnly precision={0.5}
-                    icon={<StarIcon style={{ fill: 'orange' }} />}
-                    emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
-                />
-            </Box> */}
 
       <form
         noValidate
@@ -174,28 +204,6 @@ const EditProductForm = ({ product }) => {
             width: "100%",
           }}
         />
-
-        {/*Image URL*/}
-        <h2>Image</h2>
-        <Button
-          component="label"
-          variant="contained"
-          startIcon={<CloudUploadIcon />}
-          disabled={disabled}
-          sx={{
-            backgroundColor: newImage ? "green" : "primary.main",
-            color: "white",
-          }}
-        >
-          Upload Image
-          <input
-            type="file"
-            onChange={(e) => {
-              handleNewImageChange(e);
-            }}
-            style={{ display: "none" }}
-          />
-        </Button>
 
         {/*Price*/}
         <h2>Price</h2>

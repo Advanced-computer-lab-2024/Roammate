@@ -47,7 +47,7 @@ const DeletionRequestCard = ({ request, onApprove, onDeny }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: "90%", mb: 4 }}>
+    <Card sx={{ width: 350, mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -87,9 +87,9 @@ const DeletionRequestCard = ({ request, onApprove, onDeny }) => {
             width: "100%",
           }}
         >
-          Account Type: {request.accountType} <br />
-          Account ID:{" "}
-          {request.accountId !== null ? request.accountId._id : "No id"}
+          <strong>Account Type:</strong> {request.accountType} <br />
+          <strong>Username:</strong>
+          {request.accountId !== null ? " " + request.accountId.username : ""}
         </Typography>
 
         {/* Date and Status */}
@@ -128,8 +128,8 @@ const DeletionRequestCard = ({ request, onApprove, onDeny }) => {
                   status === "approved"
                     ? "green"
                     : status === "denied"
-                    ? "red"
-                    : "orange",
+                      ? "red"
+                      : "orange",
               }}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -149,14 +149,6 @@ const DeletionRequestCard = ({ request, onApprove, onDeny }) => {
           width: "100%",
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate(`/admin/deletion-requests?id=${request._id}`)}
-          endIcon={<ArrowForwardIosIcon />}
-        >
-          View Details
-        </Button>
 
         {/* Approve and Deny Buttons Aligned to the Right */}
         {status === "pending" && (
@@ -183,6 +175,14 @@ const DeletionRequestCard = ({ request, onApprove, onDeny }) => {
               disabled={loading}
             >
               {loading ? "Denying..." : "Deny"}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate(`/admin/deletion-requests?id=${request._id}`)}
+              endIcon={<ArrowForwardIosIcon />}
+            >
+              View
             </Button>
           </Box>
         )}

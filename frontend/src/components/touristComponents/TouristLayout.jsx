@@ -29,8 +29,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Collapse, ListItemIcon, ListSubheader } from '@mui/material';
 import CurrencySelector from "./CurrencySelector";
-import { fetchConversionRates } from "../../services/api";
+import { fetchConversionRates, logout } from "../../services/api";
 import { AirplaneTicket } from "@mui/icons-material";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 const TouristLayout = () => {
@@ -63,6 +64,7 @@ const TouristLayout = () => {
         if (location.pathname === "/tourist") {
             setActiveButton("Activities");
         }
+
         if (activeButton === "Activities") {
             navigate(`/tourist/activities?id=${id}`);
         } else if (activeButton === "Itineraries") {
@@ -85,6 +87,14 @@ const TouristLayout = () => {
     const handleMyBookingsClick = () => {
         setMyBookingsOpen(!myBookingsOpen);
     };
+
+    const handleLogOut = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const drawerList = (
         <Box sx={{ width: 250 }} role="presentation" >
@@ -281,6 +291,17 @@ const TouristLayout = () => {
                     </Box>
 
                     <CurrencySelector />
+
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        color="inherit"
+                        aria-label="profile"
+                        sx={{ ml: 2 }}
+                        onClick={handleLogOut}
+                    >
+                        <LogoutIcon />
+                    </IconButton>
 
                     <IconButton
                         size="large"

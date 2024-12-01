@@ -9,7 +9,10 @@ import { useLocation, useOutletContext } from "react-router";
 import TouristViewComplaint from "./ToruistViewComplaintPage";
 import PostComplaintForm from "./CreateComplaintComponent";
 
-const TouristComplaintsPage = ({ touristId }) => {
+const TouristComplaintsPage = () => {
+  const touristId = localStorage.getItem("userId");
+
+
   const [complaints, setComplaints] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterAndSortCriteria, setFilterAndSortCriteria] = useState({});
@@ -44,13 +47,15 @@ const TouristComplaintsPage = ({ touristId }) => {
       </Typography> */}
 
       {/* Search Bar */}
-      <SearchBar
+      {/* <SearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setFetch={setFetch}
-      />
+      /> */}
 
-      <Grid2 container spacing={1}>
+      <Grid2 container spacing={1} sx={{
+        mt: 3,
+      }}>
         <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
           {/* Post Complaint Form (Compact) */}
           <Box sx={{

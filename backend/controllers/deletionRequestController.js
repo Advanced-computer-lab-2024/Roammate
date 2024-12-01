@@ -8,7 +8,9 @@ const mongoose = require("mongoose");
 // Get all deletion requests
 const getAllDeletionRequests = async (req, res) => {
   try {
-    const deletionRequests = await AccountDeletionRequest.find();
+    const deletionRequests = await AccountDeletionRequest.find().populate(
+      "accountId"
+    );
     res.status(200).json(deletionRequests);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -106,6 +108,7 @@ const searchDeletionRequestsWithFiltersAndSort = async (req, res) => {
     const deletionRequests = await AccountDeletionRequest.find(filterCriteria)
       .populate("accountId") // Populate user details based on account type, if needed
       .sort(sortCriteria);
+    // console.log("Deletion requests:", deletionRequests);
 
     res.status(200).json(deletionRequests);
   } catch (error) {

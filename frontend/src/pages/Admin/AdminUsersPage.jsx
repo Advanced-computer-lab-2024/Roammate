@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid2, Select, MenuItem, Checkbox, ListItemText, FormControl, InputLabel } from "@mui/material";
+import { Box, Grid2, Select, MenuItem, Checkbox, ListItemText, FormControl, InputLabel, CircularProgress, Alert } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import { fetchAllUsers, deleteUser } from "../../services/api";
 import { useLocation, useOutletContext } from "react-router";
@@ -46,7 +46,7 @@ const AdminUsersPage = () => {
     return (
         <Box>
             {/* Multi-Select Role Filter on Top with Fixed Width */}
-            <Box sx={{ width: "300px", mb: 2 }}>
+            <Box sx={{ width: "400px", mb: 2, }}>
                 <FormControl fullWidth>
                     <InputLabel>Roles</InputLabel>
                     <Select
@@ -63,17 +63,21 @@ const AdminUsersPage = () => {
                         ))}
                     </Select>
                 </FormControl>
+                <Alert severity="error" sx={{
+                    mt: 2,
+                }}>
+                    <strong>Warning:</strong> Deleting a user will also delete all associated data.
+                </Alert>
             </Box>
+
+
 
             <Grid2 container spacing={1}>
                 <Grid2 xs={12} sx={{ flexGrow: 1 }}>
                     {/* Users List */}
                     {users.length === 0 &&
                         (loading ? (
-                            <h2>
-                                Loading
-                                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-                            </h2>
+                            <CircularProgress />
                         ) : (
                             <h2>No Users Were Found</h2>
                         ))}

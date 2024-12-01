@@ -17,9 +17,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { logout } from '../../services/api';
 
 const navItems = ['Home', 'Create Activity'];
 
@@ -48,6 +50,15 @@ const AdvertiserLayout = () => {
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
+
+    const handleLogOut = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const drawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
             <Box flexGrow={1} display="flex" justifyContent="right" alignItems="center" sx={{ height: 64 }} >
@@ -134,6 +145,18 @@ const AdvertiserLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        color="inherit"
+                        aria-label="profile"
+                        sx={{ ml: 2 }}
+                        onClick={handleLogOut}
+                    >
+                        <LogoutIcon />
+                    </IconButton>
+
                     <IconButton
                         size="large"
                         edge="end"

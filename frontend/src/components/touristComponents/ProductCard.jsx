@@ -30,7 +30,6 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const [displayPrice, setDisplayPrice] = useState();
 
-  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     const getDisplayPrice = async (price) => {
@@ -46,148 +45,177 @@ const ProductCard = ({ product }) => {
 
 
   return (
-    <Card sx={{ width: '550px', mb: 4 }}>
+    <Card sx={{
+      width: '850px',
+      mb: 4,
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "start",
+      alignItems: "center",
+    }}>
+      <Box sx={{
+        width: '280px',
+        height: '180px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        mr: '20px',
+        ml: '10px',
 
-      <ProductImage imageId={product.image} height={"250"} />
+      }}>
+        <ProductImage imageId={product.image} />
+      </Box>
 
-      {/* <h1>Itinerary Card</h1> */}
-      <CardContent
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {/*Header */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "start",
-            width: "100%",
-          }}
-        >
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        flexGrow: 1,
+      }}>
+        <CardContent sx={{
+          width: '100%',
+        }}>
+          <Box
             sx={{
-              flexGrow: 1,
-              textAlign: "left",
+              display: "flex",
+              flexDirection: "row",
+              gap: "10px",
+              alignItems: "space-between",
+              width: "100%",
             }}
           >
-            {name}
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                textAlign: "left",
+              }}
+            >
+              {name}
+            </Typography>
+            <Rating
+              name="read-only"
+              value={rating}
+              readOnly
+              precision={0.5}
+              icon={<StarIcon style={{ fill: "orange" }} />}
+              emptyIcon={<StarIcon style={{ fill: "lightgray" }} />}
+            />
+
+            <ShareLink type={'product'} id={product._id} />
+
+          </Box>
+
+          <Typography
+            variant="body2"
+            sx={{
+              color: "text.secondary",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              textAlign: "left",
+              mb: "10px",
+              width: "100%",
+            }}
+          >
+            {description}
           </Typography>
-          <Rating
-            name="read-only"
-            value={rating}
-            readOnly
-            precision={0.5}
-            icon={<StarIcon style={{ fill: "orange" }} />}
-            emptyIcon={<StarIcon style={{ fill: "lightgray" }} />}
-          />
-          <ShareLink type={'product'} id={product._id} />
-        </Box>
 
-        <Typography
-          variant="body2"
-          sx={{
-            color: "text.secondary",
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            textAlign: "left",
-            mb: "10px",
-            width: "100%",
-          }}
-        >
-          {description}
-        </Typography>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <IconButton
-            size="small"
-            disabled
-            color="primary"
+          <Box
             sx={{
               display: "flex",
               flexDirection: "row",
               justifyContent: "start",
               alignItems: "center",
-              flexGrow: 1,
+              width: "100%",
             }}
           >
-            {quantity > 0 ? (
-              <ShoppingCartIcon sx={{ fill: "green" }} />
-            ) : (
-              <RemoveShoppingCartIcon sx={{ fill: "red" }} />
-            )}
-            <Typography
-              fontSize={14}
+            <IconButton
+              size="small"
+              disabled
+              color="primary"
               sx={{
-                marginLeft: "5px",
-                color: `${quantity > 0 ? "green" : "red"}`,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "start",
+                alignItems: "center",
+                flexGrow: 1,
               }}
             >
-              {quantity > 0 ? "in stock" : "out of stock"}
-            </Typography>
-          </IconButton>
+              {quantity > 0 ? (
+                <ShoppingCartIcon sx={{ fill: "green" }} />
+              ) : (
+                <RemoveShoppingCartIcon sx={{ fill: "red" }} />
+              )}
+              <Typography
+                fontSize={14}
+                sx={{
+                  marginLeft: "5px",
+                  color: `${quantity > 0 ? "green" : "red"}`,
+                }}
+              >
+                {quantity > 0 ? "in stock" : "out of stock"}
+              </Typography>
+            </IconButton>
 
-          <Typography gutterBottom variant="h4" component="div" sx={{
-            color: `${product.quantity > 0 ? 'black' : 'grey'}`,
-          }}>
-            {displayPrice}
-          </Typography>
-        </Box>
-      </CardContent>
-      <CardActions
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "end",
-          alignItems: "center",
-          mb: "10px",
-          mt: "-20px",
-          width: "100%",
-        }}
-      >
-        <Button
-          variant="contained"
-          onClick={
-            addedToWatchlist
-              ? () => setAddedToWatchlist(false)
-              : () => setAddedToWatchlist(true)
-          }
-          endIcon={
-            <HeartIcon
+            <Typography
+              gutterBottom
+              variant="h4"
+              component="div"
               sx={{
-                fill: `${addedToWatchlist ? "red" : "white"}`,
+                color: `${product.quantity > 0 ? "black" : "grey"}`,
               }}
-            />
-          }
-        >
-          Add to Watchlist
-        </Button>
+            >
+              {displayPrice}
+            </Typography>
+          </Box>
 
-        <Button variant="contained" sx={{
-          backgroundColor: `${quantity > 0 ? 'green' : 'grey'}`,
-          color: 'white',
-        }}
-          onClick={() => navigate(`/tourist/products?id=${product._id}`)}
-          endIcon={<ArrowForwardIosIcon />}>
-          {quantity > 0 ? 'Buy' : 'View'}
-        </Button>
-      </CardActions>
+
+        </CardContent>
+        <CardActions
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "end",
+            alignItems: "center",
+            mb: "10px",
+            mt: "-20px",
+            width: "100%",
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={
+              addedToWatchlist
+                ? () => setAddedToWatchlist(false)
+                : () => setAddedToWatchlist(true)
+            }
+            endIcon={
+              <HeartIcon
+                sx={{
+                  fill: `${addedToWatchlist ? "red" : "white"}`,
+                }}
+              />
+            }
+          >
+            Add to Watchlist
+          </Button>
+
+          <Button variant="contained" sx={{
+            backgroundColor: `${quantity > 0 ? 'green' : 'grey'}`,
+            color: 'white',
+          }}
+            onClick={() => navigate(`/tourist/products?id=${product._id}`)}
+            endIcon={<ArrowForwardIosIcon />}>
+            {quantity > 0 ? 'Buy' : 'View'}
+          </Button>
+        </CardActions>
+      </Box>
     </Card>
   );
 };

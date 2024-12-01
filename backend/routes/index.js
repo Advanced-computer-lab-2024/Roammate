@@ -21,6 +21,7 @@ const {
   transportationController,
   passwordController,
 } = require("../controllers");
+const { requireAuth } = require("../middleware/AuthMiddleware");
 
 const router = express.Router();
 
@@ -326,6 +327,7 @@ router.post("/activityReviews/:id", activityController.addReviewToActivity);
 //Routes for activity booking
 router.get(
   "/activityBookings/:id",
+  requireAuth,
   activityController.getBookedActivitiesByTouristId
 );
 router.post("/bookActivity", activityController.bookActivity);
@@ -467,5 +469,19 @@ router.post("/redeem-points/:touristId", touristController.redeemPointsToCash);
 
 //Change Password of Users
 router.post("/change-password", passwordController.changePassword);
+
+//--------------------------------------------------------------
+
+// Login User
+router.post("/login", userController.loginUser);
+//--------------------------------------------------------------
+
+// Logout User
+router.post("/logout", userController.logoutUser);
+//--------------------------------------------------------------
+
+// Get user role
+router.get("/userRole", userController.getUserRole);
+//--------------------------------------------------------------
 
 module.exports = router;

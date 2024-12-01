@@ -1,7 +1,7 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Checkbox, Chip, CircularProgress, Divider, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Rating, Select, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Rating, Typography } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import EditActivityForm from "../../components/activityComponents/EditActivityForm";
-import { useEffect } from "react";
+
 
 
 const ManageActivityPage = ({ activity }) => {
@@ -10,9 +10,6 @@ const ManageActivityPage = ({ activity }) => {
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-                width: '100%',
             }}>
                 <CircularProgress />
             </Box>

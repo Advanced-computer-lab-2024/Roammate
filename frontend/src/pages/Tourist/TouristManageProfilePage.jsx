@@ -9,7 +9,10 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const DATE_FORMAT = "DD/MM/YYYY";
 
-const TouristManageProfile = ({ id }) => {
+const TouristManageProfile = () => {
+  const id = localStorage.getItem("userId");
+
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");

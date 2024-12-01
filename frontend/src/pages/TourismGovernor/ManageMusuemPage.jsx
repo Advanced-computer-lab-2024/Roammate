@@ -2,7 +2,7 @@ import { Box, Typography, IconButton } from "@mui/material";
 import { useState } from "react";
 import { Cached as CachedIcon } from "@mui/icons-material";
 import { Star as StarIcon } from "@mui/icons-material";
-import EditMuseumForm from "../../components/touristGovernerComponents/EditMusuemForm";
+import EditMuseumForm from "../../components/tourismGovernorComponents/EditMusuemForm";
 
 const ManageMuseumPage = ({ museum }) => {
   if (!museum) {
@@ -37,7 +37,7 @@ const ManageMuseumPage = ({ museum }) => {
       {/* Museum Edit Form */}
       <EditMuseumForm museum={museum} />
 
-      {/* Reviews Section */}
+      {/* Reviews Section
       <Box sx={{ width: "100%" }}>
         <Typography variant="h6" sx={{ color: "grey", mb: "10px" }}>
           Reviews Section
@@ -64,7 +64,7 @@ const ManageMuseumPage = ({ museum }) => {
             No reviews available.
           </Typography>
         )}
-      </Box>
+      </Box> */}
     </Box>
   );
 };

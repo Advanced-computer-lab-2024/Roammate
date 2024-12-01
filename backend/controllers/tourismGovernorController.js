@@ -1,4 +1,5 @@
 const { User } = require("../models");
+const bcrypt = require("bcrypt");
 
 const getAllTourismGovernors = async (req, res) => {
   try {
@@ -51,10 +52,13 @@ const updateTourismGovernorById = async (req, res) => {
 const addTourismGovernor = async (req, res) => {
   const { username, password } = req.body;
   const role = "tourism governor";
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   try {
     const tourismGovernor = new User({
       username,
-      password,
+      password: hashedPassword,
       role,
     });
     await tourismGovernor.save();

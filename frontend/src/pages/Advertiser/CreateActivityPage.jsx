@@ -3,7 +3,8 @@ import { Box } from "@mui/material";
 import CreateActivity from "../../components/advertiserComponents/CreateActivity";
 
 
-const CreateActivityPage = ({ id }) => {
+const CreateActivityPage = () => {
+    const id = localStorage.getItem("userId");
 
     return (
         <Box

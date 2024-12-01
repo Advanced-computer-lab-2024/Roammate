@@ -8,7 +8,10 @@ import SortAndFilterItineraries from '../../components/touristComponents/SortAnd
 import { useLocation, useOutletContext } from 'react-router';
 import TouristViewItinerary from './TouristViewItineraryPage'
 
-const TouristItinerariesPage = ({ id }) => {
+const TouristItinerariesPage = () => {
+    const id = localStorage.getItem('userId');
+
+
     const [itineraries, setItineraries] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterAndSortCriteria, setFilterAndSortCriteria] = useState({});

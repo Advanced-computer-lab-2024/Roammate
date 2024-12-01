@@ -26,7 +26,10 @@ import {
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
 
-const AdvertiserManageProfile = ({ id }) => {
+const AdvertiserManageProfile = () => {
+  const id = localStorage.getItem("userId");
+
+
   //username,email,website,hotline,companyProfile,description,foundedYear,industry,location,employees,services
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

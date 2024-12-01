@@ -58,7 +58,7 @@ const getAllActivities = (req, res) => {
   Activity.find()
     .populate("tags", "name")
     .populate("category", "name")
-    .populate("advertiser", "username")
+    .populate("advertiser")
     .populate("reviews")
     .then((activities) => {
       const convertedActivities = activities.map((activity) => {
@@ -272,6 +272,18 @@ const searchActivitiesWithFiltersAndSort = async (req, res) => {
     order,
     currency = "USD", // Default currency is USD
   } = req.query;
+  // console.log(
+  //   minPrice,
+  //   maxPrice,
+  //   minDate,
+  //   maxDate,
+  //   category,
+  //   tags,
+  //   minRating,
+  //   maxRating,
+  //   order,
+  //   currency
+  // );
   try {
     const searchCriteria = await getSearchCriteria(query);
     const filterCriteria = getFilterCriteria(
@@ -391,7 +403,7 @@ const getBookedActivitiesByTouristId = async (req, res) => {
         ],
       })
       .populate("user")
-      .sort({ date: 1 });
+      .sort({ date: -1 });
     res.status(200).json(activities);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -39,7 +39,7 @@ const AdminActivityCard = ({ activity, onStatusChange }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: "90%", mb: 4 }}>
+    <Card sx={{ width: 650, mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -75,16 +75,6 @@ const AdminActivityCard = ({ activity, onStatusChange }) => {
             icon={<StarIcon style={{ fill: "orange" }} />}
             emptyIcon={<StarIcon style={{ fill: "lightgray" }} />}
           />
-          <IconButton
-            size="small"
-            color="primary"
-            sx={{
-              mt: "-5px",
-              ml: "10px",
-            }}
-          >
-            <ShareIcon />
-          </IconButton>
         </Box>
 
         {/* Description */}
@@ -115,8 +105,7 @@ const AdminActivityCard = ({ activity, onStatusChange }) => {
             width: "100%",
           }}
         >
-          Advertiser: {activity.advertiser.username} (ID:{" "}
-          {activity.advertiser._id})
+          <strong>Advertiser:</strong> {activity.advertiser.username} ({" " + activity.advertiser.email})
         </Typography>
 
         {/* Booking Status and Date */}
@@ -143,8 +132,8 @@ const AdminActivityCard = ({ activity, onStatusChange }) => {
               .startOf("day")
               .isBefore(dayjs(activity.endDate).startOf("day"))
               ? `${dayjs(activity.startDate).format(DATE_FORMAT)} - ${dayjs(
-                  activity.endDate
-                ).format(DATE_FORMAT)}`
+                activity.endDate
+              ).format(DATE_FORMAT)}`
               : `${dayjs(activity.startDate).format(DATE_FORMAT)}`}
             <IconButton
               size="small"
@@ -200,22 +189,22 @@ const AdminActivityCard = ({ activity, onStatusChange }) => {
         </Button>
 
         {/* Toggle Appropriate Status Button */}
-        <ToggleButton
+        <Button
           value="appropriate"
           selected={isAppropriate}
-          onChange={handleToggleAppropriate}
+          onClick={handleToggleAppropriate}
           sx={{
             ml: 1,
-            backgroundColor: isAppropriate ? "green" : "red",
+            backgroundColor: isAppropriate ? "red" : "grey",
             color: "white",
             "&:hover": {
-              backgroundColor: isAppropriate ? "darkgreen" : "darkred",
+              backgroundColor: isAppropriate ? "darkred" : "darkgrey"
             },
           }}
         >
           <FlagIcon sx={{ mr: 1 }} />
-          {isAppropriate ? "Appropriate" : "Inappropriate"}
-        </ToggleButton>
+          {isAppropriate ? "Flag" : "Unflag"}
+        </Button>
       </CardActions>
     </Card>
   );

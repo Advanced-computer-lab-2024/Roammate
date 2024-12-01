@@ -26,8 +26,12 @@ import {
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
 import StarIcon from '@mui/icons-material/Star';
+import { Reviews } from "@mui/icons-material";
 
-const TourGuideManageProfile = ({ id }) => {
+const TourGuideManageProfile = () => {
+  const id = localStorage.getItem("userId");
+
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
@@ -46,6 +50,7 @@ const TourGuideManageProfile = ({ id }) => {
   const [photo, setPhoto] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [avgRating, setAvgRating] = useState(0);
+  const [reviews, setReviews] = useState([]);
 
   const fetchPhoto = async (photo) => {
     try {
@@ -70,6 +75,7 @@ const TourGuideManageProfile = ({ id }) => {
       setAbout(data.about);
       setStatus(data.status);
       setAvgRating(data.averageRating);
+      setReviews(data.reviews);
 
       if (data.documents.photo) fetchPhoto(data.documents.photo);
     };
@@ -179,15 +185,18 @@ const TourGuideManageProfile = ({ id }) => {
           type="file"
           onChange={handlePhotoChange}
         />
-        <Rating
-          name="read-only"
-          value={avgRating}
-          readOnly
-          precision={0.1}
-          sx={{ fontSize: 40, mt: 2 }}
-          icon={<StarIcon style={{ fill: 'orange' }} fontSize="large" />}
-          emptyIcon={<StarIcon style={{ fill: 'lightgray' }} fontSize="large" />}
-        />
+        <Box sx={{ display: "flex", flexDirection: 'row', gap: 2, mt: 2 }}>
+          <Rating
+            name="read-only"
+            value={avgRating}
+            readOnly
+            precision={0.1}
+
+            icon={<StarIcon style={{ fill: 'orange' }} fontSize="large" />}
+            emptyIcon={<StarIcon style={{ fill: 'lightgray' }} fontSize="large" />}
+          />
+          <Typography variant="h5">({reviews.length})</Typography>
+        </Box>
       </Box>
       <Box sx={{ display: "flex", gap: 3, padding: 3 }}>
         {/* Profile Form */}

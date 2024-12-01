@@ -37,7 +37,7 @@ const ComplaintCard = ({ complaint }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: "90%", mb: 4 }}>
+    <Card sx={{ width: 500, mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -95,8 +95,8 @@ const ComplaintCard = ({ complaint }) => {
             width: "100%",
           }}
         >
-          Tourist Name: {complaint.issuerId.username} <br />
-          Tourist ID: {complaint.issuerId._id}
+          <strong>username:</strong> {complaint.issuerId.username} <br />
+          <strong>email: </strong>{complaint.issuerId.email}
         </Typography>
 
         {/* Date and Status */}
@@ -153,7 +153,7 @@ const ComplaintCard = ({ complaint }) => {
       <CardActions
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "end",
           alignItems: "center",
           mb: 1,
           mt: -1,

@@ -54,7 +54,7 @@
 
 {
     "username": "tourismGoverner",
-    "password": "tourismGoverner123"
+    "password": "tourismGoverner123" //ID : 67281f3d5d85a6e12ab86379
 }
 
 -----------------------------------------------------------------------------------------------------------
@@ -322,7 +322,7 @@
 [
 [
   {
-    "title": "Sunset Kayaking", //ID: 671d30e5a2d0ddbe9a997164
+    "title": "Sunset Kayaking", //ID: 6733c62f31e7e7baf1029a2a
     "description": "Enjoy a serene kayaking experience during sunset along the Nile River.",
     "location": {
       "lat": 30.0444,
@@ -444,19 +444,19 @@
 ------------------------------------------MonumentTags-----------------------------------------------------
 [
   {
-    "name": "World Heritage"
+    "name": "World Heritage" //6733ddba6b8c2a7940d939af
   },
   {
-    "name": "Ancient Egypt"
+    "name": "Ancient Egypt" //6733ddd06b8c2a7940d939b1
   },
   {
-    "name": "Temple"
+    "name": "Temple" //6733ddef6b8c2a7940d939b3
   },
   {
-    "name": "Pyramid"
+    "name": "Pyramid" //6733ddfc6b8c2a7940d939b5
   },
   {
-    "name": "Sphinx"
+    "name": "Sphinx" //6733de096b8c2a7940d939b7
   }
 ]
 
@@ -471,10 +471,8 @@
       "https://example.com/pyramids2.jpg"
     ],
     "location": {
-      "name": "Giza Plateau",
-      "address": "Al Haram, Giza",
-      "latitude": 29.9792,
-      "longitude": 31.1342
+      "lat": 29.9792,
+      "lng": 31.1342
     },
     "openingHours": [
       {
@@ -498,9 +496,9 @@
         "price": 100
       }
     ],
-    "tags": ["6537f7b59f0340d088f738a9"],  // Example tag ID for "Historical"
-    "monumentTags": ["6537f7b59f0340d088f738a1"],  // Example monument tag ID for "World Heritage"
-    "tourismGovernor": "6537f7b59f0340d088f738b2"  // Example tourism governor ID
+    "tags": ["671d25fb73e0e7cff8d41913"],  // Example tag ID for "Historical"
+    "monumentTags": ["6733ddba6b8c2a7940d939af"],  // Example monument tag ID for "World Heritage"
+    "tourismGovernor": "67281f3d5d85a6e12ab86379"  // Example tourism governor ID
   },
 //Monument 2
   {
@@ -511,10 +509,8 @@
       "https://example.com/sphinx2.jpg"
     ],
     "location": {
-      "name": "Giza Plateau",
-      "address": "Al Haram, Giza",
-      "latitude": 29.9753,
-      "longitude": 31.1376
+      "lat": 29.9753,
+      "lng": 31.1376
     },
     "openingHours": [
       {
@@ -538,9 +534,9 @@
         "price": 75
       }
     ],
-    "tags": ["6537f7b59f0340d088f738aa"],  // Example tag ID for "Cultural"
-    "monumentTags": ["6537f7b59f0340d088f738a2"],  // Example monument tag ID for "Ancient Egypt"
-    "tourismGovernor": "6537f7b59f0340d088f738b3"
+    "tags": ["671d25f173e0e7cff8d41911"],  // Example tag ID for "Cultural"
+    "monumentTags": ["6733ddd06b8c2a7940d939b1"],  // Example monument tag ID for "Ancient Egypt"
+    "tourismGovernor": "67281f3d5d85a6e12ab86379"
   },
 //Monument 3
   {
@@ -551,10 +547,8 @@
       "https://example.com/luxor2.jpg"
     ],
     "location": {
-      "name": "Luxor",
-      "address": "Luxor Governorate, Egypt",
-      "latitude": 25.6998,
-      "longitude": 32.6396
+      "lat": 25.6998,
+      "lng": 32.6396
     },
     "openingHours": [
       {
@@ -578,9 +572,9 @@
         "price": 80
       }
     ],
-    "tags": ["6537f7b59f0340d088f738ab"],  // Example tag ID for "Adventure"
-    "monumentTags": ["6537f7b59f0340d088f738a3"],  // Example monument tag ID for "Temple"
-    "tourismGovernor": "6537f7b59f0340d088f738b4"
+    "tags": ["671d25c973e0e7cff8d4190b"],  // Example tag ID for "Adventure"
+    "monumentTags": ["6733ddef6b8c2a7940d939b3"],  // Example monument tag ID for "Temple"
+    "tourismGovernor": "67281f3d5d85a6e12ab86379"
   },
 //Monument 4
   {

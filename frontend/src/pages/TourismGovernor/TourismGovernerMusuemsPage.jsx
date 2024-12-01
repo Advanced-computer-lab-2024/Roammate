@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Grid2";
-import MuseumCard from "../../components/touristGovernerComponents/MusuemCard";
+import MuseumCard from "../../components/tourismGovernorComponents/MusuemCard";
 import CachedIcon from "@mui/icons-material/Cached";
 import { fetchMusuemsByTourismGovernorId } from "../../services/api";
 import { useLocation, useOutletContext } from "react-router";
 import ManageMuseumPage from "./ManageMusuemPage";
+import CircularProgress from "@mui/material/CircularProgress";
+const TourismGovernorMuseumsPage = () => {
+  const id = localStorage.getItem("userId");
 
-const TourismGovernorMuseumsPage = ({ id }) => {
+
   const [museums, setMuseums] = useState([]);
   const [fetch, setFetch] = useState(0);
   const { setActiveButton } = useOutletContext();
@@ -31,7 +34,7 @@ const TourismGovernorMuseumsPage = ({ id }) => {
     if (museum_id) {
       setActiveButton(null);
     }
-  }, [museum_id, fetch, id, setActiveButton]);
+  }, [museum_id, id]);
 
   return !museum_id ? (
     <Box>
@@ -39,10 +42,7 @@ const TourismGovernorMuseumsPage = ({ id }) => {
         <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
           {museums.length === 0 &&
             (fetch < 1 ? (
-              <h2>
-                Loading
-                <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-              </h2>
+              <CircularProgress />
             ) : (
               <h2>No Museums Found</h2>
             ))}

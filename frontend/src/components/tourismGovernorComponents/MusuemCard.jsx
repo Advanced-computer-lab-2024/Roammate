@@ -13,14 +13,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import { useNavigate } from "react-router";
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
 
 const DATE_FORMAT = "YYYY/MM/DD";
 
 const MuseumCard = ({ museum }) => {
-  const [archived, setArchived] = useState(false);
-  const [rating, setRating] = useState(4.5); // Set a default rating or pull from data if available
+  // const [archived, setArchived] = useState(false);
+  // const [rating, setRating] = useState(4.5); // Set a default rating or pull from data if available
   const navigate = useNavigate();
-
   const getOpeningHours = (openingHours) => {
     return openingHours.map(({ day, open, close }) => (
       <Typography key={day} variant="body2" color="text.secondary">
@@ -58,20 +58,20 @@ const MuseumCard = ({ museum }) => {
           >
             {museum.name}
           </Typography>
-          <Rating
+          {/* <Rating
             name="read-only"
             value={rating}
             readOnly
             precision={0.5}
             icon={<StarIcon style={{ fill: "orange" }} />}
             emptyIcon={<StarIcon style={{ fill: "lightgray" }} />}
-          />
+          /> */}
           <IconButton
             size="small"
             color="primary"
             sx={{ mt: "-5px", ml: "10px" }}
-            onClick={() =>
-              navigate(`/tourismGovernor/museums?id=${museum._id}`)
+            onClick={
+              () => navigate(`/tourismGovernor/musuems?id=${museum._id}`)
             }
           >
             <EditIcon />
@@ -105,9 +105,9 @@ const MuseumCard = ({ museum }) => {
             width: "100%",
           }}
         >
-          <Typography variant="subtitle2" color="text.secondary">
-            Opening Hours:
-          </Typography>
+          <Button startIcon={<WatchLaterIcon sx={{
+            fill: 'darkgreen'
+          }} />} variant="none" disabled>Opening Hours</Button>
           {getOpeningHours(museum.openingHours)}
         </Box>
 
@@ -116,19 +116,18 @@ const MuseumCard = ({ museum }) => {
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            justifyContent: "end",
+            alignItems: "start",
             width: "100%",
             mt: "10px",
           }}
         >
-          <Typography variant="subtitle2" color="text.secondary">
-            Ticket Prices:
-          </Typography>
+
           <Box>
-            {museum.ticketPrices.map(({ for: group, price }, index) => (
+            {museum.ticketPrices.map((ticketPrice, index) => (
               <Typography key={index} variant="body2" color="text.secondary">
-                {`${group}: $${price}`}
+                {`${ticketPrice.for}:`} <strong>{`${ticketPrice.price} EGP`}</strong>
+
               </Typography>
             ))}
           </Box>
@@ -147,16 +146,7 @@ const MuseumCard = ({ museum }) => {
         <Button variant="contained" color="error" startIcon={<DeleteIcon />}>
           Delete
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => setArchived(!archived)}
-          endIcon={
-            <InventoryIcon sx={{ fill: `${archived ? "orange" : "white"}` }} />
-          }
-          sx={{ backgroundColor: "grey" }}
-        >
-          {archived ? "Unarchive" : "Archive"}
-        </Button>
+
         <Button
           variant="contained"
           color="primary"

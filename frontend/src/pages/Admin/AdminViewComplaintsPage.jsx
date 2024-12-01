@@ -92,8 +92,8 @@ const AdminViewComplaint = ({ complaint }) => {
           Issuer Information
         </Typography>
         <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
-          Username: {complaint.issuerId.username} <br />
-          User ID: {complaint.issuerId._id}
+          <strong>Username:</strong> {complaint.issuerId.username} <br />
+          <strong>Email:</strong>{complaint.issuerId.email}
         </Typography>
 
         <Divider sx={{ my: 2 }} />

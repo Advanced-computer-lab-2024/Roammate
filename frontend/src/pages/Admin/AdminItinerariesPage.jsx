@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, CircularProgress } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
 import { getAllItineraries } from "../../services/api";
 import SearchBar from "../../components/touristComponents/SearchBar";
@@ -28,6 +28,7 @@ const AdminItinerariesPage = () => {
   const fetchItineraries = async () => {
     const result = await getAllItineraries();
     setItineraries(result);
+    setFetch(fetch + 1);
   };
 
   // Separate itineraries into appropriate and inappropriate lists
@@ -53,47 +54,32 @@ const AdminItinerariesPage = () => {
 
   return !id ? (
     <Box>
-      <SearchBar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        setFetch={setFetch}
-      />
-
-      {/* Sort and Filter */}
-      {/* <SortAndFilterItineraries
-        setFilterAndSortCriteria={setFilterAndSortCriteria}
-        setFetch={setFetch}
-      /> */}
-
       {/* All Itineraries */}
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h5" sx={{ mb: 2 }}>
-          Itineraries
+        <Typography variant="h5" sx={{ mb: 4, color: 'grey' }}>
+          All Itineraries
         </Typography>
-        <Grid container spacing={2}>
-          {appropriateItineraries.length === 0 && fetch < 1 ? (
-            <h2>
-              Loading
-              <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-            </h2>
-          ) : (
-            appropriateItineraries.map((itinerary) => (
-              <Grid item xs={12} md={6} key={itinerary._id}>
-                <AdminItineraryCard
-                  itinerary={itinerary}
-                  onStatusChange={updateItineraryStatus}
-                />
-              </Grid>
-            ))
-          )}
-          {itineraries.length === 0 && fetch >= 1 && (
-            <Typography>No Itineraries Found</Typography>
-          )}
-        </Grid>
+
+        {appropriateItineraries.length === 0 && fetch < 1 ? (
+          <CircularProgress />
+        ) : (
+          appropriateItineraries.map((itinerary) => (
+
+            <AdminItineraryCard
+              itinerary={itinerary}
+              onStatusChange={updateItineraryStatus}
+            />
+
+          ))
+        )}
+        {itineraries.length === 0 && fetch >= 1 && (
+          <Typography>No Itineraries Found</Typography>
+        )}
+
       </Box>
 
       {/* Inappropriate Itineraries */}
-      <Box sx={{ mt: 4 }}>
+      <Box >
         <Typography variant="h5" sx={{ mb: 2, color: "red" }}>
           Inappropriate Itineraries
         </Typography>
@@ -104,13 +90,14 @@ const AdminItinerariesPage = () => {
             border: "1px solid red",
             minHeight: "200px",
             backgroundColor: "#fdecea",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "center",
           }}
         >
           {inappropriateItineraries.length === 0 && fetch < 1 ? (
-            <h2>
-              Empty!
-              <CachedIcon sx={{ fontSize: "25px", ml: "10px", mb: "-5px" }} />
-            </h2>
+            <CircularProgress />
           ) : (
             inappropriateItineraries.map((itinerary) => (
               <Box key={itinerary._id} sx={{ mb: 2 }}>
@@ -122,13 +109,13 @@ const AdminItinerariesPage = () => {
             ))
           )}
           {inappropriateItineraries.length === 0 && fetch >= 1 && (
-            <Typography>No Inappropriate Itineraries Found</Typography>
+            <Typography variant="h5" color="grey">No Inappropriate Itineraries Found</Typography>
           )}
         </Box>
       </Box>
     </Box>
   ) : (
-    <AdminViewItinerary itinerary={itineraries.find((it) => it._id === id)} />
+    <AdminViewItinerary id={id} />
   );
 };
 

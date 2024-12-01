@@ -1,21 +1,16 @@
-import { Avatar, Box, Card, CardContent, CardHeader, Rating, Typography } from "@mui/material";
-import { useState } from "react";
+import { Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Rating, Typography } from "@mui/material";
 import EditItineraryForm from "../../components/itineraryComponents/EditItineraryForm";
-import CachedIcon from '@mui/icons-material/Cached';
 import StarIcon from '@mui/icons-material/Star';
 
 const ManageItineraryPage = ({ itinerary }) => {
     if (!itinerary) {
         return (
-            < h2 > loading
-                <CachedIcon sx={
-                    {
-                        fontSize: '25px',
-                        ml: '10px',
-                        mb: '-5px',
-                    }
-                } />
-            </h2>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+            }}>
+                <CircularProgress />
+            </Box>
         )
     }
     return (

@@ -17,9 +17,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { logout } from '../../services/api';
 
 const navItems = ['Home', 'Create Product'];
 
@@ -43,6 +45,13 @@ const SellerLayout = () => {
         }
     }, [activeButton, navigate]);
 
+    const handleLogOut = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -132,6 +141,18 @@ const SellerLayout = () => {
                             AMMATE
                         </Typography>
                     </Box>
+
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        color="inherit"
+                        aria-label="profile"
+                        sx={{ ml: 2 }}
+                        onClick={handleLogOut}
+                    >
+                        <LogoutIcon />
+                    </IconButton>
+
                     <IconButton
                         size="large"
                         edge="end"

@@ -190,7 +190,7 @@ const searchMonumentsWithFilters = async (req, res) => {
     query = "",
     tags = [],
     monumentTags = [],
-    currency = "USD",
+    order = "name",
   } = req.query;
 
   const parsedTags = Array.isArray(tags) ? tags : tags.split(",");
@@ -208,20 +208,10 @@ const searchMonumentsWithFilters = async (req, res) => {
     })
       .populate("tags", "name")
       .populate("monumentTags", "name")
-      .populate("tourismGovernor", "username");
+      .populate("tourismGovernor", "username")
+      .sort(order === "name" ? { name: 1 } : { name: -1 });
 
-    const convertedMonuments = monuments.map((monument) => {
-      const convertedPrices = monument.ticketPrices.map((price) => ({
-        ...price,
-        amount: convertCurrency(price.amount, "USD", currency),
-      }));
-      return {
-        ...monument.toObject(),
-        ticketPrices: convertedPrices,
-        currency,
-      };
-    });
-    res.status(200).send(convertedMonuments);
+    res.status(200).send(monuments);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -229,7 +219,6 @@ const searchMonumentsWithFilters = async (req, res) => {
 
 const getMonumentsByTourismGovernorId = async (req, res) => {
   const id = req.params.id;
-  const { currency = "USD" } = req.query;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
@@ -239,18 +228,7 @@ const getMonumentsByTourismGovernorId = async (req, res) => {
       .populate("monumentTags", "name")
       .populate("tourismGovernor", "username");
 
-    const convertedMonuments = monuments.map((monument) => {
-      const convertedPrices = monument.ticketPrices.map((price) => ({
-        ...price,
-        amount: convertCurrency(price.amount, "USD", currency),
-      }));
-      return {
-        ...monument.toObject(),
-        ticketPrices: convertedPrices,
-        currency,
-      };
-    });
-    res.status(200).send(convertedMonuments);
+    res.status(200).send(monuments);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }

@@ -4,6 +4,7 @@ const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
 const AccountDeletionRequest = require("../models/AccountDeletionRequest");
 const ItineraryBooking = require("../models/ItineraryBooking");
+const bcrypt = require("bcrypt");
 
 // username, password, role, email, mobile, yearsOfExperience, previousWork, languages, about
 const register = async (req, res) => {
@@ -18,11 +19,13 @@ const register = async (req, res) => {
     about,
   } = req.body;
   const role = "tour guide";
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
   try {
     const tourGuide = new TourGuide({
       username,
       email,
-      password,
+      password: hashedPassword,
       role,
       mobile,
       yearsOfExperience,

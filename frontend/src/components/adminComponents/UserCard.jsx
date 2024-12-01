@@ -90,7 +90,7 @@ const RegistrationCard = ({ user, onRemove }) => {
             <CardActions
                 sx={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "end",
                     alignItems: "center",
                     mb: 1,
                     mt: -1,
@@ -104,7 +104,7 @@ const RegistrationCard = ({ user, onRemove }) => {
                         onClick={handleDelete}
                         disabled={loading}
                     >
-                        Delete
+                        Delete User
                     </Button>
                 </Box>
 

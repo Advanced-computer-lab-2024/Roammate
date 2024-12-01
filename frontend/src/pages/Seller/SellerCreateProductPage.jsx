@@ -3,13 +3,17 @@ import { CircularProgress, Box, Button, Checkbox, Chip, Divider, FormControl, Ic
 import { createProduct, uploadProductImage } from "../../services/api";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const SellerCreateProduct = ({ id }) => {
+const SellerCreateProduct = () => {
+    const id = localStorage.getItem("userId");
+
+
     const [name, setName] = useState();
     const [description, setDescription] = useState();
     const [price, setPrice] = useState();
     const [quantity, setQuantity] = useState();
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState("");
+    const [disabled, setDisabled] = useState(false);
 
     const [image, setImage] = useState(null); // Track image state with useState
 
@@ -36,6 +40,7 @@ const SellerCreateProduct = ({ id }) => {
                 await uploadProductImage(response.data._id, formData);
             }
             setResponse("Product created successfully");
+            setDisabled(true);
         } catch (error) {
             console.log(error);
             setResponse("Failed to create product. Please try again later.");
@@ -76,6 +81,7 @@ const SellerCreateProduct = ({ id }) => {
                     sx={{
                         width: '100%',
                     }}
+                    disabled={disabled}
                 />
 
                 {/*Description*/}
@@ -89,6 +95,7 @@ const SellerCreateProduct = ({ id }) => {
                     sx={{
                         width: '100%',
                     }}
+                    disabled={disabled}
                 />
 
                 {/*Image URL*/}
@@ -101,6 +108,7 @@ const SellerCreateProduct = ({ id }) => {
                         backgroundColor: image ? "green" : "primary.main",
                         color: "white",
                     }}
+                    disabled={loading || disabled}
                 >
                     Upload Image
                     <input
@@ -123,6 +131,7 @@ const SellerCreateProduct = ({ id }) => {
                     sx={{
                         width: 'fit-content',
                     }}
+                    disabled={disabled}
                 />
 
                 {/*Quantity*/}
@@ -135,6 +144,7 @@ const SellerCreateProduct = ({ id }) => {
                     sx={{
                         width: 'fit-content',
                     }}
+                    disabled={disabled}
                 />
 
 
@@ -151,7 +161,7 @@ const SellerCreateProduct = ({ id }) => {
                     sx={{
                         width: '100%'
                     }}
-                    disabled={!name || !description || !price || !quantity || image === null || loading}
+                    disabled={disabled || !name || !description || !price || !quantity || loading}
                 >
                     {loading &&
                         response === ""

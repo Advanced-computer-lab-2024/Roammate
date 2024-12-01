@@ -1,12 +1,15 @@
 const { User } = require("../models");
+const bcrypt = require("bcrypt");
 
 const addAdmin = async (req, res) => {
   const { username, password } = req.body;
   const role = "admin";
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
   try {
     const admin = new User({
       username,
-      password,
+      password: hashedPassword,
       role,
     });
     await admin.save();

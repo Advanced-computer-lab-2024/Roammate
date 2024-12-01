@@ -52,131 +52,155 @@ const PurchasedProductCard = ({ purchase }) => {
     };
 
     return (
-        <Card sx={{ maxWidth: '550px', mb: 4 }}>
-
-            <ProductImage imageId={purchasedProduct.image} height={"250"} />
-
-            <CardContent sx={{
+        <Card sx={{
+            width: '850px',
+            mb: 4,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "start",
+            alignItems: "center",
+        }}>
+            <Box sx={{
+                width: '280px',
+                height: '165px',
                 display: 'flex',
-                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
+                mr: '20px',
+                ml: '10px',
+
             }}>
-                {/*Header */}
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'start',
+                <ProductImage imageId={purchasedProduct.image} />
+            </Box>
+
+            <Box sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                flexGrow: 1,
+            }}>
+                <CardContent sx={{
                     width: '100%',
                 }}>
-                    <Typography gutterBottom variant="h5" component="div" sx={{
-                        flexGrow: 1,
+                    {/*Header */}
+                    <Box sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "10px",
+                        alignItems: "space-between",
+                        width: "100%",
+                    }}>
+                        <Typography gutterBottom variant="h5" component="div" sx={{
+                            flexGrow: 1,
+                            textAlign: 'left',
+                        }} >
+                            {name}
+                        </Typography>
+                        <Rating name="read-only" value={rating} readOnly precision={0.5}
+                            icon={<StarIcon style={{ fill: 'orange' }} />}
+                            emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
+                        />
+                        <ShareLink type={'product'} id={purchasedProduct._id} />
+                    </Box>
+
+                    <Typography variant="body2" sx={{
+                        color: 'text.secondary',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                         textAlign: 'left',
-                    }} >
-                        {name}
+                        mb: '10px',
+                        width: '100%',
+                    }}>
+                        {description}
                     </Typography>
-                    <Rating name="read-only" value={rating} readOnly precision={0.5}
-                        icon={<StarIcon style={{ fill: 'orange' }} />}
-                        emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
-                    />
-                    <ShareLink type={'product'} id={purchasedProduct._id} />
-                </Box>
 
-                <Typography variant="body2" sx={{
-                    color: 'text.secondary',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    textAlign: 'left',
-                    mb: '10px',
-                    width: '100%',
-                }}>
-                    {description}
-                </Typography>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'start',
+                        alignItems: 'center',
+                        width: '100%',
+                    }}>
+                        <Typography gutterBottom component="div" sx={{
+                            flexGrow: 1,
+                            textAlign: 'left',
+                            fontSize: '16px',
+                            color: 'text.secondary',
+                            fontWeight: 'bold',
+                        }} >
+                            {
+                                `purchased on ${dayjs(date).format(DATE_FORMAT)}`
+                            }
 
-                <Box sx={{
+
+                            <IconButton size="small" disabled color="primary" sx={{
+                                ml: '10px',
+                            }}>
+                                {
+                                    status === 'Completed' ? <CheckCircleOutlineIcon sx={{
+                                        fill: 'green'
+                                    }} /> : status === 'Cancelled' ? <CancelIcon sx={{
+                                        fill: 'red'
+                                    }} /> : status === 'Preparing' ? <HourglassTopIcon sx={{
+                                        fill: 'orange'
+                                    }} /> : <LocalShippingIcon sx={{
+                                        fill: 'blue'
+                                    }} />
+                                }
+                                <Typography variant="body2" sx={{
+                                    color: ` ${status === 'Completed' ?
+                                        'green' : status === 'Cancelled' ?
+                                            'red' : status === 'Preparing' ? 'orange' : 'blue'
+                                        }`,
+                                    ml: '5px',
+                                }}>
+                                    {status}
+                                </Typography>
+                            </IconButton>
+                        </Typography>
+                    </Box>
+
+
+                </CardContent>
+                <CardActions sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'start',
+                    justifyContent: 'end',
                     alignItems: 'center',
+                    mb: '10px',
+                    mt: '-20px',
                     width: '100%',
                 }}>
-                    <Typography gutterBottom component="div" sx={{
-                        flexGrow: 1,
-                        textAlign: 'left',
-                        fontSize: '16px',
-                        color: 'text.secondary',
-                        fontWeight: 'bold',
-                    }} >
-                        {
-                            `purchased on ${dayjs(date).format(DATE_FORMAT)}`
-                        }
-
-
-                        <IconButton size="small" disabled color="primary" sx={{
-                            ml: '10px',
-                        }}>
-                            {
-                                status === 'Completed' ? <CheckCircleOutlineIcon sx={{
-                                    fill: 'green'
-                                }} /> : status === 'Cancelled' ? <CancelIcon sx={{
-                                    fill: 'red'
-                                }} /> : status === 'Preparing' ? <HourglassTopIcon sx={{
-                                    fill: 'orange'
-                                }} /> : <LocalShippingIcon sx={{
-                                    fill: 'blue'
-                                }} />
-                            }
-                            <Typography variant="body2" sx={{
-                                color: ` ${status === 'Completed' ?
-                                    'green' : status === 'Cancelled' ?
-                                        'red' : status === 'Preparing' ? 'orange' : 'blue'
-                                    }`,
-                                ml: '5px',
-                            }}>
-                                {status}
-                            </Typography>
-                        </IconButton>
-                    </Typography>
-                </Box>
-
-
-            </CardContent>
-            <CardActions sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'end',
-                alignItems: 'center',
-                mb: '10px',
-                mt: '-20px',
-                width: '100%',
-            }}>
-                {
-                    status === 'Shipped' && <Button color="primary"
-                        onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}>
-                        View Details
-                        <ArrowForwardIosIcon />
+                    {
+                        status === 'Shipped' && <Button color="primary"
+                            onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}>
+                            View Details
+                            <ArrowForwardIosIcon />
+                        </Button>
+                    }
+                    {status === 'Preparing' && <Button variant="contained"
+                        onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}
+                        endIcon={<CancelIcon sx={{
+                            fill: 'white'
+                        }} />}
+                        sx={{
+                            backgroundColor: 'red',
+                        }}
+                    >
+                        Cancel
                     </Button>
-                }
-                {status === 'Preparing' && <Button variant="contained"
-                    onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}
-                    endIcon={<CancelIcon sx={{
-                        fill: 'white'
-                    }} />}
-                    sx={{
-                        backgroundColor: 'red',
-                    }}
-                >
-                    Cancel
-                </Button>
-                }
-                {status === 'Completed' && <Button variant="contained"
-                    onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}
-                    endIcon={<ArrowForwardIosIcon />}>
-                    Review
-                </Button>}
-            </CardActions>
+                    }
+                    {status === 'Completed' && <Button variant="contained"
+                        onClick={() => navigate(`/tourist/purchases?id=${purchase._id}`)}
+                        endIcon={<ArrowForwardIosIcon />}>
+                        Review
+                    </Button>}
+                </CardActions>
+            </Box>
         </Card >
     );
 }

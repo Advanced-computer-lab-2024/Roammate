@@ -55,7 +55,7 @@ const getAllItineraries = async (req, res) => {
   try {
     const itineraries = await Itinerary.find()
       .populate("tags")
-      .populate("tourGuide", "username")
+      .populate("tourGuide")
       .populate("reviews");
 
     const convertedItineraries = itineraries.map((itinerary) => {
@@ -352,7 +352,7 @@ const getBookedItinerariesByTouristId = async (req, res) => {
         ],
       })
       .populate("user")
-      .sort({ date: 1 });
+      .sort({ date: -1 });
     res.status(200).json(itineraries);
   } catch (error) {
     res.status(500).json({ error: error.message });

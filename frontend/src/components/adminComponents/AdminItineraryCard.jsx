@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { IconButton, Rating, ToggleButton } from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import StarIcon from "@mui/icons-material/Star";
@@ -40,7 +39,7 @@ const AdminItineraryCard = ({ itinerary, onStatusChange }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: "90%", mb: 4 }}>
+    <Card sx={{ width: 650, mb: 4 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -76,16 +75,6 @@ const AdminItineraryCard = ({ itinerary, onStatusChange }) => {
             icon={<StarIcon style={{ fill: "orange" }} />}
             emptyIcon={<StarIcon style={{ fill: "lightgray" }} />}
           />
-          <IconButton
-            size="small"
-            color="primary"
-            sx={{
-              mt: "-5px",
-              ml: "10px",
-            }}
-          >
-            <ShareIcon />
-          </IconButton>
         </Box>
 
         {/* Tour Guide Info */}
@@ -98,8 +87,7 @@ const AdminItineraryCard = ({ itinerary, onStatusChange }) => {
             width: "100%",
           }}
         >
-          Tour Guide: {itinerary.tourGuide.username} (ID:{" "}
-          {itinerary.tourGuide._id})
+          <strong>Tour Guide:</strong> {itinerary.tourGuide.username} ({itinerary.tourGuide.email})
         </Typography>
 
         {/* Duration */}
@@ -139,8 +127,8 @@ const AdminItineraryCard = ({ itinerary, onStatusChange }) => {
               .startOf("day")
               .isBefore(dayjs(itinerary.endDate).startOf("day"))
               ? `${dayjs(itinerary.startDate).format(DATE_FORMAT)} - ${dayjs(
-                  itinerary.endDate
-                ).format(DATE_FORMAT)}`
+                itinerary.endDate
+              ).format(DATE_FORMAT)}`
               : `${dayjs(itinerary.startDate).format(DATE_FORMAT)}`}
             <IconButton
               size="small"
@@ -169,7 +157,7 @@ const AdminItineraryCard = ({ itinerary, onStatusChange }) => {
           </Typography>
 
           <Typography gutterBottom variant="h4" component="div">
-            ${itinerary.price}
+            {itinerary.price} EGP
           </Typography>
         </Box>
       </CardContent>
@@ -195,22 +183,24 @@ const AdminItineraryCard = ({ itinerary, onStatusChange }) => {
           View
         </Button>
 
-        <ToggleButton
+        <Button
           value="flagged"
           selected={isFlagged}
-          onChange={handleToggleFlag}
+          onClick={handleToggleFlag}
           sx={{
-            ml: 1,
-            backgroundColor: isFlagged ? "red" : "gray",
+
+            backgroundColor: isFlagged ? "grey" : "red",
             color: "white",
             "&:hover": {
-              backgroundColor: isFlagged ? "darkred" : "lightgray",
+              backgroundColor: isFlagged ? "lightgray" : "darkred",
             },
+
           }}
+          startIcon={<FlagIcon />}
         >
-          <FlagIcon sx={{ mr: 1 }} />
-          {isFlagged ? "Inappropriate" : "Appropriate"}
-        </ToggleButton>
+
+          {isFlagged ? "Unflag" : "Flag"}
+        </Button>
       </CardActions>
     </Card>
   );

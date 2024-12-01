@@ -60,10 +60,15 @@ const TouristViewPurchasedProduct = ({ purchase, touristId }) => {
         <Box sx={{ padding: 3 }}>
             <Card elevation={3} sx={{
                 padding: 2, marginBottom: 3,
-                width: '650px'
+                width: '650px',
             }}>
 
-                <ProductImage imageId={product.image} height={"300"} marginBottom={2} />
+                <Box sx={{
+                    mb: '20px'
+                }}>
+                    <ProductImage imageId={product.image} />
+                </Box>
+
 
                 <Typography variant="h4" gutterBottom>{product.name}</Typography>
                 {/* Average Rating */}
@@ -214,7 +219,7 @@ const TouristViewPurchasedProduct = ({ purchase, touristId }) => {
 
                 {/* Leave a Review */}
                 {
-                    status === 'Completed' ?
+                    purchase.status === 'Completed' ?
                         (userRatedBefore() ?
                             (<Typography variant="h6" sx={{ color: 'gray' }}>You have already rated this product {userRatedBefore()}</Typography>)
                             :

@@ -25,7 +25,10 @@ import {
 import DeleteProfileRequest from "../../components/sharedComponents/DeleteProfileRequestComponent";
 import AcceptTosComponent from "../../components/sharedComponents/AcceptTosComponent";
 
-const SellerManageProfilePage = ({ id }) => {
+const SellerManageProfilePage = () => {
+  const id = localStorage.getItem("userId");
+
+
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
