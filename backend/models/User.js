@@ -31,9 +31,13 @@ const userSchema = new Schema(
       enum: ["guest", "pending", "accepted", "active"],
       default: "guest",
     },
-    notifications: [
-      notificationSchema
+    deliveryAddresses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "DeliveryAddress",
+      },
     ],
+    notifications: [notificationSchema],
   },
   {
     timestamps: true,

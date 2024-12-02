@@ -23,6 +23,7 @@ const {
   productWishlistController,
   userCartController,
   PromoCodeController,
+  DeliveryAddressController,
 } = require("../controllers");
 const { requireAuth } = require("../middleware/AuthMiddleware");
 
@@ -515,6 +516,39 @@ router.post(
   "/wishlist/:userId/toggle",
   productWishlistController.toggleProductInWishlist
 );
+
+// Create a new delivery address
+router.post(
+  "/delivery-address",
+  DeliveryAddressController.createDeliveryAddress
+);
+//--------------------------------------------------------------
+
+// Get all delivery addresses for a user
+router.get(
+  "/delivery-address/:userId",
+  DeliveryAddressController.getDeliveryAddressesByUser
+);
+//--------------------------------------------------------------
+
+// Update a delivery address by ID
+router.put(
+  "/delivery-address/:id",
+  DeliveryAddressController.updateDeliveryAddressById
+);
+
+router.put(
+  "/delivery-address/:userId/set-default",
+  DeliveryAddressController.setDefaultAddress
+);
+//--------------------------------------------------------------
+
+// Delete a delivery address by ID
+router.delete(
+  "/delivery-address/:id",
+  DeliveryAddressController.deleteDeliveryAddressById
+);
+//--------------------------------------------------------------
 
 // Routes for User Cart
 router.post("/cart/:userId/add", userCartController.addProductToCart);

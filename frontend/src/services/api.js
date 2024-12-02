@@ -1,6 +1,62 @@
 import axios from "./axios";
 const API_URL = "http://localhost:8000/api/";
 
+export const fetchUserAddresses = async (userId) => {
+  const response = await fetch(`${API_URL}delivery-address/${userId}`);
+  if (!response.ok) throw new Error("Failed to fetch addresses");
+  return response.json();
+};
+
+export const createAddress = async (userId, addressData) => {
+  const response = await fetch(`${API_URL}delivery-address`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...addressData, userId }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create address");
+  }
+
+  return response.json();
+};
+
+// Update address
+export const updateAddress = async (addressId, addressData) => {
+  const response = await fetch(`${API_URL}delivery-address/${addressId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(addressData),
+  });
+  if (!response.ok) throw new Error("Failed to update address");
+  return response.json();
+};
+
+export const deleteAddress = async (addressId) => {
+  const response = await fetch(`${API_URL}delivery-address/${addressId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete address");
+  }
+
+  return response.json();
+};
+
+export const setDefaultAddress = async (userId, addressId) => {
+  const response = await fetch(
+    `${API_URL}delivery-address/${userId}/set-default`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ addressId }),
+    }
+  );
+  if (!response.ok) throw new Error("Failed to set default address");
+  return response.json();
+};
+
 export const flagActivity = async (id) => {
   try {
     const response = await axios.patch(

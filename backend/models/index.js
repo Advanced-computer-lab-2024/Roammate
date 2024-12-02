@@ -20,6 +20,7 @@ const transportation = require("./Transportation");
 const ProductWishlist = require("./ProductWishlist");
 const UserCart = require("./UserCart");
 const PromoCode = require("./PromoCode");
+const DeliveryAddress = require("./DeliveryAddress");
 // Export all models
 module.exports = {
   User,
@@ -43,4 +44,5 @@ module.exports = {
   transportation,
   ProductWishlist,
   UserCart,
+  DeliveryAddress,
 };
