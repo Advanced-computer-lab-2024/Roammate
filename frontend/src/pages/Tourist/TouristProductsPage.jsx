@@ -27,10 +27,16 @@ const TouristProductsPage = () => {
     }
   }, [queryProductId, fetch]);
 
+  const refreshWishlist = async () => {
+    // Refresh logic for wishlist (fetch updated wishlist data)
+    const updatedProducts = await searchAndFilterProducts({}); // Replace with actual fetch call
+    setProducts(updatedProducts);
+  };
+
   const fetchProducts = async () => {
     const searchFilterAndSortCriteria = {
       query: searchQuery,
-      ...filterAndSortCriteria
+      ...filterAndSortCriteria,
     };
     const queryParameters = new URLSearchParams(searchFilterAndSortCriteria);
     // console.log(queryParameters.toString());
@@ -57,7 +63,11 @@ const TouristProductsPage = () => {
             (fetch < 1 ? <CircularProgress /> : <h2>No Products Found</h2>)}
           {products.map((product) => (
             <div key={product._id}>
-              <ProductCard product={product} id={touristId} />
+              <ProductCard
+                product={product}
+                id={touristId}
+                refreshWishlist={refreshWishlist}
+              />
             </div>
           ))}
         </Grid2>
