@@ -22,6 +22,11 @@ const productPurchasingSchema = new Schema(
       enum: ["Preparing", "Shipped", "Completed", "Cancelled"],
       default: "Preparing",
     },
+    paymentMethod: {
+      type: String,
+      enum: ["Cash", "Wallet", "Card"],
+      required: true,
+    },
   },
   { timestamps: true }
 );

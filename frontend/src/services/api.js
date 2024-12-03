@@ -1006,6 +1006,33 @@ export const fetchPurchasedProductsByTouristId = async (touristId) => {
   const response = await axios.get(`${API_URL}productPurchasings/${touristId}`);
   return response.data;
 };
+
+export const payWallet = async (touristId, amount) => {
+  try {
+    const response = await axios.post(`${API_URL}wallet/pay`, {
+      touristId,
+      amount,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating wallet:", error);
+    throw error;
+  }
+};
+
+export const refundWallet = async (touristId, amount) => {
+  try {
+    const response = await axios.post(`${API_URL}wallet/refund`, {
+      touristId,
+      amount,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating wallet:", error);
+    throw error;
+  }
+};
+
 // ✅ This function is used to add a new product purchasing
 export const addProductPurchasing = async (purchasingData) => {
   const response = await axios.post(

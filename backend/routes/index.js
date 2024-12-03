@@ -566,4 +566,7 @@ router.post(
   "/reset-birthday-promo",
   PromoCodeController.resetBirthdayPromoSent
 );
+
+router.post("/wallet/pay", touristController.payCashFromWalletHandler);
+router.post("/wallet/refund", touristController.refundCashToWalletHandler);
 module.exports = router;
