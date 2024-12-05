@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, TextField, Button, CircularProgress, Select, MenuItem, Grid2, Pagination } from "@mui/material";
 import FlightCard from "../../components/flightComponents/FlightCard";
 import { searchFlights } from "../../services/api";
+import FlightDetails from "../../components/flightComponents/FlightDetails";
 
 function TouristBookFlightsPage() {
     const [origin, setOrigin] = useState("");
@@ -133,9 +134,13 @@ function TouristBookFlightsPage() {
                     currentFlights.map((flight) => (
                         <React.Fragment key={flight.id}>
                             <FlightCard flightData={flight} onClick={() => handleCardClick(flight)} />
+
                             {/* Show Flight Details below the selected flight */}
                             {selectedFlightId === flight.id && (
-                                <FlightDetails flightData={flight} onClose={() => setSelectedFlightId(null)} />
+                                <FlightDetails
+                                    flightData={flight}
+                                    onClose={() => setSelectedFlightId(null)}
+                                />
                             )}
                         </React.Fragment>
                     ))

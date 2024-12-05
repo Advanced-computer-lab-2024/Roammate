@@ -111,6 +111,8 @@ const Login = () => {
                 }
             }}>
                 Don't have an account? <a href="/">Register</a>
+                <br />
+                <a href="/forgot-password">Reset Password</a>
             </Typography>
         </Box >
 

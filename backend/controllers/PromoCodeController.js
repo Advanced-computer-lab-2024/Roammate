@@ -192,8 +192,6 @@ const applyPromoCode = async (req, res) => {
 
 const getAllPromoCodes = async (req, res) => {
   try {
-    console.log("Fetching all promo codes created by admin..."); // Debug message
-
     const promoCodes = await PromoCode.find(); // Retrieve all promo codes
     res.status(200).json(promoCodes);
   } catch (error) {

@@ -37,6 +37,9 @@ router.patch("/users/status/:id", userController.updateUserStatus); // Update th
 router.get("/users/status/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status
 router.get("/users/notifications/:id", userController.getUserNotifications); // Get all notifications for a user
 router.patch("/users/notifications/:id", userController.readAllNotifications); // Mark all notifications as read for a user
+router.post("/users/forgot-password", userController.forgotPassword); // Forgot password for a user
+router.post("/users/verify-otp", userController.verifyOtp); // Verify OTP for a user
+router.post("/users/reset-password", userController.resetPassword); // Reset password for a user
 //--------------------------------------------------------------
 
 //Routes for Admin
@@ -393,6 +396,9 @@ router.get("/pdf/:id", filesController.getPdf);
 
 //Routes for booking
 router.post("/search-flights", bookingController.searchFlights);
+router.get("/fetch-flights/:id", bookingController.getAllFlightBookings);
+router.post('/book-flight', bookingController.addFlightBooking);
+
 router.get("/search-hotel", bookingController.getHotelDetails);
 router.get("/list-hotels", bookingController.getHotelsByCity);
 
@@ -558,7 +564,6 @@ router.get("/cart/:userId", userCartController.getUserCart);
 
 // Promo Code Routes
 router.post("/promoCodes", PromoCodeController.createPromoCode);
-router.post("/promoCodes/birthday", PromoCodeController.sendBirthdayPromoCode);
 router.post("/promoCodes/apply", PromoCodeController.applyPromoCode);
 router.get("/promoCodes", PromoCodeController.getAllPromoCodes);
 router.get("/promoCodes/user/:userId", PromoCodeController.getPromoCodesByUser);

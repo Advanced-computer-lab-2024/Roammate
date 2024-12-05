@@ -3,17 +3,28 @@ import { Typography, Box, Divider, Stack, Chip, Button, Alert } from "@mui/mater
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import LuggageIcon from "@mui/icons-material/Luggage";
+import { bookFlight } from "../../services/api";
 
 function FlightDetails({ flightData }) {
-    const { itineraries, price, validatingAirlineCodes } = flightData;
+    const touristId = localStorage.getItem("userId");
+    console.log(touristId);
+    const { itineraries, price } = flightData;
     const [flightBooked, setFlightBooked] = useState(false);
     const [bookedFlightCode, setBookedFlightCode] = useState(null);
 
-    const handleBookFlight = () => {
-        setFlightBooked(true);
-        setBookedFlightCode(Math.random().toString(36).substring(5).toUpperCase());
-    }
 
+    const handleBookFlight = async () => {
+        try {
+            const bookingCode = Math.random().toString(36).substring(5).toUpperCase();
+            console.log(touristId, bookingCode, flightData);
+            await bookFlight(touristId, bookingCode, flightData); // Send the entire flightData and touristId
+            setBookedFlightCode(bookingCode);
+            setFlightBooked(true);
+        } catch (error) {
+            console.error('Failed to book flight:', error);
+        }
+    };
+    
     return (
         <Box sx={{ width: '100%', p: 2 }}>
             {/* Price and Luggage Information */}

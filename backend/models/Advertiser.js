@@ -4,11 +4,6 @@ const User = require("./User");
 
 const advertiserSchema = new Schema(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     website: {
       type: String,
     },

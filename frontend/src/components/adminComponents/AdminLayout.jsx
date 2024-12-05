@@ -20,6 +20,7 @@ import SnowboardingIcon from "@mui/icons-material/Snowboarding";
 import MapIcon from "@mui/icons-material/Map";
 import MuseumIcon from "@mui/icons-material/Museum";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import CategoryIcon from '@mui/icons-material/Category';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
@@ -164,6 +165,17 @@ const AdminLayout = () => {
             <AccountCircleIcon fontSize='small' />
           </ListItemIcon>
           <ListItemText primary="Add Governor" />
+        </ListItemButton>
+
+        <Divider />
+
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Add Promocode")
+        }>
+          <ListItemIcon>
+            <LoyaltyIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Add Promocode" />
         </ListItemButton>
 
         <Divider />

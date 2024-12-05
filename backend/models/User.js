@@ -10,10 +10,17 @@ const userSchema = new Schema(
       unique: true,
       immutable: true,
     },
+    email: {
+      type: String,
+      // required: true,
+      unique: true,
+    },
     password: {
       type: String,
       required: true,
     },
+    otp: { type: String, default: null },
+    otpExpiresAt: { type: Date, default: null },
     role: {
       type: String,
       enum: [

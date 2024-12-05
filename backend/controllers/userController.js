@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/nodeMailer");
 
 // get all users
 const getAllUsers = async (req, res) => {
@@ -103,6 +104,71 @@ const logoutUser = async (req, res) => {
   }
 };
 
+ const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Email not found" });
+
+    // Generate OTP and set expiration (e.g., 5 minutes)
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.otp = otp;
+    user.otpExpiresAt = Date.now() + 5 * 60 * 1000;
+    await user.save();
+
+    // Send OTP to user's email
+    const message = `Your password reset OTP is ${otp}. It is valid for 5 minutes.`;
+    sendEmail(email, "Password Reset OTP", message);
+
+    res.status(200).json({ message: "OTP sent to your email" });
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Email not found" });
+
+    // Check if OTP is valid and not expired
+    if (user.otp !== otp || user.otpExpiresAt < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    res.status(200).json({ message: "OTP verified successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Email not found" });
+
+    // Update password and clear OTP fields
+    const salt = await bcrypt.genSalt();
+    // const hashedPassword = await bcrypt.hash(password, salt);
+    // user.password = hashedPassword;
+    user.password = newPassword;
+
+    user.otp = null;
+    user.otpExpiresAt = null;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
 const getUserRole = async (req, res) => {
   if (req.cookies.token) {
     const token = req.cookies.token;
@@ -164,6 +230,9 @@ module.exports = {
   updateUserStatus,
   loginUser,
   logoutUser,
+  forgotPassword,
+  verifyOtp,
+  resetPassword,
   getUserRole,
   getUserNotifications,
   readAllNotifications,

@@ -45,6 +45,9 @@ import OthersRegisteration from "./pages/Registration&Login/OthersRegisteration"
 import TouristWishlistPage from "./pages/Tourist/TouristWishlistPage";
 import TouristCartPage from "./pages/Tourist/TouristCartPage";
 import AdminManagePromocodesPage from "./pages/Admin/AdminManagePromocodesPage";
+import ForgotPasswordPage from "./pages/Registration&Login/ForgotPasswordPage";
+import VerifyOtpPage from "./pages/Registration&Login/VerifyOtpPage";
+import ResetPasswordPage from "./pages/Registration&Login/ResetPasswordPage";
 
 const theme = createTheme({
   // palette: {
@@ -84,6 +87,10 @@ function App() {
           <Route path="/tourist/register" element={<TouristRegister />} />
           <Route path="/register" element={<OthersRegisteration />} />
           <Route path="/login" element={<Login />} />
+
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="verify-otp" element={<VerifyOtpPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
 
 
@@ -254,10 +261,6 @@ function App() {
             <Route
               path="/admin/editProfile"
               element={<AdminManageProfile />}
-            />
-            <Route
-              path="/admin/add-promocode"
-              element={<AdminManagePromocodesPage />}
             />
             <Route
               path="/admin/add-promocode"
