@@ -207,6 +207,62 @@ const requestAdvertiserDeletionIfNoUpcomingBookings = async (req, res) => {
   }
 };
 
+const calcAdvertiserRevenue = async (req, res) => {
+  const { id, startDate, endDate, activityId } = req.query;
+
+  try {
+    const matchFilter = {
+      ...(id && {
+        "activityDetails.advertiser": new mongoose.Types.ObjectId(id),
+      }),
+      ...(activityId && {
+        "activityDetails._id": new mongoose.Types.ObjectId(activityId),
+      }),
+    };
+
+    // const matchFilter = {
+    //   "activityDetails.advertiser": new mongoose.Types.ObjectId(advertiserId),
+    // };
+
+    if (startDate || endDate) {
+      matchFilter.date = {
+        ...(startDate && { $gte: new Date(startDate) }),
+        ...(endDate && { $lte: new Date(endDate) }),
+      };
+    }
+
+    const revenueData = await ActivityBooking.aggregate([
+      {
+        $lookup: {
+          from: "activities",
+          localField: "activity",
+          foreignField: "_id",
+          as: "activityDetails",
+        },
+      },
+      { $unwind: "$activityDetails" },
+      { $match: matchFilter },
+      {
+        $group: {
+          _id: "$activityDetails._id",
+          activityTitle: { $first: "$activityDetails.title" },
+          activityPrice: { $first: "$activityDetails.price" },
+          totalRevenue: { $sum: "$activityDetails.price" },
+          bookingCount: { $sum: 1 },
+        },
+      },
+      { $sort: { totalRevenue: -1 } },
+    ]);
+
+    res.status(200).json(revenueData);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching grouped revenue data", error });
+  }
+};
+
 module.exports = {
   register,
   getAllAdvertisers,
@@ -217,4 +273,5 @@ module.exports = {
   uploadTaxation,
   uploadLogo,
   requestAdvertiserDeletionIfNoUpcomingBookings,
+  calcAdvertiserRevenue,
 };

@@ -253,13 +253,14 @@ const getPurchasedProductsByTouristId = async (req, res) => {
 };
 
 const addProductPurchasing = async (req, res) => {
-  const { productId, userId, date, status } = req.body;
+  const { productId, userId, date, status, paymentMethod } = req.body;
 
   const newProductPurchasing = new ProductPurchasing({
     product: productId,
     user: userId,
     date,
     status,
+    paymentMethod,
   });
   try {
     await newProductPurchasing.save();

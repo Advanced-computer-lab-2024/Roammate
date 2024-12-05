@@ -571,4 +571,26 @@ router.post(
   "/reset-birthday-promo",
   PromoCodeController.resetBirthdayPromoSent
 );
+
+router.post("/wallet/pay", touristController.payCashFromWalletHandler);
+router.post("/wallet/refund", touristController.refundCashToWalletHandler);
+
+// Add a bookmarked activity
+router.post("/addBookmark", activityController.addBookmark);
+// Get all bookmarked activities
+router.get("/getBookmarks", activityController.getBookmarkedActivities);
+
+// Add a bookmarked itinerary
+router.post("/addBookmarkitinerary", itineraryController.addBookmark);
+// Get all bookmarked itinerary
+router.get(
+  "/getBookmarkeditinerary",
+  itineraryController.getBookmarkeditinerary
+);
+//----------------------------------------------------------------
+
+// Routes for sales reports
+router.get("/advertiser-analytics", advertiserController.calcAdvertiserRevenue);
+router.get("/tourguide-analytics", tourGuideController.calcTourguideRevenue);
+
 module.exports = router;

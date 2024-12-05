@@ -48,6 +48,8 @@ import AdminManagePromocodesPage from "./pages/Admin/AdminManagePromocodesPage";
 import ForgotPasswordPage from "./pages/Registration&Login/ForgotPasswordPage";
 import VerifyOtpPage from "./pages/Registration&Login/VerifyOtpPage";
 import ResetPasswordPage from "./pages/Registration&Login/ResetPasswordPage";
+import AdvertiserAnalyticsPage from "./pages/Advertiser/AdvertiserAnalyticsPage";
+import TourGuideAnalyticsPage from "./pages/TourGuide/TourguideAnalyticsPage";
 
 const theme = createTheme({
   // palette: {
@@ -176,6 +178,10 @@ function App() {
               path='/advertiser/create-activity'
               element={<CreateActivityPage />}
             />
+            <Route
+              path="/advertiser/analytics"
+              element={<AdvertiserAnalyticsPage />}
+            />
           </Route>
 
 
@@ -197,6 +203,10 @@ function App() {
             <Route
               path="/tourguide/create-itinerary"
               element={<CreateItinerary />}
+            />
+            <Route
+              path="/tourguide/analytics"
+              element={<TourGuideAnalyticsPage />}
             />
           </Route>
 

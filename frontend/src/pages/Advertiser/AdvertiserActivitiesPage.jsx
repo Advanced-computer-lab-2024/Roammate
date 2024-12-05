@@ -64,7 +64,7 @@ const AdvertiserActivitiesPage = () => {
         ))}
       </Grid2>
     </Box>
-  ) : (
+  ) : (activities.length > 0 &&
     <ManageActivityPage
       activity={activities.find((act) => act._id === activity_id)}
     />

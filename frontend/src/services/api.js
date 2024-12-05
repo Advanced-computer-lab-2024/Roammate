@@ -1032,6 +1032,33 @@ export const fetchPurchasedProductsByTouristId = async (touristId) => {
   const response = await axios.get(`${API_URL}productPurchasings/${touristId}`);
   return response.data;
 };
+
+export const payWallet = async (touristId, amount) => {
+  try {
+    const response = await axios.post(`${API_URL}wallet/pay`, {
+      touristId,
+      amount,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating wallet:", error);
+    throw error;
+  }
+};
+
+export const refundWallet = async (touristId, amount) => {
+  try {
+    const response = await axios.post(`${API_URL}wallet/refund`, {
+      touristId,
+      amount,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating wallet:", error);
+    throw error;
+  }
+};
+
 // ✅ This function is used to add a new product purchasing
 export const addProductPurchasing = async (purchasingData) => {
   const response = await axios.post(
@@ -1346,5 +1373,29 @@ export const getAllPromoCodes = async () => {
   } catch (error) {
     console.error("Error getting all promo codes:", error);
     throw error;
+  }
+};
+
+//✅ This function is used to get advertiser revenue based on query advertiserId, startDate, endDate
+export const calcAdvertiserRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}advertiser-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//✅ This function is used to get advertiser revenue based on query advertiserId, startDate, endDate
+export const calcTourguideRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}tourguide-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -1,4 +1,4 @@
-const { Itinerary, Review, ItineraryBooking } = require("../models");
+const { Itinerary, Review, ItineraryBooking,Tourist } = require("../models");
 const mongoose = require("mongoose");
 const { PreferenceTag } = require("../models");
 const convertCurrency = require("./CurrencyConvertController");
@@ -140,6 +140,7 @@ const updateItineraryById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 // Delete an itinerary by ID
 const deleteItineraryById = async (req, res) => {
@@ -522,6 +523,56 @@ const getItineraryBookingsCount = async (req, res) => {
   }
 };
 
+const addBookmark = async (req, res) => {
+  try {
+    const { touristId, itineraryId } = req.body;
+
+    // Validate that the itinerary exists
+    const itinerary = await Itinerary.findById(itineraryId);
+    if (!itinerary) {
+      return res.status(404).json({ message: "itinerary not found" });
+    }
+
+    // Find the tourist
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
+
+    // Check if the itinerary is already bookmarked
+    if (tourist.bookmarkedItineraries.includes(itineraryId)) {
+      return res.status(400).json({ message: "itinerary already bookmarked" });
+    }
+
+    // Add the itinerary to bookmarkeditinerary
+    tourist.bookmarkedItineraries.push(itineraryId);
+    await tourist.save();
+
+    res.status(200).json({ message: "itinerary bookmarked successfully", bookmarkedItineraries: tourist.bookmarkedItineraries });
+  } catch (error) {
+    res.status(500).json({ message: "Error bookmarking itinerary", error: error.message });
+  }
+};
+
+const getBookmarkeditinerary = async (req, res) => {
+  try {
+    const { touristId } = req.query;
+
+    // Find the tourist and populate the bookmarked Itineraries
+    const tourist = await Tourist.findById(touristId).populate("bookmarkedItineraries");
+
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
+
+    console.log("Bookmarked Itineraries:", tourist.bookmarkedItineraries); // Log to check the data
+    res.status(200).json({ bookmarkedItineraries: tourist.bookmarkedItineraries });
+  } catch (error) {
+    console.error("Error retrieving bookmarked Itineraries:", error); // Log the actual error
+    res.status(500).json({ message: "Error retrieving bookmarked Itineraries", error: error.message });
+  }
+};
+
 module.exports = {
   createItinerary,
   getAllItineraries,
@@ -537,4 +588,6 @@ module.exports = {
   toggleItineraryActivation,
   toggleAppropriateItinerary,
   getItineraryBookingsCount,
+  addBookmark,
+  getBookmarkeditinerary,
 };

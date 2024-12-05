@@ -175,11 +175,46 @@ const payCashFromWallet = async (touristId, amountPaid) => {
       tourist.level = 1;
     }
     // Save changes to database
+
     await tourist.save();
   } catch (error) {
+    console.log(error);
     throw new Error("Error paying from wallet! ", error);
   }
 };
+
+const payCashFromWalletHandler = async (req, res) => {
+  const { touristId, amount } = req.body;
+
+  try {
+    await payCashFromWallet(touristId, amount);
+
+    res.status(200).json({
+      message: "Payment processed successfully",
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error paying from wallet", details: error.message });
+  }
+};
+
+const refundCashToWalletHandler = async (req, res) => {
+  const { touristId, amount } = req.body;
+
+  try {
+    await refundCashToWallet(touristId, amount);
+
+    res.status(200).json({
+      message: "Payment refunded successfully",
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error refunding from wallet", details: error.message });
+  }
+};
+
 const refundCashToWallet = async (touristId, amountReturned) => {
   try {
     // console.log("refundCashToWallet", touristId, amountReturned);
@@ -385,4 +420,6 @@ module.exports = {
   requestTouristDeletionIfNoUpcomingBookings,
   setPreferences,
   setActivityCategories,
+  payCashFromWalletHandler,
+  refundCashToWalletHandler,
 };

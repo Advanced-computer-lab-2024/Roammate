@@ -4,24 +4,37 @@ import {
   Typography,
   Button,
   IconButton,
-  Grid2,
   Card,
   CardContent,
   CardActions,
   TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import {
   getUserCart,
   updateProductQuantity,
   removeProductFromCart,
-} from "../../services/api"; // Adjust the API paths as needed
+  payWallet,
+  addProductPurchasing,
+  fetchUserAddresses,
+} from "../../services/api";
 
 const TouristCartPage = () => {
   const userId = localStorage.getItem("userId");
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
+  const [defaultAddress, setDefaultAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Wallet"); // Default payment method
 
   // Fetch the cart data
   useEffect(() => {
@@ -37,7 +50,24 @@ const TouristCartPage = () => {
       }
     };
 
+    const fetchDefaultAddress = async () => {
+      try {
+        const addresses = await fetchUserAddresses(userId);
+        const address = addresses.find((addr) => addr.isDefault);
+        setDefaultAddress(
+          address
+            ? `${address.addressLine1}, ${address.city}, ${
+                address.state || ""
+              } ${address.postalCode}, ${address.country}`
+            : "No default address set. Please update your profile."
+        );
+      } catch (error) {
+        console.error("Error fetching default address:", error);
+      }
+    };
+
     fetchCart();
+    fetchDefaultAddress();
   }, [userId]);
 
   // Calculate the total price of the cart
@@ -87,9 +117,44 @@ const TouristCartPage = () => {
   };
 
   // Handle checkout
-  const handleCheckout = () => {
-    alert("Proceeding to checkout!");
-    // Implement checkout logic here
+  const handleCheckout = async () => {
+    if (!cart || cart.products.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    setCheckoutLoading(true);
+
+    try {
+      if (paymentMethod === "Wallet") {
+        // Deduct the total price from the wallet if payment method is Wallet
+        await payWallet(userId, totalPrice);
+      }
+
+      // Add products to the purchasing system
+      for (const item of cart.products) {
+        await addProductPurchasing({
+          productId: item.product._id,
+          userId,
+          date: new Date(),
+          status: "Preparing",
+          paymentMethod, // Include the payment method
+        });
+        await removeProductFromCart(userId, item.product._id);
+      }
+
+      // Clear the cart (optional, depends on your backend)
+      setCart({ products: [] });
+      setTotalPrice(0);
+
+      alert("Checkout successful!");
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("Checkout failed. Please try again.");
+    } finally {
+      setCheckoutLoading(false);
+      setCheckoutModalOpen(false); // Close the modal
+    }
   };
 
   if (loading) {
@@ -105,57 +170,53 @@ const TouristCartPage = () => {
       <Typography variant="h4" gutterBottom>
         Your Cart
       </Typography>
-      <Grid2 container spacing={2}>
+      <Box>
         {cart.products.map((item) => (
-          <Grid2 item xs={12} sm={6} md={4} key={item.product._id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{item.product.name}</Typography>
-                <Typography variant="body1">
-                  Price: ${item.product.price.toFixed(2)}
-                </Typography>
-                <Typography variant="body1">
-                  Quantity: {item.quantity}
-                </Typography>
-                <Typography variant="body2">
-                  Subtotal: ${(item.product.price * item.quantity).toFixed(2)}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <IconButton
-                  onClick={() =>
-                    handleQuantityChange(item.product._id, item.quantity - 1)
-                  }
-                >
-                  <Remove />
-                </IconButton>
-                <TextField
-                  value={item.quantity}
-                  size="small"
-                  sx={{ width: "50px", textAlign: "center" }}
-                  inputProps={{
-                    readOnly: true,
-                  }}
-                />
-                <IconButton
-                  onClick={() =>
-                    handleQuantityChange(item.product._id, item.quantity + 1)
-                  }
-                >
-                  <Add />
-                </IconButton>
-                <Button
-                  variant="text"
-                  color="error"
-                  onClick={() => handleRemoveProduct(item.product._id)}
-                >
-                  Remove
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid2>
+          <Card key={item.product._id} sx={{ marginBottom: "16px" }}>
+            <CardContent>
+              <Typography variant="h6">{item.product.name}</Typography>
+              <Typography variant="body1">
+                Price: ${item.product.price.toFixed(2)}
+              </Typography>
+              <Typography variant="body1">Quantity: {item.quantity}</Typography>
+              <Typography variant="body2">
+                Subtotal: ${(item.product.price * item.quantity).toFixed(2)}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <IconButton
+                onClick={() =>
+                  handleQuantityChange(item.product._id, item.quantity - 1)
+                }
+              >
+                <Remove />
+              </IconButton>
+              <TextField
+                value={item.quantity}
+                size="small"
+                sx={{ width: "50px", textAlign: "center" }}
+                inputProps={{
+                  readOnly: true,
+                }}
+              />
+              <IconButton
+                onClick={() =>
+                  handleQuantityChange(item.product._id, item.quantity + 1)
+                }
+              >
+                <Add />
+              </IconButton>
+              <Button
+                variant="text"
+                color="error"
+                onClick={() => handleRemoveProduct(item.product._id)}
+              >
+                Remove
+              </Button>
+            </CardActions>
+          </Card>
         ))}
-      </Grid2>
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -168,11 +229,58 @@ const TouristCartPage = () => {
           variant="contained"
           color="primary"
           size="large"
-          onClick={handleCheckout}
+          onClick={() => setCheckoutModalOpen(true)}
+          disabled={checkoutLoading}
         >
           Checkout
         </Button>
       </Box>
+
+      {/* Checkout Modal */}
+      <Dialog
+        open={checkoutModalOpen}
+        onClose={() => setCheckoutModalOpen(false)}
+      >
+        <DialogTitle>Confirm Checkout</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" gutterBottom>
+            Default Address:
+          </Typography>
+          <Typography variant="body2" sx={{ marginBottom: 2 }}>
+            {defaultAddress}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Payment Method:
+          </Typography>
+          <RadioGroup
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          >
+            <FormControlLabel
+              value="Wallet"
+              control={<Radio />}
+              label="Wallet"
+            />
+            <FormControlLabel
+              value="Cash"
+              control={<Radio />}
+              label="Pay Cash on Delivery"
+            />
+            <FormControlLabel value="Card" control={<Radio />} label="Card" />
+          </RadioGroup>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCheckoutModalOpen(false)}>Cancel</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCheckout}
+            disabled={checkoutLoading}
+          >
+            {checkoutLoading ? "Processing..." : "Confirm"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
