@@ -265,6 +265,57 @@ const deleteTourGuideIfNoUpcomingBookings = async (req, res) => {
   }
 };
 
+const calcTourguideRevenue = async (req, res) => {
+  const { id, startDate, endDate, activityId } = req.query;
+
+  try {
+    const matchFilter = {
+      ...(id && {
+        "itineraryDetails.tourGuide": new mongoose.Types.ObjectId(id),
+      }),
+      ...(activityId && {
+        "itineraryDetails._id": new mongoose.Types.ObjectId(activityId),
+      }),
+    };
+
+    if (startDate || endDate) {
+      matchFilter.date = {
+        ...(startDate && { $gte: new Date(startDate) }),
+        ...(endDate && { $lte: new Date(endDate) }),
+      };
+    }
+
+    const revenueData = await ItineraryBooking.aggregate([
+      {
+        $lookup: {
+          from: "itineraries",
+          localField: "itinerary",
+          foreignField: "_id",
+          as: "itineraryDetails",
+        },
+      },
+      { $unwind: "$itineraryDetails" },
+      { $match: matchFilter },
+      {
+        $group: {
+          _id: "$itineraryDetails._id",
+          itineraryTitle: { $first: "$itineraryDetails.title" },
+          itineraryPrice: { $first: "$itineraryDetails.price" },
+          totalRevenue: { $sum: "$itineraryDetails.price" },
+          bookingCount: { $sum: 1 },
+        },
+      },
+    ]);
+
+    res.status(200).json(revenueData);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching grouped revenue data", error });
+  }
+};
+
 module.exports = {
   register,
   getAllTourGuides,
@@ -276,4 +327,5 @@ module.exports = {
   uploadPhoto,
   addReviewToTourguide,
   deleteTourGuideIfNoUpcomingBookings,
+  calcTourguideRevenue,
 };

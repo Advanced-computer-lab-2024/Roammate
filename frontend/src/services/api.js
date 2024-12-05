@@ -1288,3 +1288,27 @@ export const logout = async () => {
     console.log(error);
   }
 };
+
+//✅ This function is used to get advertiser revenue based on query advertiserId, startDate, endDate
+export const calcAdvertiserRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}advertiser-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//✅ This function is used to get advertiser revenue based on query advertiserId, startDate, endDate
+export const calcTourguideRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}tourguide-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

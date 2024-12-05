@@ -569,4 +569,10 @@ router.post(
 
 router.post("/wallet/pay", touristController.payCashFromWalletHandler);
 router.post("/wallet/refund", touristController.refundCashToWalletHandler);
+//----------------------------------------------------------------
+
+// Routes for sales reports
+router.get("/advertiser-analytics", advertiserController.calcAdvertiserRevenue);
+router.get("/tourguide-analytics", tourGuideController.calcTourguideRevenue);
+
 module.exports = router;
