@@ -593,4 +593,8 @@ router.get(
 router.get("/advertiser-analytics", advertiserController.calcAdvertiserRevenue);
 router.get("/tourguide-analytics", tourGuideController.calcTourguideRevenue);
 
+//Routes for interested tourists in specific event :
+router.post("/addInterestToActivity", activityController.addInterestToActivity);
+router.post("/addInterestToItinerary", itineraryController.addInterestToItinerary);
+
 module.exports = router;

@@ -6,6 +6,7 @@ const {
   ActivityBooking,
   Review,
   Tourist,
+  User,
 } = require("../models");
 const convertCurrency = require("./CurrencyConvertController");
 const {
@@ -129,6 +130,11 @@ const updateActivityById = async (req, res) => {
     averageRating,
   } = req.body;
   try {
+    // Find the existing activity to check its current state
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
     const updatedActivity = await Activity.findByIdAndUpdate(
       activityId,
       {
@@ -150,6 +156,18 @@ const updateActivityById = async (req, res) => {
     );
     if (!updatedActivity) {
       return res.status(404).json({ error: "Activity not found" });
+    }
+     // Check if isBookingAvailable changed to true
+     if (!activity.isBookingAvailable && isBookingAvailable) {
+      for (const touristId of activity.interestedTourists) {
+        const user = await User.findById(touristId); // Use the User model to find the tourist
+        if (user) {
+          user.notifications.push({
+            message: `Booking is now available for activity: ${updatedActivity.title}`,
+          });
+          await user.save();
+        }
+      }
     }
     res.status(200).json(updatedActivity);
   } catch (error) {
@@ -611,6 +629,31 @@ const getBookmarkedActivities = async (req, res) => {
   }
 };
 
+const addInterestToActivity = async (req, res) => {
+  try {
+    const { touristId, activityId } = req.body;
+
+    // Find the activity and check if the tourist is already interested
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ message: "Activity not found" });
+    }
+
+    if (activity.interestedTourists.includes(touristId)) {
+      return res.status(400).json({ message: "Tourist already interested in this activity" });
+    }
+
+    // Add the tourist to the interestedTourists array
+    activity.interestedTourists.push(touristId);
+    await activity.save();
+
+    res.status(200).json({ message: "Tourist added to the interested list", activity });
+  } catch (error) {
+    res.status(500).json({ message: "Error adding tourist to activity", error: error.message });
+  }
+};
+
+
 
 module.exports = {
   createActivity,
@@ -629,4 +672,5 @@ module.exports = {
   getActivityBookingsCount,
   addBookmark,
   getBookmarkedActivities,
+  addInterestToActivity,
 };
