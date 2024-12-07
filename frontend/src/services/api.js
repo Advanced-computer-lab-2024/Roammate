@@ -1146,7 +1146,7 @@ export const searchFlights = async (
 export const fetchFlightBookingsByTouristId = async (touristId) => {
   const response = await axios.get(`${API_URL}fetch-flights/${touristId}`);
   return response.data;
-}
+};
 
 // This function is used to book a flight
 export const bookFlight = async (touristId, bookingCode, flightData) => {
@@ -1392,6 +1392,17 @@ export const calcAdvertiserRevenue = async (query) => {
 export const calcTourguideRevenue = async (query) => {
   try {
     const response = await axios.get(`${API_URL}tourguide-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const calcSellerRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}seller-analytics`, {
       params: query,
     });
     return response;

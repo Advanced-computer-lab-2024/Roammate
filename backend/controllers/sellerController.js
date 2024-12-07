@@ -189,6 +189,60 @@ const requestSellerDeletionIfNoUpcomingProducts = async (req, res) => {
   }
 };
 
+const calcSellerRevenue = async (req, res) => {
+  const { id, startDate, endDate, productId } = req.query;
+
+  try {
+    const matchFilter = {
+      ...(id && {
+        "productDetails.seller": new mongoose.Types.ObjectId(id),
+      }),
+      ...(productId && {
+        "productDetails._id": new mongoose.Types.ObjectId(productId),
+      }),
+    };
+
+    if (startDate || endDate) {
+      matchFilter.date = {
+        ...(startDate && { $gte: new Date(startDate) }),
+        ...(endDate && { $lte: new Date(endDate) }),
+      };
+    }
+
+    matchFilter.status = { $ne: "Cancelled" };
+
+    const revenueData = await ProductPurchasing.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "product",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" },
+      { $match: matchFilter },
+      {
+        $group: {
+          _id: "$productDetails._id",
+          productName: { $first: "$productDetails.name" },
+          productPrice: { $first: "$productDetails.price" },
+          totalRevenue: { $sum: "$productDetails.price" },
+          bookingCount: { $sum: 1 },
+        },
+      },
+      { $sort: { totalRevenue: -1 } },
+    ]);
+
+    res.status(200).json(revenueData);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching grouped revenue data", error });
+  }
+};
+
 module.exports = {
   register,
   getAllSellers,
@@ -199,4 +253,5 @@ module.exports = {
   uploadTaxation,
   uploadLogo,
   requestSellerDeletionIfNoUpcomingProducts,
+  calcSellerRevenue,
 };

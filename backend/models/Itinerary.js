@@ -81,6 +81,12 @@ const itinerarySchema = new Schema(
       type: Boolean,
       default: true,
     },
+    interestedTourists: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Tourist', // Reference to the Tourist model
+      },
+    ],
     
   },
   { timestamps: true }

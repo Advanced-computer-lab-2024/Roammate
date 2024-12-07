@@ -24,6 +24,7 @@ import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import CategoryIcon from '@mui/icons-material/Category';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 import { Outlet, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -44,6 +45,7 @@ const navItems = [
   "Itineraries",
   "Monuments",
   "My Products",
+  "Analytics",
 ];
 
 const drawerWidth = 240;
@@ -104,6 +106,8 @@ const AdminLayout = () => {
       navigate(`/admin/my-products?id=`);
     } else if (activeButton === 'Create Product') {
       navigate('/admin/create-product');
+    } else if (activeButton === 'Analytics') {
+      navigate('/admin/analytics');
     }
     _fetchUserNotifications();
   }, [activeButton, navigate]);
@@ -246,6 +250,16 @@ const AdminLayout = () => {
           </ListItemIcon>
           <ListItemText primary="Products" />
         </ListItemButton> */}
+
+        <Divider />
+        <ListItemButton sx={{ pl: 4 }} onClick={
+          () => setActiveButton("Analytics")
+        }>
+          <ListItemIcon>
+            <BarChartIcon fontSize='small' />
+          </ListItemIcon>
+          <ListItemText primary="Analytics" />
+        </ListItemButton>
 
 
       </List>

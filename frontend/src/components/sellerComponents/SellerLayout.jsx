@@ -17,6 +17,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -27,14 +28,14 @@ import Button from '@mui/material/Button';
 import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import { logout } from '../../services/api';
 
-const navItems = ['Home', 'Create Product'];
+const navItems = ['Home', 'Create Product', 'Analytics'];
 
 const drawerWidth = 240;
 const SellerLayout = () => {
     const sellerId = localStorage.getItem('userId');
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Products']);
-    const [activeButton, setActiveButton] = React.useState('My Products');
+    const [activeButton, setActiveButton] = React.useState('');
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -60,6 +61,9 @@ const SellerLayout = () => {
     };
 
     React.useEffect(() => {
+        if (location.pathname === '/seller') {
+            setActiveButton('My Products');
+        }
         if (activeButton === 'My Products') {
             navigate(`/seller/my-products?id=${id}`);
         } else if (activeButton === 'Edit Profile') {
@@ -104,9 +108,13 @@ const SellerLayout = () => {
                                 } else if (text === 'Create Product') {
                                     setActiveButton('Create Product');
                                 }
-                            }
-                        }>
-                            {text === 'Home' ? <HomeIcon /> : <AddCircleIcon />}
+                                else if (text === 'Analytics') {
+                                    setActiveButton('Analytics');
+                                    navigate("/seller/analytics");
+                                }
+                            }}
+                        >
+                            {text === 'Home' ? <HomeIcon /> : text === 'Analytics' ? <BarChartIcon /> : <AddCircleIcon />}
                             <ListItemText primary={text} sx={{ textAlign: 'center' }} />
                         </ListItemButton>
                     </ListItem>

@@ -411,7 +411,7 @@ const getProductStockAndSales = async (req, res) => {
     // Retrieve completed purchases for the product to get total sales and sale dates
     const completedPurchases = await ProductPurchasing.find({
       product: id,
-      status: "Completed",
+      staus: { $ne: "Cancelled" },
     });
 
     const totalSales = completedPurchases.length;

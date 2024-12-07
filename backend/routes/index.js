@@ -397,7 +397,7 @@ router.get("/pdf/:id", filesController.getPdf);
 //Routes for booking
 router.post("/search-flights", bookingController.searchFlights);
 router.get("/fetch-flights/:id", bookingController.getAllFlightBookings);
-router.post('/book-flight', bookingController.addFlightBooking);
+router.post("/book-flight", bookingController.addFlightBooking);
 
 router.get("/search-hotel", bookingController.getHotelDetails);
 router.get("/list-hotels", bookingController.getHotelsByCity);
@@ -592,5 +592,13 @@ router.get(
 // Routes for sales reports
 router.get("/advertiser-analytics", advertiserController.calcAdvertiserRevenue);
 router.get("/tourguide-analytics", tourGuideController.calcTourguideRevenue);
+router.get("/seller-analytics", sellerController.calcSellerRevenue);
+
+//Routes for interested tourists in specific event :
+router.post("/addInterestToActivity", activityController.addInterestToActivity);
+router.post(
+  "/addInterestToItinerary",
+  itineraryController.addInterestToItinerary
+);
 
 module.exports = router;

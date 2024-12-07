@@ -18,6 +18,9 @@ import BlockIcon from '@mui/icons-material/Block';
 import { useNavigate } from 'react-router';
 import { convertPrice } from '../../services/api';
 import ShareLink from './ShareLink';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const ItineraryCard = ({ itinerary }) => {
     const [addedToWatchlist, setAddedToWatchlist] = useState(false);
@@ -30,6 +33,7 @@ const ItineraryCard = ({ itinerary }) => {
     const [rating, setRating] = useState(itinerary.averageRating);
     const navigate = useNavigate();
     const [displayPrice, setDisplayPrice] = useState();
+    const [getNotification, setGetNotification] = useState(false);
 
 
     useEffect(() => {
@@ -70,6 +74,22 @@ const ItineraryCard = ({ itinerary }) => {
                         icon={<StarIcon style={{ fill: 'orange' }} />}
                         emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
                     />
+
+                    <IconButton size="medium"
+                        onClick={() => {
+                            setGetNotification(!getNotification);
+                        }} sx={{
+                            mt: '-10px',
+                            mr: '-10px',
+                            ml: '5px'
+                        }}>
+                        {getNotification ? <NotificationsActiveIcon sx={{
+                            fill: 'orange'
+                        }} /> : <NotificationsIcon sx={{
+                            fill: 'grey'
+                        }} />}
+                    </IconButton>
+
                     <ShareLink type={'itinerary'} id={itinerary._id} />
                 </Box>
 
@@ -140,12 +160,11 @@ const ItineraryCard = ({ itinerary }) => {
             }}>
                 <Button variant="contained"
                     onClick={addedToWatchlist ? () => setAddedToWatchlist(false) : () => setAddedToWatchlist(true)}
-                    endIcon={<HeartIcon sx={{
+                    endIcon={<BookmarkIcon sx={{
                         fill: `${addedToWatchlist ? 'red' : 'white'}`
                     }} />}>
-                    Add to Watchlist
+                    Save Itinerary
                 </Button>
-
                 <Button variant="contained" sx={{
                     backgroundColor: `${isBookingAvailable ? 'green' : 'grey'}`,
                     color: 'white',
