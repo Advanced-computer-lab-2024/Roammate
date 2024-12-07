@@ -17,6 +17,10 @@ const activityBookingSchema = new Schema(
       type: Date,
       required: true,
     },
+    notified: {
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true }
 );

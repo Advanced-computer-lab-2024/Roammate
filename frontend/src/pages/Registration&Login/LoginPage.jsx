@@ -19,6 +19,7 @@ const Login = () => {
             // console.log(role);
             setErr('');
             localStorage.setItem('userId', res.data.userId);
+            localStorage.setItem('status', res.data.status);
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             const redirect = urlParams.get('redirect');
@@ -82,6 +83,19 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
             />
 
+             <Typography variant="body2" component="div" sx={{
+                textAlign: 'left',
+                '& a': {
+                    color: 'black',
+                },
+                '& a:hover': {
+                    color: 'blue',
+                }
+                ,
+                width: '200px',
+            }}>
+               <a href="/forgot-password"> Forgot password?</a>
+            </Typography>
 
             <Typography variant="h6" component="div" sx={{
                 textAlign: 'center',
@@ -111,8 +125,6 @@ const Login = () => {
                 }
             }}>
                 Don't have an account? <a href="/">Register</a>
-                <br />
-                <a href="/forgot-password">Reset Password</a>
             </Typography>
         </Box >
 

@@ -32,6 +32,7 @@ const navItems = ['Home', 'Create Activity', 'Analytics'];
 const drawerWidth = 240;
 const AdvertiserLayout = () => {
     const advertiserId = localStorage.getItem('userId');
+    const status=  localStorage.getItem('status'); //TODO: get status from local storage
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Activities']);
     const [activeButton, setActiveButton] = React.useState('');
@@ -113,7 +114,9 @@ const AdvertiserLayout = () => {
                                     navigate("/advertiser/analytics");
                                 }
                             }
-                        }>
+                        }
+                        disabled={text==='Create Activity' && status!=='active'} 
+                        >
                             {text === 'Home' ? <HomeIcon /> : text === 'Analytics' ? <BarChartIcon /> : <AddCircleIcon />}
                             <ListItemText primary={text} sx={{ textAlign: 'center' }} />
                         </ListItemButton>
