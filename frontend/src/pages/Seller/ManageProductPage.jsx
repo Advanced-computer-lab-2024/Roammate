@@ -63,7 +63,7 @@ const ManageProductPage = ({ product, productId }) => {
       <EditProductForm product={product} />
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {/* Sales Chart */}
+        {/* Sales Chart
         <Card elevation={1} sx={{ padding: 2, width: "600px" }}>
           <Typography variant="h5" gutterBottom>
             Sales Chart
@@ -71,7 +71,7 @@ const ManageProductPage = ({ product, productId }) => {
           <Typography variant="body2" color="text.secondary" gutterBottom>
             Total Sales: {totalSales > 0 ? totalSales : 'N/A'}
           </Typography>
-        </Card>
+        </Card> */}
 
         {/* Reviews Section */}
         <Card elevation={1} sx={{ padding: 2, width: "600px" }}>

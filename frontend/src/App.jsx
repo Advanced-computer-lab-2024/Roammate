@@ -50,6 +50,7 @@ import VerifyOtpPage from "./pages/Registration&Login/VerifyOtpPage";
 import ResetPasswordPage from "./pages/Registration&Login/ResetPasswordPage";
 import AdvertiserAnalyticsPage from "./pages/Advertiser/AdvertiserAnalyticsPage";
 import TourGuideAnalyticsPage from "./pages/TourGuide/TourguideAnalyticsPage";
+import SellerAnalyticsPage from "./pages/Seller/SellerAnalyticsPage";
 
 const theme = createTheme({
   // palette: {
@@ -230,6 +231,11 @@ function App() {
               path="/seller/createProduct"
               element={<SellerCreateProduct />}
             />
+            <Route
+              path="/seller/analytics"
+              element={<SellerAnalyticsPage />}
+            />
+
           </Route>
 
 
@@ -299,6 +305,11 @@ function App() {
             <Route
               path="/admin/create-product"
               element={<SellerCreateProduct />}
+            />
+
+            <Route
+              path="/admin/analytics"
+              element={<SellerAnalyticsPage />}
             />
           </Route>
         </Routes>

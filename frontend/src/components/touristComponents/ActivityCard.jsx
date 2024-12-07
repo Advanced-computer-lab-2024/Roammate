@@ -20,6 +20,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
 import { convertPrice } from '../../services/api';
 import ShareLink from './ShareLink';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const ActivityCard = ({ activity }) => {
     const [addedToWatchlist, setAddedToWatchlist] = useState(false);
@@ -32,6 +35,7 @@ const ActivityCard = ({ activity }) => {
     const [rating, setRating] = useState(activity.averageRating);
     const navigate = useNavigate();
     const [displayPrice, setDisplayPrice] = useState();
+    const [getNotification, setGetNotification] = useState(false);
 
 
     useEffect(() => {
@@ -74,6 +78,23 @@ const ActivityCard = ({ activity }) => {
                         icon={<StarIcon style={{ fill: 'orange' }} />}
                         emptyIcon={<StarIcon style={{ fill: 'lightgray' }} />}
                     />
+
+                    <IconButton size="medium"
+                        onClick={() => {
+                            setGetNotification(!getNotification);
+                        }} sx={{
+                            mt: '-10px',
+                            mr: '-10px',
+                            ml: '5px'
+                        }}>
+                        {getNotification ? <NotificationsActiveIcon sx={{
+                            fill: 'orange'
+                        }} /> : <NotificationsIcon sx={{
+                            fill: 'grey'
+                        }} />}
+
+                    </IconButton>
+
                     <ShareLink type={'activity'} id={activity._id} />
                 </Box>
 
@@ -146,10 +167,10 @@ const ActivityCard = ({ activity }) => {
             }}>
                 <Button variant="contained"
                     onClick={addedToWatchlist ? () => setAddedToWatchlist(false) : () => setAddedToWatchlist(true)}
-                    endIcon={<HeartIcon sx={{
+                    endIcon={<BookmarkIcon sx={{
                         fill: `${addedToWatchlist ? 'red' : 'white'}`
                     }} />}>
-                    Add to Watchlist
+                    Save Activity
                 </Button>
 
                 <Button variant="contained" sx={{
