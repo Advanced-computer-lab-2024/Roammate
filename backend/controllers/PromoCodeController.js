@@ -30,7 +30,7 @@ const createPromoCode = async (req, res) => {
 
 //Send promo code on user's birthday
 const sendBirthdayPromoCode = async () => {
-  console.log("Running birthday promo code function...");
+  // console.log("Running birthday promo code function...");
   try {
     const today = new Date();
 
@@ -54,12 +54,7 @@ const sendBirthdayPromoCode = async () => {
       "0"
     )}-${String(tomorrow.getDate()).padStart(2, "0")}`;
 
-    console.log(
-      "Checking birthdays for:",
-      yesterdayMMDD,
-      todayMMDD,
-      tomorrowMMDD
-    );
+    // console.log("Checking birthdays for:", yesterdayMMDD, todayMMDD, tomorrowMMDD);
 
     // Fetch all tourists and compare their MM-DD values
     const allTourists = await Tourist.find({});
