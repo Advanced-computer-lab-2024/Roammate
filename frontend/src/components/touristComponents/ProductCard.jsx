@@ -32,7 +32,7 @@ import {
 } from "../../services/api";
 import ShareLink from "./ShareLink";
 
-const ProductCard = ({ product, id, refreshWishlist }) => {
+const ProductCard = ({ product, id, refreshWishlist, setCartItemCount }) => {
   const [addedToWatchlist, setAddedToWatchlist] = useState(false);
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description);
@@ -58,6 +58,7 @@ const ProductCard = ({ product, id, refreshWishlist }) => {
   const handleAddToCart = async () => {
     try {
       await addProductToCart(id, product._id, cartQuantity);
+      setCartItemCount((prev) => prev + 1);
       setOpen(true); // Show success message
     } catch (error) {
       console.error("Failed to add product to cart:", error);

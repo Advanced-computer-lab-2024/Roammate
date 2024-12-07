@@ -60,6 +60,9 @@ const TouristLayout = () => {
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get("id") || "");
 
+
+
+
     const handleCartClick = () => {
         navigate("/tourist/cart");
         setActiveButton("Cart");
@@ -486,7 +489,7 @@ const TouristLayout = () => {
                     mt: "0px",
                 }}
             >
-                <Outlet context={{ setActiveButton }} />
+                <Outlet context={{ setActiveButton, setCartItemCount, cartItemCount }} />
             </Box>
 
             <Box

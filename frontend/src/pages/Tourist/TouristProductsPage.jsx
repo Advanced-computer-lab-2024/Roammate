@@ -20,6 +20,9 @@ const TouristProductsPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const queryProductId = queryParams.get("id");
 
+  const { setCartItemCount } = useOutletContext();
+
+
   useEffect(() => {
     fetchProducts();
     if (queryProductId) {
@@ -67,6 +70,7 @@ const TouristProductsPage = () => {
                 product={product}
                 id={touristId}
                 refreshWishlist={refreshWishlist}
+                setCartItemCount={setCartItemCount}
               />
             </div>
           ))}

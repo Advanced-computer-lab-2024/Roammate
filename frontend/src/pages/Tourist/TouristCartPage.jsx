@@ -72,8 +72,6 @@ const TouristCartPage = () => {
       }
     };
 
-
-
     fetchCart();
     fetchDefaultAddress();
   }, [userId]);

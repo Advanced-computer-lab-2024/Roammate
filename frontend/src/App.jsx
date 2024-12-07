@@ -51,6 +51,7 @@ import ResetPasswordPage from "./pages/Registration&Login/ResetPasswordPage";
 import AdvertiserAnalyticsPage from "./pages/Advertiser/AdvertiserAnalyticsPage";
 import TourGuideAnalyticsPage from "./pages/TourGuide/TourguideAnalyticsPage";
 import SellerAnalyticsPage from "./pages/Seller/SellerAnalyticsPage";
+import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage";
 
 const theme = createTheme({
   // palette: {
@@ -309,7 +310,7 @@ function App() {
 
             <Route
               path="/admin/analytics"
-              element={<SellerAnalyticsPage />}
+              element={<AdminAnalyticsPage />}
             />
           </Route>
         </Routes>
