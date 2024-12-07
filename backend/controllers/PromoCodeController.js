@@ -63,27 +63,35 @@ const sendBirthdayPromoCode = async () => {
 
     // Fetch all tourists and compare their MM-DD values
     const allTourists = await Tourist.find({});
-    console.log("Total tourists:", allTourists.length);
+    // console.log("Total tourists:", allTourists.length);
 
     const matchedTourists = allTourists.filter((tourist) => {
       const dobMMDD = tourist.DOB.toISOString().slice(5, 10); // Extract MM-DD from DOB
-      console.log(`Tourist: ${tourist.username}, DOB: ${dobMMDD}`);
+      // console.log(`Tourist: ${tourist.username}, DOB: ${dobMMDD}`);
       if ([yesterdayMMDD, todayMMDD, tomorrowMMDD].includes(dobMMDD)) {
-        console.log(`Match found: ${tourist.username} with DOB: ${dobMMDD}`);
+        // console.log(`Match found: ${tourist.username} with DOB: ${dobMMDD}`);
         return true;
       } else {
-        console.log(`No match for: ${tourist.username} with DOB: ${dobMMDD}`);
+        // console.log(`No match for: ${tourist.username} with DOB: ${dobMMDD}`);
         return false;
       }
     });
 
     if (!matchedTourists.length) {
-      console.log("No matching birthdays found.");
+      // console.log("No matching birthdays found.");
       return;
     }
 
     for (const tourist of matchedTourists) {
-      console.log("Processing birthday for:", tourist.username);
+      // console.log("Processing birthday for:", tourist.username);
+
+      // Check if promo code was already sent this year
+      if (tourist.birthdayPromoSent) {
+        if (tourist.birthdayPromoSent.getFullYear() === today.getFullYear()) {
+          // console.log("Promo code already sent this year.");
+          continue; // Skip if already sent
+        }
+      }
 
       const promoCode = new PromoCode({
         code: Math.random().toString(36).substring(2, 7).toUpperCase(), // Generate a 5-char alphanumeric code
@@ -106,7 +114,7 @@ const sendBirthdayPromoCode = async () => {
             promoCode.code
           }.\n20% discount on your next booking, until ${promoCode.expirationDate.toDateString()}.`,
         });
-        await sendEmail(
+        sendEmail(
           tourist.email,
           "Happy Birthday! Here's Your Promo Code 🎉",
           `Dear ${
@@ -115,7 +123,7 @@ const sendBirthdayPromoCode = async () => {
             promoCode.code
           }.\nEnjoy a 20% discount on your next booking. Code valid until ${promoCode.expirationDate.toDateString()}.\n\nBest Wishes,\nVirtual Trip Planner Team`
         );
-        console.log(`Promo email sent to: ${tourist.email}`);
+        // console.log(`Promo email sent to: ${tourist.email}`);
       } catch (emailError) {
         console.error(
           `Failed to send email to ${tourist.email}:`,

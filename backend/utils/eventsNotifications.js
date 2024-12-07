@@ -72,7 +72,7 @@ const notifyTourists = async () => {
             tourist.notifications.push({
                 message: `Don't forget your itinerary ${itinerary.title} on ${formattedDate}`,
             });
-            tourist.save();
+            await tourist.save();
             sendEmail(
                 tourist.email,
                 "Itinerary Reminder",
