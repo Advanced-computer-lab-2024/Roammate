@@ -52,7 +52,7 @@ const getProductById = async (req, res) => {
   const { currency = "USD" } = req.query;
   try {
     const product = await Product.findById(id)
-      .populate("seller")
+      .populate("seller", "username")
       .populate({
         path: "reviews",
         populate: { path: "user" },
@@ -253,17 +253,43 @@ const getPurchasedProductsByTouristId = async (req, res) => {
 };
 
 const addProductPurchasing = async (req, res) => {
-  const { productId, userId, date, status, paymentMethod } = req.body;
+  const { productId, userId, date, status, paymentMethod, quantity } = req.body;
 
-  const newProductPurchasing = new ProductPurchasing({
-    product: productId,
-    user: userId,
-    date,
-    status,
-    paymentMethod,
-  });
   try {
+    // Find the product by ID
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Check if the requested quantity exceeds available quantity
+    if (quantity > product.quantity) {
+      return res.status(400).json({
+        error: `Requested quantity (${quantity}) exceeds available stock (${product.quantity}).`,
+      });
+    }
+
+    console.log(product);
+    product.quantity -= quantity;
+    console.log(product);
+
+    // Save the updated product
+    await product.save();
+
+    // Create a new purchase
+    const newProductPurchasing = new ProductPurchasing({
+      product: productId,
+      user: userId,
+      date,
+      status,
+      paymentMethod,
+      quantity,
+    });
+
+    // Save the purchase to the database
     await newProductPurchasing.save();
+
     res.status(201).json(newProductPurchasing);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -411,7 +437,7 @@ const getProductStockAndSales = async (req, res) => {
     // Retrieve completed purchases for the product to get total sales and sale dates
     const completedPurchases = await ProductPurchasing.find({
       product: id,
-      staus: { $ne: "Cancelled" },
+      status: "Completed",
     });
 
     const totalSales = completedPurchases.length;

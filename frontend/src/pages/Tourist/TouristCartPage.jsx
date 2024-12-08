@@ -201,6 +201,7 @@ const TouristCartPage = () => {
             date: new Date(),
             status: "Preparing",
             paymentMethod, // Include the payment method
+            quantity: item.quantity,
           });
         }
         await removeProductFromCart(userId, item.product._id);
