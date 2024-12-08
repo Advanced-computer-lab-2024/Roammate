@@ -583,9 +583,14 @@ router.post("/wallet/refund", touristController.refundCashToWalletHandler);
 router.post("/addBookmark", activityController.addBookmark);
 // Get all bookmarked activities
 router.get("/getBookmarks", activityController.getBookmarkedActivities);
+// remove a bookmarked activity
+router.delete("/removeBookmark", activityController.removeBookmark);
 
 // Add a bookmarked itinerary
 router.post("/addBookmarkitinerary", itineraryController.addBookmark);
+// remove a bookmarked itinerary
+router.delete("/removeBookmarkitinerary", itineraryController.removeBookmark);
+
 // Get all bookmarked itinerary
 router.get(
   "/getBookmarkeditinerary",
@@ -605,6 +610,14 @@ router.post("/addInterestToActivity", activityController.addInterestToActivity);
 router.post(
   "/addInterestToItinerary",
   itineraryController.addInterestToItinerary
+);
+router.delete(
+  "/removeInterestFromActivity",
+  activityController.removeInterestFromActivity
+);
+router.delete(
+  "/removeInterestFromItinerary",
+  itineraryController.removeInterestFromItinerary
 );
 
 module.exports = router;

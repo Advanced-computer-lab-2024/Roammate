@@ -16,13 +16,14 @@ import StarIcon from '@mui/icons-material/Star';
 import HeartIcon from '@mui/icons-material/Favorite';
 import BlockIcon from '@mui/icons-material/Block';
 import { useNavigate } from 'react-router';
-import { convertPrice } from '../../services/api';
+import { convertPrice, getTouristSavedItineraries, removeTouristInterestInItinerary, saveItinerary, touristInterestedInItinerary, unsaveItinerary } from '../../services/api';
 import ShareLink from './ShareLink';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
-const ItineraryCard = ({ itinerary }) => {
+const ItineraryCard = ({ itinerary, setFetch }) => {
+    const touristId = localStorage.getItem('userId');
     const [addedToWatchlist, setAddedToWatchlist] = useState(false);
     const [title, setTitle] = useState(itinerary.title);
     const [duration, setDuration] = useState(itinerary.duration);
@@ -45,12 +46,69 @@ const ItineraryCard = ({ itinerary }) => {
                 console.error("Error converting price:", error);
             }
         };
+        const getSavedItinerariesByTourist = async () => {
+            try {
+                const savedItineraries = await getTouristSavedItineraries(touristId);
+                const savedItinerariesIds = savedItineraries.data.bookmarkedItineraries.map(itinerary => itinerary._id);
+                setAddedToWatchlist(savedItinerariesIds.includes(itinerary._id));
+            } catch (error) {
+                console.error("Error fetching saved itineraries:", error);
+            }
+        };
+        if (itinerary.interestedTourists.includes(touristId)) {
+            setGetNotification(true);
+        }
         getDisplayPrice(price);
+        getSavedItinerariesByTourist();
     }, []);
+
+    const handleSave = () => {
+        saveOrUnsaveItinerary();
+    }
+
+    const saveOrUnsaveItinerary = async () => {
+        try {
+            if (!addedToWatchlist) {
+                await saveItinerary(touristId, itinerary._id);
+            } else {
+                await unsaveItinerary(touristId, itinerary._id);
+            }
+            setAddedToWatchlist(!addedToWatchlist);
+            setFetch((prev) => prev + 1);
+        }
+        catch (error) {
+            console.error("Error saving/unsaving itinerary:", error);
+        }
+    }
+
+    const touristGetNotification = async () => {
+        try {
+            await touristInterestedInItinerary(touristId, itinerary._id);
+        } catch (error) {
+            console.error("Error getting notification:", error);
+        }
+    }
+
+    const touristStopNotification = async () => {
+        try {
+            await removeTouristInterestInItinerary(touristId, itinerary._id);
+        } catch (error) {
+            console.error("Error stopping notification:", error);
+        }
+    }
+
+    const handleGetNotificationWhenItineraryIsAvailable = () => {
+        if (getNotification) {
+            touristStopNotification();
+        } else {
+            touristGetNotification();
+        }
+        setGetNotification(!getNotification);
+    }
 
 
     return (
-        <Card sx={{ maxWidth: 650, mb: 4 }}>
+        <Card sx={{ maxWidth: 650, mb: 4, width: "100%" }}>
             {/* <h1>Itinerary Card</h1> */}
             <CardContent sx={{
                 display: 'flex',
@@ -76,9 +134,7 @@ const ItineraryCard = ({ itinerary }) => {
                     />
 
                     <IconButton size="medium"
-                        onClick={() => {
-                            setGetNotification(!getNotification);
-                        }} sx={{
+                        onClick={handleGetNotificationWhenItineraryIsAvailable} sx={{
                             mt: '-10px',
                             mr: '-10px',
                             ml: '5px'
@@ -159,11 +215,11 @@ const ItineraryCard = ({ itinerary }) => {
                 width: '100%',
             }}>
                 <Button variant="contained"
-                    onClick={addedToWatchlist ? () => setAddedToWatchlist(false) : () => setAddedToWatchlist(true)}
+                    onClick={handleSave}
                     endIcon={<BookmarkIcon sx={{
                         fill: `${addedToWatchlist ? 'red' : 'white'}`
                     }} />}>
-                    Save Itinerary
+                    {addedToWatchlist ? 'Unsave' : 'Save'}
                 </Button>
                 <Button variant="contained" sx={{
                     backgroundColor: `${isBookingAvailable ? 'green' : 'grey'}`,

@@ -18,13 +18,14 @@ import BlockIcon from '@mui/icons-material/Block';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
-import { convertPrice } from '../../services/api';
+import { convertPrice, getTouristSavedActivities, saveActivity, touristInterestedInActivity, unsaveActivity, removeTouristInterestInActivity } from '../../services/api';
 import ShareLink from './ShareLink';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
-const ActivityCard = ({ activity }) => {
+const ActivityCard = ({ activity, setFetch }) => {
+    const touristId = localStorage.getItem('userId');
     const [addedToWatchlist, setAddedToWatchlist] = useState(false);
     const [title, setTitle] = useState(activity.title);
     const [description, setDescription] = useState(activity.description);
@@ -47,14 +48,75 @@ const ActivityCard = ({ activity }) => {
                 console.error("Error converting price:", error);
             }
         };
+        const getSavedActivitiesByTourist = async () => {
+            try {
+                const savedActivities = await getTouristSavedActivities(touristId);
+                const savedActivityIds = savedActivities.data.bookmarkedActivities.map(activity => activity._id);
+                setAddedToWatchlist(savedActivityIds.includes(activity._id));
+            } catch (error) {
+                console.error("Error fetching saved activities:", error);
+            }
+        };
+        if (activity.interestedTourists.includes(touristId)) {
+            setGetNotification(true);
+        }
         getDisplayPrice(price);
+        getSavedActivitiesByTourist();
     }, []);
 
+    const handleSave = () => {
+        saveOrUnsaveActivity();
+    }
 
+    const saveOrUnsaveActivity = async () => {
+        try {
+            if (!addedToWatchlist) {
+                await saveActivity(touristId, activity._id);
+            } else {
+                await unsaveActivity(touristId, activity._id);
+            }
+            setAddedToWatchlist(!addedToWatchlist);
+            setFetch((prev) => prev + 1);
+        }
+        catch (error) {
+            console.error("Error saving/unsaving activity:", error);
+        }
+    }
+
+    const touristGetNotification = async () => {
+        try {
+            // console.log("touristId", touristId);
+            // console.log("activityId", activity._id);
+            // console.log("getNotification", getNotification);
+            await touristInterestedInActivity(touristId, activity._id, getNotification);
+        } catch (error) {
+            console.error("Error getting notification:", error);
+        }
+    }
+
+    const touristStopNotification = async () => {
+        try {
+            // console.log("touristId", touristId);
+            // console.log("activityId", activity._id);
+            // console.log("getNotification", getNotification);
+            await removeTouristInterestInActivity(touristId, activity._id);
+        } catch (error) {
+            console.error("Error stopping notification:", error);
+        }
+    }
+
+    const handleGetNotificationWhenActivityIsAvailable = () => {
+        if (getNotification) {
+            touristStopNotification();
+        } else {
+            touristGetNotification();
+        }
+        setGetNotification(!getNotification);
+    }
 
 
     return (
-        <Card sx={{ maxWidth: 650, mb: 4 }}>
+        <Card sx={{ maxWidth: 650, mb: 4, width: "100%" }}>
             {/* <h1>Activity Card</h1> */}
             <CardContent sx={{
                 display: 'flex',
@@ -80,9 +142,9 @@ const ActivityCard = ({ activity }) => {
                     />
 
                     <IconButton size="medium"
-                        onClick={() => {
-                            setGetNotification(!getNotification);
-                        }} sx={{
+                        onClick={
+                            handleGetNotificationWhenActivityIsAvailable
+                        } sx={{
                             mt: '-10px',
                             mr: '-10px',
                             ml: '5px'
@@ -166,11 +228,11 @@ const ActivityCard = ({ activity }) => {
                 width: '100%',
             }}>
                 <Button variant="contained"
-                    onClick={addedToWatchlist ? () => setAddedToWatchlist(false) : () => setAddedToWatchlist(true)}
+                    onClick={handleSave}
                     endIcon={<BookmarkIcon sx={{
                         fill: `${addedToWatchlist ? 'red' : 'white'}`
                     }} />}>
-                    Save Activity
+                    {addedToWatchlist ? 'Unsave' : 'Save'}
                 </Button>
 
                 <Button variant="contained" sx={{

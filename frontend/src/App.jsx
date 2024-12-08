@@ -54,6 +54,8 @@ import SellerAnalyticsPage from "./pages/Seller/SellerAnalyticsPage";
 import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage";
 import TouristBookedFlights from "./pages/Tourist/TouristBookedFlights";
 import TouristBookHotelsPage from "./pages/Tourist/TouristBookHotelsPage";
+import BookmarkedActivitiesPage from "./pages/Tourist/BookmarkedActivitiesPage";
+import BookmarkedItinerariesPage from "./pages/Tourist/BookmarkedItinerariesPage";
 
 const theme = createTheme({
   // palette: {
@@ -145,6 +147,10 @@ function App() {
               element={<TouristBookedFlights />}
             />
             <Route
+              path="/tourist/bookings/flights"
+              element={<TouristBookedFlights />}
+            />
+            <Route
               path="/tourist/bookings/visits"
               element={<TouristBookedVisits />}
             />
@@ -165,6 +171,17 @@ function App() {
               path="/tourist/complaints"
               element={<TouristComplaintsPage />}
             />
+
+            <Route
+              path="/tourist/savedActivities"
+              element={<BookmarkedActivitiesPage />}
+            />
+
+            <Route
+              path="/tourist/savedItineraries"
+              element={<BookmarkedItinerariesPage />}
+            />
+
           </Route>
 
 

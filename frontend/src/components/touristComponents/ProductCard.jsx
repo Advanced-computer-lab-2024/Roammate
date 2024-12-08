@@ -284,7 +284,7 @@ const ProductCard = ({ product, id, refreshWishlist, setCartItemCount }) => {
             onClick={() => navigate(`/tourist/products?id=${product._id}`)}
             endIcon={<ArrowForwardIosIcon />}
           >
-            {quantity > 0 ? "Buy" : "View"}
+            View
           </Button>
         </CardActions>
 

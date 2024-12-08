@@ -256,10 +256,9 @@ const getPurchasedProductsByTouristId = async (req, res) => {
 const addProductPurchasing = async (req, res) => {
   const { productId, userId, date, status, paymentMethod, quantity } = req.body;
 
-  try {    
+  try {
     // Find the product by ID
-    const product = await Product.findById(productId)
-      .populate("seller");
+    const product = await Product.findById(productId).populate("seller");
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -464,7 +463,7 @@ const getProductStockAndSales = async (req, res) => {
     // Retrieve completed purchases for the product to get total sales and sale dates
     const completedPurchases = await ProductPurchasing.find({
       product: id,
-      status: "Completed",
+      // status: "Completed",
     });
 
     const totalSales = completedPurchases.length;

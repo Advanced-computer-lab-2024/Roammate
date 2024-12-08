@@ -1457,3 +1457,149 @@ export const calcVTPGiftshopRevenue = async (query) => {
     console.log(error);
   }
 };
+
+export const saveActivity = async (touristId, activityId) => {
+  //console.log("touristId", touristId);
+  try {
+    const response = await axios.post(`${API_URL}addBookmark`, {
+      touristId,
+      activityId,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unsaveActivity = async (touristId, activityId) => {
+  try {
+    const response = await axios.delete(`${API_URL}removeBookmark`, {
+      params: {
+        touristId,
+        activityId,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTouristSavedActivities = async (touristId) => {
+  //console.log("touristId", touristId);
+  try {
+    const response = await axios.get(`${API_URL}getBookmarks`, {
+      params: {
+        touristId,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const saveItinerary = async (touristId, itineraryId) => {
+  //console.log("touristId", touristId);
+  try {
+    const response = await axios.post(`${API_URL}addBookmarkitinerary`, {
+      touristId,
+      itineraryId,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unsaveItinerary = async (touristId, itineraryId) => {
+  try {
+    const response = await axios.delete(`${API_URL}removeBookmarkitinerary`, {
+      params: {
+        touristId,
+        itineraryId,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTouristSavedItineraries = async (touristId) => {
+  //console.log("touristId", touristId);
+  try {
+    const response = await axios.get(`${API_URL}getBookmarkeditinerary`, {
+      params: {
+        touristId,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const touristInterestedInActivity = async (touristId, activityId) => {
+  try {
+    const response = await axios.post(`${API_URL}addInterestToActivity`, {
+      touristId,
+      activityId,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const touristInterestedInItinerary = async (touristId, itineraryId) => {
+  try {
+    const response = await axios.post(`${API_URL}addInterestToItinerary`, {
+      touristId,
+      itineraryId,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeTouristInterestInActivity = async (
+  touristId,
+  activityId
+) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}removeInterestFromActivity`,
+      {
+        params: {
+          touristId,
+          activityId,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeTouristInterestInItinerary = async (
+  touristId,
+  itineraryId
+) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}removeInterestFromItinerary`,
+      {
+        params: {
+          touristId,
+          itineraryId,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

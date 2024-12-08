@@ -157,8 +157,8 @@ const updateActivityById = async (req, res) => {
     if (!updatedActivity) {
       return res.status(404).json({ error: "Activity not found" });
     }
-     // Check if isBookingAvailable changed to true
-     if (!activity.isBookingAvailable && isBookingAvailable) {
+    // Check if isBookingAvailable changed to true
+    if (!activity.isBookingAvailable && isBookingAvailable) {
       for (const touristId of activity.interestedTourists) {
         const user = await User.findById(touristId); // Use the User model to find the tourist
         if (user) {
@@ -522,9 +522,11 @@ const toggleAppropriateActivity = async (req, res) => {
     const { id } = req.params;
 
     // Find the activity and populate advertiser details
-    const activity = await Activity.findById(id)
-      .populate("advertiser", "email notifications");
-    
+    const activity = await Activity.findById(id).populate(
+      "advertiser",
+      "email notifications"
+    );
+
     if (!activity) {
       return res.status(404).json({ message: "Activity not found" });
     }
@@ -582,6 +584,7 @@ const getActivityBookingsCount = async (req, res) => {
 const addBookmark = async (req, res) => {
   try {
     const { touristId, activityId } = req.body;
+    //console.log("Tourist ID add bookmark:", touristId); // Log to check
 
     // Validate that the activity exists
     const activity = await Activity.findById(activityId);
@@ -604,28 +607,73 @@ const addBookmark = async (req, res) => {
     tourist.bookmarkedActivities.push(activityId);
     await tourist.save();
 
-    res.status(200).json({ message: "Activity bookmarked successfully", bookmarkedActivities: tourist.bookmarkedActivities });
+    res.status(200).json({
+      message: "Activity bookmarked successfully",
+      bookmarkedActivities: tourist.bookmarkedActivities,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error bookmarking activity", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error bookmarking activity", error: error.message });
+  }
+};
+
+const removeBookmark = async (req, res) => {
+  try {
+    const { touristId, activityId } = req.query;
+    // console.log("Tourist ID remove bookmark:", touristId); // Log to check
+    // Find the tourist
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
+
+    // Check if the activity is bookmarked
+    if (!tourist.bookmarkedActivities.includes(activityId)) {
+      return res.status(400).json({ message: "Activity not bookmarked" });
+    }
+
+    // Remove the activity from bookmarkedActivities
+    tourist.bookmarkedActivities = tourist.bookmarkedActivities.filter(
+      (id) => id.toString() !== activityId
+    );
+    await tourist.save();
+
+    res.status(200).json({
+      message: "Activity removed from bookmarks",
+      bookmarkedActivities: tourist.bookmarkedActivities,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error removing bookmark", error: error.message });
   }
 };
 
 const getBookmarkedActivities = async (req, res) => {
   try {
     const { touristId } = req.query;
+    //console.log("Tourist ID:", touristId); // Log to check
 
     // Find the tourist and populate the bookmarked activities
-    const tourist = await Tourist.findById(touristId).populate("bookmarkedActivities");
+    const tourist = await Tourist.findById(touristId).populate(
+      "bookmarkedActivities"
+    );
 
     if (!tourist) {
       return res.status(404).json({ message: "Tourist not found" });
     }
 
-    console.log("Bookmarked activities:", tourist.bookmarkedActivities); // Log to check the data
-    res.status(200).json({ bookmarkedActivities: tourist.bookmarkedActivities });
+    //console.log("Bookmarked activities:", tourist.bookmarkedActivities); // Log to check the data
+    res
+      .status(200)
+      .json({ bookmarkedActivities: tourist.bookmarkedActivities });
   } catch (error) {
     console.error("Error retrieving bookmarked activities:", error); // Log the actual error
-    res.status(500).json({ message: "Error retrieving bookmarked activities", error: error.message });
+    res.status(500).json({
+      message: "Error retrieving bookmarked activities",
+      error: error.message,
+    });
   }
 };
 
@@ -640,20 +688,58 @@ const addInterestToActivity = async (req, res) => {
     }
 
     if (activity.interestedTourists.includes(touristId)) {
-      return res.status(400).json({ message: "Tourist already interested in this activity" });
+      return res
+        .status(400)
+        .json({ message: "Tourist already interested in this activity" });
     }
 
     // Add the tourist to the interestedTourists array
     activity.interestedTourists.push(touristId);
     await activity.save();
 
-    res.status(200).json({ message: "Tourist added to the interested list", activity });
+    res
+      .status(200)
+      .json({ message: "Tourist added to the interested list", activity });
   } catch (error) {
-    res.status(500).json({ message: "Error adding tourist to activity", error: error.message });
+    res.status(500).json({
+      message: "Error adding tourist to activity",
+      error: error.message,
+    });
   }
 };
 
+const removeInterestFromActivity = async (req, res) => {
+  try {
+    const { touristId, activityId } = req.query;
 
+    // Find the activity and check if the tourist is interested
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ message: "Activity not found" });
+    }
+
+    if (!activity.interestedTourists.includes(touristId)) {
+      return res
+        .status(400)
+        .json({ message: "Tourist is not interested in this activity" });
+    }
+
+    // Remove the tourist from the interestedTourists array
+    activity.interestedTourists = activity.interestedTourists.filter(
+      (id) => id.toString() !== touristId
+    );
+    await activity.save();
+
+    res
+      .status(200)
+      .json({ message: "Tourist removed from the interested list", activity });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error removing tourist from activity",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   createActivity,
@@ -673,4 +759,6 @@ module.exports = {
   addBookmark,
   getBookmarkedActivities,
   addInterestToActivity,
+  removeBookmark,
+  removeInterestFromActivity,
 };

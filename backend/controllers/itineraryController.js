@@ -1,4 +1,10 @@
-const { Itinerary, Review, ItineraryBooking,Tourist,User } = require("../models");
+const {
+  Itinerary,
+  Review,
+  ItineraryBooking,
+  Tourist,
+  User,
+} = require("../models");
 const mongoose = require("mongoose");
 const { PreferenceTag } = require("../models");
 const convertCurrency = require("./CurrencyConvertController");
@@ -149,7 +155,7 @@ const updateItineraryById = async (req, res) => {
         const user = await User.findById(touristId);
         if (user) {
           user.notifications.push({
-            message:`Booking is now available for itinrary: ${updatedItinerary.title}`,
+            message: `Booking is now available for itinrary: ${updatedItinerary.title}`,
           });
           await user.save();
         }
@@ -160,8 +166,6 @@ const updateItineraryById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
-
 
 // Delete an itinerary by ID
 const deleteItineraryById = async (req, res) => {
@@ -369,7 +373,7 @@ const getBookedItinerariesByTouristId = async (req, res) => {
           { path: "tourGuide" },
           { path: "tags", select: "name" },
           {
-            path: "reviews", // populate reviews within activity
+            path: "reviews", // populate reviews within itinerary
             populate: { path: "user" }, // populate user within each review
           },
         ],
@@ -487,8 +491,10 @@ const toggleAppropriateItinerary = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const itinerary = await Itinerary.findById(id)
-      .populate("tourGuide", "email notifications");;
+    const itinerary = await Itinerary.findById(id).populate(
+      "tourGuide",
+      "email notifications"
+    );
 
     if (!itinerary) {
       return res.status(404).json({ message: "Itinerary not found" });
@@ -569,9 +575,43 @@ const addBookmark = async (req, res) => {
     tourist.bookmarkedItineraries.push(itineraryId);
     await tourist.save();
 
-    res.status(200).json({ message: "itinerary bookmarked successfully", bookmarkedItineraries: tourist.bookmarkedItineraries });
+    res.status(200).json({
+      message: "itinerary bookmarked successfully",
+      bookmarkedItineraries: tourist.bookmarkedItineraries,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error bookmarking itinerary", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error bookmarking itinerary", error: error.message });
+  }
+};
+const removeBookmark = async (req, res) => {
+  try {
+    const { touristId, itineraryId } = req.query;
+    // console.log("Tourist ID remove bookmark:", touristId); // Log to check
+    // Find the tourist
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
+
+    if (!tourist.bookmarkedItineraries.includes(itineraryId)) {
+      return res.status(400).json({ message: "itinerary not bookmarked" });
+    }
+
+    tourist.bookmarkedItineraries = tourist.bookmarkedItineraries.filter(
+      (id) => id.toString() !== itineraryId
+    );
+    await tourist.save();
+
+    res.status(200).json({
+      message: "itinerary removed from bookmarks",
+      bookmarkedItineraries: tourist.bookmarkedItineraries,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error removing bookmark", error: error.message });
   }
 };
 
@@ -580,17 +620,24 @@ const getBookmarkeditinerary = async (req, res) => {
     const { touristId } = req.query;
 
     // Find the tourist and populate the bookmarked Itineraries
-    const tourist = await Tourist.findById(touristId).populate("bookmarkedItineraries");
+    const tourist = await Tourist.findById(touristId).populate(
+      "bookmarkedItineraries"
+    );
 
     if (!tourist) {
       return res.status(404).json({ message: "Tourist not found" });
     }
 
-    console.log("Bookmarked Itineraries:", tourist.bookmarkedItineraries); // Log to check the data
-    res.status(200).json({ bookmarkedItineraries: tourist.bookmarkedItineraries });
+    //console.log("Bookmarked Itineraries:", tourist.bookmarkedItineraries); // Log to check the data
+    res
+      .status(200)
+      .json({ bookmarkedItineraries: tourist.bookmarkedItineraries });
   } catch (error) {
     console.error("Error retrieving bookmarked Itineraries:", error); // Log the actual error
-    res.status(500).json({ message: "Error retrieving bookmarked Itineraries", error: error.message });
+    res.status(500).json({
+      message: "Error retrieving bookmarked Itineraries",
+      error: error.message,
+    });
   }
 };
 
@@ -605,19 +652,58 @@ const addInterestToItinerary = async (req, res) => {
     }
 
     if (itinerary.interestedTourists.includes(touristId)) {
-      return res.status(400).json({ message: "Tourist already interested in this itinerary" });
+      return res
+        .status(400)
+        .json({ message: "Tourist already interested in this itinerary" });
     }
 
     // Add the tourist to the interestedTourists array
     itinerary.interestedTourists.push(touristId);
     await itinerary.save();
 
-    res.status(200).json({ message: "Tourist added to the interested list", itinerary });
+    res
+      .status(200)
+      .json({ message: "Tourist added to the interested list", itinerary });
   } catch (error) {
-    res.status(500).json({ message: "Error adding tourist to itinerary", error: error.message });
+    res.status(500).json({
+      message: "Error adding tourist to itinerary",
+      error: error.message,
+    });
   }
 };
 
+const removeInterestFromItinerary = async (req, res) => {
+  try {
+    const { touristId, itineraryId } = req.query;
+
+    // Find the itinerary and check if the tourist is interested
+    const itinerary = await Itinerary.findById(itineraryId);
+    if (!itinerary) {
+      return res.status(404).json({ message: "Itinerary not found" });
+    }
+
+    if (!itinerary.interestedTourists.includes(touristId)) {
+      return res
+        .status(400)
+        .json({ message: "Tourist is not interested in this itinerary" });
+    }
+
+    // Remove the tourist from the interestedTourists array
+    itinerary.interestedTourists = itinerary.interestedTourists.filter(
+      (id) => id.toString() !== touristId
+    );
+    await itinerary.save();
+
+    res
+      .status(200)
+      .json({ message: "Tourist removed from the interested list", itinerary });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error removing tourist from itinerary",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   createItinerary,
@@ -637,4 +723,6 @@ module.exports = {
   addBookmark,
   getBookmarkeditinerary,
   addInterestToItinerary,
+  removeBookmark,
+  removeInterestFromItinerary,
 };
