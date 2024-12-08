@@ -487,6 +487,24 @@ const bookActivity = async (req, res) => {
   //add booking to the activity
   try {
     await addActivityBooking(activityId, userId, bookingDate);
+
+    // Fetch user and activity details
+    const user = await User.findById(userId);
+    const activity = await Activity.findById(activityId);
+
+    // Prepare and send the email receipt
+    const subject = "Payment Receipt - Activity Booking";
+    const text = `Dear ${user.username},
+
+We have successfully processed your payment of ${amount} for the event "${activity.title}" on ${bookingDate}.
+
+Thank you for choosing our service, and we hope you have a great experience!
+
+Regards,
+RoamMate Travel Team`;
+
+    sendEmail(user.email, subject, text);
+
     res.status(201).json({ message: "Activity booked successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
