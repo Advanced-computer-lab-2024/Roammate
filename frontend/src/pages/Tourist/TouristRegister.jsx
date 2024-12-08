@@ -245,6 +245,12 @@ const TouristRegister = () => {
                     >
                         Register
                     </Button>
+                    <Typography variant="body2" component="div" sx={{
+                        textAlign: 'center',
+                        marginTop: '20px'
+                    }}>
+                        Already have an account? <a href="/login">Login</a>
+                    </Typography>
                 </Box>
 
 

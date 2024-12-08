@@ -160,6 +160,12 @@ const OthersRegisteration = () => {
                     disabled={!(username && email && password && retypePassword)}>
                     Register
                 </Button>
+                <Typography variant="body2" component="div" sx={{
+                    textAlign: 'center',
+                    marginTop: '20px'
+                }}>
+                    Already have an account? <a href="/login">Login</a>
+                </Typography>
             </Box>
 
         </Box>
