@@ -174,8 +174,6 @@ const applyPromoCode = async (req, res) => {
         .status(400)
         .json({ message: "Promo code usage limit reached" });
 
-    // Optional: Check if the user role matches the promo code's applicable roles
-    const user = await Tourist.findById(userId);
     if (promoCode.userId	&& promoCode.userId.toString() !== userId)
       return res
         .status(403)
@@ -183,7 +181,9 @@ const applyPromoCode = async (req, res) => {
 
     // Increment usage count
     promoCode.usageCount += 1;
-    await promoCode.save();
+    // Decrement usage limit
+    promoCode.usageLimit -= 1;
+    await promoCode.save();    
 
     res.status(200).json({
       message: "Promo code applied successfully",

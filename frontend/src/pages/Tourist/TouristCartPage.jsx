@@ -15,6 +15,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Alert,
 } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import {
@@ -25,11 +26,18 @@ import {
   addProductPurchasing,
   fetchUserAddresses,
   convertPrice,
+  applyPromoCode
 } from "../../services/api";
 import { useOutletContext } from "react-router";
 
 const TouristCartPage = () => {
   const userId = localStorage.getItem("userId");
+  const [discount, setDiscount] = useState(0);
+  const [promoCode, setPromoCode] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState(false);
+  const [promocodeSuccess, setPromocodeSuccess] = useState(false);
+  const [message, setMessage] = useState("");
+
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -42,6 +50,32 @@ const TouristCartPage = () => {
   const [subtotals, setSubtotals] = useState([]);
 
   const { setCartItemCount } = useOutletContext();
+
+  const handleApplyPromo = async () => {
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await applyPromoCode(promoCode, userId);
+
+      const { discount: promoDiscount, message } = response;
+
+      setDiscount(promoDiscount);
+      setTotalPrice(totalPrice - promoDiscount * totalPrice / 100);
+      setAppliedPromo(true);
+      setMessage(message);
+      setPromocodeSuccess(true);
+    } catch (error) {
+      console.log(error);
+      setMessage(
+        error.response?.data.message || "Failed to apply promo code."
+      );
+      setAppliedPromo(false);
+      setPromocodeSuccess(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fetch the cart data
   useEffect(() => {
@@ -280,6 +314,43 @@ const TouristCartPage = () => {
           </Card>
         ))}
       </Box>
+
+      {/* Promo Code Input */}
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <TextField
+          label="Promo Code"
+          variant="outlined"
+          size="small"
+          value={promoCode}
+          onChange={(e) => setPromoCode(e.target.value)}
+          fullWidth
+          disabled={appliedPromo}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleApplyPromo}
+          disabled={loading || appliedPromo}
+        >
+          Apply
+        </Button>
+      </Box>
+
+      {message && promocodeSuccess && (
+        <Alert severity="success">{message}</Alert>
+      )}
+      {message && !promocodeSuccess && (
+        <Alert severity="error">{message}</Alert>
+      )}
+
+      <Box sx={{ width: "100%", marginBottom: 2, textAlign: "left" }}>
+        {discount > 0 && (
+          <Typography variant="h6">
+            Discount: {discount}%
+          </Typography>
+        )}
+      </Box>
+
       <Box
         sx={{
           display: "flex",
