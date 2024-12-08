@@ -189,6 +189,26 @@ const calcVTPRevenue = async (req, res) => {
   }
 };
 
+const calcSystemUsers = async (req, res) => {
+  const { startDate, endDate } = req.query;
+  const filter = {};
+  if (startDate) {
+    filter.createdAt = { $gte: new Date(startDate) };
+  }
+  if (endDate) {
+    filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate) };
+  }
+  //console.log(filter);
+  try {
+    const users = await User.find(filter, { _id: 1, createdAt: 1 });
+
+    //console.log(users);
+    res.status(200).json(users.length);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
 module.exports = {
   addAdmin,
   getAllAdmins,
@@ -197,4 +217,5 @@ module.exports = {
   editAdmin,
   calcGiftShopRevenue,
   calcVTPRevenue,
+  calcSystemUsers,
 };

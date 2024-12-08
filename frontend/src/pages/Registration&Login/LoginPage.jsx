@@ -74,6 +74,7 @@ const Login = () => {
 
             <TextField
                 label="Password"
+                type="password"
                 variant="outlined"
                 sx={{
                     width: '200px',

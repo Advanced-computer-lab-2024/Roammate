@@ -4,6 +4,7 @@ import CachedIcon from "@mui/icons-material/Cached";
 import { fetchAllUsers, deleteUser } from "../../services/api";
 import { useLocation, useOutletContext } from "react-router";
 import UserCard from "../../components/adminComponents/UserCard";
+import SystemUsers from "../../components/adminComponents/SystemUsers";
 
 const AdminUsersPage = () => {
     const [loading, setLoading] = useState(false);
@@ -90,6 +91,11 @@ const AdminUsersPage = () => {
                         </div>
                     ))}
                 </Grid2>
+
+                <Grid2 xs={12} >
+                    <SystemUsers />
+                </Grid2>
+
             </Grid2>
         </Box>
     );
