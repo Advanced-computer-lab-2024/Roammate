@@ -92,6 +92,10 @@ const AdminLayout = () => {
       navigate(`/admin/complaints?id=`);
     } else if (activeButton === "Edit Profile") {
       navigate("/admin/editProfile");
+    } else if (activeButton === "Add Admin") {
+      navigate("/admin/add-admin");
+    } else if (activeButton === "Add Governor") {
+      navigate("/admin/add-governor");
     } else if (activeButton === "Add Promocode") {
       navigate("/admin/add-promocode");
     } else if (activeButton === "Account Deletion Requests") {

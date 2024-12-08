@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router";
+import { applyPromoCode } from "../../services/api";
 
 
 // Replace with your actual Stripe public key
@@ -21,9 +22,43 @@ const BookingActivityComponent = ({
   price,
   handleBooking,
 }) => {
+  const userId = localStorage.getItem("userId");
+  const [discount, setDiscount] = useState(0);
+  const [discountedPrice, setDiscountedPrice] = useState(Number(price.replace("EGP", "").replace("USD", "").replace("EUR", "")));
+  const [promoCode, setPromoCode] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState(false);
+  const [promocodeSuccess, setPromocodeSuccess] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+
+  const handleApplyPromo = async () => {
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await applyPromoCode(promoCode, userId);
+
+      const { discount: promoDiscount, message } = response;
+
+      setDiscount(promoDiscount);
+      const rawPrice = Number(price.replace("EGP", "").replace("USD", "").replace("EUR", ""));
+      setDiscountedPrice(rawPrice - promoDiscount*rawPrice/100);
+      setAppliedPromo(true);
+      setMessage(message);
+      setPromocodeSuccess(true);
+    } catch (error) {
+      console.log(error);
+      setMessage(
+        error.response?.data.message || "Failed to apply promo code."
+      );
+      setAppliedPromo(false);
+      setPromocodeSuccess(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePayment = async () => {
     if (!localStorage.getItem("userId")) {
@@ -102,8 +137,34 @@ const BookingActivityComponent = ({
           variant="outlined"
         />
         <Typography variant="body2">
-          <strong>Price:</strong> {price}
+          <strong>Price:</strong> {discountedPrice + ` ${localStorage.getItem("currency")}`}
+          {appliedPromo && (
+            <Typography component="span" color="green" sx={{ ml: 1 }}>
+              ({`Discount Applied - ${discount}%`})
+            </Typography>
+          )}
         </Typography>
+
+        {/* Promo Code Input */}
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <TextField
+            label="Promo Code"
+            variant="outlined"
+            size="small"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+            fullWidth
+            disabled={appliedPromo}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleApplyPromo}
+            disabled={loading || appliedPromo}
+          >
+            Apply
+          </Button>
+        </Box>
       </Stack>
 
       {loading && (
@@ -117,7 +178,7 @@ const BookingActivityComponent = ({
           variant="body2"
           sx={{
             marginBottom: 2,
-            color: message.includes("successful") ? "green" : "red",
+            color: message.includes("successful") || promocodeSuccess ? "green" : "red",
           }}
         >
           {message}
