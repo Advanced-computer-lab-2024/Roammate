@@ -18,13 +18,14 @@ import BlockIcon from '@mui/icons-material/Block';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
-import { convertPrice } from '../../services/api';
+import { convertPrice, getTouristSavedActivities, saveActivity, unsaveActivity } from '../../services/api';
 import ShareLink from './ShareLink';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
-const ActivityCard = ({ activity }) => {
+const ActivityCard = ({ activity, setFetch }) => {
+    const touristId = localStorage.getItem('userId');
     const [addedToWatchlist, setAddedToWatchlist] = useState(false);
     const [title, setTitle] = useState(activity.title);
     const [description, setDescription] = useState(activity.description);
@@ -47,14 +48,42 @@ const ActivityCard = ({ activity }) => {
                 console.error("Error converting price:", error);
             }
         };
+        const getSavedActivitiesByTourist = async () => {
+            try {
+                const savedActivities = await getTouristSavedActivities(touristId);
+                const savedActivityIds = savedActivities.data.bookmarkedActivities.map(activity => activity._id);
+                setAddedToWatchlist(savedActivityIds.includes(activity._id));
+            } catch (error) {
+                console.error("Error fetching saved activities:", error);
+            }
+        };
         getDisplayPrice(price);
+        getSavedActivitiesByTourist();
     }, []);
 
+    const handleSave = () => {
+        saveOrUnsaveActivity();
+    }
+
+    const saveOrUnsaveActivity = async () => {
+        try {
+            if (!addedToWatchlist) {
+                await saveActivity(touristId, activity._id);
+            } else {
+                await unsaveActivity(touristId, activity._id);
+            }
+            setAddedToWatchlist(!addedToWatchlist);
+            setFetch((prev) => prev + 1);
+        }
+        catch (error) {
+            console.error("Error saving/unsaving activity:", error);
+        }
+    }
 
 
 
     return (
-        <Card sx={{ maxWidth: 650, mb: 4 }}>
+        <Card sx={{ maxWidth: 650, mb: 4, width: "100%" }}>
             {/* <h1>Activity Card</h1> */}
             <CardContent sx={{
                 display: 'flex',
@@ -166,11 +195,11 @@ const ActivityCard = ({ activity }) => {
                 width: '100%',
             }}>
                 <Button variant="contained"
-                    onClick={addedToWatchlist ? () => setAddedToWatchlist(false) : () => setAddedToWatchlist(true)}
+                    onClick={handleSave}
                     endIcon={<BookmarkIcon sx={{
                         fill: `${addedToWatchlist ? 'red' : 'white'}`
                     }} />}>
-                    Save Activity
+                    {addedToWatchlist ? 'Unsave' : 'Save'}
                 </Button>
 
                 <Button variant="contained" sx={{

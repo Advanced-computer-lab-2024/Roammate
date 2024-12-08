@@ -59,7 +59,7 @@ const TouristLayout = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get("id") || "");
-
+    const [myBookmarksOpen, setMyBookmarksOpen] = React.useState(false);
 
 
 
@@ -141,10 +141,15 @@ const TouristLayout = () => {
     const toggleDrawer = () => {
         setOpen(!open);
         setMyBookingsOpen(false);
+        setMyBookmarksOpen(false);
     };
 
     const handleMyBookingsClick = () => {
         setMyBookingsOpen(!myBookingsOpen);
+    };
+
+    const handleMyBookMarksClick = () => {
+        setMyBookmarksOpen(!myBookmarksOpen);
     };
 
     const handleLogOut = async () => {
@@ -287,26 +292,67 @@ const TouristLayout = () => {
                     <ListItemIcon>
                         <Favorite fontSize="small" />{" "}
                     </ListItemIcon>
+
                     <ListItemText
                         primary="My Products Wishlist"
 
                     />
+
                 </ListItemButton>
 
+
                 <ListItemButton
-                // onClick={() => {
-                //     navigate("/tourist/wishlist");
-                //     setActiveButton("");
-                // }}
+                    onClick={handleMyBookMarksClick}
                 >
                     <ListItemIcon>
                         <BookmarkIcon fontSize="small" />{" "}
                     </ListItemIcon>
                     <ListItemText
                         primary="My Bookmarks"
-
                     />
+                    {myBookmarksOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
+
+                <Collapse in={myBookmarksOpen} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding onClick={toggleDrawer}>
+                        <ListItemButton
+                            sx={{ pl: 4 }}
+                            onClick={() => {
+                                navigate("/tourist/savedActivities");
+                                setActiveButton("");
+                            }}
+                        >
+                            <ListItemIcon>
+                                <SnowboardingIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="My Activities"
+                                primaryTypographyProps={{
+                                    fontSize: "0.9rem",
+                                }}
+                            />
+                        </ListItemButton>
+
+                        <ListItemButton
+
+                            sx={{ pl: 4 }}
+                            onClick={() => {
+                                navigate("/tourist/savedItineraries");
+                                setActiveButton("");
+                            }}
+                        >
+                            <ListItemIcon>
+                                <MapIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="My Itineraries"
+                                primaryTypographyProps={{
+                                    fontSize: "0.9rem",
+                                }}
+                            />
+                        </ListItemButton>
+                    </List>
+                </Collapse>
 
                 <Divider />
 
