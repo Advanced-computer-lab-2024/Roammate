@@ -9,8 +9,9 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import PaymentForm from "../sharedComponents/PaymentForm";
 import { useNavigate } from "react-router";
-
 
 // Replace with your actual Stripe public key
 const stripePromise = loadStripe("your-public-stripe-key");
@@ -23,39 +24,8 @@ const BookingActivityComponent = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
   const navigate = useNavigate();
-
-  const handlePayment = async () => {
-    if (!localStorage.getItem("userId")) {
-      setMessage("Please login to continue booking.");
-      navigate("/login");
-      return;
-    }
-    setLoading(true);
-    setMessage("");
-    try {
-      const stripe = await stripePromise;
-      const { error } = await stripe.redirectToCheckout({
-        lineItems: [
-          { price: "price_id_from_stripe_dashboard", quantity: 1 }, // Replace with your Stripe price ID
-        ],
-        mode: "payment",
-        successUrl: `${window.location.origin}/success`,
-        cancelUrl: `${window.location.origin}/cancel`,
-      });
-      if (error) {
-        setMessage("Stripe payment failed. Please try again.");
-        console.error("Stripe payment error:", error);
-      } else {
-        setMessage("Payment successful!");
-      }
-    } catch (error) {
-      setMessage("An error occurred during payment. Please try again.");
-      console.error("Payment processing error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleWalletPayment = async () => {
     setLoading(true);
@@ -64,12 +34,24 @@ const BookingActivityComponent = ({
       await handleBooking(); // Calls the booking function passed from parent
       setMessage("Booking successful!");
     } catch (error) {
-      setMessage(`Wallet payment failed. ${error.response.data.error}`);
-      console.error("Wallet payment error:", error.response.data.error);
+      setMessage(`Wallet payment failed. ${error.response?.data?.error}`);
+      console.error("Wallet payment error:", error.response?.data?.error);
     } finally {
       setLoading(false);
     }
   };
+
+  if (showPaymentForm) {
+    return (
+      <Elements stripe={stripePromise}>
+        <PaymentForm
+          activity={{ title: "Booking Activity" }} // Pass real activity details if available
+          onBack={() => setShowPaymentForm(false)}
+          handleBooking={handleBooking}
+        />
+      </Elements>
+    );
+  }
 
   return (
     <Card
@@ -139,10 +121,10 @@ const BookingActivityComponent = ({
         <Button
           variant="contained"
           color="primary"
-          onClick={handlePayment}
+          onClick={() => setShowPaymentForm(true)}
           disabled={loading}
         >
-          Pay with Stripe
+          Pay with Card
         </Button>
       </Box>
     </Card>
