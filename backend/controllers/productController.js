@@ -270,9 +270,7 @@ const addProductPurchasing = async (req, res) => {
       });
     }
 
-    console.log(product);
     product.quantity -= quantity;
-    console.log(product);
 
     // Save the updated product
     await product.save();
