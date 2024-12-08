@@ -52,7 +52,7 @@ const getProductById = async (req, res) => {
   const { currency = "USD" } = req.query;
   try {
     const product = await Product.findById(id)
-      .populate("seller", "username")
+      .populate("seller")
       .populate({
         path: "reviews",
         populate: { path: "user" },

@@ -593,6 +593,8 @@ router.get(
 router.get("/advertiser-analytics", advertiserController.calcAdvertiserRevenue);
 router.get("/tourguide-analytics", tourGuideController.calcTourguideRevenue);
 router.get("/seller-analytics", sellerController.calcSellerRevenue);
+router.get("/vtp-analytics-giftshop", adminController.calcGiftShopRevenue);
+router.get("/vtp-analytics-total", adminController.calcVTPRevenue);
 
 //Routes for interested tourists in specific event :
 router.post("/addInterestToActivity", activityController.addInterestToActivity);
