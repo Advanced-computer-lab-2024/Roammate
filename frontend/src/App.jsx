@@ -52,6 +52,7 @@ import AdvertiserAnalyticsPage from "./pages/Advertiser/AdvertiserAnalyticsPage"
 import TourGuideAnalyticsPage from "./pages/TourGuide/TourguideAnalyticsPage";
 import SellerAnalyticsPage from "./pages/Seller/SellerAnalyticsPage";
 import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage";
+import TouristBookedFlights from "./pages/Tourist/TouristBookedFlights";
 import BookmarkedActivitiesPage from "./pages/Tourist/BookmarkedActivitiesPage";
 import BookmarkedItinerariesPage from "./pages/Tourist/BookmarkedItinerariesPage";
 
@@ -139,6 +140,14 @@ function App() {
             <Route
               path="/tourist/bookings/itineraries"
               element={<TouristBookedItineraries />}
+            />
+            <Route
+              path="/tourist/bookings/flights"
+              element={<TouristBookedFlights />}
+            />
+            <Route
+              path="/tourist/bookings/flights"
+              element={<TouristBookedFlights />}
             />
             <Route
               path="/tourist/bookings/visits"
