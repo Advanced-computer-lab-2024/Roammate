@@ -8,7 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { calcSellerRevenue } from "../../services/api";
+import { calcSellerRevenue, calcVTPGiftshopRevenue } from "../../services/api";
 import dayjs from 'dayjs';
 import { PieChart } from '@mui/x-charts/PieChart';
 
@@ -42,11 +42,13 @@ const SellerAnalyticsPage = () => {
     const calcRevenue = async () => {
         setRevenueData([]);
         try {
+
             const response = await calcSellerRevenue({
                 id: id,
                 startDate: dates[startDate],
                 endDate: dayjs(dates[endDate]).endOf('month').format('YYYY-MM-DD')
             });
+
             //console.log(response.data);
             setRevenueData(response.data);
             // set products to array of itinerary titles

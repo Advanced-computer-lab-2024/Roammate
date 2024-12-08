@@ -260,7 +260,13 @@ const ProductCard = ({ product, id, refreshWishlist, setCartItemCount }) => {
             autoHideDuration={6000}
             onClose={() => setOpen(false)}
           >
-            <Alert onClose={() => setOpen(false)} severity="success">
+            <Alert
+              onClose={() => setOpen(false)}
+              severity="success"
+              sx={{
+                backgroundColor: "lightgreen",
+              }}
+            >
               Product added to cart!
             </Alert>
           </Snackbar>

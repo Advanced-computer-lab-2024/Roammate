@@ -71,14 +71,14 @@ const TouristViewProduct = ({ id }) => {
                         }}>
 
                             <Avatar sx={{
-                                backgroundColor: 'purple',
+                                backgroundColor: `${product.seller.role === 'admin' ? 'green' : 'purple'}`,
                                 width: '25px',
                                 height: '25px',
                                 fontSize: '14px'
 
 
                             }}>
-                                {product.seller.username.charAt(0)}
+                                {product.seller.role === 'admin' ? <CheckIcon /> : product.seller.username.charAt(0)}
                             </Avatar>
                             <Typography sx={{
                                 marginLeft: 1,
@@ -87,7 +87,7 @@ const TouristViewProduct = ({ id }) => {
                                 fontSize: '16px'
 
                             }}>
-                                {product.seller.username}
+                                {product.seller.role === 'admin' ? 'by Roammate' : product.seller.username}
                             </Typography>
 
                         </Box>

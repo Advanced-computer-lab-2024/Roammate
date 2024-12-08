@@ -1410,3 +1410,25 @@ export const calcSellerRevenue = async (query) => {
     console.log(error);
   }
 };
+
+export const calcVTPTotalRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}vtp-analytics-total`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const calcVTPGiftshopRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}vtp-analytics-giftshop`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -26,6 +26,7 @@ import {
   fetchUserAddresses,
   convertPrice,
 } from "../../services/api";
+import { useOutletContext } from "react-router";
 
 const TouristCartPage = () => {
   const userId = localStorage.getItem("userId");
@@ -39,6 +40,9 @@ const TouristCartPage = () => {
   const [displayTotalPrice, setDisplayTotalPrice] = useState();
   const [productsPrices, setProductsPrices] = useState([]);
   const [subtotals, setSubtotals] = useState([]);
+
+
+  const { setCartItemCount } = useOutletContext();
 
   // Fetch the cart data
   useEffect(() => {
@@ -104,6 +108,16 @@ const TouristCartPage = () => {
 
   }, [cart]);
 
+  useEffect(() => {
+    if (cart) {
+      //get the cart item count
+      let cartItemCount = 0;
+      cart.products.forEach((item) => {
+        cartItemCount += item.quantity;
+      });
+      setCartItemCount(cartItemCount);
+    }
+  }, [cart]);
 
   // Calculate the total price of the cart
   const calculateTotalPrice = (products) => {
