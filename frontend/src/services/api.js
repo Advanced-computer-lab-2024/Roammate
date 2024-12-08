@@ -1365,12 +1365,6 @@ export const logout = async () => {
   }
 };
 
-// router.post("/promoCodes", PromoCodeController.createPromoCode);
-// router.get("/promoCodes", PromoCodeController.getAllPromoCodes);
-
-// router.post("/promoCodes/apply", PromoCodeController.applyPromoCode);
-// router.get("/promoCodes/user/:userId", PromoCodeController.getPromoCodesByUser);
-
 export const createPromoCode = async (
   code,
   discount,
@@ -1399,6 +1393,20 @@ export const getAllPromoCodes = async () => {
     return response.data;
   } catch (error) {
     console.error("Error getting all promo codes:", error);
+    throw error;
+  }
+};
+
+export const applyPromoCode = async (code, userId) => {
+  try {
+    const response = await axios.post(`${API_URL}promoCodes/apply`, {
+      code,
+      userId,
+    });
+    return response.data;
+  }
+  catch (error) {
+    console.error("Error applying promo code:", error);
     throw error;
   }
 };
@@ -1603,5 +1611,25 @@ export const removeTouristInterestInItinerary = async (
     return response;
   } catch (error) {
     console.log(error);
+  }
+};
+
+// Function to add Admin
+export const addAdmin = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/admin`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { error: "Failed to add admin" };
+  }
+};
+
+// Function to add Tourism Governor
+export const addGovernor = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/tourismGovernor`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { error: "Failed to add tourism governor" };
   }
 };
