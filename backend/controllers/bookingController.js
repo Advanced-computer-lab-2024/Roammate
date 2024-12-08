@@ -105,7 +105,9 @@ const addFlightBooking = async (req, res) => {
 
       const flightBooking = new FlightBooking({
           touristId,
-          bookingCode,
+          bookedFlightCode: bookingCode,
+          bookingCode: bookingCode,
+          bookedCode: bookingCode,
           flightData
       });
 
@@ -115,6 +117,7 @@ const addFlightBooking = async (req, res) => {
           booking: savedBooking
       });
   } catch (error) {
+      console.log(error);
       res.status(500).json({ message: "Failed to book the flight.", error: error.message });
   }
 };

@@ -3,26 +3,10 @@ import { Typography, Box, Divider, Stack, Chip, Button, Alert } from "@mui/mater
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import LuggageIcon from "@mui/icons-material/Luggage";
-import { bookFlight } from "../../services/api";
 
-function FlightDetails({ flightData }) {
-    const touristId = localStorage.getItem("userId");
+function BookedFlightDetails({ bookingCode, flightData }) {
     const { itineraries, price } = flightData;
-    const [flightBooked, setFlightBooked] = useState(false);
-    const [bookedFlightCode, setBookedFlightCode] = useState(null);
 
-
-    const handleBookFlight = async () => {
-        try {
-            const bookingCode = Math.random().toString(36).substring(5).toUpperCase();
-            await bookFlight(touristId, bookingCode, flightData); // Send the entire flightData and touristId
-            setBookedFlightCode(bookingCode);
-            setFlightBooked(true);
-        } catch (error) {
-            console.error('Failed to book flight:', error);
-        }
-    };
-    
     return (
         <Box sx={{ width: '100%', p: 2 }}>
             {/* Price and Luggage Information */}
@@ -70,26 +54,16 @@ function FlightDetails({ flightData }) {
                     {itineraryIndex < itineraries.length - 1 && <Divider sx={{ my: 2 }} />}
                 </Box>
             ))}
-            {/* book the flight button */}
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleBookFlight()}
-                fullWidth
-                disabled={flightBooked}
-                sx={{ mt: 2 }}
-            >
-                Book Flight
-            </Button>
 
-            {flightBooked && (
-                <Alert severity="success" sx={{ mt: 2 }}>
-                    Flight Booked Successfully! Your Booking Reference Code: {bookedFlightCode}
-                </Alert>
-            )}
+            {/* Show the booking code */}
+            <Alert severity="info" sx={{ mt: 2 }}>
+                <Typography variant="body1" sx={{ textAlign: "center", width: "100%" }}>
+                    Booking Code: {bookingCode}
+                </Typography>
+            </Alert>
 
         </Box>
     );
 }
 
-export default FlightDetails;
+export default BookedFlightDetails;

@@ -14,15 +14,19 @@ function TouristBookFlightsPage() {
     const [selectedFlightId, setSelectedFlightId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [noFlights, setNoFlights] = useState(false);
     const flightsPerPage = 10;
 
     const fetchFlights = async () => {
         setLoading(true);
         try {
+            setNoFlights(false);
             const response = await searchFlights(origin, destination, departureDate, returnDate, passengers);
+            setNoFlights(response.data.length === 0);
             setFlightData(response.data);
             setCurrentPage(1); // Reset to the first page after new search
         } catch (error) {
+            setNoFlights(true);
             console.error("Error searching for flights:", error);
         } finally {
             setLoading(false);
@@ -125,6 +129,16 @@ function TouristBookFlightsPage() {
                     </Grid2>
                 </Grid2>
             </Box>
+
+            {/* Display No Flights Found Message */}
+            {noFlights && (
+                <Box display="flex" justifyContent="center" mt={3}>
+                    <Box>
+                        <h2>No Flights Found</h2>
+                        <p>Looks like there are no flights available for the selected criteria.</p>
+                    </Box>
+                </Box>
+            )}
 
             {/* Display Flight Cards */}
             <Box display="flex" flexDirection="column" alignItems="center" gap={2} mt={3}>

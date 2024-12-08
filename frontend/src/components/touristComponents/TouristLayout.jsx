@@ -21,6 +21,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import SnowboardingIcon from "@mui/icons-material/Snowboarding";
 import { Favorite } from "@mui/icons-material";
 import MapIcon from "@mui/icons-material/Map";
+import FlightIcon from '@mui/icons-material/Flight';
 import MuseumIcon from "@mui/icons-material/Museum";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ReportIcon from "@mui/icons-material/Report";
@@ -233,6 +234,25 @@ const TouristLayout = () => {
                             </ListItemIcon>
                             <ListItemText
                                 primary="My Itineraries"
+                                primaryTypographyProps={{
+                                    fontSize: "0.9rem",
+                                }}
+                            />
+                        </ListItemButton>
+
+                        <ListItemButton
+                            sx={{ pl: 4 }}
+                            onClick={() => {
+                                toggleDrawer();
+                                navigate("/tourist/bookings/flights");
+                                setActiveButton("");
+                            }}
+                        >
+                            <ListItemIcon>
+                                <FlightIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="My Flights"
                                 primaryTypographyProps={{
                                     fontSize: "0.9rem",
                                 }}
