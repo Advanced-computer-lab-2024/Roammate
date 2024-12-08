@@ -443,6 +443,23 @@ const bookItinerary = async (req, res) => {
   // Add the booking to the itinerary
   try {
     await addItineraryBooking(itineraryId, userId, bookingDate);
+
+    // Fetch the user and itinerary details
+    const user = await User.findById(userId);
+    const itinerary = await Itinerary.findById(itineraryId);
+
+    // Prepare and send the email receipt
+    const subject = "Payment Receipt - Itinerary Booking";
+    const text = `Dear ${user.username},
+
+This is a confirmation that we have received your payment of ${amount} for the itinerary "${itinerary.title}" scheduled on ${bookingDate}.
+
+Thank you for choosing our service, and we hope you enjoy your trip!
+
+Regards,
+RoamMate Travel Team`;
+    sendEmail(user.email, subject, text);
+
     res.status(201).json({ message: "Itinerary booked successfully" });
   } catch (error) {
     return res.status(400).json({ error: error.message });
