@@ -137,7 +137,7 @@ const BookingActivityComponent = ({
           variant="outlined"
         />
         <Typography variant="body2">
-          <strong>Price:</strong> ${discountedPrice}
+          <strong>Price:</strong> {discountedPrice + `${localStorage.getItem("currency")}`}
           {appliedPromo && (
             <Typography component="span" color="green" sx={{ ml: 1 }}>
               ({`Discount Applied - ${discount}%`})
