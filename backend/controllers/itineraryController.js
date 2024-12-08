@@ -158,6 +158,11 @@ const updateItineraryById = async (req, res) => {
             message: `Booking is now available for itinrary: ${updatedItinerary.title}`,
           });
           await user.save();
+          sendEmail(
+            user.email,
+            "Booking available for itinerary",
+            `Booking is now available for itinerary: ${updatedItinerary.title}.`
+          );
         }
       }
     }

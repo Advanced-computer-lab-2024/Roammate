@@ -1332,7 +1332,9 @@ export const getUserRole = async () => {
 export const logout = async () => {
   try {
     const response = await axios.post(`${API_URL}logout`);
-    window.location.href = `/login`;
+    localStorage.removeItem("userId");
+    // window.location.href = `/login`;
+    window.location.href = `/`;
   } catch (error) {
     console.log(error);
   }

@@ -57,11 +57,12 @@ const ActivityCard = ({ activity, setFetch }) => {
                 console.error("Error fetching saved activities:", error);
             }
         };
-        if (activity.interestedTourists.includes(touristId)) {
+        if (touristId && activity.interestedTourists.includes(touristId)) {
             setGetNotification(true);
         }
         getDisplayPrice(price);
-        getSavedActivitiesByTourist();
+        if (touristId)
+            getSavedActivitiesByTourist();
     }, []);
 
     const handleSave = () => {

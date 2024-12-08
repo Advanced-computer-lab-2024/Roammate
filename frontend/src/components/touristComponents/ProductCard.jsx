@@ -69,12 +69,13 @@ const ProductCard = ({ product, id, refreshWishlist, setCartItemCount }) => {
     const initialize = async (price) => {
       try {
         const displayPrice = await convertPrice(price);
-
-        const wishlistedProducts = await getUserWishlistedProducts(id);
-        const isWishlisted = wishlistedProducts.some(
-          (product1) => product1._id === product._id
-        );
-        setAddedToWatchlist(isWishlisted);
+        if (id) {
+          const wishlistedProducts = await getUserWishlistedProducts(id);
+          const isWishlisted = wishlistedProducts.some(
+            (product1) => product1._id === product._id
+          );
+          setAddedToWatchlist(isWishlisted);
+        }
 
         setDisplayPrice(displayPrice);
       } catch (error) {

@@ -127,7 +127,7 @@ const MuseumCard = ({ museum }) => {
       </CardContent>
 
       {/* Actions */}
-      <CardActions
+      {/* <CardActions
         sx={{
           display: "flex",
           justifyContent: "end",
@@ -150,7 +150,7 @@ const MuseumCard = ({ museum }) => {
         >
           View
         </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 };

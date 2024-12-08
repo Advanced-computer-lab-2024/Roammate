@@ -134,7 +134,7 @@ router.delete(
 
 //Routes for Tourist
 router.post("/tourist", touristController.register);
-router.get("/tourist/:id", touristController.getTouristById);
+router.get("/tourist/:id", requireAuth, touristController.getTouristById);
 router.patch("/tourist/:id", touristController.updateTouristById);
 router.get("/tourist", touristController.getAllTourists);
 router.delete(
@@ -339,7 +339,7 @@ router.get(
   requireAuth,
   activityController.getBookedActivitiesByTouristId
 );
-router.post("/bookActivity", activityController.bookActivity);
+router.post("/bookActivity", requireAuth, activityController.bookActivity);
 router.delete(
   "/activityBookings/:id",
   activityController.cancelActivityBooking
@@ -359,7 +359,7 @@ router.get(
   "/itineraryBookings/:id",
   itineraryController.getBookedItinerariesByTouristId
 );
-router.post("/bookItinerary", itineraryController.bookItinerary);
+router.post("/bookItinerary", requireAuth, itineraryController.bookItinerary);
 router.delete(
   "/itineraryBookings/:id",
   itineraryController.cancelItineraryBooking
@@ -515,11 +515,13 @@ router.get("/userRole", userController.getUserRole);
 // Routes for Product Wishlisting
 router.post(
   "/wishlist/:userId/add",
+  requireAuth,
   productWishlistController.addProductToWishlist
 );
 router.get("/wishlist/:userId", productWishlistController.getWishlistByUserId);
 router.post(
   "/wishlist/:userId/toggle",
+  requireAuth,
   productWishlistController.toggleProductInWishlist
 );
 
@@ -557,10 +559,14 @@ router.delete(
 //--------------------------------------------------------------
 
 // Routes for User Cart
-router.post("/cart/:userId/add", userCartController.addProductToCart);
+router.post(
+  "/cart/:userId/add",
+  requireAuth,
+  userCartController.addProductToCart
+);
 router.patch("/cart/:userId/update", userCartController.updateProductQuantity);
 router.delete("/cart/:userId/remove", userCartController.removeProductFromCart);
-router.get("/cart/:userId", userCartController.getUserCart);
+router.get("/cart/:userId", requireAuth, userCartController.getUserCart);
 
 // Promo Code Routes
 router.post("/promoCodes", PromoCodeController.createPromoCode);
@@ -576,14 +582,18 @@ router.post("/wallet/pay", touristController.payCashFromWalletHandler);
 router.post("/wallet/refund", touristController.refundCashToWalletHandler);
 
 // Add a bookmarked activity
-router.post("/addBookmark", activityController.addBookmark);
+router.post("/addBookmark", requireAuth, activityController.addBookmark);
 // Get all bookmarked activities
 router.get("/getBookmarks", activityController.getBookmarkedActivities);
 // remove a bookmarked activity
 router.delete("/removeBookmark", activityController.removeBookmark);
 
 // Add a bookmarked itinerary
-router.post("/addBookmarkitinerary", itineraryController.addBookmark);
+router.post(
+  "/addBookmarkitinerary",
+  requireAuth,
+  itineraryController.addBookmark
+);
 // remove a bookmarked itinerary
 router.delete("/removeBookmarkitinerary", itineraryController.removeBookmark);
 
@@ -602,9 +612,14 @@ router.get("/vtp-analytics-giftshop", adminController.calcGiftShopRevenue);
 router.get("/vtp-analytics-total", adminController.calcVTPRevenue);
 
 //Routes for interested tourists in specific event :
-router.post("/addInterestToActivity", activityController.addInterestToActivity);
+router.post(
+  "/addInterestToActivity",
+  requireAuth,
+  activityController.addInterestToActivity
+);
 router.post(
   "/addInterestToItinerary",
+  requireAuth,
   itineraryController.addInterestToItinerary
 );
 router.delete(

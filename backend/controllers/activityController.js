@@ -165,6 +165,11 @@ const updateActivityById = async (req, res) => {
           user.notifications.push({
             message: `Booking is now available for activity: ${updatedActivity.title}`,
           });
+          sendEmail(
+            user.email,
+            "Booking available for activity",
+            `Booking is now available for activity: ${updatedActivity.title}`
+          );
           await user.save();
         }
       }

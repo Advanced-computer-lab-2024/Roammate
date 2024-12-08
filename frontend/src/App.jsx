@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TouristLayout from "./components/touristComponents/TouristLayout";
@@ -90,9 +90,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/" element={<Registeration />} />
+          <Route path="/register" element={<Registeration />} />
+          <Route path="/" element={<Navigate to="/tourist" />} />
           <Route path="/tourist/register" element={<TouristRegister />} />
-          <Route path="/register" element={<OthersRegisteration />} />
+          <Route path="/register/others" element={<OthersRegisteration />} />
           <Route path="/login" element={<Login />} />
 
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -104,7 +105,7 @@ function App() {
           <Route
             path="/tourist"
             element={
-              <ProtectedRoute allowedRoles={["tourist"]}>
+              <ProtectedRoute allowedRoles={["tourist", "guest"]}>
                 <TouristLayout />
               </ProtectedRoute>
             }

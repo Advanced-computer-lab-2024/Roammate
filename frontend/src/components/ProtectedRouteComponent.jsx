@@ -19,14 +19,19 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
                 setIsLoading(false);
             }
         };
-        fetchUserRole();
+        if (!allowedRoles.includes("guest")) {
+            fetchUserRole();
+        } else {
+            setIsLoading(false);
+        }
+
     }, []);
 
     if (isLoading) {
         return <CircularProgress />;
     }
 
-    if (!userRole || !allowedRoles.includes(userRole)) {
+    if (!allowedRoles.includes("guest") && (!userRole || !allowedRoles.includes(userRole))) {
         return <Navigate to="/login" replace />; // Redirect if unauthorized
     }
 

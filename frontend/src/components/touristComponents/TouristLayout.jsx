@@ -19,7 +19,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import HomeIcon from "@mui/icons-material/Home";
 import SnowboardingIcon from "@mui/icons-material/Snowboarding";
-import { Favorite } from "@mui/icons-material";
+import { Favorite, Login } from "@mui/icons-material";
 import MapIcon from "@mui/icons-material/Map";
 import FlightIcon from '@mui/icons-material/Flight';
 import MuseumIcon from "@mui/icons-material/Museum";
@@ -40,6 +40,7 @@ import { AirplaneTicket } from "@mui/icons-material";
 import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import LoginIcon from '@mui/icons-material/Login';
 
 const drawerWidth = 240;
 const TouristLayout = () => {
@@ -109,7 +110,10 @@ const TouristLayout = () => {
                 console.error("Error fetching cart data:", error);
             }
         };
-        fetchCartData();
+        if (userId) {
+            fetchCartData();
+        }
+
 
         //fetch rates
         fetchRates();
@@ -119,7 +123,7 @@ const TouristLayout = () => {
         // }
 
         //fetch path
-        if (location.pathname === "/tourist") {
+        if (location.pathname === "/tourist" || location.pathname === "/") {
             setActiveButton("Activities");
         }
 
@@ -136,7 +140,9 @@ const TouristLayout = () => {
         }
         localStorage.setItem("activeButton", activeButton);
 
-        _fetchUserNotifications();
+        if (userId) {
+            _fetchUserNotifications();
+        }
     }, [activeButton, navigate, userId]);
 
     const toggleDrawer = () => {
@@ -197,74 +203,75 @@ const TouristLayout = () => {
 
                 <Divider />
 
-                <ListItemButton onClick={handleMyBookingsClick}>
-                    <ListItemIcon>
-                        <MenuBookIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="My Bookings" />
-                    {myBookingsOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
+                {userId && <Box>
+                    <ListItemButton onClick={handleMyBookingsClick}>
+                        <ListItemIcon>
+                            <MenuBookIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="My Bookings" />
+                        {myBookingsOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
 
-                <Collapse in={myBookingsOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItemButton
-                            sx={{ pl: 4 }}
-                            onClick={() => {
-                                toggleDrawer();
-                                navigate("/tourist/bookings/activities");
-                                setActiveButton("");
-                            }}
-                        >
-                            <ListItemIcon>
-                                <SnowboardingIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="My Activities"
-                                primaryTypographyProps={{
-                                    fontSize: "0.9rem",
+                    <Collapse in={myBookingsOpen} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton
+                                sx={{ pl: 4 }}
+                                onClick={() => {
+                                    toggleDrawer();
+                                    navigate("/tourist/bookings/activities");
+                                    setActiveButton("");
                                 }}
-                            />
-                        </ListItemButton>
+                            >
+                                <ListItemIcon>
+                                    <SnowboardingIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="My Activities"
+                                    primaryTypographyProps={{
+                                        fontSize: "0.9rem",
+                                    }}
+                                />
+                            </ListItemButton>
 
-                        <ListItemButton
-                            sx={{ pl: 4 }}
-                            onClick={() => {
-                                toggleDrawer();
-                                navigate("/tourist/bookings/itineraries");
-                                setActiveButton("");
-                            }}
-                        >
-                            <ListItemIcon>
-                                <MapIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="My Itineraries"
-                                primaryTypographyProps={{
-                                    fontSize: "0.9rem",
+                            <ListItemButton
+                                sx={{ pl: 4 }}
+                                onClick={() => {
+                                    toggleDrawer();
+                                    navigate("/tourist/bookings/itineraries");
+                                    setActiveButton("");
                                 }}
-                            />
-                        </ListItemButton>
+                            >
+                                <ListItemIcon>
+                                    <MapIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="My Itineraries"
+                                    primaryTypographyProps={{
+                                        fontSize: "0.9rem",
+                                    }}
+                                />
+                            </ListItemButton>
 
-                        <ListItemButton
-                            sx={{ pl: 4 }}
-                            onClick={() => {
-                                toggleDrawer();
-                                navigate("/tourist/bookings/flights");
-                                setActiveButton("");
-                            }}
-                        >
-                            <ListItemIcon>
-                                <FlightIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="My Flights"
-                                primaryTypographyProps={{
-                                    fontSize: "0.9rem",
+                            <ListItemButton
+                                sx={{ pl: 4 }}
+                                onClick={() => {
+                                    toggleDrawer();
+                                    navigate("/tourist/bookings/flights");
+                                    setActiveButton("");
                                 }}
-                            />
-                        </ListItemButton>
+                            >
+                                <ListItemIcon>
+                                    <FlightIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="My Flights"
+                                    primaryTypographyProps={{
+                                        fontSize: "0.9rem",
+                                    }}
+                                />
+                            </ListItemButton>
 
-                        {/* <ListItemButton
+                            {/* <ListItemButton
                             sx={{ pl: 4 }}
                             onClick={() => {
                                 toggleDrawer();
@@ -282,137 +289,139 @@ const TouristLayout = () => {
                                 }}
                             />
                         </ListItemButton> */}
-                    </List>
-                </Collapse>
+                        </List>
+                    </Collapse>
 
 
 
-                <ListItemButton
-                    onClick={() => {
-                        toggleDrawer();
-                        navigate("/tourist/purchases");
-                        setActiveButton("");
-                    }}
-                >
-                    <ListItemIcon>
-                        <ShoppingBagIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"My Purchases"} />
-                </ListItemButton>
+                    <ListItemButton
+                        onClick={() => {
+                            toggleDrawer();
+                            navigate("/tourist/purchases");
+                            setActiveButton("");
+                        }}
+                    >
+                        <ListItemIcon>
+                            <ShoppingBagIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"My Purchases"} />
+                    </ListItemButton>
 
 
-                <Divider />
+                    <Divider />
 
-                <ListItemButton
-                    onClick={() => {
-                        navigate("/tourist/wishlist");
-                        setActiveButton("");
-                    }}
-                >
-                    <ListItemIcon>
-                        <Favorite fontSize="small" />{" "}
-                    </ListItemIcon>
+                    <ListItemButton
+                        onClick={() => {
+                            navigate("/tourist/wishlist");
+                            setActiveButton("");
+                        }}
+                    >
+                        <ListItemIcon>
+                            <Favorite fontSize="small" />{" "}
+                        </ListItemIcon>
 
-                    <ListItemText
-                        primary="My Products Wishlist"
+                        <ListItemText
+                            primary="My Products Wishlist"
 
-                    />
+                        />
 
-                </ListItemButton>
+                    </ListItemButton>
 
 
-                <ListItemButton
-                    onClick={handleMyBookMarksClick}
-                >
-                    <ListItemIcon>
-                        <BookmarkIcon fontSize="small" />{" "}
-                    </ListItemIcon>
-                    <ListItemText
-                        primary="My Bookmarks"
-                    />
-                    {myBookmarksOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
+                    <ListItemButton
+                        onClick={handleMyBookMarksClick}
+                    >
+                        <ListItemIcon>
+                            <BookmarkIcon fontSize="small" />{" "}
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="My Bookmarks"
+                        />
+                        {myBookmarksOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
 
-                <Collapse in={myBookmarksOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding onClick={toggleDrawer}>
-                        <ListItemButton
-                            sx={{ pl: 4 }}
-                            onClick={() => {
-                                navigate("/tourist/savedActivities");
-                                setActiveButton("");
-                            }}
-                        >
-                            <ListItemIcon>
-                                <SnowboardingIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="My Activities"
-                                primaryTypographyProps={{
-                                    fontSize: "0.9rem",
+                    <Collapse in={myBookmarksOpen} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding onClick={toggleDrawer}>
+                            <ListItemButton
+                                sx={{ pl: 4 }}
+                                onClick={() => {
+                                    navigate("/tourist/savedActivities");
+                                    setActiveButton("");
                                 }}
-                            />
-                        </ListItemButton>
+                            >
+                                <ListItemIcon>
+                                    <SnowboardingIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="My Activities"
+                                    primaryTypographyProps={{
+                                        fontSize: "0.9rem",
+                                    }}
+                                />
+                            </ListItemButton>
 
-                        <ListItemButton
+                            <ListItemButton
 
-                            sx={{ pl: 4 }}
-                            onClick={() => {
-                                navigate("/tourist/savedItineraries");
-                                setActiveButton("");
-                            }}
-                        >
-                            <ListItemIcon>
-                                <MapIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="My Itineraries"
-                                primaryTypographyProps={{
-                                    fontSize: "0.9rem",
+                                sx={{ pl: 4 }}
+                                onClick={() => {
+                                    navigate("/tourist/savedItineraries");
+                                    setActiveButton("");
                                 }}
-                            />
-                        </ListItemButton>
-                    </List>
-                </Collapse>
+                            >
+                                <ListItemIcon>
+                                    <MapIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="My Itineraries"
+                                    primaryTypographyProps={{
+                                        fontSize: "0.9rem",
+                                    }}
+                                />
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
 
-                <Divider />
+                    <Divider />
 
-                <ListItemButton
-                    onClick={() => {
-                        toggleDrawer();
-                        navigate("/tourist/flights");
-                        setActiveButton("");
-                    }}
-                >
-                    <ListItemIcon>
-                        <AirplaneTicket />
-                    </ListItemIcon>
-                    <ListItemText primary={"Flights"} />
-                </ListItemButton>
+                    <ListItemButton
+                        onClick={() => {
+                            toggleDrawer();
+                            navigate("/tourist/flights");
+                            setActiveButton("");
+                        }}
+                    >
+                        <ListItemIcon>
+                            <AirplaneTicket />
+                        </ListItemIcon>
+                        <ListItemText primary={"Flights"} />
+                    </ListItemButton>
 
-                <Divider
-                    sx={{
-                        mt: "10px",
-                        mb: "10px",
-                    }}
-                />
-
-                <ListItemButton
-                    onClick={() => {
-                        toggleDrawer();
-                        navigate("/tourist/complaints");
-                        setActiveButton("");
-                    }}
-                >
-                    <ListItemIcon>
-                        <ReportIcon fontSize="medium" />
-                    </ListItemIcon>
-                    <ListItemText
-                        primary="Complaints"
-                        primaryTypographyProps={{
-                            fontSize: "1rem",
+                    <Divider
+                        sx={{
+                            mt: "10px",
+                            mb: "10px",
                         }}
                     />
-                </ListItemButton>
+
+                    <ListItemButton
+                        onClick={() => {
+                            toggleDrawer();
+                            navigate("/tourist/complaints");
+                            setActiveButton("");
+                        }}
+                    >
+                        <ListItemIcon>
+                            <ReportIcon fontSize="medium" />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="Complaints"
+                            primaryTypographyProps={{
+                                fontSize: "1rem",
+                            }}
+                        />
+                    </ListItemButton>
+                </Box>}
+
             </List>
         </Box>
     );
@@ -485,22 +494,35 @@ const TouristLayout = () => {
                         </Typography>
                     </Box>
 
-                    <NotificationDropdown notifications={notifications} setNotifications={setNotifications} readAllUserNotifications={_readAllUserNotifications} />
+                    {userId && <NotificationDropdown notifications={notifications} setNotifications={setNotifications} readAllUserNotifications={_readAllUserNotifications} />}
 
                     <CurrencySelector />
 
-                    <IconButton
+                    {userId && <IconButton
                         size="large"
                         edge="end"
                         color="inherit"
                         aria-label="profile"
-                        sx={{ ml: 2 }}
+
                         onClick={handleLogOut}
                     >
                         <LogoutIcon />
-                    </IconButton>
+                    </IconButton>}
 
-                    <IconButton
+                    {!userId && <IconButton
+                        size="large"
+                        edge="end"
+                        color="inherit"
+                        aria-label="profile"
+                        onClick={() => navigate("/login")}
+                    >
+                        <LoginIcon />
+                    </IconButton>}
+
+
+
+
+                    {userId && <IconButton
                         size="large"
                         edge="end"
                         color="inherit"
@@ -509,7 +531,7 @@ const TouristLayout = () => {
                         onClick={() => setActiveButton("Edit Profile")}
                     >
                         <AccountCircleIcon />
-                    </IconButton>
+                    </IconButton>}
                 </Toolbar>
             </AppBar>
             <Box

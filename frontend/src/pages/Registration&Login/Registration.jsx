@@ -12,7 +12,7 @@ const Registeration = () => {
         navigate('/tourist/register');
         break;
       default:
-        navigate('/register?role=' + role);
+        navigate('/register/others?role=' + role);
         break;
     }
   }

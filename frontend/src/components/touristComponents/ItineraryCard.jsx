@@ -55,11 +55,13 @@ const ItineraryCard = ({ itinerary, setFetch }) => {
                 console.error("Error fetching saved itineraries:", error);
             }
         };
-        if (itinerary.interestedTourists.includes(touristId)) {
+        if (touristId && itinerary.interestedTourists.includes(touristId)) {
             setGetNotification(true);
         }
+
         getDisplayPrice(price);
-        getSavedItinerariesByTourist();
+        if (touristId)
+            getSavedItinerariesByTourist();
     }, []);
 
     const handleSave = () => {

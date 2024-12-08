@@ -78,7 +78,12 @@ const loginUser = async (req, res) => {
 
     if (auth) {
       const token = jwt.sign(
-        { username: user.username, id: user._id, role: user.role, status: user.status },
+        {
+          username: user.username,
+          id: user._id,
+          role: user.role,
+          status: user.status,
+        },
         process.env.JWT_SECRET
       ); //JWT_SECRET is a secret key stored in the .env file to sign the token with it to make it secure and valid
       res.cookie("token", token, {
@@ -86,7 +91,9 @@ const loginUser = async (req, res) => {
         maxAge: 1000 * 60 * 60 * 3, //3 hours
       });
       //return role to frontend
-      res.status(200).json({ userId: user._id, role: user.role, status: user.status });
+      res
+        .status(200)
+        .json({ userId: user._id, role: user.role, status: user.status });
     } else {
       res.status(400).send("Incorrect password");
     }
@@ -104,7 +111,7 @@ const logoutUser = async (req, res) => {
   }
 };
 
- const forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {

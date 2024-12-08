@@ -24,7 +24,7 @@ const Login = () => {
             const urlParams = new URLSearchParams(queryString);
             const redirect = urlParams.get('redirect');
             // console.log(redirect);
-            if (redirect) {
+            if (redirect && role === 'tourist') {
                 navigate(redirect);
             } else {
                 navigate(`/${role}`);
@@ -83,7 +83,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
             />
 
-             <Typography variant="body2" component="div" sx={{
+            <Typography variant="body2" component="div" sx={{
                 textAlign: 'left',
                 '& a': {
                     color: 'black',
@@ -94,7 +94,7 @@ const Login = () => {
                 ,
                 width: '200px',
             }}>
-               <a href="/forgot-password"> Forgot password?</a>
+                <a href="/forgot-password"> Forgot password?</a>
             </Typography>
 
             <Typography variant="h6" component="div" sx={{
@@ -124,7 +124,7 @@ const Login = () => {
                     color: 'blue',
                 }
             }}>
-                Don't have an account? <a href="/">Register</a>
+                Don't have an account? <a href="/register">Register</a>
             </Typography>
         </Box >
 

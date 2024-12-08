@@ -9,6 +9,8 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router";
+
 
 // Replace with your actual Stripe public key
 const stripePromise = loadStripe("your-public-stripe-key");
@@ -21,8 +23,14 @@ const BookingActivityComponent = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handlePayment = async () => {
+    if (!localStorage.getItem("userId")) {
+      setMessage("Please login to continue booking.");
+      navigate("/login");
+      return;
+    }
     setLoading(true);
     setMessage("");
     try {
@@ -94,7 +102,7 @@ const BookingActivityComponent = ({
           variant="outlined"
         />
         <Typography variant="body2">
-          <strong>Price:</strong> ${price}
+          <strong>Price:</strong> {price}
         </Typography>
       </Stack>
 
