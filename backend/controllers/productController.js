@@ -1,4 +1,4 @@
-const { Product, Review, ProductPurchasing } = require("../models");
+const { Product, Review, ProductPurchasing, User } = require("../models");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
 
@@ -6,6 +6,7 @@ const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
 
 const convertCurrency = require("./CurrencyConvertController");
 const { default: mongoose } = require("mongoose");
+const sendEmail = require("../utils/nodeMailer");
 
 const addProduct = async (req, res) => {
   const { name, image, price, description, seller, quantity } = req.body;
@@ -255,9 +256,10 @@ const getPurchasedProductsByTouristId = async (req, res) => {
 const addProductPurchasing = async (req, res) => {
   const { productId, userId, date, status, paymentMethod, quantity } = req.body;
 
-  try {
+  try {    
     // Find the product by ID
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId)
+      .populate("seller");
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -271,6 +273,33 @@ const addProductPurchasing = async (req, res) => {
     }
 
     product.quantity -= quantity;
+
+    // Notify the seller if the product runs out of stock
+    if (product.quantity === 0) {
+      // If the seller is an admin, notify all admins
+      if (product.seller.role === "admin") {
+        const admins = await User.find({ role: "admin" });
+        admins.forEach(async (admin) => {
+          admin.notifications.push({
+            message: `Product ${product.name} is out of stock.`,
+          });
+          // // clear notifications for one run
+          // admin.notifications = [];
+          await admin.save();
+        });
+      } else {
+        // If the seller is not an admin, notify the seller
+        product.seller.notifications.push({
+          message: `Product ${product.name} is out of stock.`,
+        });
+        await product.seller.save();
+        sendEmail(
+          product.seller.email,
+          "Product Out of Stock",
+          `Product ${product.name} is out of stock.`
+        );
+      }
+    }
 
     // Save the updated product
     await product.save();

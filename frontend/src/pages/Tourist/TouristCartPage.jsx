@@ -66,9 +66,8 @@ const TouristCartPage = () => {
         const address = addresses.find((addr) => addr.isDefault);
         setDefaultAddress(
           address
-            ? `${address.addressLine1}, ${address.city}, ${
-                address.state || ""
-              } ${address.postalCode}, ${address.country}`
+            ? `${address.addressLine1}, ${address.city}, ${address.state || ""
+            } ${address.postalCode}, ${address.country}`
             : "No default address set. Please update your profile."
         );
       } catch (error) {
@@ -201,7 +200,7 @@ const TouristCartPage = () => {
             date: new Date(),
             status: "Preparing",
             paymentMethod, // Include the payment method
-            quantity: item.quantity,
+            quantity: 1,
           });
         }
         await removeProductFromCart(userId, item.product._id);
