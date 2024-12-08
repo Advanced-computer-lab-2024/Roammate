@@ -1061,6 +1061,7 @@ export const refundWallet = async (touristId, amount) => {
 
 // ✅ This function is used to add a new product purchasing
 export const addProductPurchasing = async (purchasingData) => {
+  console.log(purchasingData);
   const response = await axios.post(
     `${API_URL}productPurchasings`,
     purchasingData

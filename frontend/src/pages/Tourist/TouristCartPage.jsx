@@ -41,7 +41,6 @@ const TouristCartPage = () => {
   const [productsPrices, setProductsPrices] = useState([]);
   const [subtotals, setSubtotals] = useState([]);
 
-
   const { setCartItemCount } = useOutletContext();
 
   // Fetch the cart data
@@ -67,8 +66,9 @@ const TouristCartPage = () => {
         const address = addresses.find((addr) => addr.isDefault);
         setDefaultAddress(
           address
-            ? `${address.addressLine1}, ${address.city}, ${address.state || ""
-            } ${address.postalCode}, ${address.country}`
+            ? `${address.addressLine1}, ${address.city}, ${
+                address.state || ""
+              } ${address.postalCode}, ${address.country}`
             : "No default address set. Please update your profile."
         );
       } catch (error) {
@@ -88,24 +88,27 @@ const TouristCartPage = () => {
     getDisplayTotalPrice(totalPrice);
   }, [totalPrice]);
 
-
   useEffect(() => {
     const getProductsPrices = async () => {
       const prices = await Promise.all(
-        cart.products.map(async (item) => await convertProductPrice(item.product.price))
+        cart.products.map(
+          async (item) => await convertProductPrice(item.product.price)
+        )
       );
       setProductsPrices(prices);
     };
 
     const getSubtotals = async () => {
       const subtotals = await Promise.all(
-        cart.products.map(async (item) => await convertProductPrice(item.product.price * item.quantity))
-      )
+        cart.products.map(
+          async (item) =>
+            await convertProductPrice(item.product.price * item.quantity)
+        )
+      );
       setSubtotals(subtotals);
     };
     getProductsPrices();
     getSubtotals();
-
   }, [cart]);
 
   useEffect(() => {
@@ -191,13 +194,15 @@ const TouristCartPage = () => {
 
       // Add products to the purchasing system
       for (const item of cart.products) {
-        await addProductPurchasing({
-          productId: item.product._id,
-          userId,
-          date: new Date(),
-          status: "Preparing",
-          paymentMethod, // Include the payment method
-        });
+        for (var i = 0; i < item.quantity; i++) {
+          await addProductPurchasing({
+            productId: item.product._id,
+            userId,
+            date: new Date(),
+            status: "Preparing",
+            paymentMethod, // Include the payment method
+          });
+        }
         await removeProductFromCart(userId, item.product._id);
       }
 
