@@ -1514,3 +1514,67 @@ export const getTouristSavedItineraries = async (touristId) => {
     console.log(error);
   }
 };
+
+export const touristInterestedInActivity = async (touristId, activityId) => {
+  try {
+    const response = await axios.post(`${API_URL}addInterestToActivity`, {
+      touristId,
+      activityId,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const touristInterestedInItinerary = async (touristId, itineraryId) => {
+  try {
+    const response = await axios.post(`${API_URL}addInterestToItinerary`, {
+      touristId,
+      itineraryId,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeTouristInterestInActivity = async (
+  touristId,
+  activityId
+) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}removeInterestFromActivity`,
+      {
+        params: {
+          touristId,
+          activityId,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeTouristInterestInItinerary = async (
+  touristId,
+  itineraryId
+) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}removeInterestFromItinerary`,
+      {
+        params: {
+          touristId,
+          itineraryId,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -373,7 +373,7 @@ const getBookedItinerariesByTouristId = async (req, res) => {
           { path: "tourGuide" },
           { path: "tags", select: "name" },
           {
-            path: "reviews", // populate reviews within activity
+            path: "reviews", // populate reviews within itinerary
             populate: { path: "user" }, // populate user within each review
           },
         ],
@@ -672,6 +672,39 @@ const addInterestToItinerary = async (req, res) => {
   }
 };
 
+const removeInterestFromItinerary = async (req, res) => {
+  try {
+    const { touristId, itineraryId } = req.query;
+
+    // Find the itinerary and check if the tourist is interested
+    const itinerary = await Itinerary.findById(itineraryId);
+    if (!itinerary) {
+      return res.status(404).json({ message: "Itinerary not found" });
+    }
+
+    if (!itinerary.interestedTourists.includes(touristId)) {
+      return res
+        .status(400)
+        .json({ message: "Tourist is not interested in this itinerary" });
+    }
+
+    // Remove the tourist from the interestedTourists array
+    itinerary.interestedTourists = itinerary.interestedTourists.filter(
+      (id) => id.toString() !== touristId
+    );
+    await itinerary.save();
+
+    res
+      .status(200)
+      .json({ message: "Tourist removed from the interested list", itinerary });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error removing tourist from itinerary",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createItinerary,
   getAllItineraries,
@@ -691,4 +724,5 @@ module.exports = {
   getBookmarkeditinerary,
   addInterestToItinerary,
   removeBookmark,
+  removeInterestFromItinerary,
 };

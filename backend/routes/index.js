@@ -607,5 +607,13 @@ router.post(
   "/addInterestToItinerary",
   itineraryController.addInterestToItinerary
 );
+router.delete(
+  "/removeInterestFromActivity",
+  activityController.removeInterestFromActivity
+);
+router.delete(
+  "/removeInterestFromItinerary",
+  itineraryController.removeInterestFromItinerary
+);
 
 module.exports = router;

@@ -16,7 +16,7 @@ import StarIcon from '@mui/icons-material/Star';
 import HeartIcon from '@mui/icons-material/Favorite';
 import BlockIcon from '@mui/icons-material/Block';
 import { useNavigate } from 'react-router';
-import { convertPrice, getTouristSavedItineraries, saveItinerary, unsaveItinerary } from '../../services/api';
+import { convertPrice, getTouristSavedItineraries, removeTouristInterestInItinerary, saveItinerary, touristInterestedInItinerary, unsaveItinerary } from '../../services/api';
 import ShareLink from './ShareLink';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -55,7 +55,9 @@ const ItineraryCard = ({ itinerary, setFetch }) => {
                 console.error("Error fetching saved itineraries:", error);
             }
         };
-
+        if (itinerary.interestedTourists.includes(touristId)) {
+            setGetNotification(true);
+        }
         getDisplayPrice(price);
         getSavedItinerariesByTourist();
     }, []);
@@ -79,6 +81,30 @@ const ItineraryCard = ({ itinerary, setFetch }) => {
         }
     }
 
+    const touristGetNotification = async () => {
+        try {
+            await touristInterestedInItinerary(touristId, itinerary._id);
+        } catch (error) {
+            console.error("Error getting notification:", error);
+        }
+    }
+
+    const touristStopNotification = async () => {
+        try {
+            await removeTouristInterestInItinerary(touristId, itinerary._id);
+        } catch (error) {
+            console.error("Error stopping notification:", error);
+        }
+    }
+
+    const handleGetNotificationWhenItineraryIsAvailable = () => {
+        if (getNotification) {
+            touristStopNotification();
+        } else {
+            touristGetNotification();
+        }
+        setGetNotification(!getNotification);
+    }
 
 
     return (
@@ -108,9 +134,7 @@ const ItineraryCard = ({ itinerary, setFetch }) => {
                     />
 
                     <IconButton size="medium"
-                        onClick={() => {
-                            setGetNotification(!getNotification);
-                        }} sx={{
+                        onClick={handleGetNotificationWhenItineraryIsAvailable} sx={{
                             mt: '-10px',
                             mr: '-10px',
                             ml: '5px'

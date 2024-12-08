@@ -18,7 +18,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
-import { convertPrice, getTouristSavedActivities, saveActivity, unsaveActivity } from '../../services/api';
+import { convertPrice, getTouristSavedActivities, saveActivity, touristInterestedInActivity, unsaveActivity, removeTouristInterestInActivity } from '../../services/api';
 import ShareLink from './ShareLink';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -57,6 +57,9 @@ const ActivityCard = ({ activity, setFetch }) => {
                 console.error("Error fetching saved activities:", error);
             }
         };
+        if (activity.interestedTourists.includes(touristId)) {
+            setGetNotification(true);
+        }
         getDisplayPrice(price);
         getSavedActivitiesByTourist();
     }, []);
@@ -80,6 +83,36 @@ const ActivityCard = ({ activity, setFetch }) => {
         }
     }
 
+    const touristGetNotification = async () => {
+        try {
+            // console.log("touristId", touristId);
+            // console.log("activityId", activity._id);
+            // console.log("getNotification", getNotification);
+            await touristInterestedInActivity(touristId, activity._id, getNotification);
+        } catch (error) {
+            console.error("Error getting notification:", error);
+        }
+    }
+
+    const touristStopNotification = async () => {
+        try {
+            // console.log("touristId", touristId);
+            // console.log("activityId", activity._id);
+            // console.log("getNotification", getNotification);
+            await removeTouristInterestInActivity(touristId, activity._id);
+        } catch (error) {
+            console.error("Error stopping notification:", error);
+        }
+    }
+
+    const handleGetNotificationWhenActivityIsAvailable = () => {
+        if (getNotification) {
+            touristStopNotification();
+        } else {
+            touristGetNotification();
+        }
+        setGetNotification(!getNotification);
+    }
 
 
     return (
@@ -109,9 +142,9 @@ const ActivityCard = ({ activity, setFetch }) => {
                     />
 
                     <IconButton size="medium"
-                        onClick={() => {
-                            setGetNotification(!getNotification);
-                        }} sx={{
+                        onClick={
+                            handleGetNotificationWhenActivityIsAvailable
+                        } sx={{
                             mt: '-10px',
                             mr: '-10px',
                             ml: '5px'

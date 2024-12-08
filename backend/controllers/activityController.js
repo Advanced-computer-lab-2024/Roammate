@@ -708,6 +708,39 @@ const addInterestToActivity = async (req, res) => {
   }
 };
 
+const removeInterestFromActivity = async (req, res) => {
+  try {
+    const { touristId, activityId } = req.query;
+
+    // Find the activity and check if the tourist is interested
+    const activity = await Activity.findById(activityId);
+    if (!activity) {
+      return res.status(404).json({ message: "Activity not found" });
+    }
+
+    if (!activity.interestedTourists.includes(touristId)) {
+      return res
+        .status(400)
+        .json({ message: "Tourist is not interested in this activity" });
+    }
+
+    // Remove the tourist from the interestedTourists array
+    activity.interestedTourists = activity.interestedTourists.filter(
+      (id) => id.toString() !== touristId
+    );
+    await activity.save();
+
+    res
+      .status(200)
+      .json({ message: "Tourist removed from the interested list", activity });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error removing tourist from activity",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createActivity,
   getAllActivities,
@@ -727,4 +760,5 @@ module.exports = {
   getBookmarkedActivities,
   addInterestToActivity,
   removeBookmark,
+  removeInterestFromActivity,
 };
