@@ -36,6 +36,7 @@ import { Badge, Collapse, ListItemIcon, ListSubheader } from "@mui/material";
 import CurrencySelector from "./CurrencySelector";
 import { fetchConversionRates, getUserCart, logout } from "../../services/api";
 import { AirplaneTicket } from "@mui/icons-material";
+import HotelIcon from '@mui/icons-material/Hotel';
 
 import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -341,6 +342,19 @@ const TouristLayout = () => {
                         <AirplaneTicket />
                     </ListItemIcon>
                     <ListItemText primary={"Flights"} />
+                </ListItemButton>
+
+                <ListItemButton
+                    onClick={() => {
+                        toggleDrawer();
+                        navigate("/tourist/hotels");
+                        setActiveButton("");
+                    }}
+                >
+                    <ListItemIcon>
+                        <HotelIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Hotels"} />
                 </ListItemButton>
 
                 <Divider

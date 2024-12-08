@@ -122,6 +122,45 @@ const addFlightBooking = async (req, res) => {
   }
 };
 
+// Fetch hotels data from SerpAPI
+const fetchHotels = async (req, res) => {
+  const { location, check_in_date, check_out_date, currency, adults } = req.query;
+
+  // Validate input parameters
+  if (!location || !check_in_date || !check_out_date || !currency || !adults) {
+      return res.status(400).json({ error: "Missing required query parameters" });
+  }
+
+  const SERPAPI_URL = "https://serpapi.com/search.json";
+  const API_KEY = "543acad9cdb1ffbe31169ecd3cf987068e7f7e0cfad74cf7ca4a5fd6d6cf1d97";
+
+  try {
+      const response = await axios.get(SERPAPI_URL, {
+          params: {
+              engine: "google_hotels",
+              q: location,
+              hl: "en",
+              gl: "us",
+              check_in_date,
+              check_out_date,
+              currency,
+              adults,
+              api_key: API_KEY,
+          },
+      });
+
+      // Send the hotel data back to the client
+      res.status(200).json(response.data);
+  } catch (error) {
+      console.error("Error fetching hotels from SerpAPI:", error.message);
+      res.status(500).json({ error: "Failed to fetch hotel data from SerpAPI" });
+  }
+};
+
+
+
+
+
 // Function to get hotels by city
 const getHotelsByCity = async (req, res) => {
   const { cityName, page = 1 } = req.query;
@@ -189,4 +228,4 @@ try {
 };
   
 
-module.exports = { authenticateWithAmadeus, searchFlights, getAllFlightBookings, addFlightBooking, getHotelDetails, getHotelsByCity};
+module.exports = { authenticateWithAmadeus, searchFlights, getAllFlightBookings, addFlightBooking, fetchHotels, getHotelDetails, getHotelsByCity};

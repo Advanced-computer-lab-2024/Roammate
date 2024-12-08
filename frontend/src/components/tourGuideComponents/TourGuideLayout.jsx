@@ -18,19 +18,23 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
+import { fetchUserNotifications, getUserStatus, readAllUserNotifications } from '../../services/api';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import { logout } from '../../services/api';
+import { Alert } from '@mui/material';
 
 const navItems = ['Home', 'Create Itinerary', 'Analytics'];
 
 const drawerWidth = 240;
 const TourGuideLayout = () => {
     const tourguideId = localStorage.getItem('userId');
+    // const status = localStorage.getItem('status');
+    const [status, setStatus] = React.useState('guest');
+
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Itineraries']);
     const [activeButton, setActiveButton] = React.useState('');
@@ -58,6 +62,15 @@ const TourGuideLayout = () => {
         }
     };
 
+    const _getUserStatus = async () => {
+        try {
+            let result = await getUserStatus(tourguideId);
+            setStatus(result);
+        } catch (error) {
+            console.error("Error fetching user status:", error);
+        }
+    };
+
     React.useEffect(() => {
         if (location.pathname === '/tourguide') {
             setActiveButton('My Itineraries');
@@ -71,6 +84,7 @@ const TourGuideLayout = () => {
         }
 
         _fetchUserNotifications();
+        _getUserStatus();
     }, [activeButton, navigate]);
 
 
@@ -112,7 +126,9 @@ const TourGuideLayout = () => {
                                     navigate('/tourguide/analytics');
                                 }
                             }
-                        }>
+                        }
+                            disabled={(text === 'Create Itinerary' || text === 'Analytics') && status !== 'active'}
+                        >
                             {text === 'Home' ? <HomeIcon /> : text === 'Analytics' ? <BarChartIcon /> : <AddCircleIcon />}
                             <ListItemText primary={text} sx={{ textAlign: 'center' }} />
                         </ListItemButton>
@@ -226,6 +242,22 @@ const TourGuideLayout = () => {
                 mt: '0px',
             }}>
                 <Outlet context={{ setActiveButton }} />
+
+                {status === 'guest' && activeButton !== 'Edit Profile' && (
+                    <Alert severity="warning">
+                        Please <Link to="/tourguide/editProfile" style={{ textDecoration: 'underline', color: 'inherit' }} onClick={() => setActiveButton('Edit Profile')}>
+                            head to your profile
+                        </Link> and upload the required documents to activate your account.
+                    </Alert>
+                )}
+                {status === 'pending' && activeButton !== 'Edit Profile' && <Alert severity="info">Your account is pending approval</Alert>}
+                {status === 'accepted' && activeButton !== 'Edit Profile' && (
+                    <Alert severity="warning">
+                        Please <Link to="/tourguide/editProfile" style={{ textDecoration: 'underline', color: 'inherit' }} onClick={() => setActiveButton('Edit Profile')}s>
+                            head to your profile
+                        </Link> and accept the terms and conditions to activate your account.
+                    </Alert>
+                )}
             </Box>
         </Box >
     );

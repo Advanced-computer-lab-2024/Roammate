@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, Button, CircularProgress, Select, MenuItem, Grid2, Pagination } from "@mui/material";
+import { Box, TextField, Button, CircularProgress, Select, MenuItem, Grid, Pagination } from "@mui/material";
 import FlightCard from "../../components/flightComponents/FlightCard";
 import { searchFlights } from "../../services/api";
 import FlightDetails from "../../components/flightComponents/FlightDetails";
@@ -53,8 +53,8 @@ function TouristBookFlightsPage() {
         <div>
             {/* Inputs for Search Parameters */}
             <Box display="flex" flexDirection="column" alignItems="center" mt={3} width="100%">
-                <Grid2 container spacing={2} maxWidth="600px">
-                    <Grid2 xs={6}>
+                <Grid container spacing={2} maxWidth="600px">
+                    <Grid item xs={6}>
                         <TextField
                             label="Origin"
                             value={origin}
@@ -63,8 +63,8 @@ function TouristBookFlightsPage() {
                             fullWidth
                             margin="dense"
                         />
-                    </Grid2>
-                    <Grid2 xs={6}>
+                    </Grid>
+                    <Grid item xs={6}>
                         <TextField
                             label="Destination"
                             value={destination}
@@ -73,8 +73,8 @@ function TouristBookFlightsPage() {
                             fullWidth
                             margin="dense"
                         />
-                    </Grid2>
-                    <Grid2 xs={6}>
+                    </Grid>
+                    <Grid item xs={6}>
                         <TextField
                             label="Departure Date"
                             type="date"
@@ -85,8 +85,8 @@ function TouristBookFlightsPage() {
                             margin="dense"
                             InputLabelProps={{ shrink: true }}
                         />
-                    </Grid2>
-                    <Grid2 xs={6}>
+                    </Grid>
+                    <Grid item xs={6}>
                         <TextField
                             label="Return Date"
                             type="date"
@@ -97,10 +97,10 @@ function TouristBookFlightsPage() {
                             margin="dense"
                             InputLabelProps={{ shrink: true }}
                         />
-                    </Grid2>
-                    <Grid2 xs={6}>
+                    </Grid>
+                    {/* Centered Passengers Field */}
+                    <Grid container item xs={12} justifyContent="center" alignItems="center">
                         <TextField
-                            id="outlined-number"
                             label="Passengers"
                             type="number"
                             value={passengers}
@@ -111,23 +111,21 @@ function TouristBookFlightsPage() {
                                 inputProps: { min: 1, max: 9 },
                             }}
                             InputLabelProps={{ shrink: true }}
-                            style={{ width: "120px" }} // Adjust the width as needed
+                            style={{ width: "120px" }}
                         />
-
-                    </Grid2>
-                    <Grid2 xs={6}>
+                    </Grid>
+                    <Grid item xs={12}>
                         <Button
                             variant="contained"
                             color="primary"
                             onClick={fetchFlights}
                             fullWidth
-                            style={{ height: "100%" }}
                             disabled={!isFormComplete}
                         >
                             Search Flights
                         </Button>
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
             </Box>
 
             {/* Display No Flights Found Message */}

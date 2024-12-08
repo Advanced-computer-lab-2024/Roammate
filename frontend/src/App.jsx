@@ -53,6 +53,7 @@ import TourGuideAnalyticsPage from "./pages/TourGuide/TourguideAnalyticsPage";
 import SellerAnalyticsPage from "./pages/Seller/SellerAnalyticsPage";
 import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage";
 import TouristBookedFlights from "./pages/Tourist/TouristBookedFlights";
+import TouristBookHotelsPage from "./pages/Tourist/TouristBookHotelsPage";
 
 const theme = createTheme({
   // palette: {
@@ -139,7 +140,7 @@ function App() {
               path="/tourist/bookings/itineraries"
               element={<TouristBookedItineraries />}
             />
-                        <Route
+            <Route
               path="/tourist/bookings/flights"
               element={<TouristBookedFlights />}
             />
@@ -155,6 +156,10 @@ function App() {
             <Route
               path="/tourist/flights"
               element={<TouristBookFlightsPage />}
+            />
+            <Route
+              path="/tourist/hotels"
+              element={<TouristBookHotelsPage />}
             />
             <Route
               path="/tourist/complaints"

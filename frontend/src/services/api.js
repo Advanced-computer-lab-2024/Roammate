@@ -484,8 +484,19 @@ export const deleteUser = async (id) => {
 };
 
 // This function is used to fetch all pending users
-export const fetchAllPendingUsers = async (status) => {
-  const response = await axios.get(`${API_URL}/users/status/pending/`);
+export const fetchAllPendingUsers = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/users/pending`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching pending users:", error);
+    throw error;
+  }
+};
+
+// This function is used to get user status
+export const getUserStatus = async (id) => {
+  const response = await axios.get(`${API_URL}/users/status/${id}`);
   return response.data;
 };
 
@@ -1161,6 +1172,20 @@ export const bookFlight = async (touristId, bookingCode, flightData) => {
   } catch (error) {
     console.error("Error booking flight:", error);
     throw error;
+  }
+};
+
+export const fetchHotels = async (location, checkInDate, checkOutDate, guests) => {
+  try {
+      const currency = localStorage.getItem("currency") || "EGP";
+      const response = await fetch(
+          `${API_URL}hotels?location=${location}&check_in_date=${checkInDate}&check_out_date=${checkOutDate}&currency=${currency}&adults=${guests}`
+      );
+      const data = await response.json();
+      return data.properties; // Return hotel list
+  } catch (error) {
+      console.error("Error fetching hotels:", error);
+      throw new Error("Failed to fetch hotel data");
   }
 };
 

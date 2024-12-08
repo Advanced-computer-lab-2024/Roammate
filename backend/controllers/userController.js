@@ -24,6 +24,16 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// get user status by id
+const getUserStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user.status);
+  } catch (error) {
+    res.status(500).send;
+  }
+};
+
 // get all users with pending status
 const getAllPendingUsers = async (req, res) => {
   try {
@@ -234,6 +244,7 @@ module.exports = {
   verifyOtp,
   resetPassword,
   getUserRole,
+  getUserStatus,
   getUserNotifications,
   readAllNotifications,
   clearAllNotifications,
