@@ -35,6 +35,9 @@ const TourismGovernorLayout = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    if (activeButton === "Home") {
+      setActiveButton("Museums");
+    }
     if (activeButton === "Museums") {
       navigate(`/tourismGovernor/musuems?id=`);
     } else if (activeButton === "Add Musuems") {

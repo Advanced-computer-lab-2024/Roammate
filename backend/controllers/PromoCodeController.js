@@ -133,7 +133,7 @@ const sendBirthdayPromoCode = async () => {
       console.log(`Promo sent status updated for: ${tourist.username}`);
     }
 
-    console.log("Birthday promo codes process completed!");
+    //console.log("Birthday promo codes process completed!");
   } catch (error) {
     console.error("Error in sendBirthdayPromoCode:", error.message);
   }

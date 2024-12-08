@@ -1175,17 +1175,22 @@ export const bookFlight = async (touristId, bookingCode, flightData) => {
   }
 };
 
-export const fetchHotels = async (location, checkInDate, checkOutDate, guests) => {
+export const fetchHotels = async (
+  location,
+  checkInDate,
+  checkOutDate,
+  guests
+) => {
   try {
-      const currency = localStorage.getItem("currency") || "EGP";
-      const response = await fetch(
-          `${API_URL}hotels?location=${location}&check_in_date=${checkInDate}&check_out_date=${checkOutDate}&currency=${currency}&adults=${guests}`
-      );
-      const data = await response.json();
-      return data.properties; // Return hotel list
+    const currency = localStorage.getItem("currency") || "EGP";
+    const response = await fetch(
+      `${API_URL}hotels?location=${location}&check_in_date=${checkInDate}&check_out_date=${checkOutDate}&currency=${currency}&adults=${guests}`
+    );
+    const data = await response.json();
+    return data.properties; // Return hotel list
   } catch (error) {
-      console.error("Error fetching hotels:", error);
-      throw new Error("Failed to fetch hotel data");
+    console.error("Error fetching hotels:", error);
+    throw new Error("Failed to fetch hotel data");
   }
 };
 
@@ -1603,5 +1608,17 @@ export const removeTouristInterestInItinerary = async (
     return response;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const fetchSystemUsers = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}system-users`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error fetching system users:", error);
+    throw error;
   }
 };

@@ -402,7 +402,6 @@ router.post("/book-flight", bookingController.addFlightBooking);
 
 router.get("/hotels", bookingController.fetchHotels);
 
-
 router.get("/search-hotel", bookingController.getHotelDetails);
 router.get("/list-hotels", bookingController.getHotelsByCity);
 
@@ -634,5 +633,8 @@ router.delete(
   "/removeInterestFromItinerary",
   itineraryController.removeInterestFromItinerary
 );
+
+//Route for admin to get system users
+router.get("/system-users", adminController.calcSystemUsers);
 
 module.exports = router;
