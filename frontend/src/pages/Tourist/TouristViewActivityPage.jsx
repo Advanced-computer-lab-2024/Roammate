@@ -54,7 +54,6 @@ const TouristViewActivity = ({ id, touristId }) => {
       try {
         const addresses = await fetchUserAddresses(touristId);
         var address = addresses.find((address) => address.isDefault);
-        console.log(address);
         if (address) {
           setDefaultAddress(
             `${address.addressLine1}, ${address.city}, ${address.state || ""} ${address.postalCode

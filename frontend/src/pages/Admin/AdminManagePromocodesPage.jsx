@@ -23,6 +23,7 @@ const AdminManagePromocodesPage = () => {
     code: "",
     discount: "",
     expirationDate: "",
+    usageCount: "",
     usageLimit: "",
   });
 
@@ -36,6 +37,7 @@ const AdminManagePromocodesPage = () => {
             _id: item._id,
             code: item.code || "Unknown",
             discount: item.discount || 0,
+            usageCount: item.usageCount || 0,
             usageLimit: item.usageLimit || 0,
             status: dayjs(item.expirationDate).isAfter(dayjs()) ? "Active" : "Expired",
           };
@@ -88,6 +90,7 @@ const AdminManagePromocodesPage = () => {
   const columns = [
     { field: "code", headerName: "Promo Code", flex: 1 },
     { field: "discount", headerName: "Discount (%)", flex: 1 },
+    { field: "usageCount", headerName: "Usage Count", flex: 1 },
     { field: "usageLimit", headerName: "Usage Limit", flex: 1 },
     { field: "status", headerName: "Status", flex: 1 },
   ];

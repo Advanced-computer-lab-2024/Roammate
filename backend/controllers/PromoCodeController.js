@@ -133,7 +133,7 @@ const sendBirthdayPromoCode = async () => {
       console.log(`Promo sent status updated for: ${tourist.username}`);
     }
 
-    //console.log("Birthday promo codes process completed!");
+    // console.log("Birthday promo codes process completed!");
   } catch (error) {
     console.error("Error in sendBirthdayPromoCode:", error.message);
   }
@@ -156,6 +156,7 @@ const resetBirthdayPromoSent = async (req, res) => {
     });
   }
 };
+
 // Apply promo code
 const applyPromoCode = async (req, res) => {
   const { code, userId } = req.body;
@@ -173,16 +174,16 @@ const applyPromoCode = async (req, res) => {
         .status(400)
         .json({ message: "Promo code usage limit reached" });
 
-    // Optional: Check if the user role matches the promo code's applicable roles
-    const user = await Tourist.findById(userId);
-    if (!promoCode.applicableRoles.includes(user.role))
+    if (promoCode.userId	&& promoCode.userId.toString() !== userId)
       return res
         .status(403)
-        .json({ message: "Promo code not applicable for your role" });
+        .json({ message: "Promo code not applicable for this user" });
 
     // Increment usage count
     promoCode.usageCount += 1;
-    await promoCode.save();
+    // Decrement usage limit
+    promoCode.usageLimit -= 1;
+    await promoCode.save();    
 
     res.status(200).json({
       message: "Promo code applied successfully",

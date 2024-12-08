@@ -56,6 +56,8 @@ import TouristBookedFlights from "./pages/Tourist/TouristBookedFlights";
 import TouristBookHotelsPage from "./pages/Tourist/TouristBookHotelsPage";
 import BookmarkedActivitiesPage from "./pages/Tourist/BookmarkedActivitiesPage";
 import BookmarkedItinerariesPage from "./pages/Tourist/BookmarkedItinerariesPage";
+import AddAdminPage from "./pages/Admin/AddAdminPage";
+import AddGovernorPage from "./pages/Admin/AddGovernorPage";
 
 const theme = createTheme({
   // palette: {
@@ -306,6 +308,14 @@ function App() {
             <Route
               path="/admin/editProfile"
               element={<AdminManageProfile />}
+            />
+            <Route
+              path="/admin/add-admin" 
+              element={<AddAdminPage />}
+            />
+            <Route
+              path="/admin/add-governor"
+              element={<AddGovernorPage />}
             />
             <Route
               path="/admin/add-promocode"
