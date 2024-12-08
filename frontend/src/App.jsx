@@ -53,6 +53,7 @@ import TourGuideAnalyticsPage from "./pages/TourGuide/TourguideAnalyticsPage";
 import SellerAnalyticsPage from "./pages/Seller/SellerAnalyticsPage";
 import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage";
 import TouristBookedFlights from "./pages/Tourist/TouristBookedFlights";
+import TouristBookHotelsPage from "./pages/Tourist/TouristBookHotelsPage";
 import BookmarkedActivitiesPage from "./pages/Tourist/BookmarkedActivitiesPage";
 import BookmarkedItinerariesPage from "./pages/Tourist/BookmarkedItinerariesPage";
 
@@ -162,6 +163,10 @@ function App() {
             <Route
               path="/tourist/flights"
               element={<TouristBookFlightsPage />}
+            />
+            <Route
+              path="/tourist/hotels"
+              element={<TouristBookHotelsPage />}
             />
             <Route
               path="/tourist/complaints"

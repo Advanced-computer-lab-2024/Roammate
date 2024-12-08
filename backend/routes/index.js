@@ -34,7 +34,8 @@ router.get("/users", userController.getAllUsers); // Get all users
 router.delete("/users/:id", userController.deleteUser); // Delete a user by ID
 router.patch("/users/status", userController.updateAllUsersStatus); // Update the status of all users
 router.patch("/users/status/:id", userController.updateUserStatus); // Update the status of a specific user by ID
-router.get("/users/status/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status
+router.get("/users/status/:id", userController.getUserStatus); // Get the status of a specific user by ID
+router.get("/users/pending", userController.getAllPendingUsers); // Get all users with 'Pending' status
 router.get("/users/notifications/:id", userController.getUserNotifications); // Get all notifications for a user
 router.patch("/users/notifications/:id", userController.readAllNotifications); // Mark all notifications as read for a user
 router.post("/users/forgot-password", userController.forgotPassword); // Forgot password for a user
@@ -398,6 +399,9 @@ router.get("/pdf/:id", filesController.getPdf);
 router.post("/search-flights", bookingController.searchFlights);
 router.get("/fetch-flights/:id", bookingController.getAllFlightBookings);
 router.post("/book-flight", bookingController.addFlightBooking);
+
+router.get("/hotels", bookingController.fetchHotels);
+
 
 router.get("/search-hotel", bookingController.getHotelDetails);
 router.get("/list-hotels", bookingController.getHotelsByCity);
