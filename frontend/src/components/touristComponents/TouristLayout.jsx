@@ -21,6 +21,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import SnowboardingIcon from "@mui/icons-material/Snowboarding";
 import { Favorite } from "@mui/icons-material";
 import MapIcon from "@mui/icons-material/Map";
+import FlightIcon from '@mui/icons-material/Flight';
 import MuseumIcon from "@mui/icons-material/Museum";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ReportIcon from "@mui/icons-material/Report";
@@ -38,6 +39,7 @@ import { AirplaneTicket } from "@mui/icons-material";
 
 import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import LogoutIcon from '@mui/icons-material/Logout';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const drawerWidth = 240;
 const TouristLayout = () => {
@@ -58,6 +60,9 @@ const TouristLayout = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [id, setId] = React.useState(queryParams.get("id") || "");
+
+
+
 
     const handleCartClick = () => {
         navigate("/tourist/cart");
@@ -185,22 +190,7 @@ const TouristLayout = () => {
                     <ListItemText primary={"Home"} />
                 </ListItemButton>
 
-                <ListItemButton
-                    onClick={() => {
-                        navigate("/tourist/wishlist");
-                        setActiveButton("");
-                    }}
-                >
-                    <ListItemIcon>
-                        <Favorite fontSize="small" />{" "}
-                    </ListItemIcon>
-                    <ListItemText
-                        primary="My Products Wishlist"
-                        primaryTypographyProps={{
-                            fontSize: "0.9rem",
-                        }}
-                    />
-                </ListItemButton>
+                <Divider />
 
                 <ListItemButton onClick={handleMyBookingsClick}>
                     <ListItemIcon>
@@ -254,6 +244,25 @@ const TouristLayout = () => {
                             sx={{ pl: 4 }}
                             onClick={() => {
                                 toggleDrawer();
+                                navigate("/tourist/bookings/flights");
+                                setActiveButton("");
+                            }}
+                        >
+                            <ListItemIcon>
+                                <FlightIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="My Flights"
+                                primaryTypographyProps={{
+                                    fontSize: "0.9rem",
+                                }}
+                            />
+                        </ListItemButton>
+
+                        {/* <ListItemButton
+                            sx={{ pl: 4 }}
+                            onClick={() => {
+                                toggleDrawer();
                                 navigate("/tourist/bookings/visits");
                                 setActiveButton("");
                             }}
@@ -267,9 +276,11 @@ const TouristLayout = () => {
                                     fontSize: "0.9rem",
                                 }}
                             />
-                        </ListItemButton>
+                        </ListItemButton> */}
                     </List>
                 </Collapse>
+
+
 
                 <ListItemButton
                     onClick={() => {
@@ -283,6 +294,41 @@ const TouristLayout = () => {
                     </ListItemIcon>
                     <ListItemText primary={"My Purchases"} />
                 </ListItemButton>
+
+
+                <Divider />
+
+                <ListItemButton
+                    onClick={() => {
+                        navigate("/tourist/wishlist");
+                        setActiveButton("");
+                    }}
+                >
+                    <ListItemIcon>
+                        <Favorite fontSize="small" />{" "}
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="My Products Wishlist"
+
+                    />
+                </ListItemButton>
+
+                <ListItemButton
+                // onClick={() => {
+                //     navigate("/tourist/wishlist");
+                //     setActiveButton("");
+                // }}
+                >
+                    <ListItemIcon>
+                        <BookmarkIcon fontSize="small" />{" "}
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="My Bookmarks"
+
+                    />
+                </ListItemButton>
+
+                <Divider />
 
                 <ListItemButton
                     onClick={() => {
@@ -463,7 +509,7 @@ const TouristLayout = () => {
                     mt: "0px",
                 }}
             >
-                <Outlet context={{ setActiveButton }} />
+                <Outlet context={{ setActiveButton, setCartItemCount, cartItemCount }} />
             </Box>
 
             <Box

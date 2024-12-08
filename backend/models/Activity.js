@@ -93,6 +93,12 @@ const activitySchema = new Schema( // title, description, location, price, categ
       type: Boolean,
       default: true,
     },
+    interestedTourists: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Tourist', // Reference to the Tourist model
+      },
+    ],
   },
   { timestamps: true }
 );

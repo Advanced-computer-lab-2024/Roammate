@@ -17,6 +17,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -26,14 +27,15 @@ import Button from '@mui/material/Button';
 import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import { logout } from '../../services/api';
 
-const navItems = ['Home', 'Create Activity'];
+const navItems = ['Home', 'Create Activity', 'Analytics'];
 
 const drawerWidth = 240;
 const AdvertiserLayout = () => {
     const advertiserId = localStorage.getItem('userId');
+    const status=  localStorage.getItem('status'); //TODO: get status from local storage
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Activities']);
-    const [activeButton, setActiveButton] = React.useState('My Activities');
+    const [activeButton, setActiveButton] = React.useState('');
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -59,6 +61,9 @@ const AdvertiserLayout = () => {
     };
 
     React.useEffect(() => {
+        if (location.pathname === '/advertiser') {
+            setActiveButton('My Activities');
+        }
         if (activeButton === 'My Activities') {
             navigate(`/advertiser/my-activities?id=${id}`);
         } else if (activeButton === 'Edit Profile') {
@@ -104,10 +109,15 @@ const AdvertiserLayout = () => {
                                     setActiveButton('My Activities');
                                 } else if (text === 'Create Activity') {
                                     setActiveButton('Create Activity');
+                                } else if (text === 'Analytics') {
+                                    setActiveButton('Analytics');
+                                    navigate("/advertiser/analytics");
                                 }
                             }
-                        }>
-                            {text === 'Home' ? <HomeIcon /> : <AddCircleIcon />}
+                        }
+                        disabled={text==='Create Activity' && status!=='active'} 
+                        >
+                            {text === 'Home' ? <HomeIcon /> : text === 'Analytics' ? <BarChartIcon /> : <AddCircleIcon />}
                             <ListItemText primary={text} sx={{ textAlign: 'center' }} />
                         </ListItemButton>
                     </ListItem>

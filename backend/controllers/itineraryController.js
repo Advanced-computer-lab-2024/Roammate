@@ -1,4 +1,4 @@
-const { Itinerary, Review, ItineraryBooking } = require("../models");
+const { Itinerary, Review, ItineraryBooking,Tourist,User } = require("../models");
 const mongoose = require("mongoose");
 const { PreferenceTag } = require("../models");
 const convertCurrency = require("./CurrencyConvertController");
@@ -127,6 +127,11 @@ const updateItineraryById = async (req, res) => {
     return res.status(400).json({ message: "Invalid id" });
   }
   try {
+    // Fetch the existing itinerary to check current isBookingAvailable value
+    const existingItinerary = await Itinerary.findById(id);
+    if (!existingItinerary) {
+      return res.status(404).json({ error: "Itinerary not found" });
+    }
     const updatedItinerary = await Itinerary.findByIdAndUpdate(
       id,
       updatedData,
@@ -135,11 +140,28 @@ const updateItineraryById = async (req, res) => {
     if (!updatedItinerary) {
       return res.status(404).json({ error: "Itinerary not found" });
     }
+    // Notification logic: Check if isBookingAvailable changed to true
+    if (
+      !existingItinerary.isBookingAvailable &&
+      updatedData.isBookingAvailable
+    ) {
+      for (const touristId of existingItinerary.interestedTourists) {
+        const user = await User.findById(touristId);
+        if (user) {
+          user.notifications.push({
+            message:`Booking is now available for itinrary: ${updatedItinerary.title}`,
+          });
+          await user.save();
+        }
+      }
+    }
     res.status(200).json(updatedItinerary);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
+
 
 // Delete an itinerary by ID
 const deleteItineraryById = async (req, res) => {
@@ -522,6 +544,81 @@ const getItineraryBookingsCount = async (req, res) => {
   }
 };
 
+const addBookmark = async (req, res) => {
+  try {
+    const { touristId, itineraryId } = req.body;
+
+    // Validate that the itinerary exists
+    const itinerary = await Itinerary.findById(itineraryId);
+    if (!itinerary) {
+      return res.status(404).json({ message: "itinerary not found" });
+    }
+
+    // Find the tourist
+    const tourist = await Tourist.findById(touristId);
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
+
+    // Check if the itinerary is already bookmarked
+    if (tourist.bookmarkedItineraries.includes(itineraryId)) {
+      return res.status(400).json({ message: "itinerary already bookmarked" });
+    }
+
+    // Add the itinerary to bookmarkeditinerary
+    tourist.bookmarkedItineraries.push(itineraryId);
+    await tourist.save();
+
+    res.status(200).json({ message: "itinerary bookmarked successfully", bookmarkedItineraries: tourist.bookmarkedItineraries });
+  } catch (error) {
+    res.status(500).json({ message: "Error bookmarking itinerary", error: error.message });
+  }
+};
+
+const getBookmarkeditinerary = async (req, res) => {
+  try {
+    const { touristId } = req.query;
+
+    // Find the tourist and populate the bookmarked Itineraries
+    const tourist = await Tourist.findById(touristId).populate("bookmarkedItineraries");
+
+    if (!tourist) {
+      return res.status(404).json({ message: "Tourist not found" });
+    }
+
+    console.log("Bookmarked Itineraries:", tourist.bookmarkedItineraries); // Log to check the data
+    res.status(200).json({ bookmarkedItineraries: tourist.bookmarkedItineraries });
+  } catch (error) {
+    console.error("Error retrieving bookmarked Itineraries:", error); // Log the actual error
+    res.status(500).json({ message: "Error retrieving bookmarked Itineraries", error: error.message });
+  }
+};
+
+const addInterestToItinerary = async (req, res) => {
+  try {
+    const { touristId, itineraryId } = req.body;
+
+    // Find the itinerary and check if the tourist is already interested
+    const itinerary = await Itinerary.findById(itineraryId);
+    if (!itinerary) {
+      return res.status(404).json({ message: "itinerary not found" });
+    }
+
+    if (itinerary.interestedTourists.includes(touristId)) {
+      return res.status(400).json({ message: "Tourist already interested in this itinerary" });
+    }
+
+    // Add the tourist to the interestedTourists array
+    itinerary.interestedTourists.push(touristId);
+    await itinerary.save();
+
+    res.status(200).json({ message: "Tourist added to the interested list", itinerary });
+  } catch (error) {
+    res.status(500).json({ message: "Error adding tourist to itinerary", error: error.message });
+  }
+};
+
+
 module.exports = {
   createItinerary,
   getAllItineraries,
@@ -537,4 +634,7 @@ module.exports = {
   toggleItineraryActivation,
   toggleAppropriateItinerary,
   getItineraryBookingsCount,
+  addBookmark,
+  getBookmarkeditinerary,
+  addInterestToItinerary,
 };

@@ -17,7 +17,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import BarChartIcon from '@mui/icons-material/BarChart';
 import { fetchUserNotifications, readAllUserNotifications } from '../../services/api';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -26,14 +26,14 @@ import Button from '@mui/material/Button';
 import NotificationDropdown from '../sharedComponents/NotificationDropdown';
 import { logout } from '../../services/api';
 
-const navItems = ['Home', 'Create Itinerary'];
+const navItems = ['Home', 'Create Itinerary', 'Analytics'];
 
 const drawerWidth = 240;
 const TourGuideLayout = () => {
     const tourguideId = localStorage.getItem('userId');
     const [open, setOpen] = React.useState(false);
     const [buttons, setButtons] = React.useState(['My Itineraries']);
-    const [activeButton, setActiveButton] = React.useState('My Itineraries');
+    const [activeButton, setActiveButton] = React.useState('');
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -59,6 +59,9 @@ const TourGuideLayout = () => {
     };
 
     React.useEffect(() => {
+        if (location.pathname === '/tourguide') {
+            setActiveButton('My Itineraries');
+        }
         if (activeButton === 'My Itineraries') {
             navigate(`/tourguide/my-itineraries?id=${id}`);
         } else if (activeButton === 'Edit Profile') {
@@ -104,10 +107,13 @@ const TourGuideLayout = () => {
                                     setActiveButton('My Itineraries');
                                 } else if (text === 'Create Itinerary') {
                                     setActiveButton('Create Itinerary');
+                                } else if (text === "Analytics") {
+                                    setActiveButton('Analytics');
+                                    navigate('/tourguide/analytics');
                                 }
                             }
                         }>
-                            {text === 'Home' ? <HomeIcon /> : <AddCircleIcon />}
+                            {text === 'Home' ? <HomeIcon /> : text === 'Analytics' ? <BarChartIcon /> : <AddCircleIcon />}
                             <ListItemText primary={text} sx={{ textAlign: 'center' }} />
                         </ListItemButton>
                     </ListItem>

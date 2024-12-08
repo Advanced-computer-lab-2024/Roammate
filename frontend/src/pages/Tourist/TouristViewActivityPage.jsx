@@ -57,8 +57,7 @@ const TouristViewActivity = ({ id, touristId }) => {
         console.log(address);
         if (address) {
           setDefaultAddress(
-            `${address.addressLine1}, ${address.city}, ${address.state || ""} ${
-              address.postalCode
+            `${address.addressLine1}, ${address.city}, ${address.state || ""} ${address.postalCode
             }, ${address.country}`
           );
         } else {
@@ -290,8 +289,8 @@ const TouristViewActivity = ({ id, touristId }) => {
               .startOf("day")
               .isBefore(dayjs(activity.endDate).startOf("day"))
               ? `${dayjs(activity.startDate).format(DATE_FORMAT)} - ${dayjs(
-                  activity.endDate
-                ).format(DATE_FORMAT)}`
+                activity.endDate
+              ).format(DATE_FORMAT)}`
               : `${dayjs(activity.startDate).format(DATE_FORMAT)}`}
           </Typography>
 
@@ -427,13 +426,12 @@ const TouristViewActivity = ({ id, touristId }) => {
               color="error"
               sx={{
                 display: `${msg ? "block" : "none"}`,
-                color: `${
-                  msg.includes("successful")
+                color: `${msg.includes("successful")
                     ? "green"
                     : msg.includes("failed")
-                    ? "red"
-                    : "grey"
-                }`,
+                      ? "red"
+                      : "grey"
+                  }`,
               }}
             >
               {msg}

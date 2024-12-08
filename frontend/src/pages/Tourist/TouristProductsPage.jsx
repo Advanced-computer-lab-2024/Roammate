@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Box, CircularProgress, Grid2 } from "@mui/material";
-import ProductCard from "../../components/touristComponents/ProductCard";
+
 import CachedIcon from "@mui/icons-material/Cached";
 import SearchBar from "../../components/touristComponents/SearchBar";
 import { searchAndFilterProducts } from "../../services/api";
 import SortAndFilterProducts from "../../components/touristComponents/SortAndFilterProducts";
 import { useLocation, useOutletContext } from "react-router";
 import TouristViewProduct from "./TouristViewProductPage";
+import ProductCard from "../../components/touristComponents/ProductCard";
 
 const TouristProductsPage = () => {
   const touristId = localStorage.getItem("userId");
@@ -19,6 +20,9 @@ const TouristProductsPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const queryProductId = queryParams.get("id");
+
+  const { setCartItemCount } = useOutletContext();
+
 
   useEffect(() => {
     fetchProducts();
@@ -67,6 +71,7 @@ const TouristProductsPage = () => {
                 product={product}
                 id={touristId}
                 refreshWishlist={refreshWishlist}
+                setCartItemCount={setCartItemCount}
               />
             </div>
           ))}

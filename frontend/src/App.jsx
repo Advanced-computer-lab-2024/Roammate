@@ -45,6 +45,14 @@ import OthersRegisteration from "./pages/Registration&Login/OthersRegisteration"
 import TouristWishlistPage from "./pages/Tourist/TouristWishlistPage";
 import TouristCartPage from "./pages/Tourist/TouristCartPage";
 import AdminManagePromocodesPage from "./pages/Admin/AdminManagePromocodesPage";
+import ForgotPasswordPage from "./pages/Registration&Login/ForgotPasswordPage";
+import VerifyOtpPage from "./pages/Registration&Login/VerifyOtpPage";
+import ResetPasswordPage from "./pages/Registration&Login/ResetPasswordPage";
+import AdvertiserAnalyticsPage from "./pages/Advertiser/AdvertiserAnalyticsPage";
+import TourGuideAnalyticsPage from "./pages/TourGuide/TourguideAnalyticsPage";
+import SellerAnalyticsPage from "./pages/Seller/SellerAnalyticsPage";
+import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage";
+import TouristBookedFlights from "./pages/Tourist/TouristBookedFlights";
 
 const theme = createTheme({
   // palette: {
@@ -84,6 +92,10 @@ function App() {
           <Route path="/tourist/register" element={<TouristRegister />} />
           <Route path="/register" element={<OthersRegisteration />} />
           <Route path="/login" element={<Login />} />
+
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="verify-otp" element={<VerifyOtpPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
 
 
@@ -127,6 +139,10 @@ function App() {
               path="/tourist/bookings/itineraries"
               element={<TouristBookedItineraries />}
             />
+                        <Route
+              path="/tourist/bookings/flights"
+              element={<TouristBookedFlights />}
+            />
             <Route
               path="/tourist/bookings/visits"
               element={<TouristBookedVisits />}
@@ -169,6 +185,10 @@ function App() {
               path='/advertiser/create-activity'
               element={<CreateActivityPage />}
             />
+            <Route
+              path="/advertiser/analytics"
+              element={<AdvertiserAnalyticsPage />}
+            />
           </Route>
 
 
@@ -190,6 +210,10 @@ function App() {
             <Route
               path="/tourguide/create-itinerary"
               element={<CreateItinerary />}
+            />
+            <Route
+              path="/tourguide/analytics"
+              element={<TourGuideAnalyticsPage />}
             />
           </Route>
 
@@ -213,6 +237,11 @@ function App() {
               path="/seller/createProduct"
               element={<SellerCreateProduct />}
             />
+            <Route
+              path="/seller/analytics"
+              element={<SellerAnalyticsPage />}
+            />
+
           </Route>
 
 
@@ -260,10 +289,6 @@ function App() {
               element={<AdminManagePromocodesPage />}
             />
             <Route
-              path="/admin/add-promocode"
-              element={<AdminManagePromocodesPage />}
-            />
-            <Route
               path="/admin/deletion-requests"
               element={<AdminDeletionRequestsPage />}
             />
@@ -286,6 +311,11 @@ function App() {
             <Route
               path="/admin/create-product"
               element={<SellerCreateProduct />}
+            />
+
+            <Route
+              path="/admin/analytics"
+              element={<AdminAnalyticsPage />}
             />
           </Route>
         </Routes>

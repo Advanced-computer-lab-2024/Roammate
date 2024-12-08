@@ -24,7 +24,9 @@ import {
   payWallet,
   addProductPurchasing,
   fetchUserAddresses,
+  convertPrice,
 } from "../../services/api";
+import { useOutletContext } from "react-router";
 
 const TouristCartPage = () => {
   const userId = localStorage.getItem("userId");
@@ -35,6 +37,12 @@ const TouristCartPage = () => {
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
   const [defaultAddress, setDefaultAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Wallet"); // Default payment method
+  const [displayTotalPrice, setDisplayTotalPrice] = useState();
+  const [productsPrices, setProductsPrices] = useState([]);
+  const [subtotals, setSubtotals] = useState([]);
+
+
+  const { setCartItemCount } = useOutletContext();
 
   // Fetch the cart data
   useEffect(() => {
@@ -43,6 +51,9 @@ const TouristCartPage = () => {
         const fetchedCart = await getUserCart(userId);
         setCart(fetchedCart);
         calculateTotalPrice(fetchedCart.products);
+        setProductsPrices(
+          fetchedCart.products.map((item) => item.product.price)
+        );
       } catch (error) {
         console.error("Error fetching cart:", error);
       } finally {
@@ -56,9 +67,8 @@ const TouristCartPage = () => {
         const address = addresses.find((addr) => addr.isDefault);
         setDefaultAddress(
           address
-            ? `${address.addressLine1}, ${address.city}, ${
-                address.state || ""
-              } ${address.postalCode}, ${address.country}`
+            ? `${address.addressLine1}, ${address.city}, ${address.state || ""
+            } ${address.postalCode}, ${address.country}`
             : "No default address set. Please update your profile."
         );
       } catch (error) {
@@ -70,6 +80,45 @@ const TouristCartPage = () => {
     fetchDefaultAddress();
   }, [userId]);
 
+  useEffect(() => {
+    const getDisplayTotalPrice = async (totalPrice) => {
+      const displayTotalPrice = await convertPrice(totalPrice);
+      setDisplayTotalPrice(displayTotalPrice);
+    };
+    getDisplayTotalPrice(totalPrice);
+  }, [totalPrice]);
+
+
+  useEffect(() => {
+    const getProductsPrices = async () => {
+      const prices = await Promise.all(
+        cart.products.map(async (item) => await convertProductPrice(item.product.price))
+      );
+      setProductsPrices(prices);
+    };
+
+    const getSubtotals = async () => {
+      const subtotals = await Promise.all(
+        cart.products.map(async (item) => await convertProductPrice(item.product.price * item.quantity))
+      )
+      setSubtotals(subtotals);
+    };
+    getProductsPrices();
+    getSubtotals();
+
+  }, [cart]);
+
+  useEffect(() => {
+    if (cart) {
+      //get the cart item count
+      let cartItemCount = 0;
+      cart.products.forEach((item) => {
+        cartItemCount += item.quantity;
+      });
+      setCartItemCount(cartItemCount);
+    }
+  }, [cart]);
+
   // Calculate the total price of the cart
   const calculateTotalPrice = (products) => {
     const total = products.reduce(
@@ -77,6 +126,15 @@ const TouristCartPage = () => {
       0
     );
     setTotalPrice(total.toFixed(2));
+  };
+
+  const convertProductPrice = async (price) => {
+    try {
+      const displayPrice = await convertPrice(price);
+      return displayPrice;
+    } catch (error) {
+      console.error("Error converting price:", error);
+    }
   };
 
   // Update product quantity in the cart
@@ -171,16 +229,16 @@ const TouristCartPage = () => {
         Your Cart
       </Typography>
       <Box>
-        {cart.products.map((item) => (
+        {cart.products.map((item, index) => (
           <Card key={item.product._id} sx={{ marginBottom: "16px" }}>
             <CardContent>
               <Typography variant="h6">{item.product.name}</Typography>
               <Typography variant="body1">
-                Price: ${item.product.price.toFixed(2)}
+                Price: {productsPrices[index]}
               </Typography>
               <Typography variant="body1">Quantity: {item.quantity}</Typography>
               <Typography variant="body2">
-                Subtotal: ${(item.product.price * item.quantity).toFixed(2)}
+                Subtotal: {subtotals[index]}
               </Typography>
             </CardContent>
             <CardActions>
@@ -224,7 +282,7 @@ const TouristCartPage = () => {
           marginTop: "16px",
         }}
       >
-        <Typography variant="h5">Total: ${totalPrice}</Typography>
+        <Typography variant="h5">Total: {displayTotalPrice}</Typography>
         <Button
           variant="contained"
           color="primary"

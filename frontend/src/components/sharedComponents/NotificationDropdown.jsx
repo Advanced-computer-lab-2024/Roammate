@@ -62,50 +62,52 @@ const NotificationDropdown = ({ notifications, setNotifications, readAllUserNoti
 
         {/* Notifications */}
         {notifications.length > 0 ? (
-          notifications.map((notification, index) => (
-            <MenuItem
-              key={index}
-              sx={{
-                padding: 0,
-                "&:hover": {
-                  backgroundColor: "#f1f1f1",
-                },
-              }}
-            >
-              <Card
+            [...notifications.filter((n) => n.isRead), ...notifications.filter((n) => !n.isRead)]
+            .reverse() // Reverse to display the most recent notifications first
+            .map((notification, index) => (
+              <MenuItem
+                key={index}
                 sx={{
-                  width: "100%",
-                  backgroundColor: "white",
-                  boxShadow: notification.isRead ? "none" : "0px 2px 6px rgba(0, 0, 0, 0.1)",
-                  borderLeft: notification.isRead ? "4px solid #ccc" : "4px solid #1976d2",
-                  padding: "8px",
-                  margin: "4px",
-                  transition: "box-shadow 0.3s ease, background-color 0.3s ease",
+                  padding: 0,
+                  "&:hover": {
+                    backgroundColor: "#f1f1f1",
+                  },
                 }}
               >
-                <CardContent sx={{ padding: "8px" }}>
+                <Card
+                  sx={{
+                    width: "100%",
+                    backgroundColor: "white",
+                    boxShadow: notification.isRead ? "none" : "0px 2px 6px rgba(0, 0, 0, 0.1)",
+                    borderLeft: notification.isRead ? "4px solid #ccc" : "4px solid #1976d2",
+                    padding: "8px",
+                    margin: "4px",
+                    transition: "box-shadow 0.3s ease, background-color 0.3s ease",
+                  }}
+                >
+                  <CardContent sx={{ padding: "8px" }}>
 
-                  <ListItemText
-                    primary={
-                      <Typography
-                        variant="body2"
-                        fontWeight={notification.isRead ? "400" : "600"}
-                        color={notification.isRead ? "text.secondary" : "text.primary"}
-                        style={{
-                          whiteSpace: "normal", // Allow text to wrap
-                          wordBreak: "break-word", // Break words if they exceed the container width
-                          overflow: "visible", // Ensure the text doesn't get truncated
-                        }}
-                      >
-                        {notification.message}
-                      </Typography>
-                    }
-                  />
+                    <ListItemText
+                      primary={
+                        <Typography
+                          variant="body2"
+                          fontWeight={notification.isRead ? "400" : "600"}
+                          color={notification.isRead ? "text.secondary" : "text.primary"}
+                          style={{
+                            whiteSpace: "normal", // Allow text to wrap
+                            wordBreak: "break-word", // Break words if they exceed the container width
+                            overflow: "visible", // Ensure the text doesn't get truncated
+                          }}
+                        >
+                          {notification.message}
+                        </Typography>
+                      }
+                    />
 
-                </CardContent>
-              </Card>
-            </MenuItem>
-          ))
+                  </CardContent>
+                </Card>
+              </MenuItem>
+            ))
         ) : (
           <MenuItem
             sx={{

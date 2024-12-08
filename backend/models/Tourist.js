@@ -4,11 +4,6 @@ const User = require("./User");
 
 const touristSchema = new Schema(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     mobile: {
       type: String,
       unique: true,
@@ -68,6 +63,19 @@ const touristSchema = new Schema(
       type: Date, // Store the date when the promo was last sent
       default: null,
     },
+    bookmarkedActivities: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Activity",
+      },
+    ],
+
+    bookmarkedItineraries: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Itinerary",
+      },
+    ],
   },
   {
     timestamps: true,

@@ -1,4 +1,5 @@
 const axios = require("axios");
+const FlightBooking = require("../models/FlightBooking");
 
 // Authenticate with Amadeus to get an access token
 const authenticateWithAmadeus = async () => {
@@ -35,7 +36,7 @@ const getIataCode = async (cityName, accessToken) => {
     const locations = response.data.data;
 
     if (locations && locations.length > 0) {
-      console.log(`Locations for ${cityName}:`, locations); // Debug available options
+      // console.log(`Locations for ${cityName}:`, locations); // Debug available options
 
       // Prioritize city-level IATA codes, fallback to airport
       const city = locations.find((loc) => loc.subType === "CITY");
@@ -81,6 +82,43 @@ const searchFlights = async (req, res) => {
   } catch (error) {
     console.error("Error searching for flights:", error);
     res.status(500).json({ message: "Error searching for flights" });
+  }
+};
+
+const getAllFlightBookings = async (req, res) => {
+  try {
+      const id = req.params.id;
+      const flightBookings = await FlightBooking.find({ touristId: id });
+      res.status(200).json(flightBookings);
+  } catch (error) {
+      res.status(500).json({ message: "Failed to fetch flight bookings.", error: error.message });
+  }
+};
+
+const addFlightBooking = async (req, res) => {
+  try {
+      const { touristId, bookingCode, flightData } = req.body;
+
+      if (!touristId || !bookingCode || !flightData) {
+          return res.status(400).json({ message: "Tourist ID, booking code, and flight data are required." });
+      }
+
+      const flightBooking = new FlightBooking({
+          touristId,
+          bookedFlightCode: bookingCode,
+          bookingCode: bookingCode,
+          bookedCode: bookingCode,
+          flightData
+      });
+
+      const savedBooking = await flightBooking.save();
+      res.status(201).json({
+          message: "Flight booked successfully!",
+          booking: savedBooking
+      });
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Failed to book the flight.", error: error.message });
   }
 };
 
@@ -151,4 +189,4 @@ try {
 };
   
 
-module.exports = { authenticateWithAmadeus, searchFlights, getHotelDetails, getHotelsByCity};
+module.exports = { authenticateWithAmadeus, searchFlights, getAllFlightBookings, addFlightBooking, getHotelDetails, getHotelsByCity};

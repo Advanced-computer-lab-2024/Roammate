@@ -4,11 +4,6 @@ const User = require("./User");
 
 const tourGuideSchema = new Schema(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     mobile: {
       type: String,
       unique: true,

@@ -510,6 +510,32 @@ export const readAllUserNotifications = async (id) => {
   return response.data;
 };
 
+// This function is used to send a password reset email
+export const forgotPassword = async (email) => {
+  const response = await axios.post(`${API_URL}users/forgot-password`, {
+    email,
+  });
+  return response.data;
+};
+
+// This function is used to verify an OTP
+export const verifyOtp = async (email, otp) => {
+  const response = await axios.post(`${API_URL}users/verify-otp`, {
+    email,
+    otp,
+  });
+  return response.data;
+};
+
+// This function is used to reset a user's password
+export const resetPassword = async (email, newPassword) => {
+  const response = await axios.post(`${API_URL}users/reset-password`, {
+    email,
+    newPassword,
+  });
+  return response.data;
+};
+
 // ✅ This function is used to fetch Tourist's profile
 export const fetchTouristProfile = async (id) => {
   const response = await axios.get(`${API_URL}tourist/${id}`);
@@ -1115,6 +1141,29 @@ export const searchFlights = async (
     throw error; // Handle or throw error to show in the UI
   }
 };
+
+// This function is used to fetch all flight bookings by tourist id
+export const fetchFlightBookingsByTouristId = async (touristId) => {
+  const response = await axios.get(`${API_URL}fetch-flights/${touristId}`);
+  return response.data;
+};
+
+// This function is used to book a flight
+export const bookFlight = async (touristId, bookingCode, flightData) => {
+  try {
+    const payload = {
+      touristId,
+      bookingCode,
+      flightData, // Send all flight details as one object
+    };
+    const response = await axios.post(`${API_URL}book-flight`, payload);
+    return response.data;
+  } catch (error) {
+    console.error("Error booking flight:", error);
+    throw error;
+  }
+};
+
 //----------------------------------------------
 // Function to fetch and save conversion rates in local storage
 export const fetchConversionRates = async () => {
@@ -1284,6 +1333,101 @@ export const logout = async () => {
   try {
     const response = await axios.post(`${API_URL}logout`);
     window.location.href = `/login`;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// router.post("/promoCodes", PromoCodeController.createPromoCode);
+// router.get("/promoCodes", PromoCodeController.getAllPromoCodes);
+
+// router.post("/promoCodes/apply", PromoCodeController.applyPromoCode);
+// router.get("/promoCodes/user/:userId", PromoCodeController.getPromoCodesByUser);
+
+export const createPromoCode = async (
+  code,
+  discount,
+  expirationDate,
+  usageLimit,
+  userId = null
+) => {
+  try {
+    const response = await axios.post(`${API_URL}promoCodes`, {
+      code,
+      discount,
+      expirationDate,
+      usageLimit,
+      userId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating promo code:", error);
+    throw error;
+  }
+};
+
+export const getAllPromoCodes = async () => {
+  try {
+    const response = await axios.get(`${API_URL}promoCodes`);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting all promo codes:", error);
+    throw error;
+  }
+};
+
+//✅ This function is used to get advertiser revenue based on query advertiserId, startDate, endDate
+export const calcAdvertiserRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}advertiser-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//✅ This function is used to get advertiser revenue based on query advertiserId, startDate, endDate
+export const calcTourguideRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}tourguide-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const calcSellerRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}seller-analytics`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const calcVTPTotalRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}vtp-analytics-total`, {
+      params: query,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const calcVTPGiftshopRevenue = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}vtp-analytics-giftshop`, {
+      params: query,
+    });
+    return response;
   } catch (error) {
     console.log(error);
   }
