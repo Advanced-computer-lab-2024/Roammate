@@ -143,8 +143,101 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 
 ## 💻 Code Examples
+### Backend
 <details>
-<summary>BackEnd</summary>
+<summary>ProductController</summary>
+**Description:** This demonstrates CRUD operations for the Product Controller, including adding, fetching, updating, and deleting products.
+```javascript
+const addProduct = async (req, res) => {
+  const { name, image, price, description, seller, quantity } = req.body;
+
+  const newProduct = new Product({
+    name,
+    // image,
+    price,
+    description,
+    seller,
+    quantity,
+  });
+  try {
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getProductById = async (req, res) => {
+  const { id } = req.params;
+  const { currency = "USD" } = req.query;
+  try {
+    const product = await Product.findById(id)
+      .populate("seller", "username")
+      .populate({
+        path: "reviews",
+        populate: { path: "user" },
+      });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const convertedPrice = convertCurrency(product.price, "USD", currency);
+    res.status(200).json({
+      ...product.toObject(),
+      price: convertedPrice.toFixed(2),
+      currency,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving product", error });
+  }
+};
+
+const deleteProductById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting product", error });
+  }
+};
+
+const updateProductById = async (req, res) => {
+  const { id } = req.params;
+  const { name, image, price, description, quantity, reviews, averageRating } =
+    req.body;
+
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        name,
+        image,
+        price,
+        description,
+        quantity,
+        reviews,
+        averageRating,
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating product", error });
+  }
+};
 </details>
 <details>
 <summary>FrontEnd</summary>
