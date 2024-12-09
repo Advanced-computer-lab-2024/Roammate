@@ -1057,6 +1057,13 @@ export const payWallet = async (touristId, amount) => {
   }
 };
 
+export const payCard = async (touristId, amount) => {
+  return {
+    status: 200,
+    message: "Mock payment successful",
+  };
+};
+
 export const refundWallet = async (touristId, amount) => {
   try {
     const response = await axios.post(`${API_URL}wallet/refund`, {
