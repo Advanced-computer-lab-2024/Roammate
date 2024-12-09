@@ -241,7 +241,7 @@ const updateProductById = async (req, res) => {
 
 </details>
 
-</details>
+<details>
 
 <summary>Product Model</summary>
 
