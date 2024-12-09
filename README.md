@@ -1252,7 +1252,7 @@ We used Postman to test each API endpoint by sending requests with specified URL
 
 <details>
 <summary>Search Flights</summary>
-
+Testing of the /api/search-flights endpoint using the POST method in Postman, with body parameters such as origin, destination, and departureDate, showing the request and response.
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/flightstest.jpeg)
 
@@ -1260,7 +1260,7 @@ We used Postman to test each API endpoint by sending requests with specified URL
 
 <details>
 <summary>Fetch all Users</summary>
-
+Testing of the /api/users endpoint using the GET method in Postman, retrieving user details without requiring any specific parameters in the URL or body.
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20users.jpeg)
 
 </details>
@@ -1268,7 +1268,7 @@ We used Postman to test each API endpoint by sending requests with specified URL
 
 <details>
 <summary>Fetch all PromoCodes Creates</summary>
-
+Testing of the /api/promoCodes endpoint using the GET method in Postman, fetching details of promotional codes in the system, showcasing the request and JSON response.
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20all%20promocode.jpeg)
 </details>
 
