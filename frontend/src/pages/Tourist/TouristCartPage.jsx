@@ -168,6 +168,16 @@ const TouristCartPage = () => {
     getSubtotals();
   }, [cart]);
 
+  //set cart item count
+  useEffect(() => {
+    if (cart) {
+      const itemCount = cart.products.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      setCartItemCount(itemCount);
+    }
+  }, [cart]);
 
 
   // Update product quantity in the cart
