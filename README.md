@@ -151,7 +151,6 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 </details>
 ## ⚒️ Tech and Frameworks used
-<details>
 
 <div align="center" >
 
@@ -179,7 +178,6 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - **APIs**: Stripe, Amadeus API
 - **Development Tools**: Postman, Nodemon, Vite, Prettier
 
-</details>
 
 ## 🔥 Features
 
