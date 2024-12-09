@@ -105,9 +105,8 @@ const TouristCartPage = () => {
         const address = addresses.find((addr) => addr.isDefault);
         setDefaultAddress(
           address
-            ? `${address.addressLine1}, ${address.city}, ${
-                address.state || ""
-              } ${address.postalCode}, ${address.country}`
+            ? `${address.addressLine1}, ${address.city}, ${address.state || ""
+            } ${address.postalCode}, ${address.country}`
             : "No default address set. Please update your profile."
         );
       } catch (error) {
@@ -144,6 +143,32 @@ const TouristCartPage = () => {
       console.error("Error converting price:", error);
     }
   };
+
+  //set product prices after changing currency using convertPrice
+  useEffect(() => {
+    const getProductsPrices = async () => {
+      const prices = await Promise.all(
+        cart.products.map((item) => convertProductPrice(item.product.price))
+      );
+      setProductsPrices(prices);
+    };
+    getProductsPrices();
+  }, [cart]);
+
+  // set subtotals after changing currency using convertPrice
+  useEffect(() => {
+    const getSubtotals = async () => {
+      const subtotals = await Promise.all(
+        cart.products.map((item) =>
+          convertPrice(item.product.price * item.quantity)
+        )
+      );
+      setSubtotals(subtotals);
+    };
+    getSubtotals();
+  }, [cart]);
+
+
 
   // Update product quantity in the cart
   const handleQuantityChange = async (productId, newQuantity) => {
@@ -272,6 +297,9 @@ const TouristCartPage = () => {
                 Price: {productsPrices[index]}
               </Typography>
               <Typography variant="body1">Quantity: {item.quantity}</Typography>
+              <Typography variant="body1">
+                Subtotal: {subtotals[index]}
+              </Typography>
             </CardContent>
             <CardActions>
               <IconButton
