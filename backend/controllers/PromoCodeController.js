@@ -104,6 +104,10 @@ const sendBirthdayPromoCode = async () => {
       await promoCode.save();
 
       try {
+        // Check if the notification already exists
+        if (tourist.notifications.some((n) => n.message.includes(promoCode.code))) {
+          continue; // Skip if birthday promo already sent
+        }
         tourist.notifications.push({
           message: `Happy Birthday! Enjoy your promo code: ${
             promoCode.code

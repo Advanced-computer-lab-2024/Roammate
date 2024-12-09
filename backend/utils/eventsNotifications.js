@@ -32,6 +32,10 @@ const notifyTourists = async () => {
             );
             // Send notification to the tourist
             console.log(`Sending notification to ${tourist.email} for the activity ${activity.title}`);
+            // Check if the notification already exists
+            if (tourist.notifications.some((n) => n.message === `Don't forget your activity ${activity.title} on ${formattedDate}`)) {
+                return;
+            }
             tourist.notifications.push({
                 message: `Don't forget your activity ${activity.title} on ${formattedDate}`,
             });
@@ -69,6 +73,10 @@ const notifyTourists = async () => {
             );
             // Send notification to the tourist
             console.log(`Sending notification to ${tourist.email} for the itinerary ${itinerary.title}`);
+            // Check if the notification already exists
+            if (tourist.notifications.some((n) => n.message === `Don't forget your itinerary ${itinerary.title} on ${formattedDate}`)) {
+                return;
+            }
             tourist.notifications.push({
                 message: `Don't forget your itinerary ${itinerary.title} on ${formattedDate}`,
             });
