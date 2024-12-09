@@ -1245,7 +1245,7 @@ We used Postman to test each API endpoint by sending requests with specified URL
 
 <details>
 <summary>Search Flights</summary>
-![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/flightstest.jpeg)
+![image](ScreenShots/flightstest.jpeg)
 </details>
 
 <details>
