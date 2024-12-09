@@ -57,6 +57,8 @@ const TouristViewItinerary = ({ id, touristId }) => {
   const [showBookingComponent, setShowBookingComponent] = useState(false);
   const [defaultAddress, setDefaultAddress] = useState("");
 
+  const [discountedPrice, setDiscountedPrice] = useState(0);
+
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       try {
@@ -113,11 +115,12 @@ const TouristViewItinerary = ({ id, touristId }) => {
     setLoadingBooking(true);
     setMsg("");
     try {
+      const price = discountedPrice || itinerary.price;
       await bookItinerary(
         itinerary._id,
         touristId,
         bookingDate,
-        itinerary.price
+        price
       );
       setMsg(
         "Your booking is successful for " + bookingDate.format(DATE_FORMAT)
@@ -145,7 +148,10 @@ const TouristViewItinerary = ({ id, touristId }) => {
       <BookingActivityComponent
         onBack={() => setShowBookingComponent(false)}
         address={defaultAddress}
-        price={displayPrice}
+
+        price={itinerary.price}
+        setDiscountedPrice={setDiscountedPrice}
+
         handleBooking={handleBooking}
       />
     );

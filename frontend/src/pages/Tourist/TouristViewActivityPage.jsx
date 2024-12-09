@@ -49,6 +49,8 @@ const TouristViewActivity = ({ id, touristId }) => {
   const [showBookingComponent, setShowBookingComponent] = useState(false);
   const [defaultAddress, setDefaultAddress] = useState("");
 
+  const [discountedPrice, setDiscountedPrice] = useState(0);
+
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       try {
@@ -102,7 +104,8 @@ const TouristViewActivity = ({ id, touristId }) => {
   const handleBooking = async (e) => {
     setLoadingBooking(true);
     try {
-      await bookActivity(id, touristId, bookingDate, activity.price);
+      const price = discountedPrice || activity.price;
+      await bookActivity(id, touristId, bookingDate, price);
       setMsg(
         "Your booking is successful for " + bookingDate.format(DATE_FORMAT)
       );
@@ -120,7 +123,10 @@ const TouristViewActivity = ({ id, touristId }) => {
       <BookingActivityComponent
         onBack={() => setShowBookingComponent(false)}
         address={defaultAddress}
-        price={displayPrice}
+
+        price={activity.price}
+        setDiscountedPrice={setDiscountedPrice}
+        
         handleBooking={handleBooking}
       />
     );
