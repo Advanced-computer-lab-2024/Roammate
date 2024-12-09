@@ -11,7 +11,7 @@
 7. [💻 Code Examples](#-code-examples)
 8. [⚙️ Installation](#️-installation)
 9. [📚 API Reference](#-api-reference)
-10. [🧪 Tests](#-tests)
+10. [🧪 Tests](#-testing)
 11. [🧑🏻‍🏫 How to Use](#-how-to-use)
 12. [🤝 Contribute](#-contribute)
 13. [©️ Credits](#️-credits)
