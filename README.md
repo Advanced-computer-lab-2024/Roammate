@@ -1250,23 +1250,26 @@ npm install
 ## 🧪 Testing
 We used Postman to test each API endpoint by sending requests with specified URLs, parameters, and request bodies. The responses were verified to ensure proper functionality, including handling of edge cases, error messages, and data validation.
 
-
 <details>
 <summary>Search Flights</summary>
+
+
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/flightstest.jpeg)
+
 </details>
 
 <details>
 <summary>Fetch all Users</summary>
+
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20users.jpeg)
+
 </details>
 
 
 <details>
 <summary>Fetch all PromoCodes Creates</summary>
+
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20all%20promocode.jpeg)
-
-
 </details>
 
 
