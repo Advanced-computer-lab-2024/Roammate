@@ -35,6 +35,25 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - [Prettier](https://prettier.io/) : it is a code formatter that runs automatically before each commit on the whole code so that the codes looks well formatted across the whole project
 
 ## 📸 Screenshots
+## Features & Screenshots
+
+<details>
+<summary>Birthday Promo Code</summary>
+- Recieve a promo code by email on the saved birthday.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/BirthdayPromoCode.png)
+
+</details>
+
+<details>
+<summary>Payment Reciept</summary>
+- Recieve a reciept by email once you pay for anything on the app.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/PaymentReceipt.png)
+
+</details>
+
+
 <details>
 <summary>User Login</summary>
 
@@ -78,7 +97,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 <summary>Wishlist</summary>
 - List of wishlisted products.
 
-![image](https://github.com/advanced-computer-lab-2023/Copilot-and-Sons-Clinic/blob/main/images/health-packages.png)
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/Wishlist.png)
 
 </details>
 
@@ -87,7 +106,6 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - Check pending orders.
 - check past orders.
 
-
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserPurchaseHistory.png)
 
 </details>
@@ -95,17 +113,17 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 <details>
 <summary>Activity Booking</summary>
 - Choose a date to book an activity.
+
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/ActivityBookingPage.png)
 
 </details>
-
 <details>
-<summary>Add new Address</summary>
-- Add the required information of a new address.
+<summary>Add New Address</summary>
+- Fill in the required informat.
+
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AddNewAdress.png)
 
 </details>
-
 <details>
 <summary>Admin Homepage</summary>
 - Delete user's account.
@@ -134,7 +152,6 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminAddProduct.png)
 
 </details>
-
 ## ⚒️ Tech and Frameworks used
 
 <div align="center" >
