@@ -7,7 +7,7 @@
 3. [🎨 Code Style](#-code-style)
 4. [📸 Screenshots](#-screenshots)
 5. [⚒️ Tech and Frameworks used](#️-tech-and-frameworks-used)
-6. [🔥 Features](#-features--screenshots)
+6. [🔥 Features](#-features)
 7. [💻 Code Examples](#-code-examples)
 8. [⚙️ Installation](#️-installation)
 9. [📚 API Reference](#-api-reference)
