@@ -339,7 +339,6 @@ module.exports = { requireAuth };
 ```
 
 </details>
-</details>
 
 
 
