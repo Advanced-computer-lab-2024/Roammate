@@ -11,7 +11,7 @@
 7. [💻 Code Examples](#-code-examples)
 8. [⚙️ Installation](#️-installation)
 9. [📚 API Reference](#-api-reference)
-10. [🧪 Tests](#-testing)
+10. [🧪 Tests](#-tests)
 11. [🧑🏻‍🏫 How to Use](#-how-to-use)
 12. [🤝 Contribute](#-contribute)
 13. [©️ Credits](#️-credits)
@@ -1246,7 +1246,7 @@ npm install
 </details>
 
 
-## 🧪 Testing
+## 🧪 Tests
 We used Postman to test each API endpoint by sending requests with specified URLs, parameters, and request bodies. The responses were verified to ensure proper functionality, including handling of edge cases, error messages, and data validation.
 
 <details>
