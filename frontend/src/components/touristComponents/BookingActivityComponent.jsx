@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -12,7 +12,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import PaymentForm from "../sharedComponents/PaymentForm";
 import { useNavigate } from "react-router";
-import { applyPromoCode } from "../../services/api";
+import { applyPromoCode, convertPrice } from "../../services/api";
 
 // Replace with your actual Stripe public key
 const stripePromise = loadStripe("your-public-stripe-key");
@@ -21,13 +21,13 @@ const BookingActivityComponent = ({
   onBack,
   address,
   price,
+  setDiscountedPrice,
   handleBooking,
 }) => {
   const userId = localStorage.getItem("userId");
   const [discount, setDiscount] = useState(0);
-  const [discountedPrice, setDiscountedPrice] = useState(
-    Number(price.replace("EGP", "").replace("USD", "").replace("EUR", ""))
-  );
+  const [priceAfterDiscount, setPriceAfterDiscount] = useState(price);
+  const [displayPrice, setDisplayPrice] = useState('');
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(false);
   const [promocodeSuccess, setPromocodeSuccess] = useState(false);
@@ -36,6 +36,20 @@ const BookingActivityComponent = ({
   const [message, setMessage] = useState("");
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getDisplayPrice = async () => {
+      if (priceAfterDiscount) {
+        try {
+          const displayPrice = await convertPrice(priceAfterDiscount);
+          setDisplayPrice(displayPrice);
+        } catch (error) {
+          console.error("Error converting price:", error);
+        }
+      }
+    };
+    getDisplayPrice();
+  }, [priceAfterDiscount]);
 
   const handleApplyPromo = async () => {
     setLoading(true);
@@ -47,10 +61,9 @@ const BookingActivityComponent = ({
       const { discount: promoDiscount, message } = response;
 
       setDiscount(promoDiscount);
-      const rawPrice = Number(
-        price.replace("EGP", "").replace("USD", "").replace("EUR", "")
-      );
-      setDiscountedPrice(rawPrice - (promoDiscount * rawPrice) / 100);
+      const discountedPrice = price - (promoDiscount * price) / 100;
+      setPriceAfterDiscount(discountedPrice);
+      setDiscountedPrice(discountedPrice);
       setAppliedPromo(true);
       setMessage(message);
       setPromocodeSuccess(true);
@@ -156,7 +169,7 @@ const BookingActivityComponent = ({
         />
         <Typography variant="body2">
           <strong>Price:</strong>{" "}
-          {discountedPrice + ` ${localStorage.getItem("currency")}`}
+          {displayPrice}
           {appliedPromo && (
             <Typography component="span" color="green" sx={{ ml: 1 }}>
               ({`Discount Applied - ${discount}%`})
