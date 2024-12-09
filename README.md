@@ -145,8 +145,14 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 ## 💻 Code Examples
 <details>
     <summary>
-    Product Controller
+    BackEnd
     </summary>
+
+<details>
+    <summary>
+    Stripe Controller
+    </summary>
+
 ```javascript
 const addProduct = async (req, res) => {
   const { name, image, price, description, seller, quantity } = req.body;
@@ -238,6 +244,111 @@ const updateProductById = async (req, res) => {
 ```
 
 </details>
+
+</details>
+
+<summary>Product Model</summary>
+
+```javascript
+const mongoose = require("mongoose");
+
+const productSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "uploads.files",
+      // required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    averageRating: {
+      type: Number,
+      min: 0,
+      max: 5,
+      default: 0,
+    },
+    archived: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// Create a text index for name and description fields for full-text search
+productSchema.index({ name: "text", description: "text" });
+
+const Product = mongoose.model("Product", productSchema);
+
+module.exports = Product;
+```
+
+</details>
+
+<details>
+<summary>Autherntication middleware</summary>
+
+```javascript
+const jwt = require("jsonwebtoken");
+
+const requireAuth = (req, res, next) => {
+  const token = req.cookies.token;
+  //store current url to redirect to it after login
+  const currentUrl = req.originalUrl;
+
+  // check json web token exists & is verified
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+      if (err) {
+        res.status(401).send("Token verification failed");
+      } else {
+        //console.log(decodedToken);
+        req.userId = decodedToken.id;
+        next();
+      }
+    });
+  } else {
+    res.status(401).send("Unauthorized. Please login first");
+  }
+};
+
+module.exports = { requireAuth };
+```
+
+</details>
+
+<details>
+</details>
+
+
+
 
 ## ⚙️ Installation
 
