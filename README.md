@@ -1250,19 +1250,10 @@ npm install
 ## 🧪 Testing
 We used Postman to test each API endpoint by sending requests with specified URLs, parameters, and request bodies. The responses were verified to ensure proper functionality, including handling of edge cases, error messages, and data validation.
 
-<details>
-<summary>Admin Add Product</summary>
-- Add the required information of a certain Product.
-- upload an image of the product.
-
-![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminAddProduct.png)
-
-</details>
-
 
 <details>
 <summary>Search Flights</summary>
-![image](ScreenShots/flightstest.jpeg)
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/flightstest.jpeg)
 </details>
 
 <details>
@@ -1270,13 +1261,6 @@ We used Postman to test each API endpoint by sending requests with specified URL
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20users.jpeg)
 </details>
 
-
-
-<details>
-<summary>Fetch all Users</summary>
-![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20users.jpeg)
-
-</details>
 
 <details>
 <summary>Fetch all PromoCodes Creates</summary>
