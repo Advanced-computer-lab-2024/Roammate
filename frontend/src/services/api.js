@@ -1409,8 +1409,7 @@ export const applyPromoCode = async (code, userId) => {
       userId,
     });
     return response.data;
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error applying promo code:", error);
     throw error;
   }
@@ -1618,7 +1617,6 @@ export const removeTouristInterestInItinerary = async (
     console.log(error);
   }
 };
-
 
 export const fetchSystemUsers = async (query) => {
   try {

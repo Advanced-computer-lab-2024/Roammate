@@ -131,7 +131,7 @@ const deleteMonumentById = async (req, res) => {
     const monument = await Monument.findByIdAndDelete(id);
     if (!monument)
       return res.status(404).send({ message: "Monument not found" });
-    res.send(monument);
+    res.status(204).send({ message: "Monument deleted successfully" });
   } catch (error) {
     res.status(500).send(error);
   }

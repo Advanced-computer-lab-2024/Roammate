@@ -179,11 +179,21 @@ const deleteItineraryById = async (req, res) => {
     return res.status(400).json({ message: "Invalid id" });
   }
   try {
+    //check if itinerary is booked after today
+    const bookings = await ItineraryBooking.exists({
+      itinerary: id,
+      date: { $gte: new Date() },
+    });
+    if (bookings) {
+      return res.status(409).json({
+        error: "Cannot delete itinerary with future bookings",
+      });
+    }
     const result = await Itinerary.findByIdAndDelete(id);
     if (!result) {
       return res.status(404).json({ error: "Itinerary not found" });
     }
-    res.status(200).json({ message: "Itinerary deleted successfully" });
+    res.status(204).json({ message: "Itinerary deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

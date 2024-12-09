@@ -22,6 +22,7 @@ import ShareLink from './ShareLink';
 
 const BookedActivityCard = ({ activityBooking }) => {
     const bookedActivity = activityBooking.activity;
+    if (!bookedActivity) return null;
     const bookingDate = activityBooking.date;
     const [title, setTitle] = useState(bookedActivity.title);
     const [description, setDescription] = useState(bookedActivity.description);

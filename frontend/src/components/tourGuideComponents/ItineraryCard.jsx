@@ -1,24 +1,33 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
-const DATE_FORMAT = "YYYY/MM/DD";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import { Alert, IconButton, Rating } from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import StarIcon from "@mui/icons-material/Star";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import BlockIcon from "@mui/icons-material/Block";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+  Box,
+  Alert,
+  IconButton,
+  Rating,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import {
+  Share as ShareIcon,
+  ArrowForwardIos as ArrowForwardIosIcon,
+  EventAvailable as EventAvailableIcon,
+  Star as StarIcon,
+  Edit as EditIcon,
+  Block as BlockIcon,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router";
-import { getItineraryBookingsCount } from "../../services/api";
+import { deleteItinerary, getItineraryBookingsCount } from "../../services/api";
+
+const DATE_FORMAT = "YYYY/MM/DD";
 
 const ItineraryCard = ({ itinerary }) => {
   const [archived, setArchived] = useState(false);
@@ -33,24 +42,38 @@ const ItineraryCard = ({ itinerary }) => {
   const [rating, setRating] = useState(itinerary.averageRating);
   const [enrollments, setEnrollments] = useState(0);
   const [appropriate, setAppropriate] = useState(itinerary.Appropriate);
+  const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
 
-  const geItineraryEnrollment = async () => {
+  const getItineraryEnrollment = async () => {
     try {
       const response = await getItineraryBookingsCount(itinerary._id);
       setEnrollments(response);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
-  }
+  };
+
   useEffect(() => {
-    geItineraryEnrollment();
-  }
-    , [itinerary]);
+    getItineraryEnrollment();
+  }, [itinerary]);
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteItinerary(itinerary._id);
+      if (response.status === 204) {
+        alert("Itinerary deleted successfully");
+        navigate("/tourguide/my-itineraries");
+      } else {
+        throw new Error("Failed to delete itinerary: " + response.response.data);
+      }
+    } catch (err) {
+      alert(err.response.data.error);
+    }
+  };
 
   return (
     <Card sx={{ width: "650px", mb: 4 }}>
-      {/* <h1>Itinerary Card</h1> */}
       <CardContent
         sx={{
           display: "flex",
@@ -59,7 +82,7 @@ const ItineraryCard = ({ itinerary }) => {
           alignItems: "center",
         }}
       >
-        {/*Header */}
+        {/* Header */}
         <Box
           sx={{
             display: "flex",
@@ -89,13 +112,8 @@ const ItineraryCard = ({ itinerary }) => {
           <IconButton
             size="small"
             color="primary"
-            sx={{
-              mt: "-5px",
-              ml: "10px",
-            }}
-            onClick={() => {
-              navigate(`/tourguide/my-itineraries?id=${itinerary._id}`);
-            }}
+            sx={{ mt: "-5px", ml: "10px" }}
+            onClick={() => navigate(`/tourguide/my-itineraries?id=${itinerary._id}`)}
           >
             <EditIcon />
           </IconButton>
@@ -145,28 +163,14 @@ const ItineraryCard = ({ itinerary }) => {
               ).format(DATE_FORMAT)}`
               : `${dayjs(startDate).format(DATE_FORMAT)}`}
 
-            <IconButton
-              size="small"
-              disabled
-              color="primary"
-              sx={{
-                ml: "10px",
-              }}
-            >
+            <IconButton size="small" disabled color="primary" sx={{ ml: "10px" }}>
               {isBookingAvailable ? (
-                <EventAvailableIcon
-                  sx={{
-                    fill: "green",
-                  }}
-                />
+                <EventAvailableIcon sx={{ fill: "green" }} />
               ) : (
-                <BlockIcon
-                  sx={{
-                    fill: "red",
-                  }}
-                />
+                <BlockIcon sx={{ fill: "red" }} />
               )}
-              <Typography fontSize={14}
+              <Typography
+                fontSize={14}
                 color={isBookingAvailable ? "green" : "red"}
               >
                 {isBookingAvailable ? "Booking Enabled" : "Booking Disabled"}
@@ -206,34 +210,47 @@ const ItineraryCard = ({ itinerary }) => {
       >
         <Button
           variant="contained"
-          sx={{
-            color: "white",
-            backgroundColor: "red",
-          }}
+          sx={{ color: "white", backgroundColor: "red" }}
+          onClick={() => setOpenDialog(true)}
         >
           Delete
         </Button>
 
         <Button
           variant="contained"
-          sx={{
-            color: "white",
-          }}
+          sx={{ color: "white" }}
           endIcon={<ArrowForwardIosIcon />}
-          onClick={() => {
-            navigate(`/tourguide/my-itineraries?id=${itinerary._id}`);
-          }}
+          onClick={() => navigate(`/tourguide/my-itineraries?id=${itinerary._id}`)}
         >
           View
         </Button>
       </CardActions>
-      <Box sx={{
-        width: "100%",
-        mb: "10px",
-        px: "10px",
-      }}>
-        {!appropriate && (<Alert severity="error">This itinerary has been flagged inappropriate by admin</Alert>)}
+      <Box sx={{ width: "100%", mb: "10px", px: "10px" }}>
+        {!appropriate && (
+          <Alert severity="error">
+            This itinerary has been flagged inappropriate by admin
+          </Alert>
+        )}
       </Box>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this itinerary? This action cannot
+            be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

@@ -1,23 +1,33 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-const DATE_FORMAT = "YYYY/MM/DD";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import { Alert, IconButton, Rating } from "@mui/material";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import StarIcon from "@mui/icons-material/Star";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import DeleteIcon from "@mui/icons-material/Delete";
-import BlockIcon from "@mui/icons-material/Block";
-import EditIcon from "@mui/icons-material/Edit";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+  Box,
+  IconButton,
+  Rating,
+  Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import {
+  ArrowForwardIos as ArrowForwardIosIcon,
+  EventAvailable as EventAvailableIcon,
+  Star as StarIcon,
+  Block as BlockIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { deleteActivity, getActivityBookingsCount } from "../../services/api";
+
+const DATE_FORMAT = "YYYY/MM/DD";
 
 const ActivityCard = ({ activity }) => {
   const [archived, setArchived] = useState(false);
@@ -32,6 +42,7 @@ const ActivityCard = ({ activity }) => {
   const [rating, setRating] = useState(activity.averageRating);
   const [enrollments, setEnrollments] = useState(0);
   const [appropriate, setAppropriate] = useState(activity.Appropriate);
+  const [openDialog, setOpenDialog] = useState(false); // For confirmation dialog
   const navigate = useNavigate();
 
   const getActivityEnrollment = async () => {
@@ -41,30 +52,28 @@ const ActivityCard = ({ activity }) => {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
+
   useEffect(() => {
     getActivityEnrollment();
-  }
-    , [activity]);
+  }, [activity]);
 
   const handleDeleteActivity = async () => {
-    alert("Are you sure you want to delete this activity?");
     try {
       const response = await deleteActivity(activity._id);
       if (response.status === 204) {
         alert("Activity deleted successfully");
         navigate("/advertiser/my-activities");
       } else {
-        throw new Error("Failed to delete activity" + response.response.data)
+        throw new Error("Failed to delete activity: " + response.response.data);
       }
     } catch (err) {
       alert(err.response.data.error);
     }
-  }
+  };
 
   return (
     <Card sx={{ maxWidth: 700, mb: 4, width: 700 }}>
-      {/* <h1>Activity Card</h1> */}
       <CardContent
         sx={{
           display: "flex",
@@ -73,7 +82,7 @@ const ActivityCard = ({ activity }) => {
           alignItems: "center",
         }}
       >
-        {/*Header */}
+        {/* Header */}
         <Box
           sx={{
             display: "flex",
@@ -227,7 +236,7 @@ const ActivityCard = ({ activity }) => {
             color: "white",
             backgroundColor: "red",
           }}
-        // onClick={handleDeleteActivity}
+          onClick={() => setOpenDialog(true)} // Open confirmation dialog
         >
           Delete
         </Button>
@@ -244,15 +253,48 @@ const ActivityCard = ({ activity }) => {
         >
           View
         </Button>
-
       </CardActions>
-      <Box sx={{
-        width: "100%",
-        mb: "10px",
-        px: "10px",
-      }}>
-        {!appropriate && (<Alert severity="error">This activity has been flagged inappropriate by admin</Alert>)}
+      <Box
+        sx={{
+          width: "100%",
+          mb: "10px",
+          px: "10px",
+        }}
+      >
+        {!appropriate && (
+          <Alert severity="error">
+            This activity has been flagged inappropriate by admin
+          </Alert>
+        )}
       </Box>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this activity? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              setOpenDialog(false);
+              handleDeleteActivity();
+            }}
+            color="error"
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

@@ -20,6 +20,7 @@ import ShareLink from './ShareLink';
 
 const BookedItineraryCard = ({ itineraryBooking }) => {
     const bookedItinerary = itineraryBooking.itinerary;
+    if (!bookedItinerary) return null;
     const bookingDate = itineraryBooking.date;
     const [title, setTitle] = useState(bookedItinerary.title);
     const [duration, setDuration] = useState(bookedItinerary.duration);
