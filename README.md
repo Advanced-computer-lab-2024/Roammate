@@ -208,6 +208,8 @@ The frontend application will run at http://localhost:5173. Open this URL in you
 Contributions are always welcome to Roammate!  
 Whether you're here to fix bugs, propose new features, or help improve documentation, we're thrilled to have your support.
 
+---
+
 <details>
   <summary>### Getting Started</summary>
 
@@ -262,6 +264,7 @@ We appreciate your efforts to contribute via Pull Requests. Here's how you can m
 </details>
 
 </details>
+
 
 ## ©️ Credits
 
