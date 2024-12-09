@@ -238,7 +238,8 @@ const updateProductById = async (req, res) => {
     res.status(500).json({ message: "Error updating product", error });
   }
 };
-</details>
+
+</details> ```
 <details>
 <summary>FrontEnd</summary>
 </details>
