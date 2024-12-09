@@ -168,6 +168,82 @@ cd ../frontend
 npm install
 
 ## 📚 API Reference
+<details>
+<summary>User Management</summary>
+
+| HTTP Method | Endpoint                | Description                                | Parameters      |
+|-------------|-------------------------|--------------------------------------------|-----------------|
+| GET         | `/users`                | Get all users                              | None            |
+| DELETE      | `/users/:id`            | Delete a user by ID                        | `id`            |
+| PATCH       | `/users/status`         | Update the status of all users             | None            |
+| PATCH       | `/users/status/:id`     | Update the status of a specific user       | `id`            |
+| GET         | `/users/status/:id`     | Get the status of a specific user          | `id`            |
+| GET         | `/users/pending`        | Get all users with 'Pending' status        | None            |
+| GET         | `/users/notifications/:id` | Get all notifications for a user         | `id`            |
+| PATCH       | `/users/notifications/:id` | Mark all notifications as read for a user | `id`            |
+| POST        | `/users/forgot-password` | Forgot password for a user                | None            |
+| POST        | `/users/verify-otp`     | Verify OTP for a user                      | None            |
+| POST        | `/users/reset-password` | Reset password for a user                  | None            |
+
+</details>
+
+<details>
+<summary>Admin Management</summary>
+
+| HTTP Method | Endpoint        | Description                  | Parameters |
+|-------------|-----------------|------------------------------|------------|
+| POST        | `/admin`        | Add a new admin              | None       |
+| GET         | `/admin/:id`    | Get admin by ID              | `id`       |
+| PATCH       | `/admin/:id`    | Update admin by ID           | `id`       |
+| GET         | `/admin`        | Get all admins               | None       |
+| DELETE      | `/admin/:id`    | Delete an admin by ID        | `id`       |
+
+</details>
+
+<details>
+<summary>Advertiser Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                     | Parameters |
+|-------------|-----------------------------------|-------------------------------------------------|------------|
+| POST        | `/advertiser`                    | Register a new advertiser                      | None       |
+| GET         | `/advertiser/:id`                | Get advertiser by ID                           | `id`       |
+| PATCH       | `/advertiser/:id`                | Update advertiser by ID                        | `id`       |
+| GET         | `/advertiser`                    | Get all advertisers                            | None       |
+| POST        | `/advertiser/identification/upload` | Upload identification for advertiser          | None       |
+| POST        | `/advertiser/taxation/upload`    | Upload taxation document for advertiser        | None       |
+| POST        | `/advertiser/logo/upload`        | Upload logo for advertiser                     | None       |
+| DELETE      | `/request-delete-advertiser/:id` | Request advertiser deletion if no bookings     | `id`       |
+
+</details>
+
+<details>
+<summary>Seller Management</summary>
+
+| HTTP Method | Endpoint                         | Description                                     | Parameters |
+|-------------|----------------------------------|-------------------------------------------------|------------|
+| POST        | `/seller`                       | Register a new seller                          | None       |
+| GET         | `/seller/:id`                   | Get seller by ID                               | `id`       |
+| PATCH       | `/seller/:id`                   | Update seller by ID                            | `id`       |
+| GET         | `/seller`                       | Get all sellers                                | None       |
+| POST        | `/seller/identification/upload` | Upload identification for seller              | None       |
+| POST        | `/seller/taxation/upload`       | Upload taxation document for seller           | None       |
+| POST        | `/seller/logo/upload`           | Upload logo for seller                         | None       |
+| DELETE      | `/request-delete-seller/:id`    | Request seller deletion if no upcoming products| `id`       |
+
+</details>
+
+<details>
+<summary>Tourist Management</summary>
+
+| HTTP Method | Endpoint                        | Description                                     | Parameters |
+|-------------|---------------------------------|-------------------------------------------------|------------|
+| POST        | `/tourist`                     | Register a new tourist                         | None       |
+| GET         | `/tourist/:id`                 | Get tourist by ID                              | `id`       |
+| PATCH       | `/tourist/:id`                 | Update tourist by ID                           | `id`       |
+| GET         | `/tourist`                     | Get all tourists                               | None       |
+| DELETE      | `/request-delete-tourist/:id`  | Request tourist deletion if no bookings        | `id`       |
+
+</details>
 
 ## 🧪 Testing
 
