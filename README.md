@@ -340,8 +340,382 @@ module.exports = { requireAuth };
 
 </details>
 
+<details>
+<summary>NodeMailer Util</summary>
+
+```javascript
+var nodemailer = require("nodemailer");
+
+const myEmail = "roammate.travel@gmail.com";
+const myPassword = "jegt vgtk omja pzqu";
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: myEmail,
+    pass: myPassword,
+  },
+  tls: {
+    rejectUnauthorized: false, // Disable certificate validation (use with caution in production)
+  },
+});
+
+const sendEmail = (email, subject, text) => {
+  const mailOptions = {
+    from: myEmail,
+    to: email,
+    subject: subject,
+    text: text,
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+    //   console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports = sendEmail;
+```
+
+</details>
+
+<details>
+<summary>ShareLink Componenet</summary>
+
+```javascript
+import React from "react";
+import { Alert, Avatar, Button, Dialog, DialogTitle, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Snackbar, Typography } from "@mui/material";
+import ShareIcon from '@mui/icons-material/Share';
+import LinkIcon from '@mui/icons-material/Link';
+import EmailIcon from '@mui/icons-material/Email';
 
 
+function SimpleDialog(props) {
+    const { copyLink, emailLink, onClose, open } = props;
+
+    return (
+        <Dialog onClose={onClose} open={open}>
+            <DialogTitle sx={{
+                textAlign: 'center',
+            }}>Share with friends</DialogTitle>
+            <List sx={{ pt: 0 }}>
+                <ListItem disableGutters>
+                    <ListItemButton
+                        onClick={copyLink}
+                    >
+                        <ListItemAvatar>
+                            <Avatar>
+                                <LinkIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="Copy link to clipboard" />
+                    </ListItemButton>
+                </ListItem>
+
+                <ListItem disableGutters>
+                    <ListItemButton
+                        onClick={emailLink}
+                    >
+                        <ListItemAvatar>
+                            <Avatar>
+                                <EmailIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="Send link via Email" />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+        </Dialog>
+    );
+}
+
+const ShareLink = ({ id, type }) => {
+    const [open, setOpen] = React.useState(false);
+    const [copied, setCopied] = React.useState(false);
+
+    const getLink = () => {
+        let link = 'localhost:5173/tourist/'
+        switch (type) {
+            case "activity":
+                link += 'activities?id='
+                break;
+            case "itinerary":
+                link += 'itineraries?id='
+                break;
+            case "product":
+                link += 'products?id='
+                break;
+            case "monument":
+                link += 'monuments?id='
+                break;
+            default:
+                break;
+        }
+        link += id
+        return link;
+    }
+
+
+    const copyLinkToClipboard = async () => {
+        const link = getLink();
+        await navigator.clipboard.writeText(link);
+        setOpen(false)
+        setCopied(true);
+    };
+
+    const sendEmailLink = () => {
+        const link = getLink();
+        const subject = `Check out this ${type}!`;
+        const body = `I thought you'd like it: \n ${link}`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setOpen(false);
+    };
+
+    const handleClick = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+        setCopied(false);
+    }
+
+    return (
+        <div>
+            <Snackbar open={copied} autoHideDuration={1500} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    sx={{
+                        width: '100%',
+                        backgroundColor: '#FFBF00',
+                    }}
+                >
+                    Link Copied to Clipboard
+                </Alert>
+            </Snackbar>
+
+
+            <IconButton onClick={handleClick} sx={{
+                mt: '-10px',
+                mr: '-10px',
+                ml: '5px'
+            }}>
+                <ShareIcon />
+            </IconButton>
+            <SimpleDialog
+                copyLink={copyLinkToClipboard}
+                emailLink={sendEmailLink}
+                open={open}
+                onClose={handleClose}
+            />
+
+
+        </div>
+
+    );
+}
+
+export default ShareLink;
+
+```
+
+</details>
+
+<details>
+<summary>SearchBar Component</summary>
+
+```javascript
+import React from 'react';
+import { Box, IconButton } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+
+const SearchBar = ({ searchQuery, setSearchQuery, setFetch }) => {
+    return (
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            mb: '30px',
+        }}>
+            <IconButton sx={{
+                fontSize: '20px',
+                mt: '5px',
+                mr: "5px",
+                padding: "10px",
+            }}
+                onClick={() => setFetch((prev) => prev + 1)}>
+                <SearchIcon />
+            </IconButton>
+            <input style={
+                {
+                    border: 'none',
+                    width: '300px',
+                    height: '40px',
+                    padding: '10px',
+                    borderRadius: '50px',
+                    boxShadow: '1px 1px 2px 0px #00000033',
+                }
+            }
+                placeholder='Search'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}>
+            </input>
+        </Box>);
+}
+
+export default SearchBar;
+```
+
+</details>
+
+<details>
+<summary>Add Admin Page</summary>
+
+```javascript
+import React, { useState } from "react";
+import { addAdmin } from "../../services/api";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Alert,
+  Paper,
+} from "@mui/material";
+
+const AddAdminPage = () => {
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await addAdmin(formData);
+      setMessage(`Admin "${result.username}" added successfully!`);
+      setError(null);
+      setFormData({ username: "", password: "" });
+    } catch (err) {
+      setError(err.error || "Failed to add admin.");
+      setMessage(null);
+    }
+  };
+
+  return (
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
+      <Paper elevation={3} sx={{ padding: 4, borderRadius: 2 }}>
+        <Typography
+          variant="h5"
+          sx={{ mb: 3, fontWeight: "bold", textAlign: "center" }}
+        >
+          Add Admin
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <TextField
+            label="Username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            variant="outlined"
+            required
+            fullWidth
+          />
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            variant="outlined"
+            required
+            fullWidth
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ fontWeight: "bold" }}
+          >
+            Add Admin
+          </Button>
+          {message && <Alert severity="success">{message}</Alert>}
+          {error && <Alert severity="error">{error}</Alert>}
+        </Box>
+      </Paper>
+    </Container>
+  );
+};
+
+export default AddAdminPage;
+
+```
+
+</details>
+
+<details>
+<summary>Product Image Component</summary>
+
+```javascript
+import React, { useState, useEffect } from "react";
+import { downloadImage } from "../../services/api";
+import CardMedia from '@mui/material/CardMedia';
+import placeholder from "../../assets/images/placeholder.png";
+import { Box } from "@mui/material";
+
+const ProductImage = ({ imageId }) => {
+    const [image, setImage] = useState(null);
+
+    const fetchImage = async () => {
+        try {
+            const response = await downloadImage(imageId);
+            const blob = response.data;
+            const imageUrl = URL.createObjectURL(blob);
+            setImage(imageUrl);
+        } catch (error) {
+            console.error("Error fetching the product image:", error);
+        }
+    };
+
+    useEffect(() => {
+        if (imageId)
+            fetchImage();
+    }, [imageId]);
+
+    return (
+
+        <CardMedia
+            component="img"
+            image={image ? image : placeholder}
+            alt="Product Image"
+            sx={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+                width: '100%',
+                height: '100%',
+                borderRadius: '5px',
+            }}
+        />
+
+    );
+};
+
+export default ProductImage;
+```
+
+</details>
 
 
 ## ⚙️ Installation
