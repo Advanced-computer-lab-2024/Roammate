@@ -208,7 +208,6 @@ Contributions are always welcome to Roammate!
 
 Whether you're here to fix bugs, propose new features, or help improve documentation, we're thrilled to have your support.
 
-<details>
 <summary>Getting Started<summary>:
 
 To begin contributing:
@@ -234,7 +233,6 @@ To begin contributing:
 
     
 5. Open a *Pull Request (PR)* against the main branch of this repository.
-</details>
 <details>    
 <summary>Reporting Issues<summary>
 
