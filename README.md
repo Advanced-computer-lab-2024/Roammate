@@ -5,7 +5,7 @@
 1. [🚀 Motivation](#-motivation)
 2. [🧱 Build Status](#-build-status)
 3. [🎨 Code Style](#-code-style)
-4. [📸 Screenshots](#Screenshots)
+4. [📸 Screenshots](#-Screenshots)
 5. [⚒️ Tech and Frameworks used](#%EF%B8%8F-tech-and-frameworks-used)
 6. [🔥 Features](#-features--screenshots)
 7. [💻 Code Examples](#-code-examples)
