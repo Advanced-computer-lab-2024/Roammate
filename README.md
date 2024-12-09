@@ -143,10 +143,10 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 
 ## 💻 Code Examples
-### Backend
 <details>
-<summary>ProductController</summary>
-**Description:** This demonstrates CRUD operations for the Product Controller, including adding, fetching, updating, and deleting products.
+    <summary>
+    Product Controller
+    </summary>
 ```javascript
 const addProduct = async (req, res) => {
   const { name, image, price, description, seller, quantity } = req.body;
@@ -166,7 +166,6 @@ const addProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const getProductById = async (req, res) => {
   const { id } = req.params;
   const { currency = "USD" } = req.query;
@@ -192,7 +191,6 @@ const getProductById = async (req, res) => {
     res.status(500).json({ message: "Error retrieving product", error });
   }
 };
-
 const deleteProductById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -205,7 +203,6 @@ const deleteProductById = async (req, res) => {
     res.status(500).json({ message: "Error deleting product", error });
   }
 };
-
 const updateProductById = async (req, res) => {
   const { id } = req.params;
   const { name, image, price, description, quantity, reviews, averageRating } =
@@ -238,10 +235,8 @@ const updateProductById = async (req, res) => {
     res.status(500).json({ message: "Error updating product", error });
   }
 };
+```
 
-</details> ```
-<details>
-<summary>FrontEnd</summary>
 </details>
 
 ## ⚙️ Installation
