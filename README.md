@@ -1,4 +1,4 @@
-# Virtual Trip Planner
+# ROAMMATE
 
 ## Table of Contents
 
