@@ -29,7 +29,7 @@ const PaymentForm = ({ activity, onBack, handleBooking }) => {
 
       // Navigate back to activities page after a delay
       setTimeout(() => {
-        navigate("/activities"); // Adjust the path to match your activities page route
+        // navigate("/tourist"); // Adjust the path to match your activities page route
       }, 2000); // Delay for user feedback
     } catch (error) {
       setMessage(`Payment failed. ${error.response.data.error}`);
@@ -73,7 +73,7 @@ const PaymentForm = ({ activity, onBack, handleBooking }) => {
         Complete your payment
       </Typography>
       <Typography variant="body1" sx={{ marginBottom: 3, color: "gray" }}>
-        Enter your payment details to book this activity<strong></strong>.
+        Enter your payment details<strong></strong>.
       </Typography>
 
       {/* Simulated Payment Input */}

@@ -91,6 +91,7 @@ const BookingActivityComponent = ({
     } catch (error) {
       setMessage("An error occurred during payment. Please try again.");
       console.error("Payment processing error:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -104,6 +105,7 @@ const BookingActivityComponent = ({
       setMessage("Booking successful!");
     } catch (error) {
       setMessage(`Wallet payment failed. ${error.response?.data?.error}`);
+      console.log(error);
       console.error("Wallet payment error:", error.response?.data?.error);
     } finally {
       setLoading(false);
