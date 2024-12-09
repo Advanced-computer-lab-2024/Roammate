@@ -66,7 +66,13 @@ const AdminActivitiesPage = () => {
       /> */}
 
       {/* All Activities */}
-      <Box sx={{ mt: 4 }}>
+      <Box sx={{
+        mt: 2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
         <Typography variant="h5" sx={{ mb: 4, color: 'grey' }}>
           All Activities
         </Typography>
@@ -99,7 +105,7 @@ const AdminActivitiesPage = () => {
             backgroundColor: "#fdecea",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "start",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >

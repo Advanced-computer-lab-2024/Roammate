@@ -120,7 +120,8 @@ const EditMuseumForm = ({ museum }) => {
         justifyContent: "start",
         alignItems: "start",
         gap: "20px",
-        width: "350px",
+        padding: "20px",
+        width: "500px",
       }}
     >
       <h2>Museum Details</h2>

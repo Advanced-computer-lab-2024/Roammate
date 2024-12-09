@@ -11,8 +11,8 @@ const CreateActivityPage = () => {
             sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'start',
-                alignItems: 'start',
+                justifyContent: 'center',
+                alignItems: 'center',
                 gap: '50px',
                 mt: '20px',
 

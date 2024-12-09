@@ -36,7 +36,13 @@ const AdvertiserActivitiesPage = () => {
 
 
   return !activity_id ? (
-    <Box>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+
+    }}>
       <Grid2 >
         <Box sx={{
           display: 'flex',

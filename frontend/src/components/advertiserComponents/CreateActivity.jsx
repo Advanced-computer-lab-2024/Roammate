@@ -101,10 +101,10 @@ const CreateActivity = ({ id }) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'start',
-        alignItems: 'start',
+        justifyContent: 'center',
+        alignItems: 'center',
         gap: '20px',
-        width: '450px',
+        width: '500px',
         border: '1px solid lightgray',
         padding: '20px',
       }}
