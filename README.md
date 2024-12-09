@@ -35,7 +35,105 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - [Prettier](https://prettier.io/) : it is a code formatter that runs automatically before each commit on the whole code so that the codes looks well formatted across the whole project
 
 ## 📸 Screenshots
+<details>
+<summary>User Login</summary>
 
+- Login with correct username and password.
+- Choose forget password if you can't remember your password.
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/Login.png)
+</details>
+
+<details>
+<summary>Tourist Registration</summary>
+- Register as a tourist with essential details.
+- Choose your prefrences.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/TouristRegistration.png)
+
+</details>
+
+<details>
+<summary>Tourist Profile Page</summary>
+- Edit your personal data.
+- Redeem your points.
+- Change your password.
+- Delete the account.
+- Add an address.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/TouristProfilePage.png)
+
+</details>
+
+<details>
+<summary>Sorting and Filtering</summary>
+- Choose the criteria to sort the results.
+- Choose the constraints to filter the results.
+- Price is sorted in ascending order.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/SortingByPriceAsc.png)
+
+</details>
+
+<details>
+<summary>Wishlist</summary>
+- List of wishlisted products.
+
+![image](https://github.com/advanced-computer-lab-2023/Copilot-and-Sons-Clinic/blob/main/images/health-packages.png)
+
+</details>
+
+<details>
+<summary>User Purchase History</summary>
+- Check pending orders.
+- check past orders.
+
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserPurchaseHistory.png)
+
+</details>
+
+<details>
+<summary>Activity Booking</summary>
+- Choose a date to book an activity.
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/ActivityBookingPage.png)
+
+</details>
+
+<details>
+<summary>Add new Address</summary>
+- Add the required information of a new address.
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AddNewAdress.png)
+
+</details>
+
+<details>
+<summary>Admin Homepage</summary>
+- Delete user's account.
+- View the number of users.
+- toggle between users, registrations and compliants.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminHomePage.png)
+
+</details>
+
+<details>
+<summary>compliants</summary>
+- View complaints' details.
+- Approve or reject complaints.
+- View past compliants.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/Complaints.png)
+
+</details>
+
+<details>
+<summary>Admin Add Product</summary>
+- Add the required information of a certain Product.
+- upload an image of the product.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminAddProduct.png)
+
+</details>
 
 ## ⚒️ Tech and Frameworks used
 
