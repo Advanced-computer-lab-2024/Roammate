@@ -202,38 +202,36 @@ npm run dev
 ```
 The frontend application will run at http://localhost:5173. Open this URL in your browser to interact with the application's user interface.
 
-## 🤝 Contributing
-Contributions are always welcome to Roammate!
+<details>
+  <summary>## 🤝 Contribute</summary>
 
+Contributions are always welcome to Roammate!  
 Whether you're here to fix bugs, propose new features, or help improve documentation, we're thrilled to have your support.
 
-### Getting Started:
+<details>
+  <summary>### Getting Started</summary>
 
 To begin contributing:
 
-1. *Fork the repository* to your GitHub account.
+1. *Fork the repository* to your GitHub account.  
 2. *Clone your forked repository* and create a new branch:
-  
-   bash
-   git checkout -b my-new-feature
-
-    
+    ```bash
+    git checkout -b my-new-feature
+    ```
 3. Make your changes and commit them:
-
-   bash
-   git commit -am "Add some feature" 
-
-   
-
- 4. *Push your branch* to your forked repository:
-
-    bash
-    git push origin my-new-feature  
-
-    
+    ```bash
+    git commit -am "Add some feature"
+    ```
+4. *Push your branch* to your forked repository:
+    ```bash
+    git push origin my-new-feature
+    ```
 5. Open a *Pull Request (PR)* against the main branch of this repository.
-    
-### Reporting Issues
+
+</details>
+
+<details>
+  <summary>### Reporting Issues</summary>
 
 If you encounter any issues, feel free to report them using the GitHub Issues feature. For a helpful bug report, please include:
 
@@ -243,17 +241,27 @@ If you encounter any issues, feel free to report them using the GitHub Issues fe
 - The expected and actual outcomes.
 - Any additional notes or observations.
 
-### Feature Requests
+</details>
+
+<details>
+  <summary>### Feature Requests</summary>
 
 Have an idea for a new feature? We'd love to hear it! Open a GitHub issue with your proposal, making sure to provide context, motivation, and detailed examples of how it would benefit the project.
 
-### Pull Requests
+</details>
+
+<details>
+  <summary>### Pull Requests</summary>
 
 We appreciate your efforts to contribute via Pull Requests. Here's how you can make the process smoother:
 
 - Ensure the tests pass before submitting your PR.
 - Include tests for any new functionality you've added.
 - Make sure your changes align with the project's goals.
+
+</details>
+
+</details>
 
 ## ©️ Credits
 
