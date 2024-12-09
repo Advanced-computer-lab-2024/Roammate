@@ -204,37 +204,34 @@ The frontend application will run at http://localhost:5173. Open this URL in you
 
 ## 🤝 Contribute
 
-Contributions are always welcome to Roammate!
+Contributions are always welcome to Roammate!  
 
 Whether you're here to fix bugs, propose new features, or help improve documentation, we're thrilled to have your support.
 
-<summary>Getting Started<summary>:
+<details>
+  <summary>Getting Started</summary>
 
 To begin contributing:
 
-1. *Fork the repository* to your GitHub account.
-2. *Clone your forked repository* and create a new branch:
-  
-   bash
-   git checkout -b my-new-feature
-
-    
-3. Make your changes and commit them:
-
-   bash
-   git commit -am "Add some feature" 
-
-   
-
- 4. *Push your branch* to your forked repository:
-
-    bash
-    git push origin my-new-feature  
-
-    
+1. *Fork the repository* to your GitHub account.  
+2. *Clone your forked repository* and create a new branch:  
+    ```bash
+    git checkout -b my-new-feature
+    ```  
+3. Make your changes and commit them:  
+    ```bash
+    git commit -am "Add some feature"
+    ```  
+4. *Push your branch* to your forked repository:  
+    ```bash
+    git push origin my-new-feature
+    ```  
 5. Open a *Pull Request (PR)* against the main branch of this repository.
-<details>    
-<summary>Reporting Issues<summary>
+
+</details>
+
+<details>
+  <summary>Reporting Issues</summary>
 
 If you encounter any issues, feel free to report them using the GitHub Issues feature. For a helpful bug report, please include:
 
@@ -243,21 +240,25 @@ If you encounter any issues, feel free to report them using the GitHub Issues fe
 - Any sample code or context.
 - The expected and actual outcomes.
 - Any additional notes or observations.
+
 </details>
+
 <details>
-<summary>Feature Requests<summary>
+  <summary>Feature Requests</summary>
 
 Have an idea for a new feature? We'd love to hear it! Open a GitHub issue with your proposal, making sure to provide context, motivation, and detailed examples of how it would benefit the project.
+
 </details>
 
 <details>
-<summary>Pull Requests<summary>
+  <summary>Pull Requests</summary>
 
 We appreciate your efforts to contribute via Pull Requests. Here's how you can make the process smoother:
 
-- Ensure the tests pass before submitting your PR.
-- Include tests for any new functionality you've added.
+- Ensure the tests pass before submitting your PR.  
+- Include tests for any new functionality you've added.  
 - Make sure your changes align with the project's goals.
+
 </details>
 
 
