@@ -35,7 +35,13 @@ const TourGuideItinerariesPage = () => {
   }, [itinerary_id]);
 
   return !itinerary_id ? (
-    <Box>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+
+    }}>
 
       {itineraries.length === 0 &&
         (fetch < 1 ? (

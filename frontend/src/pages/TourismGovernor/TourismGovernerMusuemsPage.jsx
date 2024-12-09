@@ -37,7 +37,13 @@ const TourismGovernorMuseumsPage = () => {
   }, [museum_id, id]);
 
   return !museum_id ? (
-    <Box>
+    <Box sx={{
+      mt: 2,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    }}>
       <Grid2 container spacing={2}>
         <Grid2 item xs={12} sx={{ flexGrow: 1 }}>
           {museums.length === 0 &&
@@ -55,6 +61,7 @@ const TourismGovernorMuseumsPage = () => {
       </Grid2>
     </Box>
   ) : (
+
     <ManageMuseumPage museum={museums.find((mus) => mus._id === museum_id)} />
   );
 };

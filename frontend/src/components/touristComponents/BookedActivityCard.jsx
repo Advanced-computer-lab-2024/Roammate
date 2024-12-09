@@ -31,7 +31,7 @@ const BookedActivityCard = ({ activityBooking }) => {
 
 
     return (
-        <Card sx={{ maxWidth: 650, mb: 4 }}>
+        <Card sx={{ maxWidth: 650, mb: 4, width: 650 }}>
             <CardContent sx={{
                 display: 'flex',
                 flexDirection: 'column',

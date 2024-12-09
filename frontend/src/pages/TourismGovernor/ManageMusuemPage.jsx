@@ -24,20 +24,28 @@ const ManageMuseumPage = ({ museum }) => {
   const [reviews, setReviews] = useState(museum.reviews || []); // Placeholder reviews
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "start",
-        alignItems: "start",
-        gap: "20px",
-        width: "350px",
-      }}
-    >
-      {/* Museum Edit Form */}
-      <EditMuseumForm museum={museum} />
+    <Box sx={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "20px",
+          width: "500px",
+          border: "1px solid lightgrey",
+          borderRadius: "10px",
+        }}
+      >
+        {/* Museum Edit Form */}
+        <EditMuseumForm museum={museum} />
 
-      {/* Reviews Section
+        {/* Reviews Section
       <Box sx={{ width: "100%" }}>
         <Typography variant="h6" sx={{ color: "grey", mb: "10px" }}>
           Reviews Section
@@ -65,7 +73,8 @@ const ManageMuseumPage = ({ museum }) => {
           </Typography>
         )}
       </Box> */}
-    </Box>
+      </Box>
+    </Box >
   );
 };
 

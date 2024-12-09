@@ -200,7 +200,8 @@ const AdvertiserManageProfile = () => {
       </Box>
 
       <Box sx={{
-        display: "flex", flexDirection: 'row', gap: 5, mt: 3, width: '100%', justifyContent: 'space-between'
+        display: "flex", flexDirection: 'row', gap: 5, mt: 3, width: '100%', justifyContent: 'center',
+
       }}>
         {/* Profile and File Upload Sections */}
         <Box

@@ -35,13 +35,19 @@ const TouristBookedActivities = () => {
                 <div>
                     {bookedActivities ?
                         <div>
-                            <Box>
+                            <Box sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexDirection: 'column',
+
+                            }}>
                                 <Typography sx={{
                                     fontSize: '25px',
                                     fontWeight: 'bold',
                                     mb: '25px',
                                     color: 'grey',
-                                    textAlign: 'left'
+                                    textAlign: 'center'
                                 }}>
                                     Upcoming Activities
                                 </Typography>
@@ -54,13 +60,19 @@ const TouristBookedActivities = () => {
                                 mb: '20px',
                             }} />
 
-                            <Box>
+                            <Box sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexDirection: 'column',
+
+                            }}>
                                 <Typography sx={{
                                     fontSize: '25px',
                                     fontWeight: 'bold',
                                     mb: '25px',
                                     color: 'grey',
-                                    textAlign: 'left'
+                                    textAlign: 'center'
                                 }}>
                                     Past Activities
                                 </Typography>

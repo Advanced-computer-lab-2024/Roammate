@@ -55,7 +55,13 @@ const AdminItinerariesPage = () => {
   return !id ? (
     <Box>
       {/* All Itineraries */}
-      <Box sx={{ mt: 4 }}>
+      <Box sx={{
+        mt: 2,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "start",
+        alignItems: "center",
+      }}>
         <Typography variant="h5" sx={{ mb: 4, color: 'grey' }}>
           All Itineraries
         </Typography>

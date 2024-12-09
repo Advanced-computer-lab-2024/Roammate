@@ -63,7 +63,7 @@ const SortAndFilterComplaints = ({ setFilterAndSortCriteria, setFetch }) => {
             justifyContent: "start",
             alignItems: "center",
           }}>
-          <SortIcon sx={{ ml: "10px", fontSize: "30px" }} />
+          {/* <SortIcon sx={{ ml: "10px", fontSize: "30px" }} /> */}
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
             Sort
           </Typography>

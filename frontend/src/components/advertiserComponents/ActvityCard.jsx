@@ -63,7 +63,7 @@ const ActivityCard = ({ activity }) => {
   }
 
   return (
-    <Card sx={{ maxWidth: "650px", mb: 4 }}>
+    <Card sx={{ maxWidth: 700, mb: 4, width: 700 }}>
       {/* <h1>Activity Card</h1> */}
       <CardContent
         sx={{

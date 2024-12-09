@@ -49,7 +49,7 @@ const ItineraryCard = ({ itinerary }) => {
     , [itinerary]);
 
   return (
-    <Card sx={{ width: "600px", mb: 4 }}>
+    <Card sx={{ width: "650px", mb: 4 }}>
       {/* <h1>Itinerary Card</h1> */}
       <CardContent
         sx={{
