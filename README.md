@@ -143,14 +143,10 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 
 ## 💻 Code Examples
-<details>
-    <summary>
-    BackEnd
-    </summary>
 
 <details>
     <summary>
-    Stripe Controller
+    Product Controller
     </summary>
 
 ```javascript
@@ -343,9 +339,8 @@ module.exports = { requireAuth };
 ```
 
 </details>
-
-<details>
 </details>
+
 
 
 
