@@ -244,6 +244,305 @@ npm install
 | DELETE      | `/request-delete-tourist/:id`  | Request tourist deletion if no bookings        | `id`       |
 
 </details>
+<details>
+<summary>Tourism Governor Management</summary>
+
+| HTTP Method | Endpoint                | Description                          | Parameters |
+|-------------|-------------------------|--------------------------------------|------------|
+| POST        | `/tourismGovernor`      | Add a new tourism governor           | None       |
+| GET         | `/tourismGovernor`      | Get all tourism governors            | None       |
+| GET         | `/tourismGovernor/:id`  | Get tourism governor by ID           | `id`       |
+| PATCH       | `/tourismGovernor/:id`  | Update tourism governor by ID        | `id`       |
+
+</details>
+
+<details>
+<summary>Tour Guide Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/tourGuide`                     | Register a new tour guide                  | None       |
+| GET         | `/tourGuide/:id`                 | Get tour guide by ID                       | `id`       |
+| PATCH       | `/tourGuide/:id`                 | Update tour guide by ID                    | `id`       |
+| GET         | `/tourGuide`                     | Get all tour guides                        | None       |
+| POST        | `/tourGuide/identification/upload` | Upload identification for tour guide       | None       |
+| POST        | `/tourGuide/certificate/upload`  | Upload certificate for tour guide          | None       |
+| POST        | `/tourGuide/photo/upload`        | Upload photo for tour guide                | None       |
+| POST        | `/tourGuide/review/:id`          | Add review for a tour guide                | `id`       |
+| DELETE      | `/request-delete-tourguide/:id`  | Request tour guide deletion if no bookings | `id`       |
+
+</details>
+
+<details>
+<summary>Product Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/product`                       | Add a new product                          | None       |
+| GET         | `/product`                       | Get all products                           | None       |
+| GET         | `/product/:id`                   | Get product by ID                          | `id`       |
+| GET         | `/product-seller/:id`            | Get products by seller ID                  | `id`       |
+| DELETE      | `/product/:id`                   | Delete product by ID                       | `id`       |
+| PATCH       | `/product/:id`                   | Update product by ID                       | `id`       |
+| GET         | `/product-search`                | Search products with filters               | None       |
+| PUT         | `/product/:id/toggle-archived`   | Toggle archived status of a product        | `id`       |
+| GET         | `/product/:id/check-archived`    | Check if a product is archived             | `id`       |
+| POST        | `/product/image/upload`          | Upload image for a product                 | None       |
+| GET         | `/product/:id/product-sales`     | Get stock and sales of a product           | `id`       |
+
+</details>
+
+<details>
+<summary>Activity Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/activity`                      | Create a new activity                      | None       |
+| GET         | `/activity`                      | Get all activities                         | None       |
+| GET         | `/activity/:id`                  | Get activity by ID                         | `id`       |
+| PATCH       | `/activity/:id`                  | Update activity by ID                      | `id`       |
+| DELETE      | `/activity/:id`                  | Delete activity by ID                      | `id`       |
+| GET         | `/activity-search`               | Search activities with filters and sorting | None       |
+| GET         | `/activity-advertiser/:id`       | Get activities by advertiser ID            | `id`       |
+| GET         | `/activity-tourist/:id`          | Get booked activities by tourist ID        | `id`       |
+| GET         | `/check-activity-booking/:activityId` | Check if an activity is booked          | `activityId`|
+
+</details>
+
+<details>
+<summary>Itinerary Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/itinerary`                     | Create a new itinerary                     | None       |
+| GET         | `/itinerary`                     | Get all itineraries                        | None       |
+| GET         | `/itinerary/:id`                 | Get itinerary by ID                        | `id`       |
+| PATCH       | `/itinerary/:id`                 | Update itinerary by ID                     | `id`       |
+| DELETE      | `/itinerary/:id`                 | Delete itinerary by ID                     | `id`       |
+| GET         | `/itinerary-search`              | Search itineraries with filters and sorting| None       |
+| GET         | `/itinerary/tourGuide/:id`       | Get itineraries by tour guide ID           | `id`       |
+
+</details>
+
+<details>
+<summary>Tags and Categories</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/preferenceTags`                | Create a new preference tag                | None       |
+| GET         | `/preferenceTags`                | Get all preference tags                    | None       |
+| PATCH       | `/preferenceTags/:id`            | Update a preference tag by ID              | `id`       |
+| DELETE      | `/preferenceTags/:id`            | Delete a preference tag by ID              | `id`       |
+| POST        | `/activityCategory`              | Create a new activity category             | None       |
+| GET         | `/activityCategory`              | Get all activity categories                | None       |
+| PATCH       | `/activityCategory/:id`          | Update an activity category by ID          | `id`       |
+| DELETE      | `/activityCategory/:id`          | Delete an activity category by ID          | `id`       |
+
+</details>
+
+<details>
+<summary>Complaints Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/complaint`                     | Create a new complaint                     | None       |
+| GET         | `/complaints`                    | Get all complaints                         | None       |
+| GET         | `/complaints/:issuerId`          | Get complaints by issuer ID                | `issuerId` |
+| GET         | `/complaint/:id`                 | Get complaint details by ID                | `id`       |
+| DELETE      | `/complaint/:id`                 | Delete a complaint by ID                   | `id`       |
+| PUT         | `/complaint/:id`                 | Mark a complaint as resolved by ID         | `id`       |
+
+</details>
+<details>
+<summary>Monument Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/monument`                      | Create a new monument                      | None       |
+| GET         | `/monument`                      | Get all monuments                          | None       |
+| GET         | `/monument/:id`                  | Get monument by ID                         | `id`       |
+| PATCH       | `/monument/:id`                  | Update a monument by ID                    | `id`       |
+| DELETE      | `/monument/:id`                  | Delete a monument by ID                    | `id`       |
+| GET         | `/monument-search`               | Search monuments with filters              | None       |
+| GET         | `/monument/tourismGovernor/:id`  | Get monuments by tourism governor ID       | `id`       |
+
+</details>
+
+<details>
+<summary>Monument Tags Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/monumentTags`                  | Create a new monument tag                  | None       |
+| GET         | `/monumentTags`                  | Get all monument tags                      | None       |
+| PATCH       | `/monumentTags/:id`              | Update a monument tag by ID                | `id`       |
+| DELETE      | `/monumentTags/:id`              | Delete a monument tag by ID                | `id`       |
+
+</details>
+
+<details>
+<summary>Booking Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/bookActivity`                  | Book an activity                           | None       |
+| DELETE      | `/activityBookings/:id`          | Cancel an activity booking                 | `id`       |
+| GET         | `/activityBookings/:id`          | Get booked activities for a tourist        | `id`       |
+| GET         | `/activityBookings-count/:id`    | Get activity bookings count                | `id`       |
+| POST        | `/bookItinerary`                 | Book an itinerary                          | None       |
+| DELETE      | `/itineraryBookings/:id`         | Cancel an itinerary booking                | `id`       |
+| GET         | `/itineraryBookings/:id`         | Get booked itineraries for a tourist       | `id`       |
+| GET         | `/itineraryBookings-count/:id`   | Get itinerary bookings count               | `id`       |
+
+</details>
+
+<details>
+<summary>Transportation Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/addTransportation`             | Add a new transportation                   | None       |
+| GET         | `/listTransportation`            | Get a list of all transportations          | None       |
+| POST        | `/bookTransportation`            | Book a transportation                      | None       |
+| GET         | `/availableTransportation`       | Get all available transportations          | None       |
+| GET         | `/touristTransportationBookings` | Get all booked transportations for a tourist | None    |
+
+</details>
+
+<details>
+<summary>Wallet Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/redeem-points/:touristId`       | Redeem points to cash for a tourist        | `touristId` |
+| POST        | `/wallet/pay`                    | Pay with the wallet                        | None       |
+| POST        | `/wallet/refund`                 | Refund to the wallet                       | None       |
+
+</details>
+
+<details>
+<summary>Wishlist Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/wishlist/:userId/add`          | Add a product to the user's wishlist       | `userId`   |
+| GET         | `/wishlist/:userId`              | Get the user's wishlist                    | `userId`   |
+| POST        | `/wishlist/:userId/toggle`       | Toggle a product in the user's wishlist    | `userId`   |
+
+</details>
+
+<details>
+<summary>User Cart Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/cart/:userId/add`              | Add a product to the user's cart           | `userId`   |
+| PATCH       | `/cart/:userId/update`           | Update product quantity in the user's cart | `userId`   |
+| DELETE      | `/cart/:userId/remove`           | Remove a product from the user's cart      | `userId`   |
+| GET         | `/cart/:userId`                  | Get the user's cart                        | `userId`   |
+
+</details>
+
+<details>
+<summary>Promo Code Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/promoCodes`                    | Create a new promo code                    | None       |
+| POST        | `/promoCodes/apply`              | Apply a promo code                         | None       |
+| GET         | `/promoCodes`                    | Get all promo codes                        | None       |
+| GET         | `/promoCodes/user/:userId`       | Get all promo codes for a user             | `userId`   |
+
+</details>
+
+<details>
+<summary>Sales Reports</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| GET         | `/advertiser-analytics`          | Get advertiser revenue analytics           | None       |
+| GET         | `/tourguide-analytics`           | Get tour guide revenue analytics           | None       |
+| GET         | `/seller-analytics`              | Get seller revenue analytics               | None       |
+| GET         | `/vtp-analytics-giftshop`        | Get gift shop revenue analytics            | None       |
+| GET         | `/vtp-analytics-total`           | Get total revenue analytics                | None       |
+
+</details>
+<details>
+<summary>Bookmarks Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/addBookmark`                   | Add a bookmarked activity                 | None       |
+| GET         | `/getBookmarks`                  | Get all bookmarked activities             | None       |
+| DELETE      | `/removeBookmark`                | Remove a bookmarked activity              | None       |
+| POST        | `/addBookmarkitinerary`          | Add a bookmarked itinerary                | None       |
+| DELETE      | `/removeBookmarkitinerary`       | Remove a bookmarked itinerary             | None       |
+| GET         | `/getBookmarkeditinerary`        | Get all bookmarked itineraries            | None       |
+
+</details>
+
+<details>
+<summary>Interested Tourists</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/addInterestToActivity`         | Add interest to an activity               | None       |
+| POST        | `/addInterestToItinerary`        | Add interest to an itinerary              | None       |
+| DELETE      | `/removeInterestFromActivity`    | Remove interest from an activity          | None       |
+| DELETE      | `/removeInterestFromItinerary`   | Remove interest from an itinerary         | None       |
+
+</details>
+
+<details>
+<summary>File Management</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| GET         | `/image/:id`                     | Get an image file by ID                   | `id`       |
+| GET         | `/pdf/:id`                       | Get a PDF file by ID                      | `id`       |
+
+</details>
+
+<details>
+<summary>Flight and Hotel Bookings</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/search-flights`                | Search for flights                        | None       |
+| GET         | `/fetch-flights/:id`             | Get all flight bookings by ID             | `id`       |
+| POST        | `/book-flight`                   | Book a flight                             | None       |
+| GET         | `/hotels`                        | Get hotel details                         | None       |
+| GET         | `/search-hotel`                  | Search hotel by details                   | None       |
+| GET         | `/list-hotels`                   | List hotels by city                       | None       |
+
+</details>
+
+<details>
+<summary>Deletion Requests</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| GET         | `/deletion-requests`             | Get all deletion requests with filters    | None       |
+| GET         | `/deletion-requests/user/:userId`| Get deletion requests by user ID          | `userId`   |
+| DELETE      | `/deletion-requests/:id`         | Delete a deletion request by ID           | `id`       |
+| PATCH       | `/deletion-requests/:id`         | Update a deletion request status by ID    | `id`       |
+| PUT         | `/deletion-requests/:deletionRequestId/approve` | Approve a deletion request | `deletionRequestId` |
+| PUT         | `/deletion-requests/:deletionRequestId/deny`    | Deny a deletion request    | `deletionRequestId` |
+| GET         | `/deletion-request-status`       | Check deletion request status             | None       |
+
+</details>
+
+<details>
+<summary>Miscellaneous</summary>
+
+| HTTP Method | Endpoint                          | Description                                | Parameters |
+|-------------|-----------------------------------|--------------------------------------------|------------|
+| POST        | `/change-password`               | Change the password of a user             | None       |
+| POST        | `/login`                         | Login a user                              | None       |
+| POST        | `/logout`                        | Logout a user                             | None       |
+| GET         | `/userRole`                      | Get the role of the logged-in user        | None       |
+
+</details>
 
 ## 🧪 Testing
 
