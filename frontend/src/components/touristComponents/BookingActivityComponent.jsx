@@ -9,9 +9,10 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import PaymentForm from "../sharedComponents/PaymentForm";
 import { useNavigate } from "react-router";
 import { applyPromoCode } from "../../services/api";
-
 
 // Replace with your actual Stripe public key
 const stripePromise = loadStripe("your-public-stripe-key");
@@ -24,13 +25,16 @@ const BookingActivityComponent = ({
 }) => {
   const userId = localStorage.getItem("userId");
   const [discount, setDiscount] = useState(0);
-  const [discountedPrice, setDiscountedPrice] = useState(Number(price.replace("EGP", "").replace("USD", "").replace("EUR", "")));
+  const [discountedPrice, setDiscountedPrice] = useState(
+    Number(price.replace("EGP", "").replace("USD", "").replace("EUR", ""))
+  );
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(false);
   const [promocodeSuccess, setPromocodeSuccess] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
   const navigate = useNavigate();
 
   const handleApplyPromo = async () => {
@@ -43,16 +47,16 @@ const BookingActivityComponent = ({
       const { discount: promoDiscount, message } = response;
 
       setDiscount(promoDiscount);
-      const rawPrice = Number(price.replace("EGP", "").replace("USD", "").replace("EUR", ""));
-      setDiscountedPrice(rawPrice - promoDiscount*rawPrice/100);
+      const rawPrice = Number(
+        price.replace("EGP", "").replace("USD", "").replace("EUR", "")
+      );
+      setDiscountedPrice(rawPrice - (promoDiscount * rawPrice) / 100);
       setAppliedPromo(true);
       setMessage(message);
       setPromocodeSuccess(true);
     } catch (error) {
       console.log(error);
-      setMessage(
-        error.response?.data.message || "Failed to apply promo code."
-      );
+      setMessage(error.response?.data.message || "Failed to apply promo code.");
       setAppliedPromo(false);
       setPromocodeSuccess(false);
     } finally {
@@ -87,6 +91,7 @@ const BookingActivityComponent = ({
     } catch (error) {
       setMessage("An error occurred during payment. Please try again.");
       console.error("Payment processing error:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -99,12 +104,25 @@ const BookingActivityComponent = ({
       await handleBooking(); // Calls the booking function passed from parent
       setMessage("Booking successful!");
     } catch (error) {
-      setMessage(`Wallet payment failed. ${error.response.data.error}`);
-      console.error("Wallet payment error:", error.response.data.error);
+      setMessage(`Wallet payment failed. ${error.response?.data?.error}`);
+      console.log(error);
+      console.error("Wallet payment error:", error.response?.data?.error);
     } finally {
       setLoading(false);
     }
   };
+
+  if (showPaymentForm) {
+    return (
+      <Elements stripe={stripePromise}>
+        <PaymentForm
+          activity={{ title: "Booking Activity" }} // Pass real activity details if available
+          onBack={() => setShowPaymentForm(false)}
+          handleBooking={handleBooking}
+        />
+      </Elements>
+    );
+  }
 
   return (
     <Card
@@ -137,7 +155,8 @@ const BookingActivityComponent = ({
           variant="outlined"
         />
         <Typography variant="body2">
-          <strong>Price:</strong> {discountedPrice + ` ${localStorage.getItem("currency")}`}
+          <strong>Price:</strong>{" "}
+          {discountedPrice + ` ${localStorage.getItem("currency")}`}
           {appliedPromo && (
             <Typography component="span" color="green" sx={{ ml: 1 }}>
               ({`Discount Applied - ${discount}%`})
@@ -178,7 +197,10 @@ const BookingActivityComponent = ({
           variant="body2"
           sx={{
             marginBottom: 2,
-            color: message.includes("successful") || promocodeSuccess ? "green" : "red",
+            color:
+              message.includes("successful") || promocodeSuccess
+                ? "green"
+                : "red",
           }}
         >
           {message}
@@ -200,10 +222,10 @@ const BookingActivityComponent = ({
         <Button
           variant="contained"
           color="primary"
-          onClick={handlePayment}
+          onClick={() => setShowPaymentForm(true)}
           disabled={loading}
         >
-          Pay with Stripe
+          Pay with Card
         </Button>
       </Box>
     </Card>

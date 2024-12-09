@@ -324,13 +324,25 @@ const addProductPurchasing = async (req, res) => {
 
 const deleteProductPurchasingById = async (req, res) => {
   const { id } = req.params;
+
   try {
-    const deletedProductPurchasing = await ProductPurchasing.findByIdAndDelete(
-      id
-    );
-    if (!deletedProductPurchasing) {
+    const productPurchasing = await ProductPurchasing.findById(id);
+
+    if (!productPurchasing) {
       return res.status(404).json({ message: "Product Purchasing not found" });
     }
+
+    const product = await Product.findById(productPurchasing.product);
+
+    if (product) {
+      product.quantity += 1;
+      await product.save();
+    }
+
+    console.log(product);
+
+    await ProductPurchasing.findByIdAndRemove(productPurchasing._id);
+
     res
       .status(200)
       .json({ message: "Product Purchasing deleted successfully" });
