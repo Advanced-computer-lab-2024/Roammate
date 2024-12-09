@@ -183,6 +183,7 @@ MONGO_URI="mongodb+srv://<your_username>:<your_password>@cluster0.ls7js.mongodb.
 AMADEUS_API_KEY="<Your Amadeus API Key>"
 AMADEUS_API_SECRET="<Your Amadeus API Secret>"
 JWT_SECRET="<A secret string to use for hashing JWT tokens>"
+```
 
 #### Run the Backend:
 
