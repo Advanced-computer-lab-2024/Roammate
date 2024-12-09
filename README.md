@@ -143,6 +143,12 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 
 ## 💻 Code Examples
+<details>
+<summary>BackEnd</summary>
+</details>
+<details>
+<summary>FrontEnd</summary>
+</details>
 
 ## ⚙️ Installation
 
