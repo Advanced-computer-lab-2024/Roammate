@@ -25,10 +25,16 @@ import {
   payWallet,
   addProductPurchasing,
   fetchUserAddresses,
+  payCard,
   convertPrice,
-  applyPromoCode
+  applyPromoCode,
 } from "../../services/api";
 import { useOutletContext } from "react-router";
+import PaymentForm from "../../components/sharedComponents/PaymentForm";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe("your-public-stripe-key");
 
 const TouristCartPage = () => {
   const userId = localStorage.getItem("userId");
@@ -48,6 +54,7 @@ const TouristCartPage = () => {
   const [displayTotalPrice, setDisplayTotalPrice] = useState();
   const [productsPrices, setProductsPrices] = useState([]);
   const [subtotals, setSubtotals] = useState([]);
+  const [showPaymentForm, setShowPaymentForm] = useState(false); // New state to show PaymentForm
 
   const { setCartItemCount } = useOutletContext();
 
@@ -61,15 +68,13 @@ const TouristCartPage = () => {
       const { discount: promoDiscount, message } = response;
 
       setDiscount(promoDiscount);
-      setTotalPrice(totalPrice - promoDiscount * totalPrice / 100);
+      setTotalPrice(totalPrice - (promoDiscount * totalPrice) / 100);
       setAppliedPromo(true);
       setMessage(message);
       setPromocodeSuccess(true);
     } catch (error) {
       console.log(error);
-      setMessage(
-        error.response?.data.message || "Failed to apply promo code."
-      );
+      setMessage(error.response?.data.message || "Failed to apply promo code.");
       setAppliedPromo(false);
       setPromocodeSuccess(false);
     } finally {
@@ -100,8 +105,9 @@ const TouristCartPage = () => {
         const address = addresses.find((addr) => addr.isDefault);
         setDefaultAddress(
           address
-            ? `${address.addressLine1}, ${address.city}, ${address.state || ""
-            } ${address.postalCode}, ${address.country}`
+            ? `${address.addressLine1}, ${address.city}, ${
+                address.state || ""
+              } ${address.postalCode}, ${address.country}`
             : "No default address set. Please update your profile."
         );
       } catch (error) {
@@ -120,40 +126,6 @@ const TouristCartPage = () => {
     };
     getDisplayTotalPrice(totalPrice);
   }, [totalPrice]);
-
-  useEffect(() => {
-    const getProductsPrices = async () => {
-      const prices = await Promise.all(
-        cart.products.map(
-          async (item) => await convertProductPrice(item.product.price)
-        )
-      );
-      setProductsPrices(prices);
-    };
-
-    const getSubtotals = async () => {
-      const subtotals = await Promise.all(
-        cart.products.map(
-          async (item) =>
-            await convertProductPrice(item.product.price * item.quantity)
-        )
-      );
-      setSubtotals(subtotals);
-    };
-    getProductsPrices();
-    getSubtotals();
-  }, [cart]);
-
-  useEffect(() => {
-    if (cart) {
-      //get the cart item count
-      let cartItemCount = 0;
-      cart.products.forEach((item) => {
-        cartItemCount += item.quantity;
-      });
-      setCartItemCount(cartItemCount);
-    }
-  }, [cart]);
 
   // Calculate the total price of the cart
   const calculateTotalPrice = (products) => {
@@ -210,10 +182,15 @@ const TouristCartPage = () => {
     }
   };
 
-  // Handle checkout
   const handleCheckout = async () => {
     if (!cart || cart.products.length === 0) {
       alert("Your cart is empty.");
+      return;
+    }
+
+    if (paymentMethod === "Card") {
+      setPaymentMethod("card");
+      setShowPaymentForm(true);
       return;
     }
 
@@ -221,26 +198,32 @@ const TouristCartPage = () => {
 
     try {
       if (paymentMethod === "Wallet") {
-        // Deduct the total price from the wallet if payment method is Wallet
         await payWallet(userId, totalPrice);
       }
 
-      // Add products to the purchasing system
+      if (paymentMethod === "card") {
+        const newPaymentMethod = "Card";
+        setPaymentMethod(newPaymentMethod);
+        console.log(newPaymentMethod); // Logs the updated value
+        await payCard(userId, totalPrice);
+      }
+
       for (const item of cart.products) {
         for (var i = 0; i < item.quantity; i++) {
+          var paymentMethod2 = paymentMethod;
+          if (paymentMethod2 === "card") paymentMethod2 = "Card";
           await addProductPurchasing({
             productId: item.product._id,
             userId,
             date: new Date(),
             status: "Preparing",
-            paymentMethod, // Include the payment method
+            paymentMethod: paymentMethod2,
             quantity: 1,
           });
         }
         await removeProductFromCart(userId, item.product._id);
       }
 
-      // Clear the cart (optional, depends on your backend)
       setCart({ products: [] });
       setTotalPrice(0);
 
@@ -250,7 +233,8 @@ const TouristCartPage = () => {
       alert("Checkout failed. Please try again.");
     } finally {
       setCheckoutLoading(false);
-      setCheckoutModalOpen(false); // Close the modal
+      setCheckoutModalOpen(false);
+      setShowPaymentForm(false);
     }
   };
 
@@ -260,6 +244,18 @@ const TouristCartPage = () => {
 
   if (!cart || cart.products.length === 0) {
     return <Typography>Your cart is empty.</Typography>;
+  }
+
+  if (showPaymentForm) {
+    return (
+      <Elements stripe={stripePromise}>
+        <PaymentForm
+          activity={{ title: "Product" }} // Pass real activity details if available
+          onBack={() => setShowPaymentForm(false)}
+          handleBooking={handleCheckout}
+        />
+      </Elements>
+    );
   }
 
   return (
@@ -276,9 +272,6 @@ const TouristCartPage = () => {
                 Price: {productsPrices[index]}
               </Typography>
               <Typography variant="body1">Quantity: {item.quantity}</Typography>
-              <Typography variant="body2">
-                Subtotal: {subtotals[index]}
-              </Typography>
             </CardContent>
             <CardActions>
               <IconButton
@@ -343,14 +336,6 @@ const TouristCartPage = () => {
         <Alert severity="error">{message}</Alert>
       )}
 
-      <Box sx={{ width: "100%", marginBottom: 2, textAlign: "left" }}>
-        {discount > 0 && (
-          <Typography variant="h6">
-            Discount: {discount}%
-          </Typography>
-        )}
-      </Box>
-
       <Box
         sx={{
           display: "flex",
@@ -370,7 +355,6 @@ const TouristCartPage = () => {
         </Button>
       </Box>
 
-      {/* Checkout Modal */}
       <Dialog
         open={checkoutModalOpen}
         onClose={() => setCheckoutModalOpen(false)}

@@ -318,6 +318,7 @@ const addProductPurchasing = async (req, res) => {
 
     res.status(201).json(newProductPurchasing);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };

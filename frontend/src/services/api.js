@@ -1057,6 +1057,13 @@ export const payWallet = async (touristId, amount) => {
   }
 };
 
+export const payCard = async (touristId, amount) => {
+  return {
+    status: 200,
+    message: "Mock payment successful",
+  };
+};
+
 export const refundWallet = async (touristId, amount) => {
   try {
     const response = await axios.post(`${API_URL}wallet/refund`, {
@@ -1409,8 +1416,7 @@ export const applyPromoCode = async (code, userId) => {
       userId,
     });
     return response.data;
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error applying promo code:", error);
     throw error;
   }
@@ -1618,7 +1624,6 @@ export const removeTouristInterestInItinerary = async (
     console.log(error);
   }
 };
-
 
 export const fetchSystemUsers = async (query) => {
   try {
