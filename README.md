@@ -1232,6 +1232,16 @@ npm install
 
 ## 🧪 Testing
 We used Postman to test each API endpoint by sending requests with specified URLs, parameters, and request bodies. The responses were verified to ensure proper functionality, including handling of edge cases, error messages, and data validation.
+
+<details>
+<summary>User Login</summary>
+
+- Login with correct username and password.
+- Choose forget password if you can't remember your password.
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/flightest.jpeg)
+</details>
+
+
 <details>
 <summary>Search Flights</summary>
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/flightstest.jpeg)
