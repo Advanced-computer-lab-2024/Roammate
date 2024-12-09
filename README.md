@@ -5,7 +5,7 @@
 1. [🚀 Motivation](#-motivation)
 2. [🧱 Build Status](#-build-status)
 3. [🎨 Code Style](#-code-style)
-4. [📸 Screenshots](#screenshots)
+4. [📸 Screenshots](#Screenshots)
 5. [⚒️ Tech and Frameworks used](#%EF%B8%8F-tech-and-frameworks-used)
 6. [🔥 Features](#-features--screenshots)
 7. [💻 Code Examples](#-code-examples)
@@ -1261,6 +1261,7 @@ Testing of the /api/search-flights endpoint using the POST method in Postman, wi
 <details>
 <summary>Fetch all Users</summary>
 Testing of the /api/users endpoint using the GET method in Postman, retrieving user details without requiring any specific parameters in the URL or body.
+
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20users.jpeg)
 
 </details>
@@ -1269,6 +1270,7 @@ Testing of the /api/users endpoint using the GET method in Postman, retrieving u
 <details>
 <summary>Fetch all PromoCodes Creates</summary>
 Testing of the /api/promoCodes endpoint using the GET method in Postman, fetching details of promotional codes in the system, showcasing the request and JSON response.
+
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/fetch%20all%20promocode.jpeg)
 </details>
 
