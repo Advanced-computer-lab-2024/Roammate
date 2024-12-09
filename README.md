@@ -35,8 +35,6 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - [Prettier](https://prettier.io/) : it is a code formatter that runs automatically before each commit on the whole code so that the codes looks well formatted across the whole project
 
 ## 📸 Screenshots
-## Features & Screenshots
-
 <details>
 <summary>Birthday Promo Code</summary>
 - Recieve a promo code by email on the saved birthday.
