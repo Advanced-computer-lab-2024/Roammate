@@ -1234,11 +1234,12 @@ npm install
 We used Postman to test each API endpoint by sending requests with specified URLs, parameters, and request bodies. The responses were verified to ensure proper functionality, including handling of edge cases, error messages, and data validation.
 
 <details>
-<summary>User Login</summary>
+<summary>Admin Add Product</summary>
+- Add the required information of a certain Product.
+- upload an image of the product.
 
-- Login with correct username and password.
-- Choose forget password if you can't remember your password.
-![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/flightest.jpeg)
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminAddProduct.png)
+
 </details>
 
 
