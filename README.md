@@ -1402,7 +1402,7 @@ Some of our tests Routes are listed on our Postman documentation
 
 ## 🧑🏻‍🏫 How to Use
 <details>
-  <summary>FAQ</summary>
+  <summary>FAQ❓</summary>
   <details>
   <summary>General</summary>
     
