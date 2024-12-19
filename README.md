@@ -112,6 +112,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - Search flights with departure loaction and destination locations.
 - Search flights with departure time and destination time.
 - Choose the number of passengers.
+    
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserFlightSearch.png)
 
 </details>
@@ -122,7 +123,9 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - Search for hotels by location.
 - Search for hotels by check-in and check-out dates.
 - Search for hotels by the number of guests.
+    
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserHotelSearch.png)
+
 </details>
 
 <details>
