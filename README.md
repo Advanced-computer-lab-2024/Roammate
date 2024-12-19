@@ -1405,7 +1405,7 @@ Some of our tests Routes are listed on our Postman documentation
 
 ## 🧑🏻‍🏫 How to Use
 <details>
-  <summary>FAQ❓</summary>
+  <summary>❓FAQ</summary>
   <details>
   <summary>General</summary>
     
@@ -1486,6 +1486,143 @@ A: Yes, you can create tags based on the type or historical period for easier ca
 
   </details>
 </details>
+
+<details>
+  <summary>🧭 Guided Usage for Stakeholders</summary>
+  <details>
+  <summary>Tourists</summary>
+
+Explore and enjoy an all-in-one platform to plan your perfect trip.
+
+1. **Registration and Profile Setup**:
+   - Register as a Tourist using your email, username, password, and other personal details.
+   - Update your profile with preferences like budget, family-friendly options, and interests.
+
+2. **Activity and Itinerary Booking**:
+   - Search for activities, itineraries, and historical places using filters like budget, date, and ratings.
+   - Select an option, view its details, and book it using your wallet or Stripe integration.
+   - Receive booking reminders via app notifications and email.
+
+3. **Wishlist and Cart Management**:
+   - Save interesting products or activities to your wishlist.
+   - Add wishlist items to your cart and adjust quantities before checkout.
+
+4. **Shopping and Orders**:
+   - Explore the gift shop and browse products by price, rating, or category.
+   - Add items to your cart and proceed to checkout with wallet, Stripe, or cash on delivery options.
+   - Track your current and past orders, rate, and review purchased products.
+
+5. **Rewards and Complaints**:
+   - Earn loyalty points and redeem them for wallet cash.
+   - Receive badges based on your engagement.
+   - File complaints with detailed descriptions and track their resolution status.
+
+6. **Sharing and Feedback**:
+   - Share activities, itineraries, and historical places via email or copy link.
+   - Rate and review activities, itineraries, and guides to help other users.
+
+  </details>
+  <details>
+  <summary> Tour Guides</summary>
+Utilize the app to manage itineraries and enhance tourist experiences.
+
+1. **Registration and Profile Management**:
+   - Register with your email, username, and password.
+   - After approval, complete your profile with details like experience and past projects.
+
+2. **Itinerary Management**:
+   - Create detailed itineraries with activities, locations, pricing, and accessibility options.
+   - Activate or deactivate itineraries as needed, even with bookings.
+
+3. **Performance Tracking**:
+   - View detailed sales reports filtered by itinerary, activity, or date.
+   - Monitor tourist engagement and the number of attendees for your services.
+
+4. **Notifications and Feedback**:
+   - Receive app and email alerts for flagged itineraries.
+   - Respond to ratings and feedback to improve your offerings.
+
+
+  </details>
+  <details>
+  <summary> Advertisers</summary>
+Promote and manage events efficiently using the platform.
+1. **Registration and Profile Management**:
+   - Register your company with email, username, and password.
+   - Add or update your profile with website links and hotline details.
+
+2. **Activity Management**:
+   - Create activities with date, location (via Google Maps), pricing, and category tags.
+   - Edit or delete activities as needed.
+
+3. **Performance Monitoring**:
+   - Track the number of attendees and revenue for each activity.
+   - Filter reports by activity, date, or tourist count.
+
+4. **Notifications**:
+   - Receive notifications for flagged activities both in-app and via email.
+  </details>
+  <details>
+  <summary>Sellers</summary>
+Manage products and streamline your sales operations with ease.
+
+1. **Registration and Profile Management**:
+   - Register as a seller with your email, username, and password.
+   - Update your profile with your store's name and description.
+
+2. **Product Management**:
+   - Add, edit, or delete products with details like price, description, and images.
+   - Archive or unarchive products as needed.
+
+3. **Stock and Sales Monitoring**:
+   - Track product sales and inventory levels.
+   - Receive low-stock notifications via email and app alerts.
+
+  </details>
+  <details>
+  <summary>Tourism Governors</summary>
+Manage historical places and promote cultural experiences effectively.
+
+1. **Account Management**:
+   - Admins will create your account with a unique username and password.
+
+2. **Museum and Historical Site Management**:
+   - Add and update information about historical sites, including descriptions, images, ticket prices, and opening hours.
+
+3. **Tagging and Categorization**:
+   - Create tags to categorize locations by type or historical period for easier search and discovery.
+
+4. **Reports and Insights**:
+   - Analyze tourist engagement and revenue reports for historical places.
+
+  </details>
+</details>
+  <details>
+  <summary>Admins</summary>
+Oversee the platform's operations and ensure smooth functionality for all stakeholders.
+
+1. **User Management**:
+   - Approve or reject registrations for Tour Guides, Advertisers, and Sellers.
+   - Create accounts for new Admins and Tourism Governors.
+
+2. **Content Moderation**:
+   - Flag inappropriate events or itineraries.
+   - Create and manage activity categories and preference tags.
+
+3. **Complaint Resolution**:
+   - Review, sort, and filter complaints by status or date.
+   - Respond to complaints and mark them as resolved.
+
+4. **Performance Tracking**:
+   - Monitor system-wide statistics like user growth and revenue trends.
+   - Generate reports for sales and user activities.
+
+5. **Promo Code and Rewards Management**:
+   - Create and assign promo codes, including birthday rewards for tourists.
+
+  </details>
+</details>
+
 
 
 
