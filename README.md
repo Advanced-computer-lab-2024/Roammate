@@ -185,6 +185,20 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 </details>
 
+<details>
+<summary>Admin Edit Product</summary>
+    
+- Edit the product name.
+- Edit the prouct description.
+- Edit product price.
+- upload an image of the product.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminEditProduct.png)
+
+</details>
+
+
+
 ## ⚒️ Tech and Frameworks Used
 
 <div align="center" >
