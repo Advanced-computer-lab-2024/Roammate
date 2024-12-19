@@ -1596,7 +1596,6 @@ Manage historical places and promote cultural experiences effectively.
    - Analyze tourist engagement and revenue reports for historical places.
 
   </details>
-</details>
   <details>
   <summary>Admins</summary>
 Oversee the platform's operations and ensure smooth functionality for all stakeholders.
