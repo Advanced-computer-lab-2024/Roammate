@@ -316,7 +316,12 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - **History & Cancellation**: View past and upcoming bookings; cancel bookings (with refunds to wallet) and track cancellation status.
 - **Complaint System**: File complaints with details and track resolution status.
 - **Exclusive Rewards**: Earn loyalty points and badges for participation and purchases.
-
+Wishlist Management: Save products to your wishlist, view saved items, and remove them when needed.
+- **Cart Management**: Add items to your cart (from wishlist or directly), update quantities, or remove items.
+- **Order Management**: Checkout your order, add orchoose a delivery address, and pay via wallet, credit/debit card (Stripe), or cash on delivery.
+- **Order History**: View current and past orders, order details, and status.
+- **Cancellations and Refunds**: Cancel orders and view refunded amounts in your wallet.
+Feedback and Reviews: Rate and review purchased products.
 </details>
 
 <details>
