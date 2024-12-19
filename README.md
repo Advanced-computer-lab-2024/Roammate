@@ -293,7 +293,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - **System-Wide Insights**: Analyze system activities and generate reports for events, itineraries, and sales for enhanced decision-making.
 - **Stock and Product Management**: View and manage inventory levels for all sellers' products, monitor sales trends, and track product performance.
 - **User Interaction**: Communicate with users regarding flagged content, account deletions, or complaint resolutions.
-
+- **promo code handling**: Create new promo codes.
 </details>
 
 <details>
