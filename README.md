@@ -311,7 +311,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 - **User Profile & Preferences**: Update profile, set preferences (budget, family-friendly, historic areas, etc.), and view wallet.
 - **Booking & Payment**: Book activities, itineraries, flights, hotels or transportation and pay using credit/debit or wallet with Stripe integration.
-- **Event & Itinerary Management**: Search, view, bookmark, or filter upcoming activities and itineraries; receive notifications for bookings and reminders.
+- **Event & Itinerary Management**: Search, view, bookmark, sort or filter upcoming activities and itineraries; receive notifications for bookings and reminders.
 - **Engagement & Feedback**: Rate, comment on, and share activities, itineraries, and guides; redeem loyalty points for cash in wallet.
 - **History & Cancellation**: View past and upcoming bookings; cancel bookings (with refunds to wallet) and track cancellation status.
 - **Complaint System**: File complaints with details and track resolution status.
