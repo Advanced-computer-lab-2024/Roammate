@@ -1419,8 +1419,6 @@ A: After logging in, navigate to your profile or settings, where you'll find the
 **Q: Can I register as a different user type (e.g., Tourist, Seller, etc.)?**  
 A: Yes, guests can register as a Tourist, Tour Guide, Advertiser, or Seller by providing the required information.
 
-**Q: How can I get a promocode?**  
-A: Promocodes are sent via email on your birthday or special occasions.
   </details>
 
   <details>
@@ -1434,6 +1432,9 @@ A: You can save products or activities to your wishlist, add them to your cart, 
 
 **Q: What are loyalty points and badges?**  
 A: You earn loyalty points and badges for completing bookings and participating in activities. Points can be redeemed for wallet cash.
+
+**Q: How can I get a promocode?**  
+A: Promocodes are sent via email on your birthday or special occasions.
 
 **Q: Can I file a complaint?**  
 A: Yes, you can submit complaints with details like title, description, and date, and track their status (pending/resolved).
