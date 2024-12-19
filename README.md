@@ -322,7 +322,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - **Order History**: View current and past orders, order details, and status.
 - **Cancellations and Refunds**: Cancel orders and view refunded amounts in your wallet.
 Feedback and Reviews: Rate and review purchased products.
-- **promo codes**: Recieve promo code on his birthday, use the promo code on anything in the website.
+- **promo codes**: Recieve promo code on his birthday, apply the promo code on anything in the website.
 </details>
 
 <details>
