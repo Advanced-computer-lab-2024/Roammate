@@ -1547,6 +1547,7 @@ Utilize the app to manage itineraries and enhance tourist experiences.
   <details>
   <summary> Advertisers</summary>
 Promote and manage events efficiently using the platform.
+    
 1. **Registration and Profile Management**:
    - Register your company with email, username, and password.
    - Add or update your profile with website links and hotline details.
