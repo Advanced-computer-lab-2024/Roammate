@@ -37,7 +37,6 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 ## 📸 Screenshots
 <details>
 <summary>Birthday Promo Code</summary>
-    Recieve a promo code by email on the saved birthday.
 - Recieve a promo code by email on the saved birthday.
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/BirthdayPromoCode.png)
@@ -110,9 +109,13 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Flights Search</summary>
-- Search flights with departure loaction and destination locations.
+
+    
 - Search flights with departure time and destination time.
+- Search flights with departure loaction and destination locations.
 - Choose the number of passengers.
+
+
     
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserFlightSearch.png)
 
