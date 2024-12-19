@@ -301,7 +301,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 - **Complaint Handling**: Access, review, and respond to complaints. Mark complaints as resolved or pending and filter them by status or date.
 - **Performance Monitoring**: Track the total number of users, new user registrations per month, and system-wide revenue trends through detailed sales reports.
 - **System-Wide Insights**: Analyze system activities and generate reports for events, itineraries, and sales for enhanced decision-making.
-- **Stock and Product Management**: View and manage inventory levels for all sellers' products, monitor sales trends, and track product performance.
+- **Stock and Product Management**: View and manage inventory levels for all sellers' products, monitor sales trends, and track product performance, archive and unarchive a product.
 - **User Interaction**: Communicate with users regarding flagged content, account deletions, or complaint resolutions.
 - **promo code handling**: Create new promo codes.
 </details>
@@ -329,7 +329,7 @@ Feedback and Reviews: Rate and review purchased products.
 <summary>Seller</summary>
 
 - **Profile Management**: Create, update, and manage a seller profile, including descriptions, and upload images to showcase products effectively.
-- **Product Management**: Add, update, and delete products, including details like name, price, description, and images, with the ability to manage stock levels.
+- **Product Management**: Add, update, and delete products, including details like name, price, description, and images, with the ability to manage stock levels, view, search, filter or sort all available products, archive and unarchive a product.
 - **Sales Insights**: View and filter sales reports by product, date, or month, and track revenue trends.
 - **Customer Interaction**: Respond to tourist inquiries or feedback related to products.
 - **Stock Monitoring**: Receive low-stock notifications to restock promptly and ensure availability.
