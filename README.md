@@ -1438,6 +1438,61 @@ A: You earn loyalty points and badges for completing bookings and participating 
 A: Yes, you can submit complaints with details like title, description, and date, and track their status (pending/resolved).
 
   </details>
+  <details>
+  <summary>For Tour Guides</summary>
+    
+**Q: How do I create or update my profile?**  
+A: After registration approval, you can add or edit your profile details, such as mobile number, experience, and past projects.
+
+**Q: How do I manage itineraries?**  
+A: You can create, update, or delete itineraries with detailed information, including activities, locations, and pricing.
+
+**Q: Can I activate or deactivate itineraries?**  
+A: Yes, itineraries can be activated or deactivated even if they have existing bookings.
+
+**Q: How can I track my performance?**  
+A: View detailed sales reports and filter them by date, activity, or itinerary. You can also see the number of tourists using your services.
+
+  </details>
+  <details>
+  <summary>For Advertisers</summary>
+    
+**Q: How do I manage my profile?**  
+A: You can update your company details, including your website, hotline, and company profile, after registration approval.
+
+**Q: How do I create or manage activities?**  
+A: Add, update, or delete activities with details like date, location (via Google Maps), price, and category tags.
+
+**Q: Can I track attendance and revenue?**  
+A: Yes, you can view and filter reports to track the total number of tourists and revenue generated from your activities.
+
+**Q: What happens if my activity is flagged?**  
+A: You will receive an in-app notification and an email if an activity is flagged by the admin.
+
+  </details>
+  <details>
+  <summary>For Sellers</summary>
+    
+**Q: How do I create or update my profile?**  
+A: Once approved, you can add or edit your profile details, such as your name and description.
+
+**Q: How do I manage products?**  
+A: Add, update, or delete products, including details like name, price, description, and images. You can also archive or unarchive products.
+
+**Q: Can I track sales and stock levels?**  
+A: Yes, view sales reports and stock levels. You'll also receive low-stock notifications via email.
+
+  </details>
+  <details>
+  <summary>For Tourism Governors</summary>
+    
+**Q: How do I manage historical places or museums?**  
+A: Add, update, or delete details like descriptions, pictures, ticket prices, and opening hours.
+
+**Q: Can I assign tags to locations?**  
+A: Yes, you can create tags based on the type or historical period for easier categorization.
+
+  </details>
 </details>
 
 
