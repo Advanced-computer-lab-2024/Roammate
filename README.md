@@ -45,8 +45,13 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Tourist Registration</summary>
-- Register as a tourist with essential details.
+
+
+
+- Register as a tourist with essential details. 
 - Choose your prefrences.
+
+  
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/TouristRegistration.png)
 
