@@ -177,6 +177,17 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 </details>
 
 <details>
+<summary>Account Deletion Requests</summary>
+
+- Approve or deny account deletion requests.
+- See previous approved and denied account deletion requests.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminAccountDeletionRequests.png)
+
+</details>
+
+
+<details>
 <summary>Admin Add Product</summary>
 
 - Add the required information of a certain Product..
@@ -197,6 +208,28 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminEditProduct.png)
 
 </details>
+
+<details>
+<summary>Admin Filter Products</summary>
+
+- Filter by archived products.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminFilterByArchive.png)
+
+</details>
+
+<details>
+<summary>Admin Filter Products</summary>
+
+- Filter by archived products.
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminFilterByArchive.png)
+
+</details>
+
+
+
+
 
 
 
