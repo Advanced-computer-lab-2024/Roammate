@@ -178,7 +178,8 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Admin Add Product</summary>
-- Add the required information of a certain Product.
+
+- Add the required information of a certain Product..
 - upload an image of the product.
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminAddProduct.png)
