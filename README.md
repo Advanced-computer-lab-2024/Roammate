@@ -1418,13 +1418,13 @@ A: After logging in, navigate to your profile or settings, where you'll find the
 
 **Q: Can I register as a different user type (e.g., Tourist, Seller, etc.)?**  
 A: Yes, guests can register as a Tourist, Tour Guide, Advertiser, or Seller by providing the required information.
+
+**Q: How can I get a promocode?**  
+A: Promocodes are sent via email on your birthday or special occasions.
   </details>
 
   <details>
   <summary>For Tourists</summary>
-    
-**Q: How do I book an activity or itinerary?**  
-A: Select an activity or itinerary, proceed to checkout, and pay using a credit/debit card or your wallet balance.
 
 **Q: Can I cancel a booking?**  
 A: Yes, bookings can be canceled at least 48 hours before the event starts. The refund amount will be credited to your wallet.
@@ -1441,12 +1441,6 @@ A: Yes, you can submit complaints with details like title, description, and date
   </details>
   <details>
   <summary>For Tour Guides</summary>
-    
-**Q: How do I create or update my profile?**  
-A: After registration approval, you can add or edit your profile details, such as mobile number, experience, and past projects.
-
-**Q: How do I manage itineraries?**  
-A: You can create, update, or delete itineraries with detailed information, including activities, locations, and pricing.
 
 **Q: Can I activate or deactivate itineraries?**  
 A: Yes, itineraries can be activated or deactivated even if they have existing bookings.
@@ -1457,12 +1451,6 @@ A: View detailed sales reports and filter them by date, activity, or itinerary. 
   </details>
   <details>
   <summary>For Advertisers</summary>
-    
-**Q: How do I manage my profile?**  
-A: You can update your company details, including your website, hotline, and company profile, after registration approval.
-
-**Q: How do I create or manage activities?**  
-A: Add, update, or delete activities with details like date, location (via Google Maps), price, and category tags.
 
 **Q: Can I track attendance and revenue?**  
 A: Yes, you can view and filter reports to track the total number of tourists and revenue generated from your activities.
