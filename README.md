@@ -1418,6 +1418,26 @@ A: After logging in, navigate to your profile or settings, where you'll find the
 **Q: Can I register as a different user type (e.g., Tourist, Seller, etc.)?**  
 A: Yes, guests can register as a Tourist, Tour Guide, Advertiser, or Seller by providing the required information.
   </details>
+
+  <details>
+  <summary>For Tourists</summary>
+    
+**Q: How do I book an activity or itinerary?**  
+A: Select an activity or itinerary, proceed to checkout, and pay using a credit/debit card or your wallet balance.
+
+**Q: Can I cancel a booking?**  
+A: Yes, bookings can be canceled at least 48 hours before the event starts. The refund amount will be credited to your wallet.
+
+**Q: How do I manage my wishlist and cart?**  
+A: You can save products or activities to your wishlist, add them to your cart, adjust quantities, or remove items before checkout.
+
+**Q: What are loyalty points and badges?**  
+A: You earn loyalty points and badges for completing bookings and participating in activities. Points can be redeemed for wallet cash.
+
+**Q: Can I file a complaint?**  
+A: Yes, you can submit complaints with details like title, description, and date, and track their status (pending/resolved).
+
+  </details>
 </details>
 
 
