@@ -54,11 +54,13 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Tourist Profile Page</summary>
+
 - Edit your personal data.
 - Redeem your points.
 - Change your password.
 - Delete the account.
 - Add an address.
+
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/TouristProfilePage.png)
 
@@ -66,9 +68,11 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Sorting and Filtering</summary>
+    
 - Choose the criteria to sort the results.
 - Choose the constraints to filter the results.
 - Price is sorted in ascending order.
+
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/SortingByPriceAsc.png)
 
@@ -76,7 +80,10 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Wishlist</summary>
+ 
 - List of wishlisted products.
+
+  
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/Wishlist.png)
 
@@ -84,7 +91,9 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>User Cart</summary>
+
 - See items in your cart
+  
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserCart.png)
 
