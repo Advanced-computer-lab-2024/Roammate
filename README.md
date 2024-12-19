@@ -1401,7 +1401,23 @@ Some of our tests Routes are listed on our Postman documentation
 
 
 ## 🧑🏻‍🏫 How to Use
+<details>
+  <summary>FAQ</summary>
+  <details>
+  <summary>General</summary>
+    **Q: How can I log in to the system?**  
+A: You can log in using your username and password. If you're new, you'll need to register first.
 
+**Q: What if I forget my password?**  
+A: Use the "Forgot Password" option on the login page. You'll receive an OTP at your registered email to reset your password.
+
+**Q: How do I change my password?**  
+A: After logging in, navigate to your profile or settings, where you'll find the "Change Password" option.
+
+**Q: Can I register as a different user type (e.g., Tourist, Seller, etc.)?**  
+A: Yes, guests can register as a Tourist, Tour Guide, Advertiser, or Seller by providing the required information.
+  </details>
+</details>
 
 
 ## 🤝 Contribute
