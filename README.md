@@ -203,7 +203,9 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Birthday Promo Code</summary>
+
 - Recieve a promo code by email on the saved birthday.
+
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/BirthdayPromoCode.png)
 
@@ -211,7 +213,9 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Payment Reciept</summary>
+
 - Recieve a reciept by email once you pay for anything on the app.
+  
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/PaymentReceipt.png)
 
