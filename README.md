@@ -285,11 +285,17 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Common Features across all stakeholders</summary>
-- **Login**: Allows stakeholders to securely log in using their username and password.
-- **Change Password**: Provides the ability for stakeholders to update their password at any time.
-- **Forgot Password**: Enables stakeholders to reset their password using an OTP sent to their registered email address.
-- **Multi-Stakeholder Access**: Seamlessly supports multiple roles such as Admin, Tourist, Seller, Tourism Governor, Advertiser, and Tour Guide.
+
+- **User Management**: Approve or reject registrations for tour guides, advertisers, sellers, and tourism governors based on uploaded documents. Add new admins or tourism governors to the system.
+- **Content Moderation**: Review, flag, or remove inappropriate events, itineraries, or other activities. Manage activity categories, preference tags, and historical location tags.
+- **Complaint Handling**: Access, review, and respond to complaints. Mark complaints as resolved or pending and filter them by status or date.
+- **Performance Monitoring**: Track the total number of users, new user registrations per month, and system-wide revenue trends through detailed sales reports.
+- **System-Wide Insights**: Analyze system activities and generate reports for events, itineraries, and sales for enhanced decision-making.
+- **Stock and Product Management**: View and manage inventory levels for all sellers' products, monitor sales trends, and track product performance.
+- **User Interaction**: Communicate with users regarding flagged content, account deletions, or complaint resolutions.
+- **promo code handling**: Create new promo codes.
 </details>
+
 
 <details>
 <summary>Admin</summary>
