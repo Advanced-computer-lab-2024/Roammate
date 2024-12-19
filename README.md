@@ -978,6 +978,33 @@ bash
 cd ../frontend
 npm install
 
+- Add a `.env` file in the `backend` directory of the project with the following variables (replace the values with your own):
+
+```bash
+PORT=8000
+MONGO_URI="mongodb+srv://<your_username>:<your_password>@cluster0.ls7js.mongodb.net/Roammate?retryWrites=true&w=majority&appName=Cluster0"
+AMADEUS_API_KEY="<Your Amadeus API Key>"
+AMADEUS_API_SECRET="<Your Amadeus API Secret>"
+JWT_SECRET="<A secret string to use for hashing JWT tokens>"
+```
+
+#### Run the Backend:
+
+```bash
+cd backend
+node server.js
+```
+
+Once started, the backend server will be accessible at http://localhost:8000. This is where all API requests will be handled.
+
+#### Run the Frontend:
+
+```bash
+cd frontend
+npm run dev
+```
+The frontend application will run at http://localhost:5173. Open this URL in your browser to interact with the application's user interface.
+
 ## 📚 API Reference
 <details>
 <summary>User Management</summary>
@@ -1370,34 +1397,7 @@ Some of our tests Routes are listed on our Postman documentation
 
 ## 🧑🏻‍🏫 How to Use
 
-- Make sure to follow the [Installation](#-installation) steps first.
 
-- Add a `.env` file in the `backend` directory of the project with the following variables (replace the values with your own):
-
-```bash
-PORT=8000
-MONGO_URI="mongodb+srv://<your_username>:<your_password>@cluster0.ls7js.mongodb.net/Roammate?retryWrites=true&w=majority&appName=Cluster0"
-AMADEUS_API_KEY="<Your Amadeus API Key>"
-AMADEUS_API_SECRET="<Your Amadeus API Secret>"
-JWT_SECRET="<A secret string to use for hashing JWT tokens>"
-```
-
-#### Run the Backend:
-
-```bash
-cd backend
-node server.js
-```
-
-Once started, the backend server will be accessible at http://localhost:8000. This is where all API requests will be handled.
-
-#### Run the Frontend:
-
-```bash
-cd frontend
-npm run dev
-```
-The frontend application will run at http://localhost:5173. Open this URL in your browser to interact with the application's user interface.
 
 ## 🤝 Contribute
 
