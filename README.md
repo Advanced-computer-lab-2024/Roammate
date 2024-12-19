@@ -285,7 +285,6 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Common Features across all stakeholders</summary>
-The following features are shared across all stakeholders:
 - **Login**: Allows stakeholders to securely log in using their username and password.
 - **Change Password**: Provides the ability for stakeholders to update their password at any time.
 - **Forgot Password**: Enables stakeholders to reset their password using an OTP sent to their registered email address.
