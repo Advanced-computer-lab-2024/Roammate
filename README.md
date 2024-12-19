@@ -132,8 +132,9 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>User Purchase History</summary>
+
 - Check pending orders.
-- check past orders.
+- Check past orders.
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserPurchaseHistory.png)
 
@@ -141,23 +142,29 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Activity Booking</summary>
+
 - Choose a date to book an activity.
+  
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/ActivityBookingPage.png)
 
 </details>
 <details>
 <summary>Add New Address</summary>
+  
 - Fill in the required informat.
+  
+
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AddNewAdress.png)
 
 </details>
 <details>
 <summary>Admin Homepage</summary>
+
 - Delete user's account.
 - View the number of users.
-- toggle between users, registrations and compliants.
+- Toggle between users, registrations and compliants.
 
 ![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/AdminHomePage.png)
 
@@ -165,6 +172,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>compliants</summary>
+
 - View complaints' details.
 - Approve or reject complaints.
 - View past compliants.
