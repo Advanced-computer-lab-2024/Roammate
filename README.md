@@ -124,6 +124,7 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 
 <details>
 <summary>Hotels Search</summary>
+
 - Search for hotels by location.
 - Search for hotels by check-in and check-out dates.
 - Search for hotels by the number of guests.
