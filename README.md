@@ -365,7 +365,7 @@ Feedback and Reviews: Rate and review purchased products.
 <summary>Tour Guide</summary>
 
 - **Comprehensive Profile Management**: Set up and manage a profile with personal details, years of experience, past projects, and uploaded documents.
-- **Itinerary Creation & Management**: Design, update, and manage detailed itineraries, including activities, locations, pricing, and availability.
+- **Itinerary Creation & Management**: Design, update, and manage detailed itineraries, including activities, locations, pricing, and availability, view list of all my created activities, itineraries.
 - **Booking & Accessibility Control**: Handle itinerary bookings, activate/deactivate itineraries, and ensure accessibility features for tourists.
 - **Sales Tracking & Reporting**: Monitor sales reports, filter by date or itinerary, and view tourist engagement statistics.
 - **Feedback System**: Access tourist ratings and comments for improvement and reputation building.
