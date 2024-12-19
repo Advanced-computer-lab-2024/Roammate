@@ -341,7 +341,7 @@ Feedback and Reviews: Rate and review purchased products.
 <details>
 <summary>Tourism Governor</summary>
 
-- **Historical Site Management**: Create, update, and manage museums and historical places, including descriptions, pictures, locations, opening hours, and ticket prices.
+- **Historical Site Management**: Create, update, and manage museums and historical places, including descriptions, pictures, locations, opening hours, and ticket prices, create tags for different historical locations.
 - **Tagging System**: Assign tags to historical locations based on type, historical period, or other defining characteristics.
 - **Activity Review**: Monitor and manage activities or itineraries related to historical places in collaboration with tour guides and advertisers.
 - **Performance Reports**: Generate reports to analyze visitor engagement with museums and historical places.
