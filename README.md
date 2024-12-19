@@ -1350,7 +1350,9 @@ npm install
 ## 🧪 Tests
 We used Postman to test each API endpoint by sending requests with specified URLs, parameters, and request bodies. The responses were verified to ensure proper functionality, including handling of edge cases, error messages, and data validation.
 
-[Postman](https://documenter.getpostman.com/view/38413678/2sAYJ3D1Fn  "Visit the tests Postman documentation")
+Some of our tests Routes are listed on our Postman documentation
+
+[Postman Documentation](https://documenter.getpostman.com/view/38413678/2sAYJ3D1Fn  "Visit the tests Postman documentation")
 
 
 
