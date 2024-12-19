@@ -1401,146 +1401,98 @@ Some of our tests Routes are listed on our Postman documentation
 
 
 ## 🧑🏻‍🏫 How to Use
-
-### FAQ❓
 <details>
-  <summary><strong>General</strong></summary>
+  <summary>FAQ❓</summary>
+  <details>
+  <summary>General</summary>
     
-  <details>
-  <summary><strong>Q: How can I log in to the system?</strong></summary>
-  A: You can log in using your username and password. If you're new, you'll need to register first.
+**Q: How can I log in to the system?**  
+A: You can log in using your username and password. If you're new, you'll need to register first.
+
+**Q: What if I forget my password?**  
+A: Use the "Forgot Password" option on the login page. You'll receive an OTP at your registered email to reset your password.
+
+**Q: How do I change my password?**  
+A: After logging in, navigate to your profile or settings, where you'll find the "Change Password" option.
+
+**Q: Can I register as a different user type (e.g., Tourist, Seller, etc.)?**  
+A: Yes, guests can register as a Tourist, Tour Guide, Advertiser, or Seller by providing the required information.
   </details>
 
   <details>
-  <summary><strong>Q: What if I forget my password?</strong></summary>
-  A: Use the "Forgot Password" option on the login page. You'll receive an OTP at your registered email to reset your password.
-  </details>
+  <summary>For Tourists</summary>
+    
+**Q: How do I book an activity or itinerary?**  
+A: Select an activity or itinerary, proceed to checkout, and pay using a credit/debit card or your wallet balance.
 
+**Q: Can I cancel a booking?**  
+A: Yes, bookings can be canceled at least 48 hours before the event starts. The refund amount will be credited to your wallet.
+
+**Q: How do I manage my wishlist and cart?**  
+A: You can save products or activities to your wishlist, add them to your cart, adjust quantities, or remove items before checkout.
+
+**Q: What are loyalty points and badges?**  
+A: You earn loyalty points and badges for completing bookings and participating in activities. Points can be redeemed for wallet cash.
+
+**Q: Can I file a complaint?**  
+A: Yes, you can submit complaints with details like title, description, and date, and track their status (pending/resolved).
+
+  </details>
   <details>
-  <summary><strong>Q: How do I change my password?</strong></summary>
-  A: After logging in, navigate to your profile or settings, where you'll find the "Change Password" option.
-  </details>
+  <summary>For Tour Guides</summary>
+    
+**Q: How do I create or update my profile?**  
+A: After registration approval, you can add or edit your profile details, such as mobile number, experience, and past projects.
 
+**Q: How do I manage itineraries?**  
+A: You can create, update, or delete itineraries with detailed information, including activities, locations, and pricing.
+
+**Q: Can I activate or deactivate itineraries?**  
+A: Yes, itineraries can be activated or deactivated even if they have existing bookings.
+
+**Q: How can I track my performance?**  
+A: View detailed sales reports and filter them by date, activity, or itinerary. You can also see the number of tourists using your services.
+
+  </details>
   <details>
-  <summary><strong>Q: Can I register as a different user type (e.g., Tourist, Seller, etc.)?</strong></summary>
-  A: Yes, guests can register as a Tourist, Tour Guide, Advertiser, or Seller by providing the required information.
+  <summary>For Advertisers</summary>
+    
+**Q: How do I manage my profile?**  
+A: You can update your company details, including your website, hotline, and company profile, after registration approval.
+
+**Q: How do I create or manage activities?**  
+A: Add, update, or delete activities with details like date, location (via Google Maps), price, and category tags.
+
+**Q: Can I track attendance and revenue?**  
+A: Yes, you can view and filter reports to track the total number of tourists and revenue generated from your activities.
+
+**Q: What happens if my activity is flagged?**  
+A: You will receive an in-app notification and an email if an activity is flagged by the admin.
+
   </details>
-
-</details>
-
-<details>
-  <summary><strong>For Tourists</strong></summary>
-
   <details>
-  <summary><strong>Q: How do I book an activity or itinerary?</strong></summary>
-  A: Select an activity or itinerary, proceed to checkout, and pay using a credit/debit card or your wallet balance.
-  </details>
+  <summary>For Sellers</summary>
+    
+**Q: How do I create or update my profile?**  
+A: Once approved, you can add or edit your profile details, such as your name and description.
 
+**Q: How do I manage products?**  
+A: Add, update, or delete products, including details like name, price, description, and images. You can also archive or unarchive products.
+
+**Q: Can I track sales and stock levels?**  
+A: Yes, view sales reports and stock levels. You'll also receive low-stock notifications via email.
+
+  </details>
   <details>
-  <summary><strong>Q: Can I cancel a booking?</strong></summary>
-  A: Yes, bookings can be canceled at least 48 hours before the event starts. The refund amount will be credited to your wallet.
+  <summary>For Tourism Governors</summary>
+    
+**Q: How do I manage historical places or museums?**  
+A: Add, update, or delete details like descriptions, pictures, ticket prices, and opening hours.
+
+**Q: Can I assign tags to locations?**  
+A: Yes, you can create tags based on the type or historical period for easier categorization.
+
   </details>
-
-  <details>
-  <summary><strong>Q: How do I manage my wishlist and cart?</strong></summary>
-  A: You can save products or activities to your wishlist, add them to your cart, adjust quantities, or remove items before checkout.
-  </details>
-
-  <details>
-  <summary><strong>Q: What are loyalty points and badges?</strong></summary>
-  A: You earn loyalty points and badges for completing bookings and participating in activities. Points can be redeemed for wallet cash.
-  </details>
-
-  <details>
-  <summary><strong>Q: Can I file a complaint?</strong></summary>
-  A: Yes, you can submit complaints with details like title, description, and date, and track their status (pending/resolved).
-  </details>
-
-</details>
-
-<details>
-  <summary><strong>For Tour Guides</strong></summary>
-
-  <details>
-  <summary><strong>Q: How do I create or update my profile?</strong></summary>
-  A: After registration approval, you can add or edit your profile details, such as mobile number, experience, and past projects.
-  </details>
-
-  <details>
-  <summary><strong>Q: How do I manage itineraries?</strong></summary>
-  A: You can create, update, or delete itineraries with detailed information, including activities, locations, and pricing.
-  </details>
-
-  <details>
-  <summary><strong>Q: Can I activate or deactivate itineraries?</strong></summary>
-  A: Yes, itineraries can be activated or deactivated even if they have existing bookings.
-  </details>
-
-  <details>
-  <summary><strong>Q: How can I track my performance?</strong></summary>
-  A: View detailed sales reports and filter them by date, activity, or itinerary. You can also see the number of tourists using your services.
-  </details>
-
-</details>
-
-<details>
-  <summary><strong>For Advertisers</strong></summary>
-
-  <details>
-  <summary><strong>Q: How do I manage my profile?</strong></summary>
-  A: You can update your company details, including your website, hotline, and company profile, after registration approval.
-  </details>
-
-  <details>
-  <summary><strong>Q: How do I create or manage activities?</strong></summary>
-  A: Add, update, or delete activities with details like date, location (via Google Maps), price, and category tags.
-  </details>
-
-  <details>
-  <summary><strong>Q: Can I track attendance and revenue?</strong></summary>
-  A: Yes, you can view and filter reports to track the total number of tourists and revenue generated from your activities.
-  </details>
-
-  <details>
-  <summary><strong>Q: What happens if my activity is flagged?</strong></summary>
-  A: You will receive an in-app notification and an email if an activity is flagged by the admin.
-  </details>
-
-</details>
-
-<details>
-  <summary><strong>For Sellers</strong></summary>
-
-  <details>
-  <summary><strong>Q: How do I create or update my profile?</strong></summary>
-  A: Once approved, you can add or edit your profile details, such as your name and description.
-  </details>
-
-  <details>
-  <summary><strong>Q: How do I manage products?</strong></summary>
-  A: Add, update, or delete products, including details like name, price, description, and images. You can also archive or unarchive products.
-  </details>
-
-  <details>
-  <summary><strong>Q: Can I track sales and stock levels?</strong></summary>
-  A: Yes, view sales reports and stock levels. You'll also receive low-stock notifications via email.
-  </details>
-
-</details>
-
-<details>
-  <summary><strong>For Tourism Governors</strong></summary>
-
-  <details>
-  <summary><strong>Q: How do I manage historical places or museums?</strong></summary>
-  A: Add, update, or delete details like descriptions, pictures, ticket prices, and opening hours.
-  </details>
-
-  <details>
-  <summary><strong>Q: Can I assign tags to locations?</strong></summary>
-  A: Yes, you can create tags based on the type or historical period for easier categorization.
-  </details>
-
 </details>
 
 
