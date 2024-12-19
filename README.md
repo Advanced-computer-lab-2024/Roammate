@@ -335,7 +335,7 @@ Feedback and Reviews: Rate and review purchased products.
 - **Stock Monitoring**: Receive low-stock notifications to restock promptly and ensure availability.
 - **Revenue Tracking**: Access detailed sales reports showing performance metrics for each product.
 - **Compliance with Admin**: Collaborate with the admin to ensure product approval and adherence to guidelines.
-
+- **account management**: request account to be deleted off the system.
 </details>
 
 <details>
@@ -357,6 +357,7 @@ Feedback and Reviews: Rate and review purchased products.
 - **Sales Insights & Reporting**: View and filter sales reports by activity or date and analyze tourist attendance for events.
 - **Flagging & Notifications**: Receive alerts if an event is flagged as inappropriate by the admin, both in-app and via email.
 - **Event Visibility & Filtering**: Ensure activities are visible to users through category, tag, and budget filters.
+- **account management**: request account to be deleted off the system.
 
 </details>
 
@@ -369,6 +370,7 @@ Feedback and Reviews: Rate and review purchased products.
 - **Sales Tracking & Reporting**: Monitor sales reports, filter by date or itinerary, and view tourist engagement statistics.
 - **Feedback System**: Access tourist ratings and comments for improvement and reputation building.
 - **Notifications**: Get alerted via email and app for flagged itineraries or system updates.
+- **account management**: request account to be deleted off the system.
 
 </details>
 
