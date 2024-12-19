@@ -100,6 +100,28 @@ The Virtual Trip Planner is an all-in-one travel platform that aims to simplify 
 </details>
 
 <details>
+<summary>User Cart</summary>
+
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserCart.png)
+
+</details>
+
+<details>
+<summary>Flights Search</summary>
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserFlightSearch.png)
+
+</details>
+
+
+<details>
+<summary>Hotels Search</summary>
+
+![image](https://github.com/Advanced-computer-lab-2024/Roammate/blob/main/ScreenShots/UserHotelSearch.png)
+</details>
+
+<details>
 <summary>User Purchase History</summary>
 - Check pending orders.
 - check past orders.
